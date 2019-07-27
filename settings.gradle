@@ -1,0 +1,3 @@
+rootProject.name = 'randomsky'
+
+include 'randomsky-common', 'randomsky-spigot', 'randomsky-sponge'

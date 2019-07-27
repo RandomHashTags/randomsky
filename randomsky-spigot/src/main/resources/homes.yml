@@ -1,0 +1,33 @@
+# Made by RandomHashTags
+messages:
+  sethome usage:
+    - "&cUsage: &7/sethome <homeName>"
+  delhome usage:
+    - "&cUsage: &7/delhome <home>"
+  homelist:
+    - " "
+    - "&e&lHome Location(s) (&r&e&n{HOME_SIZE}&r&e&l)"
+    - "{HOMES}"
+    - "&7Travel to a given home with '/home <name>'!"
+  home in list:
+    - " &e{NAME} &f- {X}x, {Y}y, {Z}z"
+  have max:
+    - "&c&l(!)&r &cYou already have the max amount of homes allocated &l({MAX_HOMES})&r&c!"
+    - "&7Increase your limit with a rank at &nbuy.yourserver.com&r&7!"
+  dont have one:
+    - "&c&l(!)&r &cYou do not have a home location set!"
+    - "&7Use /sethome <name> to set a home!"
+  no home of that name:
+    - "&c&l(!)&r &cNo home set named '{NAME}'!"
+    - "&7Use /homelist to view your homes!"
+  delhome not found:
+    - "&c&l(!)&r &cNo home location found named {NAME}!"
+  delhome:
+    - "&c&l(!)&r &cHome {NAME} deleted."
+  only sethome on accessed island:
+    - "&c&l(!)&r &cYou can only set home on an accessed island!"
+  sethome:
+    - "&a&l(!)&r &aNew Home location set for '{NAME}'!"
+  traveling to home:
+    - "&a&l(!)&r &aTraveling to home {NAME}..."
+#
