@@ -1,0 +1,74 @@
+# Made by RandomHashTags
+title: "Item Filter: Redstone"
+size: 18
+#
+gui:
+  redstone:
+    slot: 0
+    item: "redstone"
+    name: "Redstone"
+  redstone lamp:
+    slot: 1
+    item: "redstone_lamp_off"
+    name: "Redstone Lamp"
+  redstone torch:
+    slot: 2
+    item: "redstone_torch_on"
+    name: "Redstone Torch"
+  redstone ore:
+    slot: 3
+    item: "redstone_ore"
+    name: "Redstone Ore"
+  redstone comparator:
+    slot: 4
+    item: "redstone_comparator"
+    name: "Redstone Comparator"
+  redstone repeater:
+    slot: 5
+    item: "diode"
+    name: "Redstone Repeater"
+  lava bucket:
+    slot: 6
+    item: "lava_bucket"
+    name: "Lava Bucket"
+  water bucket:
+    slot: 7
+    item: "water_bucket"
+    name: "Water Bucket"
+  cobweb:
+    slot: 8
+    item: "cobweb"
+    name: "Cobweb"
+  ice:
+    slot: 9
+    item: "ice"
+    name: "Ice"
+  packed ice:
+    slot: 10
+    item: "packed_ice"
+    name: "Packed Ice"
+  dispenser:
+    slot: 11
+    item: "dispenser"
+    name: "Dispenser"
+  dropper:
+    slot: 12
+    item: "dropper"
+    name: "Dropper"
+  observer:
+    slot: 13
+    item: "observer"
+    name: "Observer"
+  piston:
+    slot: 14
+    item: "piston"
+    name: "Piston"
+  sticky piston:
+    slot: 15
+    item: "sticky_piston"
+    name: "Sticky Piston"
+  hopper:
+    slot: 16
+    item: "hopper"
+    name: "Hopper"
+#

@@ -1,5 +1,7 @@
 # Made by RandomHashTags
-
+homes:
+  enabled: true
+  /homelist: true
 #
 resource nodes:
   enabled: true

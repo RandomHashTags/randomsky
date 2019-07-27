@@ -1,0 +1,66 @@
+# Made by RandomHashTags
+messages:
+  help:
+    - " "
+    - "&b&lItem Filter Commands"
+    - "&f/filter toggle"
+    - "&7Toggle item pickup filter."
+    - " "
+    - "&f/filter edit"
+    - "&7Edit items you pickup while the item filter is enabled."
+    - " "
+  #
+  enable:
+    - "&a&l(!)&r &a&lItem Filter &nEnabled"
+    - "&7Use &n/filter edit&r &7to edit the items you will pickup."
+  disable:
+    - "&c&l(!)&r &c&lItem Filter &nDisabled"
+  #
+#
+settings:
+  categories added lore:
+    - "&7Click to view category items."
+  #
+  enabled prefix: "&a"
+  enabled lore:
+    - "&a&lWILL&r &7be picked up"
+    - "&7when item filter is &nenabled."
+  disabled prefix: "&c"
+  disabled lore:
+    - "&c&lWILL NOT&r &7be picked up"
+    - "&7when item filter is &nenabled."
+#
+categories:
+  title: "Item Filter (Categories)"
+  size: 9
+  equipment:
+    slot: 1
+    opens: EQUIPMENT
+    item: "diamond_chestplate"
+    name: "&b&lEquipment"
+  mob drops:
+    slot: 2
+    opens: MOB_DROPS
+    item: "rabbit_hide"
+    name: "&b&lMob Drops"
+  redstone:
+    slot: 3
+    opens: REDSTONE
+    item: "redstone"
+    name: "&b&lRedstone"
+  food:
+    slot: 5
+    opens: FOOD
+    item: "bread"
+    name: "&b&lFood"
+  specialty:
+    slot: 6
+    opens: SPECIALTY
+    item: "mob_spawner"
+    name: "&b&lSpecialty"
+  ores:
+    slot: 7
+    opens: ORES
+    item: "diamond_ore"
+    name: "&b&lOres"
+#

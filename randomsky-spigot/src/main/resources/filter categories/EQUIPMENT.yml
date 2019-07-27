@@ -1,0 +1,98 @@
+# Made by RandomHashTags
+title: "Item Filter: Equipment"
+size: 27
+#
+gui:
+  chain helmet:
+    slot: 0
+    item: "chainmail_helmet"
+    name: "Chain Helmet"
+  chain chestplate:
+    slot: 1
+    item: "chainmail_chestplate"
+    name: "Chain Chestplate"
+  chain leggings:
+    slot: 2
+    item: "chainmail_leggings"
+    name: "Chain Leggings"
+  chain boots:
+    slot: 3
+    item: "chainmail_boots"
+    name: "Chain Boots"
+  stone sword:
+    slot: 4
+    item: "stone_sword"
+    name: "Stone Sword"
+  stone axe:
+    slot: 5
+    item: "stone_axe"
+    name: "Stone Axe"
+  stone hoe:
+    slot: 6
+    item: "stone_hoe"
+    name: "Stone Hoe"
+  iron helmet:
+    slot: 7
+    item: "iron_helmet"
+    name: "Iron Helmet"
+  iron chestplate:
+    slot: 8
+    item: "iron_chestplate"
+    name: "Iron Chestplate"
+  iron leggings:
+    slot: 9
+    item: "iron_leggings"
+    name: "Iron Leggings"
+  iron boots:
+    slot: 10
+    item: "iron_boots"
+    name: "Iron Boots"
+  iron sword:
+    slot: 11
+    item: "iron_sword"
+    name: "Iron Sword"
+  iron axe:
+    slot: 12
+    item: "iron_axe"
+    name: "Iron Axe"
+  iron hoe:
+    slot: 13
+    item: "iron_hoe"
+    name: "Iron Hoe"
+  diamond helmet:
+    slot: 14
+    item: "diamond_helmet"
+    name: "Diamond Helmet"
+  diamond chestplate:
+    slot: 15
+    item: "diamond_chestplate"
+    name: "Diamond Chestplate"
+  diamond leggings:
+    slot: 16
+    item: "diamond_leggings"
+    name: "Diamond Leggings"
+  diamond boots:
+    slot: 17
+    item: "diamond_boots"
+    name: "Diamond Boots"
+  diamond sword:
+    slot: 18
+    item: "diamond_sword"
+    name: "Diamond Sword"
+  diamond axe:
+    slot: 19
+    item: "diamond_axe"
+    name: "Diamond Axe"
+  diamond hoe:
+    slot: 20
+    item: "diamond_hoe"
+    name: "Diamond Hoe"
+  bow:
+    slot: 21
+    item: "bow"
+    name: "Bow"
+  arrow:
+    slot: 22
+    item: "arrow"
+    name: "Arrow"
+#

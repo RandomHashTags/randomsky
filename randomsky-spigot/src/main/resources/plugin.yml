@@ -3,3 +3,7 @@ version: @version@
 main: me.randomhashtags.randomsky.RandomSky
 api-version: 1.13
 load: STARTUP
+commands:
+  filter:
+  home:
+  homelist:

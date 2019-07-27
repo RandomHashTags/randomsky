@@ -1,0 +1,78 @@
+# Made by RandomHashTags
+title: "Item Filter: Ores"
+size: 18
+#
+gui:
+  oak log:
+    slot: 0
+    item: "oak_log"
+    name: "Oak Wood"
+  wooden button:
+    slot: 1
+    item: "wood_button"
+    name: "Wood Button"
+  oak planks:
+    slot: 2
+    item: "oak_planks"
+    name: "Oak Wood Planks"
+  cobblestone:
+    slot: 3
+    item: "cobblestone"
+    name: "Cobblestone"
+  stone button:
+    slot: 4
+    item: "stone_button"
+    name: "Stone Button"
+  coal ore:
+    slot: 5
+    item: "coal_ore"
+    name: "Coal Ore"
+  coal:
+    slot: 6
+    item: "coal"
+    name: "Coal"
+  iron ore:
+    slot: 7
+    item: "iron_ore"
+    name: "Iron Ore"
+  light gray dye:
+    slot: 8
+    item: "light_gray_dye"
+    name: "Light Gray Dye"
+  iron ingot:
+    slot: 9
+    item: "iron_ingot"
+    name: "Iron Ingot"
+  block of iron:
+    slot: 10
+    item: "iron_block"
+    name: "Block of Iron"
+  gold nugget:
+    slot: 11
+    item: "gold_nugget"
+    name: "Gold Nugget"
+  gold ingot:
+    slot: 12
+    item: "gold_ingot"
+    name: "Gold Ingot"
+  block of gold:
+    slot: 13
+    item: "gold_block"
+    name: "Block of Gold"
+  diamond ore:
+    slot: 14
+    item: "diamond_ore"
+    name: "Diamond Ore"
+  diamond:
+    slot: 15
+    item: "diamond"
+    name: "Diamond"
+  light blue dye:
+    slot: 16
+    item: "light_blue_dye"
+    name: "Light Blue Dye"
+  block of diamond:
+    slot: 17
+    item: "diamond_block"
+    name: "Block of Diamond"
+#

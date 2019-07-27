@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.utils;
 
+import me.randomhashtags.randomsky.addons.CustomEnchant;
 import me.randomhashtags.randomsky.utils.universal.UInventory;
 import me.randomhashtags.randomsky.utils.universal.UMaterial;
 import net.milkbowl.vault.economy.Economy;
@@ -62,7 +63,7 @@ public abstract class RSFeature extends RSStorage implements Listener {
         try {
             load();
             isEnabled = true;
-            pluginmanager.registerEvents(this, randompackage);
+            pluginmanager.registerEvents(this, randomsky);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -115,7 +116,7 @@ public abstract class RSFeature extends RSStorage implements Listener {
     public boolean hasPermission(CommandSender sender, String permission, boolean sendNoPermMessage) {
         if(!(sender instanceof Player) || sender.hasPermission(permission)) return true;
         else if(sendNoPermMessage) {
-            sendStringListMessage(sender, randompackage.getConfig().getStringList("no permission"), null);
+            sendStringListMessage(sender, randomsky.getConfig().getStringList("no permission"), null);
         }
         return false;
     }

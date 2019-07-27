@@ -1,0 +1,86 @@
+# Made by RandomHashTags
+title: "Item Filter: Food"
+size: 27
+#
+gui:
+  wheat:
+    slot: 0
+    item: "wheat"
+    name: "Wheat"
+  wheat seeds:
+    slot: 1
+    item: "wheat_seeds"
+    name: "Wheat Seeds"
+  potato:
+    slot: 2
+    item: "potato_item"
+    name: "Potato"
+  carrot:
+    slot: 3
+    item: "carrot_item"
+    name: "Carrot"
+  sugar cane:
+    slot: 4
+    item: "sugar_cane"
+    name: "Sugar Cane"
+  melon slice:
+    slot: 5
+    item: "melon_slice"
+    name: "Melon"
+  melon seeds:
+    slot: 6
+    item: "melon_seeds"
+    name: "Melon Seeds"
+  pumpkin:
+    slot: 7
+    item: "pumpkin"
+    name: "Pumpkin"
+  pumpkin seeds:
+    slot: 8
+    item: "pumpkin_seeds"
+    name: "Pumpkin Seeds"
+  beetroot:
+    slot: 9
+    item: "beetroot"
+    name: "Beetroot"
+  nether wart:
+    slot: 10
+    item: "nether_stalk"
+    name: "Nether Wart"
+  chorus flower:
+    slot: 11
+    item: "chorus_flower"
+    name: "Chorus Flower"
+  raw rabbit:
+    slot: 12
+    item: "rabbit"
+    name: "Raw Rabbit"
+  cooked rabbit:
+    slot: 13
+    item: "cooked_rabbit"
+    name: "Cooked Rabbit"
+  raw chicken:
+    slot: 14
+    item: "chicken"
+    name: "Raw Chicken"
+  cooked chicken:
+    slot: 15
+    item: "cooked_chicken"
+    name: "Cooked Chicken"
+  raw beef:
+    slot: 16
+    item: "beef"
+    name: "Raw Beef"
+  steak:
+    slot: 17
+    item: "cooked_beef"
+    name: "Steak"
+  apple:
+    slot: 18
+    item: "apple"
+    name: "Apple"
+  golden apple:
+    slot: 19
+    item: "golden_apple:0"
+    name: "Golden Apple"
+#

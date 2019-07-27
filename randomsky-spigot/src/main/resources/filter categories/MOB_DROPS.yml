@@ -1,0 +1,70 @@
+# Made by RandomHashTags
+title: "Item Filter: Mob Drops"
+size: 18
+#
+gui:
+  raw rabbit:
+    slot: 0
+    item: "rabbit"
+    name: "Raw Rabbit"
+  cooked rabbit:
+    slot: 1
+    item: "cooked_rabbit"
+    name: "Cooked Rabbit"
+  raw chicken:
+    slot: 2
+    item: "chicken"
+    name: "Raw Chicken"
+  cooked chicken:
+    slot: 3
+    item: "cooked_chicken"
+    name: "Cooked Chicken"
+  raw beef:
+    slot: 4
+    item: "beef"
+    name: "Raw Beef"
+  steak:
+    slot: 5
+    item: "cooked_beef"
+    name: "Steak"
+  rabbit hide:
+    slot: 6
+    item: "rabbit_hide"
+    name: "Rabbit Hide"
+  feather:
+    slot: 7
+    item: "feather"
+    name: "Feather"
+  egg:
+    slot: 8
+    item: "egg"
+    name: "Egg"
+  leather:
+    slot: 9
+    item: "leather"
+    name: "Leather"
+  milk:
+    slot: 10
+    item: "milk_bucket"
+    name: "Milk"
+  string:
+    slot: 11
+    item: "string"
+    name: "String"
+  spider eye:
+    slot: 12
+    item: "spider_eye"
+    name: "Spider Eye"
+  rotten flesh:
+    slot: 13
+    item: "rotten_flesh"
+    name: "Rotten Flesh"
+  bone:
+    slot: 14
+    item: "bone"
+    name: "Bone"
+  blaze rod:
+    slot: 15
+    item: "blaze_rod"
+    name: "Blaze Rod"
+#

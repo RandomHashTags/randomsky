@@ -1,0 +1,54 @@
+# Made by RandomHashTags
+title: "Item Filter: Specialty"
+size: 18
+#
+gui:
+  mob spawner:
+    slot: 0
+    item: "mob_spawner"
+    name: "Monster Spawner"
+  chest:
+    slot: 1
+    item: "chest"
+    name: "Chest"
+  trapped chest:
+    slot: 2
+    item: "trapped_chest"
+    name: "Trapped Chest"
+  paper:
+    slot: 3
+    item: "paper"
+    name: "Paper"
+  empty map:
+    slot: 4
+    item: "empty_map"
+    name: "Empty Map"
+  exp bottle:
+    slot: 5
+    item: "exp_bottle"
+    name: "Bottle o' Enchanting"
+  book:
+    slot: 6
+    item: "book"
+    name: "Book"
+  emerald:
+    slot: 7
+    item: "emerald"
+    name: "Emerald"
+  magma cream:
+    slot: 8
+    item: "magma_cream"
+    name: "Magma_cream"
+  nether star:
+    slot: 9
+    item: "nether_star"
+    name: "Nether Star"
+  firework star:
+    slot: 10
+    item: "firework_charge"
+    name: "Firework Star"
+  rabbits foot:
+    slot: 11
+    item: "rabbit_foot"
+    name: "Rabbit's Foot"
+#
