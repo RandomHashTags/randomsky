@@ -5,7 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 
 import java.util.List;
 
-public abstract class VanillaEnchantRarity extends Itemable {
-    public abstract List<String> getAppliesTo();
-    public abstract List<Enchantment> getRevealedEnchants();
+public interface VanillaEnchantRarity extends Itemable {
+    List<String> getAppliesTo();
+    List<Enchantment> getRevealedEnchants();
 }

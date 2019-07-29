@@ -4,6 +4,6 @@ import me.randomhashtags.randomsky.addons.utils.Itemable;
 
 import java.util.List;
 
-public abstract class CollectionChest extends Itemable {
-    public abstract List<String> getPicksUp();
+public interface CollectionChest extends Itemable {
+    List<String> getPicksUp();
 }

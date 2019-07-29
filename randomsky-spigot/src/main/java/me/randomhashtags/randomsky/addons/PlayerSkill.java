@@ -4,6 +4,6 @@ import me.randomhashtags.randomsky.addons.utils.Itemable;
 
 import java.util.LinkedHashMap;
 
-public abstract class PlayerSkill extends Itemable {
-    public abstract LinkedHashMap<Integer, PlayerSkillLevel> getLevels();
+public interface PlayerSkill extends Itemable {
+    LinkedHashMap<Integer, PlayerSkillLevel> getLevels();
 }

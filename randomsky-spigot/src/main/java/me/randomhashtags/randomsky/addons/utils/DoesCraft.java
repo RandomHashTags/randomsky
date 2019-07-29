@@ -4,6 +4,6 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.List;
 
-public abstract class DoesCraft extends Itemable {
-    public abstract List<Recipe> getCrafts();
+public interface DoesCraft extends Itemable {
+    List<Recipe> getCrafts();
 }
