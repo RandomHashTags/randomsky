@@ -36,7 +36,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
     }
 
     public YamlConfiguration config;
-    private UInventory gui;
+    public UInventory gui;
     private String enablePrefix, disabledPrefix;
     private List<String> enable, disable, addedLore;
     private HashMap<Integer, FilterCategory> categorySlots;
@@ -86,7 +86,6 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
                 categorySlots.put(slot, new FileFilterCategory(new File(folder, opens + ".yml")));
             }
         }
-
         sendConsoleMessage("&6[RandomSky] &aLoaded Item Filter &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {

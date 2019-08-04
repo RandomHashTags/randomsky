@@ -19,17 +19,17 @@ public abstract class Island extends RSStorage {
     public void load() {
         if(!isLoaded) {
             isLoaded = true;
-            didLoad();
+            loaded();
         }
     }
     public void unload() {
         if(isLoaded) {
             isLoaded = false;
-            didUnload();
+            unloaded();
         }
     }
-    public abstract void didLoad();
-    public abstract void didUnload();
+    public abstract void loaded();
+    public abstract void unloaded();
 
     public boolean isLoaded() { return isLoaded; }
     public abstract UUID getUUID();

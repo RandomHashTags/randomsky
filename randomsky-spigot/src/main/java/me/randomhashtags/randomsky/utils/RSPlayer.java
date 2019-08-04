@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class RSPlayer {
     private ChatChannels chat = null;
     private PlayerRank rank = null;
 
-    public long canDeleteIslandTime = 0, coinflipWonCash = 0, coinflipLostCash = 0, coinflipTaxesPaid = 0, jackpotWonCash = 0;
+    public BigDecimal canDeleteIslandTime, coinflipWonCash, coinflipLostCash, coinflipTaxesPaid, jackpotWonCash;
     public int skillTokens = 0, coinflipWins = 0, coinflipLosses = 0, jackpotTickets = 0, jackpotWins = 0;
     public boolean tpaRequests = true, privateMessage = true, filterChat = false, islandInviteNotifications = true, payRequests = true, memberVisiting = true, punchToKick = true, instantBlockBreak = true, instantBreakPickup = true,
             clearInventoryConfirmation = true, auctionBuyConfirm = true, auctionSellConfirm = true, coinflipNotifications = true, bleedNotifications = true, enchantDebug = true, breakParticles = true,
