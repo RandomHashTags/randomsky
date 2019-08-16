@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addons.FilterCategory;
-import me.randomhashtags.randomsky.addons.usingfile.FileFilterCategory;
+import me.randomhashtags.randomsky.utils.addons.FileFilterCategory;
 import me.randomhashtags.randomsky.utils.RSFeature;
 import me.randomhashtags.randomsky.utils.RSPlayer;
 import me.randomhashtags.randomsky.utils.universal.UInventory;

@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.addons.usingfile;
+package me.randomhashtags.randomsky.utils.addons;
 
 import me.randomhashtags.randomsky.addons.FilterCategory;
 import me.randomhashtags.randomsky.utils.RSAddon;

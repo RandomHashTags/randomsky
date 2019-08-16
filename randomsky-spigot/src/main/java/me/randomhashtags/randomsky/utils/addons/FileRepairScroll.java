@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.addons.usingfile;
+package me.randomhashtags.randomsky.utils.addons;
 
 import me.randomhashtags.randomsky.addons.RepairScroll;
 import me.randomhashtags.randomsky.utils.RSAddon;
@@ -14,7 +14,7 @@ public class FileRepairScroll extends RSAddon implements RepairScroll {
     private int percentslot = -1;
     public FileRepairScroll(File f) {
         load(f);
-        registerRepairScroll(this);
+        addRepairScroll(this);
     }
     public String getIdentifier() { return getYamlName(); }
 

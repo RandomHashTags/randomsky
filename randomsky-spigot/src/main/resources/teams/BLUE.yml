@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+messages:
+  now a member:
+    - " "
+    - "&b&l*&r &bYou are now a member of &nTeam Blue&r &b&l*"
+    - "&71% of your /sells will be granted to the team!"
+    - " "
+  #
+  taken daily war top:
+    - "&b(&l/war&r&b) &b{PLAYER}&r &bhas taken the &ndaily&r &b/war top &l#{#}&r &bcontributor for Team Blue!"
+  taken weekly war top:
+    - "&b(&l/war&r&b) &b{PLAYER}&r &bhas taken the &nweekly&r &b/war top &l#{#}&r &bcontributor for Team Blue!"
+#
+gui:
+  slot: 5
+  item: "cyan_wool"
+  name: "&b&lTeam Blue"
+  lore:
+    - "&b#SKYBLUE"
+    - "&7Wisdom, Intellect, Truth, Ice, Honor."
+    - " "
+    - "&7Click to join &b&lTeam Blue&r&7!"
+#

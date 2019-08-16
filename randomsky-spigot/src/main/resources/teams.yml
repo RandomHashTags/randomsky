@@ -1,0 +1,28 @@
+# Made by RandomHashTags
+messages:
+  not joined one yet:
+    - " "
+    - "&c&l(!)&r &cYou have not chosen a Player Team!"
+    - "&7Use /team to choose your side now!"
+    - " "
+  already joined one:
+    - "&c&l(!)&r &cYou have already joined the {TEAM} team!"
+  must have picked team before island creation:
+    - "&e&l(!)&r &eSelect a player team to be prompted with origin selection!"
+  #
+  war: # This is centered
+    - " "
+    - "&c&lRed&r &fvs. &b&lBlue"
+    - "&c&l$&r&c{RED$} &f/ &b&l$&r&b{BLUE$}"
+    - "&7(current /team war chest)"
+    - " "
+    - "&f&lToday"
+    - "&c&l$&r"
+    - "&7Click a team to view top contributors!"
+    - "&7(or use /warp top [blue/red] [page#]))"
+    - " "
+#
+added lore:
+  your team:
+    - " "
+    - "&a&l * YOUR TEAM *"

@@ -30,8 +30,8 @@ public abstract class RSStorage extends UVersion {
     }
 
     public FilterCategory getFilterCategory(String identifier) { return filtercategories != null ? filtercategories.get(identifier) : null; }
-    public void registerFilterCategory(FilterCategory category) { reg(category, "Filter Category", filtercategories); }
+    public void addFilterCategory(FilterCategory category) { reg(category, "Filter Category", filtercategories); }
 
     public RepairScroll getRepairScroll(String identifier) { return repairscrolls != null ? repairscrolls.get(identifier) : null; }
-    public void registerRepairScroll(RepairScroll scroll) { reg(scroll, "Repair Scroll", repairscrolls); }
+    public void addRepairScroll(RepairScroll scroll) { reg(scroll, "Repair Scroll", repairscrolls); }
 }
