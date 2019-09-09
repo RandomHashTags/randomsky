@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons;
 
-import me.randomhashtags.randomsky.addons.utils.Itemable;
+import me.randomhashtags.randomsky.addons.util.Itemable;
 import me.randomhashtags.randomsky.utils.universal.UMaterial;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

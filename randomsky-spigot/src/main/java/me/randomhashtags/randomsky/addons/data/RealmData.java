@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons.data;
 
-import me.randomhashtags.randomsky.addons.Realm;
+import me.randomhashtags.randomsky.addons.realms.Realm;
 import me.randomhashtags.randomsky.utils.universal.UInventory;
 
 import java.util.HashMap;

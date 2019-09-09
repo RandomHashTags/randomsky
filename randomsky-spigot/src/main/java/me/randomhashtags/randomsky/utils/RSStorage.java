@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.utils;
 
 import me.randomhashtags.randomsky.addons.FilterCategory;
 import me.randomhashtags.randomsky.addons.RepairScroll;
-import me.randomhashtags.randomsky.addons.utils.Identifiable;
+import me.randomhashtags.randomsky.addons.util.Identifiable;
 import me.randomhashtags.randomsky.utils.universal.UVersion;
 
 import java.util.Map;

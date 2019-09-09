@@ -1,6 +1,7 @@
 package me.randomhashtags.randomsky.utils;
 
 import me.randomhashtags.randomsky.addons.CustomEnchant;
+import me.randomhashtags.randomsky.addons.util.Loadable;
 import me.randomhashtags.randomsky.utils.universal.UInventory;
 import me.randomhashtags.randomsky.utils.universal.UMaterial;
 import net.milkbowl.vault.economy.Economy;
@@ -28,7 +29,7 @@ import java.util.TreeMap;
 
 import static me.randomhashtags.randomsky.RandomSky.getPlugin;
 
-public abstract class RSFeature extends RSStorage implements Listener {
+public abstract class RSFeature extends RSStorage implements Listener, Loadable {
     private boolean isEnabled = false;
     private static boolean mcmmoIsEnabled = false;
     public boolean isEnabled() { return isEnabled; }
@@ -79,9 +80,6 @@ public abstract class RSFeature extends RSStorage implements Listener {
         }
     }
 
-    public abstract void load();
-    public abstract void unload();
-
     public void saveOtherData() {
         try {
             otherdata.save(otherdataF);
@@ -107,7 +105,7 @@ public abstract class RSFeature extends RSStorage implements Listener {
         givedpCategories.add(inv);
     }
     public String toRoman(int number) {
-        /* This code is from "bhlangonijr" at https://stackoverflow.com/questions/12967896/converting-integers-to-roman-numerals-java */
+        /* This code is from "bhlangonijr" at https://stackoverflow.com/questions/12967896 */
         if(number <= 0) return "";
         int l = treemap.floorKey(number);
         if(number == l) return treemap.get(number);

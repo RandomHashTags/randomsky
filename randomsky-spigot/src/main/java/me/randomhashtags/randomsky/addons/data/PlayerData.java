@@ -2,6 +2,10 @@ package me.randomhashtags.randomsky.addons.data;
 
 import me.randomhashtags.randomsky.addons.*;
 import me.randomhashtags.randomsky.addons.active.Home;
+import me.randomhashtags.randomsky.addons.adventure.Adventure;
+import me.randomhashtags.randomsky.addons.alliance.Alliance;
+import me.randomhashtags.randomsky.addons.island.Island;
+import me.randomhashtags.randomsky.addons.util.Loadable;
 import me.randomhashtags.randomsky.utils.universal.UMaterial;
 import org.bukkit.Location;
 
@@ -9,14 +13,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public interface PlayerData {
-    void load();
-    void unload();
-
+public interface PlayerData extends Loadable {
     long getJoinedTime();
     UUID getUUID();
     Team getTeam();
-    IslandV2 getIsland();
+    Island getIsland();
     Alliance getAlliance();
 
     PlayerRank getRank();

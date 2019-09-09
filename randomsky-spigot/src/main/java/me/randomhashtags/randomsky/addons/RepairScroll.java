@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addons;
 
-import me.randomhashtags.randomsky.addons.utils.Applyable;
-import me.randomhashtags.randomsky.addons.utils.Percentable;
+import me.randomhashtags.randomsky.addons.util.Applyable;
+import me.randomhashtags.randomsky.addons.util.Percentable;
 import org.bukkit.inventory.ItemStack;
 
 public interface RepairScroll extends Percentable, Applyable {

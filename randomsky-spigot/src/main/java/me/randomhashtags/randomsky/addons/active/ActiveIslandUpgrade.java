@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons.active;
 
-import me.randomhashtags.randomsky.addons.IslandUpgrade;
+import me.randomhashtags.randomsky.addons.island.IslandUpgrade;
 
 public class ActiveIslandUpgrade {
     private IslandUpgrade upgrade;

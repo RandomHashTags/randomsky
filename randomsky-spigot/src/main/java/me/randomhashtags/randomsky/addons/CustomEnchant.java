@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons;
 
-import me.randomhashtags.randomsky.addons.utils.Identifiable;
+import me.randomhashtags.randomsky.addons.util.Identifiable;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons.active;
 
-import me.randomhashtags.randomsky.addons.IslandProgressiveSkill;
+import me.randomhashtags.randomsky.addons.island.IslandProgressiveSkill;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

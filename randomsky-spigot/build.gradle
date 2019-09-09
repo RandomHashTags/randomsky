@@ -1,27 +1,33 @@
+apply plugin: 'idea'
+apply plugin: 'java-library'
+
 repositories {
-    maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
-    }
-    maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    mavenLocal()
 }
 
 dependencies {
-    compile project(':randomsky-common')
-    compile 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
 }
 
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        expand 'version': project.version
-    }
+configurations {
+    compile.exclude group: 'com.darkblade12'
+    compile.exclude group: 'org.hamcrest'
+    compile.exclude group: 'me.lucko'
+    compile.exclude group: 'mkremins'
+
+    compile.exclude group: 'com.google.guava'
+    compile.exclude group: 'com.google.code.gson'
+    compile.exclude group: 'com.googlecode.json-simple'
+
+    compile.exclude group: 'org.yaml'
+
+    compile.exclude group: 'junit'
+    compile.exclude group: 'commons-lang'
+
 }
 
 shadowJar {
-    dependencies {
-        include(dependency(':randomsky-common'))
-    }
 }
+
+build.dependsOn(shadowJar);

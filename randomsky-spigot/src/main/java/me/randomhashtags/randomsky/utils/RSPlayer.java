@@ -1,11 +1,11 @@
 package me.randomhashtags.randomsky.utils;
 
 import me.randomhashtags.randomsky.RandomSky;
-import me.randomhashtags.randomsky.addons.Adventure;
-import me.randomhashtags.randomsky.addons.Alliance;
-import me.randomhashtags.randomsky.addons.Island;
+import me.randomhashtags.randomsky.addons.adventure.Adventure;
+import me.randomhashtags.randomsky.addons.alliance.Alliance;
 import me.randomhashtags.randomsky.addons.PlayerRank;
 import me.randomhashtags.randomsky.addons.active.Home;
+import me.randomhashtags.randomsky.addons.island.Island;
 import me.randomhashtags.randomsky.utils.universal.UMaterial;
 import me.randomhashtags.randomsky.utils.universal.UVersion;
 import org.bukkit.Bukkit;
@@ -73,7 +73,7 @@ public class RSPlayer {
         }
         if(backup) backup();
     }
-    public static RSPlayer get(UUID player) { return players.getOrDefault(player, new RSPlayer(player)); }
+    public static RSPlayer get(UUID player) { return players.getOrDefault(player, new RSPlayer(player)).load(); }
     public void backup() {
         yml.set("name", Bukkit.getOfflinePlayer(uuid).getName());
         yml.set("rank", getRank() != null ? rank.path : "null");
@@ -101,7 +101,7 @@ public class RSPlayer {
         yml.set("allowed adventures", adv);
         save();
     }
-    public void load() {
+    public RSPlayer load() {
         if(!isLoaded) {
             isLoaded = true;
 
@@ -151,23 +151,12 @@ public class RSPlayer {
             coinflipTaxesPaid = Long.parseLong(longs[2]);
             jackpotWonCash = Long.parseLong(longs[3]);
         }
+        return this;
     }
     public void unload() {
         if(isLoaded) {
             isLoaded = false;
-            file = null;
-            yml = null;
-            setIsland(null);
-            setAlliance(null);
-            chat = null;
-            rank = null;
-            auctions = null;
-            allowedAdventures = null;
-            skills = null;
-            filteredItems = null;
-            kitExpirations = null;
             players.remove(uuid);
-            uuid = null;
         }
     }
 

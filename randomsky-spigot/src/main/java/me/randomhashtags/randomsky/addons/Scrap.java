@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons;
 
-import me.randomhashtags.randomsky.addons.utils.DoesCraft;
+import me.randomhashtags.randomsky.addons.util.DoesCraft;
 import org.bukkit.inventory.ItemStack;
 
 public interface Scrap extends DoesCraft {

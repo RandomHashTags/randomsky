@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addons;
 
-import me.randomhashtags.randomsky.addons.utils.Itemable;
-import me.randomhashtags.randomsky.addons.utils.RequiredIslandLevel;
+import me.randomhashtags.randomsky.addons.util.Itemable;
+import me.randomhashtags.randomsky.addons.util.RequiredIslandLevel;
 
 import java.util.List;
 

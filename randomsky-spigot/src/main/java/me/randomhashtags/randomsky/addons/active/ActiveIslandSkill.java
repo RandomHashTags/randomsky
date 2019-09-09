@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons.active;
 
-import me.randomhashtags.randomsky.addons.IslandSkill;
+import me.randomhashtags.randomsky.addons.island.IslandSkill;
 
 import java.util.LinkedHashMap;
 

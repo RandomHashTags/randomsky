@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addons.active;
 
-import me.randomhashtags.randomsky.addons.IslandChallenge;
+import me.randomhashtags.randomsky.addons.island.IslandChallenge;
 
 import java.math.BigDecimal;
 
