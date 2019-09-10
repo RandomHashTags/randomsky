@@ -1,11 +1,11 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.utils.RSFeature;
-import me.randomhashtags.randomsky.utils.RSPlayer;
-import me.randomhashtags.randomsky.utils.classes.island.Island;
-import me.randomhashtags.randomsky.utils.classes.shop.ShopCategory;
-import me.randomhashtags.randomsky.utils.classes.shop.ShopItem;
-import me.randomhashtags.randomsky.utils.universal.UInventory;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.classes.island.Island;
+import me.randomhashtags.randomsky.util.classes.shop.ShopCategory;
+import me.randomhashtags.randomsky.util.classes.shop.ShopItem;
+import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

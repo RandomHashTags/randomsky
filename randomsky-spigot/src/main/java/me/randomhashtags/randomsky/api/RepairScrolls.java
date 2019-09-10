@@ -1,8 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addons.RepairScroll;
-import me.randomhashtags.randomsky.utils.addons.FileRepairScroll;
-import me.randomhashtags.randomsky.utils.RSFeature;
+import me.randomhashtags.randomsky.addon.RepairScroll;
+import me.randomhashtags.randomsky.util.addon.FileRepairScroll;
+import me.randomhashtags.randomsky.util.RSFeature;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;

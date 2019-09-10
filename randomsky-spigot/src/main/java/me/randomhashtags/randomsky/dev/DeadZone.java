@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.dev;
 
-import me.randomhashtags.randomsky.addons.util.Identifiable;
-import me.randomhashtags.randomsky.utils.universal.UMaterial;
+import me.randomhashtags.randomsky.addon.util.Identifiable;
+import me.randomhashtags.randomsky.util.universal.UMaterial;
 
 import java.util.List;
 

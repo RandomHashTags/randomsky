@@ -1,8 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addons.active.Home;
-import me.randomhashtags.randomsky.utils.RSFeature;
-import me.randomhashtags.randomsky.utils.RSPlayer;
+import me.randomhashtags.randomsky.addon.active.Home;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;

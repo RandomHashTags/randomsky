@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky;
 
-import me.randomhashtags.randomsky.utils.RSFeature;
+import me.randomhashtags.randomsky.util.RSFeature;
 
 public class RandomSkyAPI extends RSFeature {
     public static final RandomSkyAPI api = new RandomSkyAPI();

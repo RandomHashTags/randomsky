@@ -1,13 +1,13 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addons.alliance.Alliance;
-import me.randomhashtags.randomsky.addons.alliance.AllianceMember;
-import me.randomhashtags.randomsky.addons.alliance.AllianceRelation;
-import me.randomhashtags.randomsky.addons.alliance.AllianceRelationship;
-import me.randomhashtags.randomsky.utils.RSFeature;
-import me.randomhashtags.randomsky.utils.RSPlayer;
-import me.randomhashtags.randomsky.utils.enums.InviteType;
-import me.randomhashtags.randomsky.utils.classes.RSInvite;
+import me.randomhashtags.randomsky.addon.alliance.Alliance;
+import me.randomhashtags.randomsky.addon.alliance.AllianceMember;
+import me.randomhashtags.randomsky.addon.alliance.AllianceRelation;
+import me.randomhashtags.randomsky.addon.alliance.AllianceRelationship;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.enums.InviteType;
+import me.randomhashtags.randomsky.util.classes.RSInvite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

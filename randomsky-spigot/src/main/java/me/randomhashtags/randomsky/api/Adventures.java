@@ -1,10 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addons.adventure.Adventure;
-import me.randomhashtags.randomsky.addons.adventure.AdventureMap;
-import me.randomhashtags.randomsky.utils.RSFeature;
-import me.randomhashtags.randomsky.utils.RSPlayer;
-import me.randomhashtags.randomsky.utils.universal.UInventory;
+import me.randomhashtags.randomsky.addon.adventure.Adventure;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

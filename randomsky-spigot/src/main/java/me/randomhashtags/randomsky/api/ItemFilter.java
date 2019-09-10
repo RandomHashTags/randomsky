@@ -1,11 +1,11 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addons.FilterCategory;
-import me.randomhashtags.randomsky.utils.addons.FileFilterCategory;
-import me.randomhashtags.randomsky.utils.RSFeature;
-import me.randomhashtags.randomsky.utils.RSPlayer;
-import me.randomhashtags.randomsky.utils.universal.UInventory;
-import me.randomhashtags.randomsky.utils.universal.UMaterial;
+import me.randomhashtags.randomsky.addon.FilterCategory;
+import me.randomhashtags.randomsky.util.addon.FileFilterCategory;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
