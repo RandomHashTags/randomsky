@@ -1,0 +1,116 @@
+# Made by RandomHashTags
+title: "Shop (Slabs / Stairs)"
+size: 36
+
+gui:
+  sandstone slab:
+    slot: 0
+    item: "sandstone_slab"
+    prices: "25.00;0.00"
+  stone brick slab:
+    slot: 1
+    item: "stone_brick_slab"
+    prices: "50.00;0.00"
+  stone slab:
+    slot: 2
+    item: "stone_slab"
+    prices: "25.00;0.00"
+  cobblestone slab:
+    slot: 3
+    item: "cobblestone_slab"
+    prices: "25.00;0.00"
+  bricks slab:
+    slot: 4
+    item: "brick_slab"
+    prices: "25.00;0.00"
+  nether brick slab:
+    slot: 5
+    item: "nether_brick_slab"
+    prices: "100.00;0.00"
+  quarts slab:
+    slot: 6
+    item: "quartz_slab"
+    prices: "150.00;0.00"
+  oak slab:
+    slot: 7
+    item: "oak_slab"
+    prices: "25.00;0.00"
+  spruce slab:
+    slot: 8
+    item: "spruce_slab"
+    prices: "25.00;0.00"
+  brich slab:
+    slot: 9
+    item: "birch_slab"
+    prices: "25.00;0.00"
+  jungle slab:
+    slot: 10
+    item: "jungle_slab"
+    prices: "50.00;0.00"
+  acacia slab:
+    slot: 11
+    item: "acacia_slab"
+    prices: "50.00;0.00"
+  dark oak slab:
+    slot: 12
+    item: "dark_oak_slab"
+    prices: "75.00;0.00"
+  red sandstone slab:
+    slot: 13
+    item: "red_sandstone_slab"
+    prices: "100.00;0.00"
+  purpur slab:
+    slot: 14
+    item: "purpur_slab"
+    prices: "1000.00;0.00"
+  brick stairs:
+    slot: 15
+    item: "brick_stairs"
+    prices: "25.00;0.00"
+  spruce wood stairs:
+    slot: 16
+    item: "spruce_wood_stairs"
+    prices: "25.00;0.00"
+  stone brick stairs:
+    slot: 17
+    item: "stone_brick_stairs"
+    prices: "25.00;0.00"
+  sandstone stairs:
+    slot: 18
+    item: "sandstone_stairs"
+    prices: "25.00;0.00"
+  birch stairs:
+    slot: 19
+    item: "birch_stairs"
+    prices: "25.00;0.00"
+  jungle stairs:
+    slot: 20
+    item: "jungle_stairs"
+    prices: "35.00;0.00"
+  nether brick stairs:
+    slot: 21
+    item: "nether_brick_stairs"
+    prices: "50.00;0.00"
+  quartz stairs:
+    slot: 22
+    item: "quartz_stairs"
+    prices: "75.00;0.00"
+  acacia wood stairs:
+    slot: 23
+    item: "acacia_stairs"
+    prices: "25.00;0.00"
+  dark oak wood stairs:
+    slot: 24
+    item: "dark_oak_stairs"
+    prices: "50.00;0.00"
+  red sandstone stairs:
+    slot: 25
+    item: "red_sandstone_stairs"
+    prices: "100.00;0.00"
+  purpur stairs:
+    slot: 26
+    item: "purpur_stairs"
+    prices: "1000.00;0.00"
+  back:
+    slot: 35
+    item: "back"

@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "adventuremap:DEMONIC_REALM"
+recipe:
+  format:
+    - "AAA"
+    - "AAA"
+    - "AAA"
+  A: "adventuremapfragment:DEMONIC_REALM"

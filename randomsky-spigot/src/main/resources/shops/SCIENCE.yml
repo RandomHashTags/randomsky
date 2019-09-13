@@ -1,0 +1,28 @@
+# Made by RandomHashTags
+title: "Shop (Science)"
+size: 9
+gui:
+  collection chest:
+    slot: 0
+    item: "chest"
+    name: "&6&lCollection Chest"
+    lore:
+      - "&7A chest with the magical"
+      - "&7ability to pickup selected"
+      - "&7items in the same chunk."
+      - " "
+      - "&6&lPrice"
+      - " &61x /science Gold Block"
+    custom:
+      item: "collectionchest"
+  crafting bot:
+    slot: 1
+    item: "armor_stand"
+    #item: "bot:crafting"
+  mining bot:
+    slot: 2
+    item: "armor_stand"
+    #item: "bot:mining"
+  back:
+    slot: 8
+    item: "back"

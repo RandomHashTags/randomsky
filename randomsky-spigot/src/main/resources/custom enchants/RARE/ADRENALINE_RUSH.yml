@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Adrenaline Rush"
+lore:
+  - ""
+#
+max level: 3
+applies to: helmet;boots
+#
+attributes:
+  - ""

@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "skilltoken"
+recipe:
+  format:
+    - "AAA"
+    - "AAA"
+    - "AAA"
+  A: "skillshard"

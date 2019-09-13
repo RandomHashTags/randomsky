@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+title: "Shop (Resource Nodes)"
+size: 9
+
+gui:
+  log node:
+    slot: 0
+    item: "node:log:60"
+    prices: "1000.00;50.00"
+  cobblestone node:
+    slot: 1
+    item: "node:cobblestone:120"
+    prices: "2500.00;500.00"
+  coal:
+    slot: 2
+    item: "resource:coal"
+    prices: "0.00;100.00"
+  back:
+    slot: 8
+    item: "back"

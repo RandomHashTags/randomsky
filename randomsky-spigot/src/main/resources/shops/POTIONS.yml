@@ -1,0 +1,40 @@
+# Made by RandomHashTags
+title: "Shop (Potions)"
+size: 9
+
+gui:
+  healing:
+    slot: 0
+    item: "potion_healing_1"
+    prices: "250.00;0.00"
+  regeneration:
+    slot: 1
+    item: "potion_regeneration_1"
+    prices: "500.00;0.00"
+  strength:
+    slot: 2
+    item: "potion_strength_1"
+    prices: "5000.00;0.00"
+  swiftness:
+    slot: 3
+    item: "potion_swiftness_1"
+    prices: "1000.00;0.00"
+  fire resistance:
+    slot: 4
+    item: "potion_fire_resistance"
+    prices: "1250.00;0.00"
+  splash healing:
+    slot: 5
+    item: "splash_potion_healing_1"
+    prices: "750.00;0.00"
+  lingering poison:
+    slot: 6
+    item: "lingering_potion_poison_1"
+    prices: "1000.00;0.00"
+  lingering weakness:
+    slot: 7
+    item: "lingering_potion_weakness"
+    prices: "750.00;0.00"
+  back:
+    slot: 8
+    item: "back"

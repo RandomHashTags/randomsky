@@ -1,0 +1,246 @@
+# Made by RandomHashTags
+title: "Shop (Blocks)"
+size: 54
+
+gui:
+  dirt:
+    slot: 0
+    item: "dirt"
+    prices: "1.00;0.50"
+  podzol:
+    slot: 1
+    item: "podzol"
+    prices: "15.00;1.00"
+  grass:
+    slot: 2
+    item: "grass_block"
+    prices: "2.00;1.00"
+  grass path:
+    slot: 3
+    item: "grass_path"
+    prices: "5.00;1.00"
+  cobblestone:
+    slot: 4
+    item: "cobblestone"
+    price: "2.00;1.00"
+  stone:
+    slot: 5
+    item: "stone"
+    prices: "5.00;1.00"
+  oak planks:
+    slot: 6
+    item: "oak_planks"
+    prices: "10.00;1.00"
+  spruce planks:
+    slot: 7
+    item: "spruce_planks"
+    prices: "25.00;1.00"
+  birch planks:
+    slot: 8
+    item: "birch_planks"
+    prices: "50.00;1.00"
+  acacia planks:
+    slot: 9
+    item: "acacia_planks"
+    prices: "75.00;1.00"
+  dark oak planks:
+    slot: 10
+    item: "dark_oak_planks"
+    prices: "100.00;1.00"
+  sand:
+    slot: 11
+    item: "sand"
+    prices: "10.00;1.00"
+  sandstone:
+    slot: 12
+    item: "sandstone"
+    prices: "25.00;1.00"
+  gravel:
+    slot: 13
+    item: "gravel"
+    prices: "10.00;1.00"
+  oak wood:
+    slot: 14
+    item: "oak_log"
+    prices: "50.00;1.00"
+  spruce wood:
+    slot: 15
+    item: "spruce_log"
+    prices: "100.00;1.00"
+  acacia wood:
+    slot: 16
+    item: "acacia_log"
+    prices: "150.00;1.00"
+  birch wood:
+    slot: 17
+    item: "birch_log"
+    prices: "200.00;1.00"
+  bricks:
+    slot: 18
+    item: "brick"
+    prices: "100.00;1.00"
+  moss stone:
+    slot: 19
+    item: "mossy_cobblestone"
+    prices: "500.00;1.00"
+  snow:
+    slot: 20
+    item: "snow_block"
+    prices: "50.00;1.00"
+  ice:
+    slot: 21
+    item: "ice"
+    prices: "250.00;1.00"
+  packed ice:
+    slot: 22
+    item: "packed_ice"
+    prices: "250.00;1.00"
+  netherrack:
+    slot: 23
+    item: "netherrack"
+    prices: "25.00;1.00"
+  soul sand:
+    slot: 24
+    item: "soul_sand"
+    prices: "250.00;1.00"
+  glowstone:
+    slot: 25
+    item: "glowstone"
+    prices: "500.00;1.00"
+  stone bricks:
+    slot: 26
+    item: "stone_bricks"
+    prices: "25.00;1.00"
+  nether bricks:
+    slot: 27
+    item: "nether_bricks"
+    prices: "150.00;1.00"
+  quartz block:
+    slot: 28
+    item: "quartz_block"
+    prices: "100.00;1.00"
+  slime block:
+    slot: 29
+    item: "slime_block"
+    prices: "1000.00;1.00"
+  hay block:
+    slot: 30
+    item: "hay_block"
+    prices: "250.00;1.00"
+  bookshelf:
+    slot: 31
+    item: "bookshelf"
+    prices: "100.00;1.00"
+  obsidian:
+    slot: 32
+    item: "obsidian"
+    prices: "500.00;1.00"
+  magma block:
+    slot: 33
+    item: "magma_block"
+    prices: "20000.00;2000.00"
+  oak leaves:
+    slot: 34
+    item: "oak_leaves"
+    prices: "10.00;1.00"
+  spruce leaves:
+    slot: 35
+    item: "spruce_leaves"
+    prices: "15.00;1.00"
+  birch leaves:
+    slot: 36
+    item: "birch_leaves"
+    prices: "15.00;1.00"
+  jungle leaves:
+    slot: 37
+    item: "jungle_leaves"
+    prices: "25.00;1.00"
+  lily pad:
+    slot: 38
+    item: "lily_pad"
+    prices: "100.00;10.00"
+  granite:
+    slot: 39
+    item: "granite"
+    prices: "50.00;1.00"
+  polished granite:
+    slot: 40
+    item: "polished_granite"
+    prices: "100.00;1.00"
+  diorite:
+    slot: 41
+    item: "diorite"
+    prices: "50.00;1.00"
+  polished diorite:
+    slot: 42
+    item: "polished_diorite"
+    prices: "100.00;1.00"
+  andesite:
+    slot: 43
+    item: "andesite"
+    prices: "50.00;1.00"
+  polished andesite:
+    slot: 44
+    item: "polished_andesite"
+    prices: "100.00;1.00"
+  back:
+    slot: 53
+    item: "back"
+  #
+  purpur block:
+    slot: 54
+    item: "purpur_block"
+    prices: "1000.00;1.00"
+  purpur pillar:
+    slot: 55
+    item: "purpur_pillar"
+    prices: "2500.00;1.00"
+  mycelium:
+    slot: 56
+    item: "mycelium"
+    prices: "35.00;1.00"
+  prismarine:
+    slot: 57
+    item: "prismarine"
+    prices: "250.00;1.00"
+  prismarine bricks:
+    slot: 58
+    item: "prismarine_bricks"
+    prices: "500.00;1.00"
+  dark prismarine:
+    slot: 59
+    item: "dark_prismarine"
+    prices: "1000.00;1.00"
+  sea lantern:
+    slot: 60
+    item: "sea_lantern"
+    prices: "2500.00;1.00"
+  red sandstone:
+    slot: 61
+    item: "red_sandstone"
+    prices: "50.00;1.00"
+  chiseled red sandstone:
+    slot: 62
+    item: "chiseled_red_sandstone"
+    prices: "75.00;1.00"
+  smooth red sandstone:
+    slot: 63
+    item: "smooth_red_sandstone"
+    prices: "100.00;1.00"
+  end stone:
+    slot: 64
+    item: "end_stone"
+    prices: "2000.00;1.00"
+  end stone bricks:
+    slot: 65
+    item: "end_stone_bricks"
+    prices: "4000.00;1.00"
+  jungle wood:
+    slot: 66
+    item: "jungle_log"
+    prices: "250.00;1.00"
+  dark oak wood:
+    slot: 67
+    item: "dark_oak_log"
+    prices: "350.00;1.00"
+#

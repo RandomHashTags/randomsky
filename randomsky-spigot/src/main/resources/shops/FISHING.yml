@@ -1,0 +1,36 @@
+# Made by RandomHashTags
+title: "Shop (Fishing)"
+size: 9
+
+gui:
+  stone fishing rod:
+    slot: 0
+    item: "fishingrod:stone"
+    prices: "10000.00;0.00"
+  trout:
+    slot: 1
+    item: "cod"
+    prices: "0.00;75.00"
+  cooked cod:
+    slot: 2
+    item: "cooked_cod"
+    prices: "0.00;100.00"
+  salmon:
+    slot: 3
+    item: "salmon"
+    prices: "0.00;90.00"
+  cooked salmon:
+    slot: 4
+    item: "cooked_salmon"
+    prices: "0.00;150.00"
+  clownfish:
+    slot: 5
+    item: "clownfish"
+    prices: "0.00;250.00"
+  pufferfish:
+    slot: 6
+    item: "pufferfish"
+    prices: "0.00;500.00"
+  back:
+    slot: 8
+    item: "back"

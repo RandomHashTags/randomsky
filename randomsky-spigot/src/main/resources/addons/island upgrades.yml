@@ -1,0 +1,82 @@
+# Made by RandomHashTags
+gui:
+  title: "Island Upgrades"
+  size: 9
+  #
+  added lore:
+    - " "
+    - "&e&lTier"
+    - "{TIER}"
+    - " "
+    - "&e&lUpgrade Bonus"
+    - "{UPGRADE_BONUS}"
+    - " "
+    - "&c&lCost"
+    - "{COST}"
+    - " "
+    - "&aClick to &nupgrade&r&a!"
+#
+upgrades:
+  increased smeltinig speed:
+    slot: 0
+    item: "furnace"
+    name: "&6&lIncreased Smelting Speed"
+    lore:
+      - "&7Increase the time it takes for your"
+      - "&7island furnaces to smelt an item."
+  increased furnace fuel efficiency:
+    slot: 1
+    item: "coal"
+    name: "&6&lIncreased Furnace Fuel Efficiency"
+    lore:
+      - "&7Burn fuel more efficiently for a"
+      - "&7longer burn time per item!"
+  increased member count:
+    slot: 2
+    item: "book"
+    name: "&6&lIncreased Member Count"
+    lore:
+      - "&7Increase the maximum amount of"
+      - "&7members you can have on your island."
+  flight on island:
+    slot: 3
+    item: "feather"
+    name: "&6&lFlight on Island"
+    lore:
+      - "&7Allow /fly on your island!"
+  increase daily farming limit:
+    slot: 4
+    item: "carrot_item"
+    name: "&6&lIncrease Daily Farming Limit"
+    lore:
+      - "&7Increase the amount your daily farming"
+      - "&7restrictions are raised after each"
+      - "&7day crops are grown to 100%."
+  increased mob spawning:
+    slot: 5
+    item: "mob_spawner"
+    name: "&6&lIncreased Mob Spawning"
+    lore:
+      - "&7Increase the rates mobs spawn from"
+      - "&7spawners."
+  increased mob spawner exp:
+    slot: 6
+    item: "enchantment_bottle"
+    name: "&6&lIncreased Mob Spawner EXP"
+    lore:
+      - "&7Increase the Xp dropped from Mob"
+      - "&7Spawner mobs."
+  increased /fishing treasure:
+    slot: 7
+    item: "fishing_rod"
+    name: "&6&lIncreased /fishing Treasure"
+    lore:
+      - "&7Increased chance to receive Treasure"
+      - "&7from fishing."
+  increased gem find:
+    slot: 8
+    item: "emerald"
+    name: "&6&lIncreased Gem Find"
+    lore:
+      - "&7Increased chance to receive gems"
+      - "&7from mining."

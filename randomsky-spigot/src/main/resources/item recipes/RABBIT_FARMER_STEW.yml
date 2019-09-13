@@ -1,0 +1,21 @@
+# Made by RandomHashTags
+recipe:
+  item: "paper"
+  name: "&b&lItem Recipe (&r&fRabbit Farmer Stew&b&l)"
+  lore:
+    - "&7Right-Click this item recipe to grant"
+    - "&7the island it was claimed on the"
+    - "&7ability to craft &fRabbit Farmer Stew&7!"
+    - " "
+    - "&b&lIsland Requirements"
+    - " &b&l*&r &fCarrots Recipe Unlocked"
+#
+page:
+  item: "iron_nugget"
+  name: "&b&lItem Recipe Page (&r&fRabbit Farmer Stew&b&l)"
+  lore:
+    - "&7Combine with &n9 Item Recipe Pages"
+    - "&7to craft a &b&lItem Recipe (&r&fRabbit Farmer Stew&b&l)&r&7!"
+#
+requirements:
+  - "RecipeUnlocked;carrots"

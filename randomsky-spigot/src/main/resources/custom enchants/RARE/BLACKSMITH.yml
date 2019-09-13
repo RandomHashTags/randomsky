@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Blacksmith"
+lore:
+  - ""
+#
+max level: 5
+applies to: _axe
+#
+attributes:
+  - ""

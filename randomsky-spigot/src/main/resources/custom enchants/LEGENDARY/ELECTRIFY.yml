@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Electrify"
+lore:
+  - ""
+#
+max level: 4
+applies to: helmet;chestplate;leggings;boots
+#
+attributes:
+  - ""

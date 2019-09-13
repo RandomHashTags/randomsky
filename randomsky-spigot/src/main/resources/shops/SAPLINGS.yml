@@ -1,0 +1,44 @@
+# Made by RandomHashTags
+title: "Shop (Saplings)"
+size: 18
+
+gui:
+  oak:
+    slot: 0
+    item: "sapling"
+    prices: "100.00;10.00"
+  spruce:
+    slot: 1
+    item: "spruce_sapling"
+    prices: "200.00;20.00"
+  birch:
+    slot: 2
+    item: "birch_sapling"
+    prices: "250.00;25.00"
+  acacia:
+    slot: 3
+    item: "acacia_sapling"
+    prices: "300.00;30.00"
+  jungle:
+    slot: 4
+    item: "jungle_sapling"
+    prices: "500.00;50.00"
+  dark oak:
+    slot: 5
+    item: "dark_oak_sapling"
+    prices: "500.00;50.00"
+  shrub:
+    slot: 6
+    item: "dead_bush"
+    prices: "10.00;1.00"
+  grass:
+    slot: 7
+    item: "long_grass:1"
+    prices: "10.00;1.00"
+  fern:
+    slot: 8
+    item: "fern"
+    prices: "10.00;1.00"
+  back:
+    slot: 17
+    item: "back"

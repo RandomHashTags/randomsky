@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "chainmail_leggings"
+recipe:
+  format:
+    - "AAA"
+    - "A A"
+    - "A A"
+  A: "resourceitem:cobblestone"

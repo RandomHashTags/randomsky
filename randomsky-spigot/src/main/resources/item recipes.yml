@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+messages:
+  recipes can be obtained:
+    - "&e&l(!)&r &eRecipes can be obtained inside /adventures OR by crafting 9 Item Recipe Pages together!"
+#
+gui:
+  title: "Custom Item Recipes"
+  size: 18
+  #
+  locked:
+    item: "red_stained_glass_pane"
+    name: "&c&lLocked"
+#

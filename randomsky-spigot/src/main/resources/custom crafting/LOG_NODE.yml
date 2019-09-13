@@ -1,0 +1,5 @@
+# Made by RandomHashTags
+type: SHAPELESS
+amount: 5
+result: "node:log"
+recipe: "resourcefragment:log"

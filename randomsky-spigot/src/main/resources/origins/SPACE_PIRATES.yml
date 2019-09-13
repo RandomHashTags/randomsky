@@ -1,0 +1,27 @@
+# Made by RandomHashTags
+settings:
+  name: "&eSpace Pirates"
+  schematic: "SpacePirates"
+  slot: 4
+#
+item:
+  item: "bone"
+  name: "&e&lSpace Pirates"
+  lore:
+    - "&7The infamous gild of mercenaries and smugglers."
+    - " "
+    - "&e&lPerks"
+    - " &e&l*&r &f+15% /sell prices"
+    - " &e&l*&r &f+110% Resource Node Respawn"
+    - " &e&l*&r &f2% Dodge Passive"
+    - " "
+    - "&7You wish to adventure and explore the"
+    - "&7galaxy with a flexible moral compass,"
+    - "&7enriching yourself and your allies"
+    - "&7regardless of casualties or repercussions."
+    - " "
+    - "&7Click to join the &e&nSpace Pirates&r&7!"
+#
+attributes:
+  - "SellPriceMultiplier=1.15"
+  - "ResourceNodeRespawnMultiplier=1.10"

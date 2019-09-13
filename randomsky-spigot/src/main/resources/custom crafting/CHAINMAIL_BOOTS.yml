@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "chainmail_boots"
+recipe:
+  format:
+    - "   "
+    - "A A"
+    - "A A"
+  A: "resourceitem:cobblestone"

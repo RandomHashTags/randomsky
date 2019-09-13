@@ -1,0 +1,109 @@
+# Made by RandomHashTags
+messages:
+  mobs slain:
+  - "&e&l(!)7r &e{TYPE} slain: &7{PROGRESS} / {COMPLETION} (&e{COMPLETION%}&7)"
+#
+skill:
+  slot: 2
+  item: "diamond_sword"
+  name: "&a&lSlayer"
+  lore:
+  - " "
+  - "&b&lLevel"
+  - " &f{LEVEL}"
+  - " "
+  - "&7Click to view Island Slayer levels!"
+#
+gui:
+  title: "/is slayer"
+  size: 18
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  settings:
+    format:
+      - " "
+      - "{PROGRESS}"
+      - "{RESPAWN_RATE}"
+      - " "
+      - "{STATUS}"
+    progression:
+      - "&f{COMPLETION%}% &7Unlocked"
+      - "&7{PROGRESS} / {COMPLETION} {TYPE} Slain"
+      - " "
+    unlocked:
+      name: "&a&l{NAME}"
+      lore:
+      - "&a&lUNLOCKED"
+    locked:
+      name: "&c&l{NAME}"
+      lore:
+      - "&c&lLOCKED"
+    respawn rate:
+    - "&f{RESPAWN%}% &7Respawn Rate"
+    - "&7{PROGRESS} {TYPE} Slain"
+  #
+#
+mobs:
+  default:
+    slot: 0
+    entity: RABBIT
+    slayer {TYPE}: "Rabbits"
+    item: "rabbit_hide"
+    name: "Rabbit"
+  chicken:
+    slot: 1
+    entity: CHICKEN
+    slayer {TYPE}: "Chickens"
+    required: "default"
+    completion: 750
+    item: "player_head_item"
+    name: "Chicken"
+  cow:
+    slot: 2
+    entity: COW
+    slayer {TYPE}: "Cows"
+    required: "chicken"
+    completion: 2500
+    item: "player_head_item"
+    name: "Cow"
+  spider:
+    slot: 3
+    entity: SPIDER
+    slayer {TYPE}: "Spiders"
+    required: "cow"
+    completion: 7500
+    item: "player_head_item"
+    name: "Spider"
+  zombie:
+    slot: 4
+    entity: ZOMBIE
+    slayer {TYPE}: "Zombies"
+    required: "spider"
+    completion: 25000
+    item: "player_head_item"
+    name: "Zombie"
+  skeleton:
+    slot: 5
+    entity: SKELETON
+    slayer {TYPE}: "Skeletons"
+    required: "zombie"
+    completion: 100000
+    item: "player_head_item"
+    name: "Skeleton"
+  zombie pigman:
+    slot: 6
+    entity: PIG_ZOMBIE
+    slayer {TYPE}: "Zombie Pigmans"
+    required: "skeleton"
+    completion: 350000
+    item: "player_head_item"
+    name: "Zombie Pigman"
+  blaze:
+    slot: 7
+    entity: BLAZE
+    slayer {TYPE}: "Blazes"
+    required: "zombie pigman"
+    completion: 800000
+    item: "player_head_item"
+    name: "Blaze"

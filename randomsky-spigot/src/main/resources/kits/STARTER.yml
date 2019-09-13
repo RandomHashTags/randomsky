@@ -1,0 +1,32 @@
+# Made by RandomHashTags
+name: "&a&lStarter"
+cooldown: 86400
+#
+gui:
+  slot: 0
+  item: "grass_block"
+  name: "&a&lStarter Kit"
+  lore:
+  - "&7A starter kit."
+#
+items:
+  cookie:
+    item: "cookie"
+    amount: 16
+  apple:
+    item: "apple"
+    amount: 8
+  log node:
+    item: "node:log"
+  wheat seeds:
+    item: "wheat_seeds"
+    amount: 4
+  wooden hoe:
+    item: "wooden_hoe"
+  chest:
+    item: "chest"
+  oak sapling:
+    item: "oak_sapling"
+  banknote:
+    item: "banknote:300"
+#

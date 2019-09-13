@@ -1,0 +1,40 @@
+# Made by RandomHashTags
+title: "Shop (Food)"
+size: 9
+
+gui:
+  apple:
+    slot: 0
+    item: "apple"
+    prices: "10.00;5.00"
+  bread:
+    slot: 1
+    item: "bread"
+    prices: "100.00;50.00"
+  baked potato:
+    slot: 2
+    item: "baked_potato"
+    prices: "0.00;100.00"
+  pumpkin pie:
+    slot: 3
+    item: "pumpkin_pie"
+    prices: "0.00;500.00"
+  cake:
+    slot: 4
+    item: "cake"
+    prices: "0.00;1000.00"
+  cooked rabbit:
+    slot: 5
+    item: "cooked_rabbit"
+    prices: "0.00;50.00"
+  cooked chicken:
+    slot: 6
+    item: "cooked_chicken"
+    prices: "0.00;75.00"
+  cooked beef:
+    slot: 7
+    item: "cooked_beef"
+    prices: "0.00;100.00"
+  back:
+    slot: 8
+    item: "back"

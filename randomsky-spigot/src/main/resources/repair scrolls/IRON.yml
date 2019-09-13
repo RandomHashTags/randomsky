@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+item:
+  item: "paper"
+  name: "&b&lIron Repair Scroll"
+  lore:
+    - "&7Apply to gear to repair"
+    - "&7some of its lost durability!"
+    - " "
+    - "&b&lRepair %"
+    - " &f{PERCENT}%"
+#
+applyable to:
+  - "iron_sword"
+  - "iron_axe"
+  - "iron_hoe"
+  - "iron_pickaxe"
+  - "iron_spade"
+  - "iron_shovel"
+  - "iron_helmet"
+  - "iron_chestplate"
+  - "iron_leggings"
+  - "iron_boots"
+  - "shield"

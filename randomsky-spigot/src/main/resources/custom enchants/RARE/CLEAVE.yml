@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Cleave"
+lore:
+  - ""
+#
+max level: 7
+applies to: _axe
+#
+attributes:
+  - ""

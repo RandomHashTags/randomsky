@@ -1,0 +1,106 @@
+# Made by RandomHashTags
+messages:
+  not enough resources:
+    - "&c&l(!)&r &cYou have not provided enough resources to craft this item!"
+    - "&8&lResources Required:"
+    - "{REQUIRED_RESOURCES}"
+  required resource:
+    - " &8&l*&r &7{AMOUNT}x {ITEM}"
+  cannot craft with uncraftable materials:
+    - "&c&l(!)&r &cYou cannot craft with uncraftable materials!"
+  #
+  use grid to craft:
+    - "&e&l(!)&r &eUse your crafting grid to create these recipes!"
+#
+gui:
+  title: "&lCrafting Help"
+  size: 45
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  recipes:
+    slot: 0
+    item: "book"
+    name: "&e&lResource Node Recipes"
+    lore:
+      - "&7RandomSky has custom crafting recipes!"
+      - " "
+      - "&7This menu is a guide on"
+      - "&7how to craft essential resources"
+      - "&7such as wood, stone, iron and diamond."
+      - " "
+      - "&7You get fragments from farming."
+      - "&7You collect scraps from resource nodes."
+      - "&7You craft scraps into resource items."
+      - "&7You can craft equipment from resource items."
+  #
+  log resource fragment:
+    slot: 10
+    item: "resourcefragment:log"
+    amount: 5
+  cobblestone resource fragment:
+    slot: 11
+    item: "resourcefragment:cobblestone"
+    amount: 64
+  log node:
+    slot: 19
+    item: "node:log"
+  cobblestone node:
+    slot: 20
+    item: "node:cobblestone"
+  iron ore node:
+    slot: 21
+    item: "node:iron"
+  diamond ore node:
+    slot: 22
+    item: "node:diamond"
+  oak scrap:
+    slot: 28
+    item: "scrap:oak"
+    amount: 3
+  stone scrap:
+    slot: 29
+    item: "scrap:stone"
+    amount: 4
+  iron scrap:
+    slot: 30
+    item: "scrap:iron"
+    amount: 10
+  diamond scrap:
+    slot: 31
+    item: "scrap:diamond"
+    amount: 16
+  oak planks:
+    slot: 37
+    item: "oak_planks"
+    lore:
+      - " "
+      - "&7&lRecipe"
+      - "&7&l*&r &73x &fWood Scrap"
+  cobblestone:
+    slot: 38
+    item: "cobblestone"
+    lore:
+      - " "
+      - "&7&lRecipe"
+      - " &7&l*&r &74x &fStone Scrap"
+      - "&7You can craft Chainmail Armor with this."
+  iron ingot:
+    slot: 39
+    item: "iron_ingot"
+    lore:
+      - " "
+      - "&7&lRecipe"
+      - " &7&l*&r &710x &8Iron Scrap"
+  diamond:
+    slot: 40
+    item: "diamond"
+    lore:
+      - " "
+      - "&7&lRecipe"
+      - " &7&l*&r &716x &bDiamond Scrap"
+#
+remove recipes:
+  - "stick"
+  - "acacia_button"

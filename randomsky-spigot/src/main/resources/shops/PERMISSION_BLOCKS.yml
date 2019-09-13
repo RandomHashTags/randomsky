@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+title: "Shop (Permission Blocks)"
+size: 9
+
+gui:
+  region protection:
+    slot: 0
+    item: "permissionblock:one"
+    prices: "1000.00;100.00"
+  region protection 8:
+    slot: 1
+    item: "permissionblock:two"
+    prices: "5000.00;500.00"
+  region protection 16:
+    slot: 2
+    item: "permissionblock:three"
+    prices: "50000.00;5000.00"
+  back:
+    slot: 8
+    item: "back"

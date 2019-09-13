@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+rank: "&fMember"
+name: "&f&lMember"
+lore:
+  - " "
+  - "&f&lIsland Permissions"
+  - " &f&l*&r &fModify The Island"
+  - " &f&l*&r &fSet Island Warp"
+permissions:
+  - "RandomSky.island.modify"
+  - "RandomSky.island.setwarp"

@@ -1,0 +1,64 @@
+# Made by RandomHashTags
+messages:
+  teleport:
+  - "&e&l(!)&r &eTraveling to the &b&lLost Wasteland&r &eadventure!"
+#
+name: "&b&lLost Wasteland"
+max players: 200
+teleport delay: 60
+map found in: ABANDONED_RUINS
+teleport locations:
+  - "world;0;100;0;0;0"
+#
+gui:
+  slot: 4
+  item: "iron_chestplate"
+  name: "&b&lLost Wasteland"
+  lore:
+  - "&7A world destroyed by a deadly"
+  - "&7zombie plague. All that remains"
+  - "&7is barren wasteland and hordes"
+  - "&7of highly contagious infected."
+  - " "
+  - "&b&lItem Limitations"
+  - "&b&l<=&r &7Iron Weapons"
+  - "&b&l<=&r &7Iron Armor"
+  - " "
+  - "&b&lResources"
+  - "&b&l*&r &7Iron Scraps, Nodes"
+  - "&b&l*&r &7Iron Weapons, Tools"
+  - "&b&l*&r &7Iron Armor"
+  - "&b&l*&r &7Sugar, Melons, Pumpkins"
+  - "&b&l*&r &7Recipes: Sugar, Melons, Pumpkins"
+  - " "
+  - "&b&lAdventurers"
+  - "&b{ONLINE} / {MAX}"
+#
+map:
+  item: "empty_map"
+  name: "&b&lLost Wasteland Adventure Map"
+  lore:
+  - "&7Right Click to unlock access"
+  - "&7to the &n&lLost Wasteland&r &7adventure!"
+  #
+  fragment:
+    item: "rabbit_foot"
+    name: "&b&lLost Wasteland Map Fragment"
+    lore:
+    - "&7Combine with &n9 Fragments"
+    - "&7to create a Map to the"
+    - "&bLost Wasteland Adventure!"
+#
+blacklisted items:
+  - "diamond_helmet"
+  - "diamond_chestplate"
+  - "diamond_leggings"
+  - "diamond_boots"
+  - "diamond_sword"
+  - "diamond_axe"
+  - "diamond_shovel"
+  - "diamond_hoe"
+  - "diamond_pickaxe"
+#
+chest loot:
+  - ""

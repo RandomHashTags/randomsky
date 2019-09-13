@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Danger Close"
+lore:
+  - ""
+#
+max level: 5
+applies to: sword
+#
+attributes:
+  - ""

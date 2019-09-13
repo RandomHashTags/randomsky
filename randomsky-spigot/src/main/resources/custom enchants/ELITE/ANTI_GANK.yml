@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Anti Gank"
+lore:
+  - ""
+#
+max level: 4
+applies to: _axe
+#
+attributes:
+  - ""

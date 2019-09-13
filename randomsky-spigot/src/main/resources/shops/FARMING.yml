@@ -1,0 +1,68 @@
+# Made by RandomHashTags
+title: "Shop (Farming)"
+size: 18
+
+gui:
+  wooden hoe:
+    slot: 0
+    item: "wooden_hoe"
+    prices: "50.00;0.00"
+  wheat seeds:
+    slot: 1
+    item: "wheat_seeds"
+    prices: "10.00;1.00"
+  wheat:
+    slot: 2
+    item: "wheat"
+    prices: "0.00;10.00"
+  potato:
+    slot: 3
+    item: "potato"
+    prices: "0.00;50.00"
+  carrot:
+    slot: 4
+    item: "carrot_item"
+    prices: "0.00;125.00"
+  sugar:
+    slot: 5
+    item: "sugar"
+    prices: "0.00;115.00"
+  sugar cane:
+    slot: 6
+    item: "sugar_cane"
+    prices: "0.00;100.00"
+  beetroot:
+    slot: 7
+    item: "beetroot"
+    prices: "0.00;225.00"
+  nether warts:
+    slot: 8
+    item: "nether_wart"
+    prices: "0.00;500.00"
+  chorus fruit:
+    slot: 9
+    item: "chorus_fruit"
+    prices: "0.00;2500.00"
+  pumpkin seeds:
+    slot: 11
+    item: "pumpkin_seeds"
+    prices: "0.00;1.00"
+  melon seeds:
+    slot: 12
+    item: "melon_seeds"
+    prices: "0.00;1.00"
+  beetroot seeds:
+    slot: 13
+    item: "beetroot_seeds"
+    prices: "0.00;1.00"
+  melon slice:
+    slot: 14
+    item: "melon_slice"
+    prices: "0.00;135.00"
+  pumpkin:
+    slot: 15
+    item: "pumpkin"
+    prices: "0.00;200.00"
+  back:
+    slot: 17
+    item: "back"

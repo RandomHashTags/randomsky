@@ -1,0 +1,24 @@
+# Made by RandomHashTags
+title: "Shop (Spawners)"
+size: 9
+
+gui:
+  rabbit:
+    slot: 0
+    item: "rabbitspawner"
+    prices: "5000.00;500.00"
+  chicken:
+    slot: 1
+    item: "chickenspawner"
+    prices: "25000.00;2500.00"
+  cow:
+    slot: 2
+    item: "cowspawner"
+    prices: "50000.00;5000.00"
+  spider:
+    slot: 3
+    item: "spiderspawner"
+    prices: "100000.00;10000.00"
+  back:
+    slot: 8
+    item: "back"

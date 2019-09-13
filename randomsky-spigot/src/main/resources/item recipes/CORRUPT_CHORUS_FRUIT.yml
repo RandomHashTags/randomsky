@@ -1,0 +1,35 @@
+# Made by RandomHashTags
+item:
+  item: "chorus_fruit"
+  name: "&dCorrupt Chorus Fruit"
+  lore:
+    - "&7Custom Recipe Item"
+    - " "
+    - "&f&lCustom Recipe"
+    - " &f&l*&r &f1x Poisonous Potato"
+    - " &f&l*&r &f1x Chorus Fruit"
+#
+recipe:
+  item: "chorus_fruit"
+  name: "&b&lItem Recipe (&r&dCorrupt Chorus Fruit&b&l)"
+  lore:
+    - "&7Right-Click this item recipe to grant"
+    - "&7the island it was claimed on the"
+    - "&7ability to craft &dCorrupt Chorus Fruit&7!"
+    - " "
+    - "&b&lIsland Requirements"
+    - " &b&l*&r &fGrown 2,000,000 Potatoes"
+    - " &b&l*&r &fMine 250,000 Coal Ore Nodes"
+    - " &b&l*&r &fChorus Fruit Recipe Unlocked"
+#
+page:
+  item: "iron_nugget"
+  name: "&b&lItem Recipe Page (&r&dCorrupt Chorus Fruit&b&l)"
+  lore:
+    - "&7Combine with &n9 Item Recipe Pages"
+    - "&7to craft a &b&lItem Recipe (&r&dCorrupt Chorus Fruit&b&l)&r&7!"
+#
+requirements:
+  - "CropGrown;potato;>=2000000"
+  - "NodeMined;coal;>=250000"
+  - "RecipeUnlocked;chorus fruit"

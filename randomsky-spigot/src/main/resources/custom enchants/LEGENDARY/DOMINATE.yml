@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Dominate"
+lore:
+  - ""
+#
+max level: 4
+applies to: sword
+#
+attributes:
+  - ""

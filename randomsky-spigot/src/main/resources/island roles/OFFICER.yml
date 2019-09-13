@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+rank: "&bOfficer"
+name: "&b&lOfficer"
+lore:
+  - " "
+  - "&b&lIsland Permissions"
+  - " &b&l*&r &fModify The Island"
+  - " &b&l*&r &fSet Island Warp"
+  - " &b&l*&r &fOpen The Island"
+  - " &b&l*&r &fClose The Island"
+  - " &b&l*&r &fInvite Members"
+  - " &b&l*&r &fRemove Members"
+  - " &b&l*&r &fBan Members"
+  - " &b&l*&r &fUpgrade Island Levels"
+permissions:
+  - "RandomSky.island.modify"
+  - "RandomSky.island.setwarp"
+  - "RandomSky.island.open"
+  - "RandomSky.island.close"
+  - "RandomSky.island.invite"
+  - "RandomSky.island.kick"
+  - "RandomSky.island.ban"
+  - "RandomSky.island.upgrade"

@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+item:
+  item: "paper"
+  name: "&f&lChain Armor Repair Scroll"
+  lore:
+    - "&7Apply to gear to repair"
+    - "&7some of its lost durability!"
+    - " "
+    - "&f&lRepair %"
+    - " &f{PERCENT}%"
+#
+applyable to:
+  - "chainmail_helmet"
+  - "chainmail_chestplate"
+  - "chainmail_leggings"
+  - "chainmail_boots"

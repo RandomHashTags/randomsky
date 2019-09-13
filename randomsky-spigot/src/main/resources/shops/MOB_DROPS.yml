@@ -1,0 +1,56 @@
+# Made by RandomHashTags
+title: "Shop (Mob Drops)"
+size: 18
+
+gui:
+  raw rabbit:
+    slot: 0
+    item: "rabbit"
+    prices: "0.00;20.00"
+  raw chicken:
+    slot: 1
+    item: "chicken"
+    prices: "0.00;50.00"
+  raw beef:
+    slot: 2
+    item: "beef"
+    prices: "0.00;75.00"
+  egg:
+    slot: 3
+    item: "egg"
+    prices: "0.00;100.00"
+  milk:
+    slot: 4
+    item: "milk_bucket"
+    prices: "0.00;150.00"
+  spider eye:
+    slot: 5
+    item: "spider_eye"
+    prices: "0.00;100.00"
+  rotten flesh:
+    slot: 6
+    item: "rotten_flesh"
+    prices: "0.00;150.00"
+  string:
+    slot: 7
+    item: "string"
+    prices: "0.00;75.00"
+  feather:
+    slot: 8
+    item: "feather"
+    prices: "0.00;50.00"
+  gold nugget:
+    slot: 9
+    item: "gold_nugget"
+    prices: "0.00;500.00"
+  gold ingot:
+    slot: 10
+    item: "gold_ingot"
+    prices: "0.00;2500.00"
+  leather:
+    slot: 11
+    item: "leather"
+    prices: "0.00;75.00"
+  back:
+    slot: 17
+    item: "back"

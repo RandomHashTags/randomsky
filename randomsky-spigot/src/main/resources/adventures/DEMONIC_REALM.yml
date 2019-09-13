@@ -1,0 +1,54 @@
+# Made by RandomHashTags
+messages:
+  teleport:
+  - "&e&l(!)&r &eTraveling to the &e&lDemonic Realm&r &eadventure!"
+#
+name: "&e&lDemonic Realm"
+max players: 200
+teleport delay: 60
+map found in: LOST_WASTELAND
+teleport locations:
+  - "world;0;100;0;0;0"
+#
+gui:
+  slot: 5
+  item: "diamond_chestplate"
+  name: "&e&lDemonic Realm"
+  lore:
+  - "&7A major stronghold of evil"
+  - "&7in the Server universe."
+  - "&7This world is dominated by"
+  - "&7legions of destructive,"
+  - "&7demonic creatures that attempt"
+  - "&7to corrupt any galaxy that it"
+  - "&7manages to come in contact with."
+  - " "
+  - "&e&lResources"
+  - "&e&l*&r &7Diamond Scraps, Nodes"
+  - "&e&l*&r &7Diamond weapons, Tools"
+  - "&e&l*&r &7Diamond Armor"
+  - "&e&l*&r &7Cactus, Nether Warts"
+  - "&e&l*&r &7Recipes: Cactus, Nether Warts, Chorus"
+  - " "
+  - "&e&lAdventurers"
+  - "&e{ONLINE} / {MAX}"
+#
+map:
+  item: "empty_map"
+  name: "&e&lDemonic Realm Adventure Map"
+  lore:
+  - "&7Right Click to unlock access"
+  - "&7to the &e&lDemonic Realm&r &7adventure!"
+  #
+  fragment:
+    item: "rabbit_foot"
+    name: "&e&lDemonic Realm Map Fragment"
+    lore:
+    - "&7Combine with &n9 Fragments"
+    - "&7to create a Map to the"
+    - "&eDemonic Realm Adventure!"
+#
+blacklisted items: []
+#
+chest loot:
+  - ""

@@ -13,6 +13,11 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
     public YamlConfiguration config;
 
-    public void load() {}
-    public void unload() {}
+    public void load() {
+        final long started = System.currentTimeMillis();
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + (autobots != null ? autobots.size() : 0) + " Auto Bots &e(took " + (System.currentTimeMillis()-started) + "ms)");
+    }
+    public void unload() {
+        autobots = null;
+    }
 }

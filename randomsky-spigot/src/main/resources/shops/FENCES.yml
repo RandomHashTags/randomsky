@@ -1,0 +1,68 @@
+# Made by RandomHashTags
+title: "Shop (Fences)"
+size: 18
+
+gui:
+  oak fence:
+    slot: 0
+    item: "oak_fence"
+    prices: "50.00;0.00"
+  jungle fence:
+    slot: 1
+    item: "jungle_fence"
+    prices: "75.00;0.00"
+  nether brick fence:
+    slot: 2
+    item: "nether_brick_fence"
+    prices: "150.00;0.00"
+  birch fence gate:
+    slot: 3
+    item: "birch_fence_gate"
+    prices: "250.00;0.00"
+  jungle fence gate:
+    slot: 4
+    item: "jungle_fence_gate"
+    prices: "250.00;0.00"
+  dark oak fence gate:
+    slot: 5
+    item: "dark_oak_fence_gate"
+    prices: "250.00;0.00"
+  acacia fence gate:
+    slot: 6
+    item: "acacia_fence_gate"
+    prices: "250.00;0.00"
+  spruce fence:
+    slot: 7
+    item: "spruce_fence"
+    prices: "50.00;0.00"
+  acacia fence:
+    slot: 8
+    item: "acacia_fence"
+    prices: "50.00;0.00"
+  birch fence:
+    slot: 9
+    item: "birch_fence"
+    prices: "50.00;0.00"
+  dark oak fence:
+    slot: 10
+    item: "dark_oak_fence"
+    prices: "100.00;0.00"
+  oak fence gate:
+    slot: 11
+    item: "oak_fence_gate"
+    prices: "200.00;0.00"
+  spruce fence gate:
+    slot: 12
+    item: "spruce_fence_gate"
+    prices: "250.00;0.00"
+  cobblestone wall:
+    slot: 13
+    item: "cobblestone_wall"
+    prices: "75.00;0.00"
+  mossy cobblestone wall:
+    slot: 14
+    item: "mossy_cobblestone_wall"
+    prices: "250.00;0.00"
+  back:
+    slot: 17
+    item: "back"

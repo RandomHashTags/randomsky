@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Bleed"
+lore:
+  - ""
+#
+max level: 6
+applies to: sword
+#
+attributes:
+  - ""

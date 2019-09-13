@@ -1,0 +1,48 @@
+# Made by RandomHashTags
+messages:
+  claimed:
+    - "&a&l(!)&r &aYou have claimed the {KIT}&r &akit!"
+  on cooldown:
+    - "&a&l(!)&r &aYou must wait &n{REMAINING_TIME}&r &abefore claiming the {KIT}&r &akit again!"
+  reset:
+    - "&a&l(!)&r &aYou reset &n{PLAYER}&r&a's kit cooldowns!"
+  unkown kit:
+    - "&c&l(!)&r &cUnknown kit name given: {INPUT}!"
+#
+lores:
+  format:
+    - "{KIT_LORE}"
+    - " "
+    - "&b&lCooldown:&r &b{COOLDOWN}"
+    - " "
+    - "{USAGE}"
+    - " "
+    - "{STATUS}"
+  #
+  claim:
+    - "&bLeft-Click &7to claim kit."
+  preview:
+    - "&bRight-Click &7to preview kit."
+  claimable:
+    - "&a&lCLAIMABLE"
+    - "&7Click to claim this kit!"
+  claimed:
+    - "&e&lCLAIMED"
+    - "&cAvailable again in &n{REMAINING_TIME}"
+  locked:
+    - "&c&lLOCKED"
+    - " &7Unlock at &nbuy.yourserver.com&r&7!"
+#
+back:
+  item: "barrier"
+  name: "&a&lKit Menu"
+  lore:
+    - "&7Click to return to kit menu."
+#
+gui:
+  title: "Server Kits"
+  size: 9
+#
+preview:
+  title: "Kit Preview: {KIT}"
+#

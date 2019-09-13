@@ -1,0 +1,18 @@
+# Made by RandomHashTags
+item:
+  item: "paper"
+  name: "&f&lStone Repair Scroll"
+  lore:
+    - "&7Apply to gear to repair"
+    - "&7some of its lost durability!"
+    - " "
+    - "&f&lRepair %"
+    - " &f{PERCENT}%"
+#
+applyable to:
+  - "stone_sword"
+  - "stone_axe"
+  - "stone_hoe"
+  - "stone_pickaxe"
+  - "stone_shovel"
+  - "stone_spade"

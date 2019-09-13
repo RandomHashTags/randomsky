@@ -1,0 +1,48 @@
+# Made by RandomHashTags
+title: "Shop (Flowers)"
+size: 18
+#
+gui:
+  dandelion:
+    slot: 0
+    item: "dandelion"
+    prices: "10.00;1.00"
+  poppy:
+    slot: 1
+    item: "poppy"
+    prices: "10.00;1.00"
+  blue orchid:
+    slot: 2
+    item: "blue_orchid"
+    prices: "20.00;1.00"
+  allium:
+    slot: 3
+    item: "allium"
+    prices: "25.00;1.00"
+  azure bluet:
+    slot: 4
+    item: "azure_bluet"
+    prices: "50.00;1.00"
+  red tulip:
+    slot: 5
+    item: "red_tulip"
+    prices: "50.00;1.00"
+  orange tulip:
+    slot: 6
+    item: "orange_tulip"
+    prices: "100.00;1.00"
+  white tulip:
+    slot: 7
+    item: "white_tulip"
+    prices: "200.00;1.00"
+  pink tulip:
+    slot: 8
+    item: "pink_tulip"
+    prices: "500.00;1.00"
+  oxeye daisy:
+    slot: 9
+    item: "oxeye_daisy"
+    prices: "1000.00;1.00"
+  back:
+    slot: 17
+    item: "back"

@@ -1,0 +1,92 @@
+# Made by RandomHashTags
+title: "Shop (Redstone)"
+size: 27
+
+gui:
+  redstone:
+    slot: 0
+    item: "redstone"
+    prices: "50.00;5.00"
+  redstone block:
+    slot: 1
+    item: "redstone_block"
+    prices: "100.00;10.00"
+  stone button:
+    slot: 2
+    item: "stone_button"
+    prices: "25.00;2.00"
+  lever:
+    slot: 3
+    item: "lever"
+    prices: "50.00;5.00"
+  redstone torch:
+    slot: 4
+    item: "redstone_torch_on"
+    prices: "50.00;5.00"
+  redstone comparator:
+    slot: 5
+    item: "comparator"
+    prices: "250.00;25.00"
+  redstone repeater:
+    slot: 6
+    item: "repeater"
+    prices: "500.00;50.00"
+  daylight sensor:
+    slot: 7
+    item: "daylight_detector"
+    prices: "250.00;25.00"
+  observer:
+    slot: 8
+    item: "observer"
+    prices: "4000.00;400.00"
+  redstone lamp:
+    slot: 9
+    item: "redstone_lamp"
+    prices: "100.00;10.00"
+  piston:
+    slot: 10
+    item: "piston"
+    prices: "1000.00;100.00"
+  sticky piston:
+    slot: 11
+    item: "sticky_piston"
+    prices: "2500.00;250.00"
+  stone pressure plate:
+    slot: 12
+    item: "stone_pressure_plate"
+    prices: "100.00;10.00"
+  oak pressure plate:
+    slot: 13
+    item: "oak_pressure_plate"
+    prices: "50.00;5.00"
+  weighted pressure plate light:
+    slot: 14
+    item: "light_weighted_pressure_plate"
+    prices: "250.00;25.00"
+  weighted pressure plate heavy:
+    slot: 15
+    item: "heavy_weighted_pressure_plate"
+    prices: "500.00;50.00"
+  minecart:
+    slot: 16
+    item: "minecart"
+    prices: "5000.00;500.00"
+  rail:
+    slot: 17
+    item: "rail"
+    prices: "100.00;0.00"
+  powered rail:
+    slot: 18
+    item: "powered_rail"
+    prices: "250.00;0.00"
+  detector rail:
+    slot: 19
+    item: "detector_rail"
+    prices: "500.00;0.00"
+  activator rail:
+    slot: 20
+    item: "activator_rail"
+    prices: "1000.00;0.00"
+  back:
+    slot: 26
+    item: "back"

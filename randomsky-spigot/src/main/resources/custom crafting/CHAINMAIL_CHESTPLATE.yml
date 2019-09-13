@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "chainmail_chestplate"
+recipe:
+  format:
+    - "A A"
+    - "AAA"
+    - "AAA"
+  A: "resourceitem:cobblestone"

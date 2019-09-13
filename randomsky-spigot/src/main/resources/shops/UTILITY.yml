@@ -1,0 +1,92 @@
+# Made by RandomHashTags
+title: "Shop (Utility)"
+size: 27
+
+gui:
+  water bucket:
+    slot: 0
+    item: "water_bucket"
+    prices: "100.00;0.00"
+  lava bucket:
+    slot: 1
+    item: "lava_bucket"
+    prices: "1000.00;0.00"
+  flint and steel:
+    slot: 2
+    item: "flint_and_steel"
+    prices: "500.00;0.00"
+  oak door:
+    slot: 3
+    item: "oak_door_item"
+    prices: "50.00;5.00"
+  iron door:
+    slot: 4
+    item: "iron_door"
+    prices: "500.00;50.00"
+  spruce door:
+    slot: 5
+    item: "spruce_door_item"
+    prices: "250.00;25.00"
+  birch door:
+    slot: 6
+    item: "birch_door_item"
+    prices: "250.00;25.00"
+  jungle door:
+    slot: 7
+    item: "jungle_door_item"
+    prices: "500.00;50.00"
+  acacia door:
+    slot: 8
+    item: "acacia_door_item"
+    prices: "750.00;75.00"
+  dark oak door:
+    slot: 9
+    item: "dark_oak_door_item"
+    prices: "1000.00;100.00"
+  torch:
+    slot: 10
+    item: "torch"
+    prices: "25.00;2.00"
+  sign:
+    slot: 11
+    item: "sign"
+    prices: "100.00;10.00"
+  ladder:
+    slot: 12
+    item: "ladder"
+    prices: "100.00;10.00"
+  vine:
+    slot: 13
+    item: "vine"
+    prices: "250.00;25.00"
+  cobweb:
+    slot: 14
+    item: "web"
+    prices: "100.00;10.00"
+  white bed:
+    slot: 15
+    item: "white_bed"
+    prices: "100.00;10.00"
+  item frame:
+    slot: 16
+    item: "item_frame"
+    prices: "100.00;10.00"
+  painting:
+    slot: 17
+    item: "painting"
+    prices: "1000.00;10.00"
+  armor stand:
+    slot: 18
+    item: "armor_stand"
+    prices: "5000.00;10.00"
+  oak trapdoor:
+    slot: 19
+    item: "oak_trapdoor"
+    prices: "50.00;10.00"
+  iron trapdoor:
+    slot: 20
+    item: "iron_trapdoor"
+    prices: "250.00;10.00"
+  back:
+    slot: 26
+    item: "back"

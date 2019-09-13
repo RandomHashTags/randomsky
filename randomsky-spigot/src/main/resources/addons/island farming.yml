@@ -1,0 +1,258 @@
+# Made by RandomHashTags
+messages:
+  plant grown:
+  - "&e&l(!)&r &e{TYPE} grown: &7{PROGRESS} / {MAX} &e(&e{PROGRESS%}%&7)"
+  plant grown sent when ends in: "0;5"
+  skill advanced:
+  - " "
+  - " &6&l**&r &6Your Farming Skill has advanced to &lLevel {LEVEL}&r&6! &6&l**"
+  - "        &7Members can now plant &n{TYPE}&r &7on the island!"
+  - " "
+  unlocked recipe:
+  - "&a&l(!)&r &a{PLAYER} has unlocked the {TYPE} Recipe &afor {IS_CREATOR}'s Island!"
+  has not discovered recipe:
+  - "&c&l(!)&r &cYour Isialnd has not discovered the recipe to plant {TYPE}!"
+  - "&7Farming Recipes can be found inside the /adventures!"
+#
+skill:
+  slot: 0
+  item: "wheat"
+  name: "&a&lFarming"
+  lore:
+  - " "
+  - "&b&lLevel"
+  - " &f{LEVEL}"
+  - " "
+  - "&7Click to view Island Farming levels!"
+#
+info:
+  title: "Farming Info ({PLAYER})"
+  size: 9
+  #
+  settings:
+    format:
+      - " "
+      - "&f{COMPLETION%}% &7Complete"
+      - "&7{PROGRESS} / {COMPLETION} {TYPE} Grown"
+      - "{FARMING_RECIPE}"
+      - " "
+      - "{STATUS}"
+    needs recipe: "&c&l✗"
+    has recipe: "&a&l✓"
+    completed:
+      prefix: "&a&l"
+      status:
+      - "&a&lCOMPLETED"
+    locked:
+      prefix: "&c&l"
+      status:
+      - "&c&lLOCKED"
+    in progress:
+      prefix: "&e&l"
+      status:
+      - "&e&lIN PROGRESS"
+    farming recipe:
+      - "&7[{HAS_RECIPE}&r&7]&r &7Farming Recipe: {RECIPE_NAME}"
+    #
+    wheat:
+      slot: 0
+      daily limit: 1000
+      required recipe: "wheat"
+      type: "Wheat"
+      item: "wheat_seeds"
+      name: "&a&lWheat"
+      lore:
+      - " "
+      - "&7You're a natural farmer!"
+    potatoes:
+      slot: 1
+      daily limit: 5000
+      completion: 100
+      required skill: "wheat"
+      required recipe: "potatoes"
+      type: "Potatoes"
+      item: "potato"
+      name: "Potatoes"
+    carrots:
+      slot: 2
+      daily limit: 10000
+      completion: 2500
+      required skill: "potatoes"
+      required recipe: "carrots"
+      type: "Carrots"
+      item: "carrot_item"
+      name: "Carrots"
+    sugar cane:
+      slot: 3
+      daily limit: 15000
+      completion: 15000
+      required skill: "carrots"
+      required recipe: "sugar cane"
+      type: "Sugar Canes"
+      item: "sugar_cane"
+      name: "Sugar Cane"
+    beetroots:
+      slot: 4
+      daily limit: 20000
+      completion: 75000
+      required skill: "sugar cane"
+      required recipe: "beetroots"
+      type: "Beetroot"
+      item: "beetroot_seeds"
+      name: "Beetroot"
+    nether warts:
+      slot: 5
+      daily limit: 50000
+      completion: 100000
+      required skill: "beetroots"
+      required recipe: "nether warts"
+      type: "Nether Warts"
+      item: "nether_wart"
+      name: "Nether Warts"
+    melons:
+      slot: 6
+      daily limit: 250000
+      completion: 250000
+      required skill: "nether warts"
+      required recipe: "melons"
+      type: "Melons"
+      item: "melon_slice"
+      name: "Melons"
+    pumpkins:
+      slot: 7
+      daily limit: 500000
+      completion: 5000000
+      required skill: "melons"
+      required recipe: "pumpkins"
+      type: "Pumpkins"
+      item: "pumpkin"
+      name: "Pumpkins"
+    chorus fruit:
+      slot: 8
+      daily limit: 1000
+      completion: 7500000
+      required skill: "pumpkins"
+      required recipe: "chorus fruit"
+      type: "Chorus Fruit"
+      item: "chorus_plant"
+      name: "Chorus Fruit"
+#
+recipes:
+  default: "wheat&&potatoes"
+  wheat:
+    unlocks: WHEAT_SEEDS
+    recipe name: "&eWheat"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eWheat&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nWheat Seeds&r &7on your island!"
+  potatoes:
+    unlocks: POTATO_ITEM
+    recipe name: "&ePotatoes"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&ePotatoes&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nPotatoes&r &7on your island!"
+  carrots:
+    unlocks: CARROT_ITEM
+    recipe name: "&eCarrot"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eCarrots&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nCarrots&r &7on your island!"
+  sugar cane:
+    unlocks: SUGAR_CANE_ITEM
+    recipe name: "&eSugar Cane"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eSugar Cane&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nSugar Cane&r &7on your island!"
+  melons:
+    unlocks: MELON_SEEDS
+    recipe name: "&eMelons"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eMelons&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock te ability to plant"
+    - "&e&nMelons&r &7on your island!"
+  beetroots:
+    unlocks: BEETROOT_SEEDS
+    recipe name: "&eBeetroot"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eBeetroot&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nBeetroot&r &7on your island!"
+  pumpkins:
+    unlocks: PUMPKIN_SEEDS
+    recipe name: "&ePumpkins"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&ePumpkins&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&ePumpkins&r &7on your island!"
+  nether warts:
+    unlocks: NETHER_WART
+    recipe name: "&eNether Warts"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eNether Warts&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nNether Warts&r &7on your island!"
+  chorus fruit:
+    unlocks: CHORUS_FLOWER
+    recipe name: "&eChorus Fruit"
+    item: "paper"
+    name: "&a&lFarming Recipe (&r&eChorus Fruit&a&l)"
+    lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nChorus Fruit&r &7on your island!"
+#
+limit increase:
+  I:
+    item: "bone_meal"
+    name: "&fFarming Limit Increase: &l&nI"
+    lore:
+      - "&7Right-Click on the island you"
+      - "&7to wish to increase a"
+      - "&7selectable daily farmable"
+      - "&7material by &f+1% &7(temporarily)"
+      - " "
+      - "&f&lApply To"
+      - " &f&l*&r &f&nWheat"
+      - " &f&l*&r &f&nPotatoes"
+      - " &f&l*&r &f&nCarrots"
+    applyable to:
+      - wheat
+      - potatoes
+      - carrots
+  II:
+    item: "bone_meal"
+    name: "&bFarming Limit Increase: &l&nII"
+    lore:
+      - "&7Right-Click on the island you"
+      - "&7to wish to increase a"
+      - "&7selectable daily farmable"
+      - "&7material by &b+10% &7(temporarily)"
+      - " "
+      - "&b&lApply To"
+      - " &b&l*&r &b&nSugar Cane"
+      - " &b&l*&r &b&nBeetroot"
+      - " &b&l*&r &b&nNether Warts"
+    applyable to:
+      - sugar cane
+      - beetroots
+      - nether warts

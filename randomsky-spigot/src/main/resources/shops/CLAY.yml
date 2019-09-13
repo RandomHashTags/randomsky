@@ -1,0 +1,141 @@
+# Made by RandomHashTags
+title: "Shop (Clay / Concrete)"
+size: 36
+
+gui:
+  clay:
+    slot: 0
+    item: "clay"
+    prices: "10.00;1.00"
+  terracotta:
+    slot: 1
+    item: "terracotta"
+    prices: "20.00;1.00"
+  white terracotta:
+    slot: 2
+    item: "white_terracotta"
+    prices: "25.00;1.00"
+  orange terracotta:
+    slot: 3
+    item: "orange_terracotta"
+    prices: "25.00;0.00"
+  magenta terracotta:
+    slot: 4
+    item: "magenta_terracotta"
+    prices: "25.00;0.00"
+  light blue terracotta:
+    slot: 5
+    item: "light_blue_terracotta"
+    prices: "25.00;0.00"
+  yellow terracotta:
+    slot: 6
+    item: "yellow_terracotta"
+    prices: "25.00;0.00"
+  lime terracotta:
+    slot: 7
+    item: "lime_terracotta"
+    prices: "25.00;0.00"
+  pink terracotta:
+    slot: 8
+    item: "pink_terracotta"
+    prices: "25.00;0.00"
+  gray terracotta:
+    slot: 9
+    item: "gray_terracotta"
+    prices: "25.00;0.00"
+  light gray terracotta:
+    slot: 10
+    item: "light_gray_terracotta"
+    prices: "25.00;0.00"
+  cyan terracotta:
+    slot: 11
+    item: "cyan_terracotta"
+    prices: "25.00;0.00"
+  purple terracotta:
+    slot: 12
+    item: "purple_terracotta"
+    prices: "25.00;0.00"
+  blue terracotta:
+    slot: 13
+    item: "blue_terracotta"
+    prices: "25.00;0.00"
+  brown terracotta:
+    slot: 14
+    item: "brown_terracotta"
+    prices: "25.00;0.00"
+  green terracotta:
+    slot: 15
+    item: "green_terracotta"
+    prices: "25.00;0.00"
+  red terracotta:
+    slot: 16
+    item: "red_terracotta"
+    prices: "25.00;0.00"
+  black terracotta:
+    slot: 17
+    item: "black_terracotta"
+    prices: "25.00;0.00"
+  white concrete powder:
+    slot: 18
+    item: "white_concrete_powder"
+    prices: "100.00;0.00"
+  orange concrete powder:
+    slot: 19
+    item: "orange_concrete_powder"
+    prices: "100.00;0.00"
+  magenta concrete powder:
+    slot: 20
+    item: "magenta_concrete_powder"
+    prices: "100.00;0.00"
+  light blue concrete powder:
+    slot: 21
+    item: "light_blue_concrete_powder"
+    prices: "100.00;0.00"
+  yellow concrete powder:
+    slot: 22
+    item: "yellow_concrete_powder"
+    prices: "100.00;0.00"
+  lime concrete powder:
+    slot: 23
+    item: "lime_concrete_powder"
+    prices: "100.00;0.00"
+  pink concrete powder:
+    slot: 24
+    item: "pink_concrete_powder"
+    prices: "100.00;0.00"
+  gray concrete powder:
+    slot: 25
+    item: "gray_concrete_powder"
+    prices: "100.00;0.00"
+  light gray concrete powder:
+    slot: 26
+    item: "light_gray_concrete_powder"
+    prices: "100.00;0.00"
+  cyan concrete powder:
+    slot: 27
+    item: "cyan_concrete_powder"
+    prices: "100.00;0.00"
+  purple concrete powder:
+    slot: 28
+    item: "purple_concrete_powder"
+    prices: "100.00;0.00"
+  blue concrete powder:
+    slot: 29
+    item: "blue_concrete_powder"
+    prices: "100.00;0.00"
+  brown concrete powder:
+    slot: 30
+    item: "brown_concrete_powder"
+    prices: "100.00;0.00"
+  red concrete powder:
+    slot: 31
+    item: "red_concrete_powder"
+    prices: "100.00;0.00"
+  black concrete powder:
+    slot: 32
+    item: "black_concrete_powder"
+    prices: "100.00;0.00"
+  back:
+    slot: 35
+    item: "back"
+#

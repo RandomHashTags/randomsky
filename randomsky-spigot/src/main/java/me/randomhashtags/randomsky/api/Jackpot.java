@@ -149,11 +149,8 @@ public class Jackpot extends RSFeature implements CommandExecutor {
             eco.depositPlayer(op, total.doubleValue());
 
             final RSPlayer pdata = RSPlayer.get(w);
-            final boolean loaded = pdata.isLoaded;
-            if(!loaded) pdata.load();
             pdata.jackpotWins += 1;
             pdata.jackpotWonCash = pdata.jackpotWonCash.add(total);
-            if(!loaded) pdata.unload();
 
             final String percent = formatDouble(getPercent(t, size)), tt = formatInt(size);
 

@@ -1,0 +1,53 @@
+# Made by RandomHashTags
+title: "Shop (Containers)"
+size: 18
+
+gui:
+  chest:
+    slot: 0
+    item: "chest"
+    prices: "1000.00;100.00"
+  trapped chest:
+    slot: 1
+    item: "trapped_chest"
+    prices: "2500.00;250.00"
+  furnace:
+    slot: 2
+    item: "furnace"
+    prices: "5000.00;500.00"
+  crafting table:
+    slot: 3
+    item: "crafting_table"
+    prices: "250.00;25.00"
+  hopper:
+    slot: 4
+    item: "hopper"
+    prices: "25000.00;2500.00"
+  dropper:
+    slot: 5
+    item: "dropper"
+    prices: "20000.00;2000.00"
+  dispenser:
+    slot: 6
+    item: "dispenser"
+    prices: "20000.00;2000.00"
+  anvil:
+    slot: 7
+    item: "anvil"
+    prices: "50000.00;5000.00"
+  enchantment table:
+    slot: 8
+    item: "enchanting_table"
+    prices: "100000.00;10000.00"
+  cauldron:
+    slot: 9
+    item: "cauldron_item"
+    prices: "50000.00;5000.00"
+  jukebox:
+    slot: 10
+    item: "jukebox"
+    prices: "25000.00;2500.00"
+  back:
+    slot: 17
+    item: "back"
+#

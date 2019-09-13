@@ -1,0 +1,27 @@
+# Made by RandomHashTags
+settings:
+  name: "&cCult of Yijki"
+  schematic: "CultOfYijki"
+  slot: 5
+#
+item:
+  item: "wither_skeleton_skull_item"
+  name: "&c&lCult of Yijki"
+  lore:
+    - "&7The secret apocalypse society that"
+    - "&7worships Yijki, the World Destroyer."
+    - " "
+    - "&c&lPerks:"
+    - " &c&l*&r &f+10% PvP Damage"
+    - " &c&l*&r &f1% Wither Passive"
+    - " &c&l*&r &fImmune to Slowness"
+    - " "
+    - "&7You worship chaos and aim to destroy"
+    - "&7the Server Federation and all the"
+    - "&7planets they lay claim to."
+    - " "
+    - "&7Click to join the &c&nCult of Yijki&r&7!"
+#
+attributes:
+  - "OutgoingPvPDamageMultiplier=1.10"
+  - "ImmuneToPE=Slow"

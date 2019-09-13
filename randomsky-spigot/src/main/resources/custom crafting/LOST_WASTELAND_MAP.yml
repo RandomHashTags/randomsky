@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+type: SHAPED
+result: "adventuremap:LOST_WASTELAND"
+recipe:
+  format:
+    - "AAA"
+    - "AAA"
+    - "AAA"
+  A: "adventuremapfragment:LOST_WASTELAND"

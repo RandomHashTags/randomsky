@@ -1,0 +1,55 @@
+# Made by RandomHashTags
+settings:
+  preview title: "Sky Kit Preview: Explorer"
+  cooldown: 172800
+#
+items:
+  helmet:
+    item: "chainmail_helmet"
+    name: "&aExplorer Helmet"
+    lore:
+      - "VEnchants{Unbreaking2}"
+      - "RSEnchants{2:true;Icy Veins||Deathbringer||Implants}"
+  chestplate:
+    item: "chainmail_chestplate"
+    name: "&aExplorer Chestplate"
+    lore:
+      - "VEnchants{FireProtection3;Unbreaking1}"
+      - "RSEnchants{2:true;Overload||Deathbringer||Spiked||Well Fed||Icy Veins}"
+  leggings:
+    item: "chainmail_leggings"
+    name: "&aExplorer Leggings"
+    lore:
+      - "VEnchants{ProjectileProtection1;Unbreaking1}"
+      - "RSEnchants{1-2:true;Deathbringer||Anti Axe||Spiked||Anti Sword||Well Fed}"
+  boots:
+    item: "chainmail_boots"
+    name: "&aExplorer Boots"
+    lore:
+      - "VEnchants{FeatherFalling1;Unbreaking1}"
+      - "RSEnchants{1-2:true;Spiked||Dodge||Well Fed}"
+  sword:
+    item: "stone_sword"
+    name: "&aEnchanted Explorer Sword"
+    lore:
+      - "VEnchants{Sharpness1;Smite3}"
+      - "RSEnchants{2-3:true;Lifesteal||Danger Close||Trap||Execute}"
+  pet:
+    item: "pet:BATTLE PIG"
+#
+gem:
+  item: "diamond"
+  name: "&6&l/skit (&r&a&lExplorer&r&6&l)"
+  lore:
+    - "&7Right-click this gem to"
+    - "&7unlock permanent access"
+    - "&7to the \"&a&lExplorer&r&7\" /skit."
+#
+lucky block:
+  item: "gold_block"
+  name: "&6&lLucky Block (&r&a&lExplorer&r&6&l)"
+  lore:
+    - "&7Place to summon a Lucky Block"
+    - "&7that may reveal permanent unlock"
+    - "&7access to the /skit on your account,"
+    - "&7or a single bundle of gear."

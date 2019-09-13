@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  enabled: false
+#
+name: "Chain Lifesteal"
+lore:
+  - ""
+#
+max level: 5
+applies to: helmet;chestplate;leggings;boots
+#
+attributes:
+  - ""

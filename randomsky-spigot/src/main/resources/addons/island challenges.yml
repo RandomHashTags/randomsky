@@ -1,0 +1,280 @@
+# Made by RandomHashTags
+messages:
+  must complete before claiming rewards:
+  - "&c&l(!)&r &cYou must fully complete this challenge to claim its rewards!"
+  must complete challenge requirements:
+  - "&c&l(!)&r &cYou must complete ALL of the challenge requirements to claim its rewards!"
+  claimed:
+  - "&a&l(!)&r &aReward claimed for the &n{CHALLENGE}&r &achallenge!"
+  - "{REWARDS}"
+  already claimed:
+  - "&c&l(!)&r &cYou have already claimed the reward for this challenge!"
+  complete:
+  - " "
+  - "&a&l(!)&r &aChallenge Completed:&r &e&n{CHALLENGE}"
+  - " "
+  - "{NEXT_CHALLENGE}"
+  next challenge objective prefix: "&7"
+  next challenge:
+  - "&e&lNew Challenge:&r &e&n{NEXT_CHALLENGE}"
+  - "&7&lObjective:&r {OBJ}"
+  - " "
+  - "&7View your /challenges to claim your reward!"
+  - " "
+#
+gui:
+  title: "Challenges"
+  size: 18
+#
+challenges:
+  settings:
+    completed:
+      claim:
+        - "&a&lCOMPLETE"
+        - "&7Click to claim reward!"
+      claimed:
+        - "&a&lCLAIMED"
+      item: "lime_stained_glass_pane"
+      name: "&a&l{NAME}"
+      lore:
+      - " "
+      - "&b&lObjective"
+      - "&f&m{OBJ}"
+      - " "
+      - "&a&lReward"
+      - "{REWARDS}"
+      - " "
+      - "{STATUS}"
+    progress:
+      item: "yellow_stained_glass_pane"
+      name: "&e&l{NAME}"
+      lore:
+      - " "
+      - "&b&lObjective"
+      - "{OBJ}"
+      - " "
+      - "&a&lReward"
+      - "{REWARDS}"
+      - " "
+      - "&e&lProgress"
+      - " &f{PERCENT}% (&7{PROGRESS}&f/&7{COMPLETION}&f)"
+    locked:
+      item: "red_stained_glass_pane"
+      name: "&c&l{NAME}"
+      lore:
+      - " "
+      - "&b&lObjective"
+      - "{OBJ}"
+      - " "
+      - "&c&lLOCKED (&r&7Complete Previous&c&l)"
+  #
+  new beginnings:
+    slot: 0
+    name: "New Beginnings"
+    completion: 5
+    objective:
+    - "&fPlant 5 Saplings"
+    rewards:
+    - "node:log; &a&l*&r &fLog Node"
+    attributes:
+    - "BlockPlace;block=oak_sapling"
+  #
+  lumberjack:
+    slot: 1
+    name: "Lumberjack"
+    completion: 20
+    objective:
+    - "&fHarvest 20 Wood Node Fragments"
+    - "&ffrom breaking down trees"
+    rewards:
+    - "stone_axe; &a&l*&r &fStone Axe"
+    attributes:
+    - "BlockBreak;isGenerated;blockis=LOG"
+  #
+  resource gatherer:
+    slot: 2
+    name: "Resource Gatherer"
+    completion: 25
+    objective:
+    - "&fHarvest 25 Wood Resource Nodes"
+    rewards:
+    - "stone_hoe; &a&l*&r &fStone Hoe"
+    attributes:
+    - "HarvestResourceNode;path=log"
+  #
+  wheat farmer:
+    slot: 3
+    name: "Wheat Farmer"
+    completion: 50
+    objective:
+    - "&fManually Harvest 50 Wheat"
+    rewards:
+    - "stone_pickaxe; &a&l*&r &fStone Pick"
+    attributes:
+    - "BlockBreak;isCrop;crop=wheat_seeds"
+  #
+  bread maker:
+    slot: 4
+    name: "Bread Maker"
+    completion: 32
+    objective:
+    - "&fSell 32 Bread using /sell"
+    rewards:
+    - "lava_bucket; &a&l*&r &fLava Bucket"
+    attributes:
+    - "SoldItem;type=Bread"
+  #
+  stone age:
+    slot: 5
+    name: "Stone Age"
+    completion: 64
+    objective:
+    - "&fHarvest 64 Cobble Fragments"
+    - "&ffrom a Cobblestone Generator"
+    rewards:
+    - "node:cobblestone; &a&l*&r &fCobblestone Resource Node"
+    attributes:
+    - "HarvestNaturalResource;cobblestone"
+  #
+  caveman:
+    slot: 6
+    name: "Caveman"
+    completion: 50
+    objective:
+    - "&fHarvest 50 Cobblestone Nodes"
+    rewards:
+    - "rabbitspawner; &a&l*&r &fRabbit Spawner"
+    attributes:
+    - "HarvestResourceNode;path=cobblestone"
+  #
+  rabbit hunter:
+    slot: 7
+    name: "Rabbit Hunter"
+    completion: 100
+    objective:
+    - "&fKill 100 Rabbits"
+    rewards:
+    - "leather_helmet; &a&l*&r &fLeather Cap"
+    - "leather_chestplate; &a&l*&r &fLeather Tunic"
+    - "leather_leggings; &a&l*&r &fLeather Pants"
+    - "leather_boots; &a&l*&r &fLeather Boots"
+    attributes:
+    - "SlainMob;type=Rabbit"
+  #
+  vanilla enchant:
+    slot: 8
+    name: "Vanilla Enchant"
+    completion: 5
+    objective:
+    - "&fPurchase 5x Stone Enchantment"
+    - "&fBooks from an Enchanting Table"
+    rewards:
+    - "Vanilla Enchant Island Challenge Reward; &a&l*&r &fEff. III Mending Stone Pick"
+    attributes:
+    - ""
+  #
+  blacksmith:
+    slot: 9
+    name: "Blacksmith"
+    completion: 1
+    objective:
+    - "&fCraft a Chainmail Chestplate"
+    rewards:
+    - "repairscroll:stone:50; &a&l*&r &f50% Stone Repair Scroll"
+    attributes:
+    - "CraftItem=chainmail_chestplate"
+  #
+  bandit killer:
+    slot: 10
+    name: "Bandit Killer"
+    completion: 5
+    objective:
+    - "&fKill 5 Bandits"
+    rewards:
+    - "shield:stone; &a&l*&r &fStone Shield"
+    attributes:
+    - "KilledBandit"
+  #
+  handyman:
+    slot: 11
+    name: "Handyman"
+    completion: 1
+    objective:
+    - "&fUse 1x Stone Repair Scroll"
+    rewards:
+    - "Handyman Island Challenge Reward; &a&l*&r &fSharpness Stone Sword"
+    attributes:
+    - "RepairScrollUsed;path=stone"
+  #
+  potato farmer:
+    slot: 12
+    name: "Potato Farmer"
+    completion: 64
+    objective:
+    - "&fPlant 64 Potatoes"
+    rewards:
+    - "furnace; &a&l*&r &fFurnace"
+    attributes:
+    - "PlantCrop;crop=potato"
+  #
+  potato chef:
+    slot: 13
+    name: "Potato Chef"
+    completion: 128
+    objective:
+    - "&fSell 128 Baked Potatoes"
+    rewards:
+    - "node:coal; &a&l*&r &fCoal Resource Node"
+    attributes:
+    - "SoldItem;type=baked_potato"
+  #
+  not a noob:
+    slot: 14
+    name: "Not A Noob"
+    completion: 3
+    objective:
+    - "&fUnlock /is level 3"
+    rewards:
+    - "chickenspawner; &a&l*&r &fChicken Spawner"
+    attributes:
+    - "IslandLevel>=3"
+    - "UpgradeIslandLevel;level=3"
+  #
+  bandit lover:
+    slot: 15
+    name: "Bandit Lover"
+    completion: 25
+    objective:
+    - "&fLoot 25 Chests in the"
+    - "&fAbandoned Ruins /adventure"
+    rewards:
+    - "mysterygem:stone"
+    - "adventuremapfragment:LOST_WASTELAND; &a&l*&r &fLost Wasteland Map Fragment"
+    attributes:
+    - "LootAdventureChest;adventure=ABANDONED_RUINS"
+  #
+  zombie survivor:
+    slot: 16
+    name: "Zombie Survivor"
+    completion: 1
+    objective:
+    - "&fUnlock access to the Lost"
+    - "&fWasteland /adventure"
+    rewards:
+    - "Zombie Survivor Island Challenge Reward; &a&l*&r &fStone Sword with 1 Socket"
+    attributes:
+    - "HasAdventureMap;yml=LOST_WASTELAND"
+    - "UnlockAdventure;yml=LOST_WASTELAND"
+  #
+  apocalypse looter:
+    slot: 17
+    name: "Apocalypse Looter"
+    completion: 10
+    objective:
+    - "&fLoot 10 Chests in Lost"
+    - "&fWasteland /adventure"
+    rewards:
+    - "node:iron; &a&l*&r &f1x Iron Resource Node"
+    attributes:
+    - "LootAdventureChest;adventure=LOST_WASTELAND;IncreaseLootedAdventureChest"
+  #

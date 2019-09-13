@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+name: "&b&lRank"
+cooldown: 86400
+#
+gui:
+  slot: 1
+  item: "iron_chestplate"
+  name: "&b&lRank Kit"
+  lore:
+  - "&7This kit dynamically scales"
+  - "&7based on your current:"
+  - " &b&l*&r &fRank Tier"
+  - " &b&l*&r &fIsland Level"
+  - " &b&l*&r &fSlayer Level"
+  - " &b&l*&r &fAdventure Progress"
+#
