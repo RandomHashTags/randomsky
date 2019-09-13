@@ -101,7 +101,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Farming Recipes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        FarmingRecipe.deleteAll();
+        farmingrecipes = null;
         FarmingSkill.deleteAll();
         FarmingLimitIncrease.deleteAll();
     }

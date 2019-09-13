@@ -1,0 +1,81 @@
+# Made by RandomHashTags
+messages:
+  cannot repair item with scroll:
+    - "&c&l(!)&r &cYou cannot repair this item with this Repair Scroll!"
+  interacted:
+    - "&c&l(!)&r &cApply this Repair Scroll to the respective gear to repair it!"
+#
+repair scrolls:
+  chain:
+    applyable to:
+      - "chainmail_helmet"
+      - "chainmail_chestplate"
+      - "chainmail_leggings"
+      - "chainmail_boots"
+    item: "paper"
+    name: "&f&lChain Armor Repair Scroll"
+    lore:
+      - "&7Apply to gear to repair"
+      - "&7some of its lost durability!"
+      - " "
+      - "&f&lRepair %"
+      - " &f{PERCENT}%"
+  diamond:
+    applyable to:
+      - "diamond_sword"
+      - "diamond_axe"
+      - "diamond_hoe"
+      - "diamond_pickaxe"
+      - "diamond_spade"
+      - "diamond_shovel"
+      - "diamond_helmet"
+      - "diamond_chestplate"
+      - "diamond_leggings"
+      - "diamond_boots"
+      - "shield"
+    item: "paper"
+    name: "&e&lDiamond Repair Scroll"
+    lore:
+      - "&7Apply to gear to repair"
+      - "&7some of its lost durability!"
+      - " "
+      - "&e&lRepair %"
+      - " &f{PERCENT}%"
+  iron:
+    applyable to:
+      - "iron_sword"
+      - "iron_axe"
+      - "iron_hoe"
+      - "iron_pickaxe"
+      - "iron_spade"
+      - "iron_shovel"
+      - "iron_helmet"
+      - "iron_chestplate"
+      - "iron_leggings"
+      - "iron_boots"
+      - "shield"
+    item: "paper"
+    name: "&b&lIron Repair Scroll"
+    lore:
+      - "&7Apply to gear to repair"
+      - "&7some of its lost durability!"
+      - " "
+      - "&b&lRepair %"
+      - " &f{PERCENT}%"
+  stone:
+    applyable to:
+      - "stone_sword"
+      - "stone_axe"
+      - "stone_hoe"
+      - "stone_pickaxe"
+      - "stone_shovel"
+      - "stone_spade"
+    item: "paper"
+    name: "&f&lStone Repair Scroll"
+    lore:
+      - "&7Apply to gear to repair"
+      - "&7some of its lost durability!"
+      - " "
+      - "&f&lRepair %"
+      - " &f{PERCENT}%"
+#

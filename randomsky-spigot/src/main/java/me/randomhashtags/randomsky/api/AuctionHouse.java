@@ -221,7 +221,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
     }
 
     private void loadAuctions(boolean async) {
-        if(async) scheduler.runTaskAsynchronously(randompackage, () -> loadAH(true));
+        if(async) scheduler.runTaskAsynchronously(randomsky, () -> loadAH(true));
         else loadAH(false);
     }
     private void loadAH(boolean async) {
@@ -279,7 +279,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         }
     }
     public void backup(boolean async) {
-        if(async) scheduler.runTaskAsynchronously(randompackage, this::dobackup);
+        if(async) scheduler.runTaskAsynchronously(randomsky, this::dobackup);
         else dobackup();
     }
     private void dobackup() {

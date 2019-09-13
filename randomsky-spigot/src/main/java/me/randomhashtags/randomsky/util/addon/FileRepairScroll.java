@@ -35,7 +35,7 @@ public class FileRepairScroll extends RSAddon implements RepairScroll {
 
     public ItemStack getItem() {
         if(item == null) item = api.d(yml, "item");
-        return item.clone();
+        return getClone(item);
     }
     public ItemStack getItem(int percent) {
         final String p = Integer.toString(percent);

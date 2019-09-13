@@ -139,9 +139,10 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Player Skills &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        for(Player p : viewing.keySet()) p.closeInventory();
-        PlayerSkill.paths.clear();
-        PlayerSkill.slots.clear();
+        for(Player p : viewing.keySet()) {
+            p.closeInventory();
+        }
+        playerskills = null;
     }
 
     public void viewSkills(Player player) {

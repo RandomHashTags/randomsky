@@ -9,7 +9,7 @@ import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.addon.util.Attributable;
 import me.randomhashtags.randomsky.addon.util.Loadable;
-import me.randomhashtags.randomsky.util.objects.PolyBoundary;
+import me.randomhashtags.randomsky.util.obj.PolyBoundary;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;

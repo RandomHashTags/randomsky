@@ -1,0 +1,28 @@
+# Made by RandomHashTags
+messages:
+  pumpkin:
+    sprouted:
+      - "&6&lPUMPKIN PARTY:&r &6A Pumpkin has sprouted on the map!"
+      - "&7Harvest it 80 times to receive &6{POINTS} points!"
+      - "&fCoordinates: &6[&7{X}x, {Y}y, {Z}z&6]"
+    did harvest:
+      - "&f&l+&r &f{POINTS} Bountiful Farm Points &7(Pumpkin Party)"
+    harvested:
+      - "&6&lPUMPKIN PARTY:&r &6&n{PLAYER}&r &6harvested the last bit of Pumpkin!"
+      - "&7Tey received &a&l{POINTS}&r &aPoints!"
+    not harvested in time:
+      - "&6&lPUMPKIN PARTY:&r &cThe Pumpkin was not harvested in time!"
+  magic beanstalk:
+    sprouted:
+      - "&6&lMAGIC BEANSTALK:&r &6A Magical Beanstalk has sprouted on the map!"
+      - "&7If fully grown, all players will receive &n2x Points&r &7for &n5&r &7Minutes!"
+      - "&7It must be supplied with &n100x&r &7Wheat, Carrot, and Potato Bonemeal to fully grow!"
+      - "&fCoordinates: &6[&7{X}x, {Y}y, {Z}z&6]"
+    fully grown:
+      - "&6&lMAGIC BEANSTALK: The bean stalk has been fully grown!"
+      - "&7All players will receive 2x points for 5 minutes!"
+    failed to grow:
+      - "&6&lMAGIC BEANSTALK:&r &cThe Magic Beanstalk was not supplied enough Bonemeal and failed to grow!"
+#
+shop:
+#

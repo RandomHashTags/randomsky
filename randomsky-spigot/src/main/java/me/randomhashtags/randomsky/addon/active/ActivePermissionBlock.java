@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addon.active;
 
 import me.randomhashtags.randomsky.addon.PermissionBlock;
-import me.randomhashtags.randomsky.util.objects.PolyBoundary;
+import me.randomhashtags.randomsky.util.obj.PolyBoundary;
 import org.bukkit.Location;
 import org.bukkit.Material;
 

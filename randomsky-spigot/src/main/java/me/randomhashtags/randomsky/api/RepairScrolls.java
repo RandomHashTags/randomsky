@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -37,16 +38,14 @@ public class RepairScrolls extends RSFeature implements Listener {
         sendConsoleMessage("&6[RandomSky] &aLoaded " + (repairscrolls != null ? repairscrolls.size() : 0) + " Repair Scrolls &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        config = null;
-        instance = null;
         repairscrolls = null;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void inventoryClickEvent(InventoryClickEvent event) {
         final ItemStack current = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
-        if(!event.isCancelled() && current != null && !current.getType().equals(Material.AIR) && cursor != null && !cursor.getType().equals(Material.AIR)) {
+        if(current != null && !current.getType().equals(Material.AIR) && cursor != null && !cursor.getType().equals(Material.AIR)) {
             final RepairScroll r = valueOf(cursor);
             final Player player = (Player) event.getWhoClicked();
             if(r != null) {

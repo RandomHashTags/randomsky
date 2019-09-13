@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.util.objects;
+package me.randomhashtags.randomsky.util.obj;
 
 import org.bukkit.Location;
 

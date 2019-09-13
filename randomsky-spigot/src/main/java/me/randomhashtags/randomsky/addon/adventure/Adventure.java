@@ -2,14 +2,14 @@ package me.randomhashtags.randomsky.addon.adventure;
 
 import me.randomhashtags.randomsky.addon.util.Itemable;
 import me.randomhashtags.randomsky.addon.util.Rewardable;
+import me.randomhashtags.randomsky.addon.util.Slotable;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface Adventure extends Itemable, Rewardable {
+public interface Adventure extends Itemable, Rewardable, Slotable {
     String getName();
-    int getSlot();
     List<String> getItemLimitations();
     AdventureMap getRequiredMap();
 
