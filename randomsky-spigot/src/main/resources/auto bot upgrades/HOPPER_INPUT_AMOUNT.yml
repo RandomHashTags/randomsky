@@ -1,0 +1,29 @@
+# Made by RandomHashTags
+name: "Hopper Input Amount"
+type: "Item(s)"
+#
+item:
+  item: "hopper"
+  name: "&b&lHopper Input Amount"
+  lore:
+    - "&7he amount of items the"
+    - "&7hopper will transfer each"
+    - "&7interval."
+    - " "
+    - "&b{VALUE} Item(s) &7-> &6&n{NEXT_VALUE} Item(s)"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 10
+  1:
+    value: 16
+    cost: 100000
+  2:
+    value: 24
+    cost: 250000
+  3:
+    value: 32
+    cost: 500000
+#
+attributes:
+  - ""

@@ -1,0 +1,15 @@
+# Made by RandomHashTags
+item:
+  item: "armor_stand"
+  name: "&6&lAuto Planter (&r&7Right Click&6&l)"
+  lore:
+    - "&7Place on an accessed"
+    - "&7island with the proper /is"
+    - "&7level to create a farming"
+    - "&7bot that will auto re-plant"
+    - "&7crops in its inventory!"
+    - " "
+    - "&6&lRe-Plant Radius:&r &f{RE_PLANT_RADIUS}"
+    - "&6&lRe-Plant Interval:&r &f{RE_PLANT_INTERVAL}"
+    - "&6&lRe-Plant Per Interval:&r &f{RE_PLANT_PER_INTERVAL} crop(s)"
+    - "&6&lInventory Size:&r &f{INVENTORY_SIZE} slots"

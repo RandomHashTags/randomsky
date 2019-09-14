@@ -1,0 +1,31 @@
+# Made by RandomHashTags
+name: "Crafted Per Interval"
+type: "Item(s)"
+#
+item:
+  item: "crafting_table"
+  name: "&b&lCrafted Per Interval"
+  lore:
+    - "&7The amount of items the"
+    - "&7bot will attempt to craft"
+    - "&7each interval."
+    - " "
+    - "&b{VALUE} Item(s) &7-> &6&n{NEXT_VALUE} Item(s)"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 2
+  1:
+    value: 3
+    cost: 200000
+  2:
+    value: 4
+    cost: 300000
+  3:
+    value: 5
+    cost: 400000
+  4:
+    value: 6
+#
+attributes:
+  - ""

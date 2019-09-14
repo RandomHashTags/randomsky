@@ -1,0 +1,15 @@
+# Made by RandomHashTags
+name: "Auto Mining"
+#
+item:
+  item: "armor_stand"
+  name: "&6&lAuto Mining Bot (&r&7Right Click&6&l)"
+  lore:
+    - "&7Place on an accessed"
+    - "&7island to create an"
+    - "&7auto resource node miner!"
+    - " "
+    - "&6&lRadius:&r &f{RADIUS} blocks"
+    - "&6&lInventory Size:&r &f{INVENTORY_SIZE} slots"
+    - "&6&lScan Interval:&r &f{SCAN_INTERVAL}"
+    - "&6&lBlocks Per Interval:&r &f{BLOCKS_PER_INTERVAL}"

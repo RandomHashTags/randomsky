@@ -1,0 +1,29 @@
+# Made by RandomHashTags
+name: "Hopper Scan Interval"
+type: "second(s)"
+#
+item:
+  item: "hopper"
+  name: "&b&lHopper Scan Interval"
+  lore:
+    - "&7The delay the bot waits"
+    - "&7to scan an above hopper for"
+    - "&7items."
+    - " "
+    - "&b{VALUE} second(s) &7-> &n{NEXT_VALUE} second(s)"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 4
+  1:
+    value: 3
+    cost: 100000
+  2:
+    value: 2
+    cost: 250000
+  3:
+    value: 1
+    cost: 500000
+#
+attributes:
+  - ""

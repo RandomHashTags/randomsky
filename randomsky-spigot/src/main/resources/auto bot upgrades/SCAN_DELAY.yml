@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+name: "Scan Delay"
+type: "minutes"
+#
+item:
+  item: "clock"
+  name: "&b&lScan Delay"
+  lore:
+    - "&7The delay in between each"
+    - "&7attempt to scan for available"
+    - "&7items from the available recipe"
+    - "&7pool."
+    - " "
+    - "&b{VALUE} minutes &7-> &6&n{NEXT_VALUE} minutes"
+    - "{UPGRADE_COST}"
+#
+values:
+#
+attributes:
+  - ""

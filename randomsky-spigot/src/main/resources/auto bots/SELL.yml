@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+item:
+  item: "armor_stand"
+  name: "&6&lAuto Sell Bot (&r&7Right Click&6&l)"
+  lore:
+    - "&7Place on an accessed"
+    - "&7island with the proper /is"
+    - "&7level to create an auto"
+    - "&7selling botT"
+    - " "
+    - "&6&lSell Interval:&r &f{SELL_INTERVAL}"
+    - "&6&lSell Value:&r &f{SELL_VALUE}% Sell Price"
+    - "&6&lInventory Size:&r &f{INVENTORY_SIZE} slots"

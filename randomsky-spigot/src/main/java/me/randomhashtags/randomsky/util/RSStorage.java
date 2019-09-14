@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.util;
 import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
 import me.randomhashtags.randomsky.addon.bot.AutoBot;
+import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchantRarity;
 import me.randomhashtags.randomsky.addon.island.IslandSkill;
@@ -16,6 +17,7 @@ import java.util.Map;
 public abstract class RSStorage extends UVersion {
     protected static LinkedHashMap<String, Adventure> adventures;
     protected static LinkedHashMap<String, AutoBot> autobots;
+    protected static LinkedHashMap<String, AutoBotUpgrade> autobotupgrades;
     protected static LinkedHashMap<String, CustomEnchant> customenchantdisabled, customenchantenabled;
     protected static LinkedHashMap<String, CustomEnchantRarity> customenchantrarities;
     protected static LinkedHashMap<String, FarmingRecipe> farmingrecipes;

@@ -1,0 +1,36 @@
+# Made by RandomHashTags
+name: "Auto Crafting"
+#
+item:
+  item: "armor_stand"
+  name: "&6&lAuto Crafting Bot (&r&7Right Click&6&l)"
+  lore:
+    - "&7Place on an accessed"
+    - "&7island with the proper /is"
+    - "&7level to create an auto"
+    - "&7crafting bot!"
+    - " "
+    - "&6&lCraft Scan Speed:&r &f{CRAFT_SCAN_SPEED}"
+    - "&6&lCrafted Per Interval:&r &f{CRAFTED_PER_INTERVAL}"
+    - "&6&lInventory Size:&r &f{INVENTORY_SIZE} slots"
+    - "&6&lRecipe Pool Limit:&r &f{RECIPE_POOL_LIMIT} recipes"
+    - "&6&lHopper Transfer Delay:&r &f{HOPPER_TRANSFER_DELAY}"
+    - "&6&lHopper Transfer Amount:&r &f{HOPPER_TRANSFER_AMOUNT}"
+#
+gui:
+  type: DISPENSER
+  title: "Auto Crafter Upgrades"
+#
+upgrades:
+  CRAFT_SCAN_INTERVAL:
+    slot: 3
+  CRAFTED_PER_INTERVAL:
+    slot: 4
+  HOPPER_SCAN_INTERVAL:
+    slot: 5
+  HOPPER_INPUT_AMOUNT:
+    slot: 6
+  RECIPE_POOL_LIMIT:
+    slot: 7
+  INVENTORY_SIZE:
+    slot: 8

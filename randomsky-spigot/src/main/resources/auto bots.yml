@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+messages:
+  registered:
+    - "&a&l(!)&r &a{NAME} Bot registered on your island!"
+  island level must be at least level to place:
+    - "&c&l(!)&r &cYou Island must be at least level {LEVEL} to place {AMOUNT}x {NAME} Bots!"
+  #
+  upgraded:
+    - "&a&l(!)&r &a{NAME} Upgraded!"
+    - " &c&m{PREVIOUS_VALUE} {TYPE}&r &7-> &a{VALUE} {TYPE}"
+#
+lores:
+  upgrade cost:
+    - "&6&lUpgrade Cost:"
+    - " &6&l* $&r&6{COST}"
+    - " "
+    - "&7Click to upgrade!"
+  maxed:
+    - "&b{VALUE} {TYPE}"
+    - " &a&lMAXED"

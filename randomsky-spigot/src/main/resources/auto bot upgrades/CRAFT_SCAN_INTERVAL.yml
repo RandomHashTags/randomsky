@@ -1,0 +1,39 @@
+# Made by RandomHashTags
+name: "Craft Scan Interval"
+type: "second(s)"
+#
+item:
+  item: "clock"
+  name: "&b&lCraft Scan Interval"
+  lore:
+    - "&7The delay in between each"
+    - "&7attempt to scan for available"
+    - "&7items from the available recipe"
+    - "&7pool."
+    - " "
+    - "&b{VALUE} second(s) &7-> &6&n{NEXT_VALUE} second(s)"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 10
+  1:
+    value: 9
+    cost: 100000
+  2:
+    value: 8
+    cost: 200000
+  3:
+    value: 7
+    cost: 300000
+  4:
+    value: 6
+    cost: 400000
+  5:
+    value: 5
+    cost: 500000
+  6:
+    value: 4
+    cost: 750000
+#
+attributes:
+  - ""

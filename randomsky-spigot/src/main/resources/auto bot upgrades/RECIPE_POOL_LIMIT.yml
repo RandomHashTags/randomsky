@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+name: "Recipe Pool Limit"
+type: "Recipes"
+#
+item:
+  item: "bucket"
+  name: "&b&lRecipe Pool Limit"
+  lore:
+    - "&7The amount of recipes the"
+    - "&7bot can have in its crafting"
+    - "&7pool at one time."
+    - " "
+    - "&b{VALUE} Recipes &7-> &6&n{NEXT_VALUE} Recipes"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 2
+  1:
+    value: 3
+    cost: 200000
+#
+attributes:
+  - ""

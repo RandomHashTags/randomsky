@@ -1,0 +1,21 @@
+# Made by RandomHashTags
+name: "Inventory Size"
+type: "slots"
+#
+item:
+  item: "chest"
+  name: "&b&lInventory Size"
+  lore:
+    - "&7The size of the bots inventory."
+    - " "
+    - "&b{VALUE} slots &7-> &6&n{NEXT_VALUE} slots"
+    - "{UPGRADE_COST}"
+#
+levels:
+  default value: 9
+  1:
+    value: 18
+    cost: 500000
+#
+attributes:
+  - ""

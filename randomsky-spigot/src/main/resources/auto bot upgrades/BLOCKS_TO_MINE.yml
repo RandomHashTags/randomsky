@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+name: "Blocks to Mine"
+type: "Block(s)"
+#
+item:
+  item: "diamond_pickaxe"
+  name: "&b&lBlocks to Mine"
+  lore:
+    - "&7The amount of resource nodes"
+    - "&7the bot will mine in"
+    - "&7one interval."
+    - " "
+    - "&b{VALUE} Block(s) &7-> &6&n{NEXT_VALUE}"
+    - "&6&lUpgrade Cost:"
+    - " &6&l* $&r&6{COST}"
+    - " "
+    - "&7Click to upgrade!"
+#
+values:
+#
+attributes:
+  - ""
