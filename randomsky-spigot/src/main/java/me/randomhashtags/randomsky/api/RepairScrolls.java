@@ -1,8 +1,10 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.RepairScroll;
-import me.randomhashtags.randomsky.util.addon.FileRepairScroll;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.addon.file.FileRepairScroll;
 import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.List;
+
+import static java.io.File.separator;
 
 public class RepairScrolls extends RSFeature implements Listener {
     private static RepairScrolls instance;
@@ -29,16 +33,16 @@ public class RepairScrolls extends RSFeature implements Listener {
         final long started = System.currentTimeMillis();
         save(null, "repair scrolls.yml");
         config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "repair scrolls.yml"));
-        final File folder = new File(rpd + separator + "repair scrolls");
+        final File folder = new File(dataFolder + separator + "repair scrolls");
         if(folder.exists()) {
             for(File f : folder.listFiles()) {
                 new FileRepairScroll(f);
             }
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + (repairscrolls != null ? repairscrolls.size() : 0) + " Repair Scrolls &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.REPAIR_SCROLL).size() + " Repair Scrolls &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        repairscrolls = null;
+        newRSStorage.unregisterAll(Feature.REPAIR_SCROLL);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

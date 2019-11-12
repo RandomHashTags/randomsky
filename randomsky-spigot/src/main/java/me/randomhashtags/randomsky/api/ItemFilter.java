@@ -1,9 +1,11 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.FilterCategory;
-import me.randomhashtags.randomsky.util.addon.FileFilterCategory;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.addon.file.FileFilterCategory;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.Bukkit;
@@ -27,6 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.io.File.separator;
 
 public class ItemFilter extends RSFeature implements CommandExecutor {
     private static ItemFilter instance;
@@ -73,7 +77,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
 
         gui = new UInventory(null, config.getInt("categories.size"), ChatColor.translateAlternateColorCodes('&', config.getString("categories.title")));
         final Inventory gi = gui.getInventory();
-        final String folder = rpd + separator + "filter categories";
+        final String folder = dataFolder + separator + "filter categories";
         for(String s : config.getConfigurationSection("categories").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size")) {
                 final String p = "categories." + s + ".", opens = config.getString(p + "opens");
@@ -89,15 +93,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded Item Filter &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        config = null;
-        gui = null;
-        enablePrefix = null;
-        disabledPrefix = null;
-        enable = null;
-        disable = null;
-        addedLore = null;
-        categorySlots = null;
-        instance = null;
+        newRSStorage.unregisterAll(Feature.FILTER_CATEGORY);
     }
 
     public void viewHelp(Player player) {
@@ -105,7 +101,6 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages.help"), null);
         }
     }
-
 
     public void viewCategories(Player player) {
         if(hasPermission(player, "RandomSky.filter.view", true)) {
@@ -130,8 +125,9 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
     public void toggleFilter(Player player) {
         if(hasPermission(player, "RandomSky.filter.toggle", true)) {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-            pdata.filter = !pdata.filter;
-            sendStringListMessage(player, config.getStringList("messages." + (pdata.filter ? "en" : "dis") + "able"), null);
+            final boolean status = !pdata.filter;
+            pdata.filter = status;
+            sendStringListMessage(player, config.getStringList("messages." + (status ? "en" : "dis") + "able"), null);
         }
     }
     public void viewCategory(Player player, FilterCategory category) {
@@ -144,8 +140,9 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
             final Inventory top = player.getOpenInventory().getTopInventory();
             top.setContents(target.getInventory().getContents());
             for(int i = 0; i < size; i++) {
-                if(top.getItem(i) != null) {
-                    top.setItem(i, getStatus(filtered, top.getItem(i).clone()));
+                final ItemStack is = top.getItem(i);
+                if(is != null) {
+                    top.setItem(i, getStatus(filtered, is.clone()));
                 }
             }
             player.updateInventory();
@@ -164,49 +161,45 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void inventoryClickEvent(InventoryClickEvent event) {
-        if(!event.isCancelled()) {
-            final String t = event.getView().getTitle();
-            final FilterCategory category = valueOf(event.getView().getTitle());
-            if(t.equals(gui.getTitle()) || category != null) {
-                final Player player = (Player) event.getWhoClicked();
-                event.setCancelled(true);
-                player.updateInventory();
-                final ItemStack c = event.getCurrentItem();
-                final int r = event.getRawSlot();
-                final Inventory top = player.getOpenInventory().getTopInventory();
-                if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
+        final String t = event.getView().getTitle();
+        final FilterCategory category = valueOf(event.getView().getTitle());
+        if(t.equals(gui.getTitle()) || category != null) {
+            final Player player = (Player) event.getWhoClicked();
+            event.setCancelled(true);
+            player.updateInventory();
+            final ItemStack c = event.getCurrentItem();
+            final int r = event.getRawSlot();
+            final Inventory top = player.getOpenInventory().getTopInventory();
+            if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
 
-                if(category != null) {
-                    final List<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
-                    final UMaterial target = UMaterial.match(c);
-                    if(filtered.contains(target)) {
-                        filtered.remove(target);
-                    } else {
-                        filtered.add(target);
-                    }
-                    top.setItem(r, getStatus(filtered, c));
-                    player.updateInventory();
-                } else if(categorySlots.containsKey(r)) {
-                    player.closeInventory();
-                    viewCategory(player, categorySlots.get(r));
+            if(category != null) {
+                final List<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
+                final UMaterial target = UMaterial.match(c);
+                if(filtered.contains(target)) {
+                    filtered.remove(target);
+                } else {
+                    filtered.add(target);
                 }
+                top.setItem(r, getStatus(filtered, c));
+                player.updateInventory();
+            } else if(categorySlots.containsKey(r)) {
+                player.closeInventory();
+                viewCategory(player, categorySlots.get(r));
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void playerPickupItemEvent(PlayerPickupItemEvent event) {
-        if(!event.isCancelled()) {
-            final Player player = event.getPlayer();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-            if(pdata.filter) {
-                final ItemStack i = event.getItem().getItemStack();
-                final UMaterial u = UMaterial.match(i);
-                if(!pdata.getFilteredItems().contains(u)) {
-                    event.setCancelled(true);
-                }
+        final Player player = event.getPlayer();
+        final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+        if(pdata.filter) {
+            final ItemStack i = event.getItem().getItemStack();
+            final UMaterial u = UMaterial.match(i);
+            if(!pdata.getFilteredItems().contains(u)) {
+                event.setCancelled(true);
             }
         }
     }

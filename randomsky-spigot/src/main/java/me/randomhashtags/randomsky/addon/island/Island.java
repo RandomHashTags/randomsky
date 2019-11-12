@@ -1,7 +1,6 @@
 package me.randomhashtags.randomsky.addon.island;
 
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
-import me.randomhashtags.randomsky.addon.Origin;
 import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
@@ -26,7 +25,7 @@ public interface Island extends Attributable, Loadable {
     UUID getCreator();
     boolean isOpenToPublic();
     IslandLevel getLevel();
-    Origin getOrigin();
+    IslandOrigin getOrigin();
     PolyBoundary getCurrentBoundary();
     PolyBoundary getMaxBoundary();
     String getTag();

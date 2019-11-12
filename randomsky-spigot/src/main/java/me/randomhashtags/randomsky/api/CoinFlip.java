@@ -139,7 +139,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         final ConfigurationSection c = a.getConfigurationSection("coinflips");
         if(c != null) {
             for(String s : c.getKeys(false)) {
-                final CoinFlipMatch m = new CoinFlipMatch(a.getLong("coinflips." + s + ".created"), Bukkit.getOfflinePlayer(UUID.fromString(s)), CoinFlipOption.paths.get(a.getString("coinflips." + s + ".option")), getBigDecimal(a.getString("coinflips." + s + ".wager")));
+                final CoinFlipMatch m = new CoinFlipMatch(a.getLong("coinflips." + s + ".created"), Bukkit.getOfflinePlayer(UUID.fromString(s)), CoinFlipOption.paths.get(a.getString("coinflips." + s + ".option")), valueOfBigDecimal(a.getString("coinflips." + s + ".wager")));
                 available.add(m);
             }
         }

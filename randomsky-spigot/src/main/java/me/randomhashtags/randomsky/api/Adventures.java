@@ -1,8 +1,10 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -24,6 +26,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.io.File.separator;
 
 public class Adventures extends RSFeature implements CommandExecutor {
     private static Adventures instance;
@@ -59,7 +63,9 @@ public class Adventures extends RSFeature implements CommandExecutor {
             final String[] a = new String[] {
                     "ABANDONED_RUINS", "DEMONIC_REALM", "LOST_WASTELAND"
             };
-            for(String s : a) save("adventures", s + ".yml");
+            for(String s : a) {
+                save("adventures", s + ".yml");
+            }
             otherdata.set("saved default adventures", true);
             saveOtherData();
         }
@@ -71,21 +77,21 @@ public class Adventures extends RSFeature implements CommandExecutor {
         gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         final ItemStack b = d(config, "gui.background");
-        final String s = separator;
-        for(File f : new File(randomsky.getDataFolder() + s + "adventures").listFiles()) {
+        for(File f : new File(dataFolder + separator + "adventures").listFiles()) {
             final Adventure a = new Adventure(f);
             gi.setItem(a.getSlot(), a.getItem());
             worlds.add(toLocation(a.getTeleportLocations().get(0)).getWorld());
         }
 
         for(int i = 0; i < gui.getSize(); i++) {
-            if(gi.getItem(i) == null)
+            if(gi.getItem(i) == null) {
                 gi.setItem(i, b);
+            }
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + (adventures != null ? adventures.size() : 0) + " Adventures &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.ADVENTURE).size() + " Adventures &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        adventures = null;
+        newRSStorage.unregisterAll(Feature.ADVENTURE, Feature.ADVENTURE_MAP, Feature.ADVENTURE_MAP_FRAGMENT);
     }
 
     public void viewHelp(CommandSender sender) {

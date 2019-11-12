@@ -5,7 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.world.registry.WorldData;
-import me.randomhashtags.randomsky.addon.Origin;
+import me.randomhashtags.randomsky.addon.island.IslandOrigin;
 import me.randomhashtags.randomsky.addon.PermissionBlock;
 import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
@@ -55,6 +55,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+
+import static java.io.File.separator;
 
 public class Islands extends IslandAddon implements CommandExecutor {
     private static Islands instance;
@@ -240,7 +242,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 final ItemStack i = d(config, "origins." + s);
                 final File F = new File(worldeditF, schematic + ".schematic");
                 try {
-                    new Origin(s, F, ChatColor.translateAlternateColorCodes('&', config.getString(p + "string")), slot, i, config.getStringList(p + "perks"));
+                    new IslandOrigin(s, F, ChatColor.translateAlternateColorCodes('&', config.getString(p + "string")), slot, i, config.getStringList(p + "perks"));
                     origins++;
                     oi.setItem(slot, i);
                 } catch (Exception e) {
@@ -331,7 +333,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
     private void createIslandWorld() {
         Bukkit.createWorld(WorldCreator.name(islandWorld).type(WorldType.FLAT).generatorSettings("3;minecraft:air;127;decoration"));
     }
-    private void createIsland(Player player, Origin origin) {
+    private void createIsland(Player player, IslandOrigin origin) {
         final UUID u = player.getUniqueId();
         final Location center = newIslandCenter();
         final Island i = new Island(origin, u, center);
@@ -641,9 +643,9 @@ public class Islands extends IslandAddon implements CommandExecutor {
         top.setContents(origin.getInventory().getContents());
         final Island is = pdata.getIsland();
         if(is != null) {
-            final Origin O = is.getOrigin();
+            final IslandOrigin O = is.getOrigin();
             for(int i = 0; i < size; i++) {
-                final Origin o = Origin.valueOf(i);
+                final IslandOrigin o = IslandOrigin.valueOf(i);
                 if(o != null && o.equals(O)) {
                     item = top.getItem(i); itemMeta = item.getItemMeta(); lore.clear();
                     lore.addAll(itemMeta.getLore());
@@ -1101,7 +1103,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 player.updateInventory();
                 if(r < 0 || r >= top.getSize() || current == null || current.getType().equals(Material.AIR)) return;
                 if(origin) {
-                    final Origin o = Origin.valueOf(r);
+                    final IslandOrigin o = IslandOrigin.valueOf(r);
                     if(o != null) {
                         if(pickingOrigin.contains(player)) {
                             createIsland(player, o);

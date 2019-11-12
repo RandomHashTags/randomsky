@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.util.addon;
+package me.randomhashtags.randomsky.addon.file;
 
 import me.randomhashtags.randomsky.addon.RepairScroll;
 import me.randomhashtags.randomsky.util.RSAddon;

@@ -54,12 +54,10 @@ public class Homes extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "homes.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rsd, "homes.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "homes.yml"));
         sendConsoleMessage("&6[RandomSky] &aLoaded Homes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        config = null;
-        instance = null;
     }
     public void tryGoing(Player player, String home) {
         if(hasPermission(player, "RandomSky.home", true)) {
@@ -67,8 +65,9 @@ public class Homes extends RSFeature implements CommandExecutor {
             replacements.put("{NAME}", home);
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
-            if(home == null && homes != null && homes.size() > 0) home = homes.get(0).name;
-            else if(home == null || homes == null || homes.size() == 0) {
+            if(home == null && homes != null && homes.size() > 0) {
+                home = homes.get(0).name;
+            } else if(home == null || homes == null || homes.size() == 0) {
                 sendStringListMessage(player, config.getStringList("messages.dont have one"), null);
                 return;
             }
@@ -109,11 +108,12 @@ public class Homes extends RSFeature implements CommandExecutor {
         }
     }
     public int getMaxHomes(Player player) {
-        int a = 0;
-        for(int i = 1; i <= 100; i++)
-            if(player.hasPermission("RandomSky.sethome." + i))
-                a = i;
-        return a;
+        for(int i = 100; i >= 0; i--) {
+            if(player.hasPermission("RandomSky.sethome." + i)) {
+                return i;
+            }
+        }
+        return 0;
     }
     public void tryDeleting(Player player, String home) {
         if(hasPermission(player, "RandomSky.delhome", true)) {
@@ -153,5 +153,4 @@ public class Homes extends RSFeature implements CommandExecutor {
             }
         }
     }
-
 }

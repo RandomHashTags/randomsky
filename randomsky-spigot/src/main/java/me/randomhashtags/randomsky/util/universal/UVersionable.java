@@ -4,6 +4,7 @@ import me.randomhashtags.randomsky.RandomSky;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -116,6 +117,9 @@ public interface UVersionable {
         string = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string).replaceAll("\\p{L}", "").replaceAll("\\p{Z}", "").replaceAll("\\.", "d").replaceAll("\\p{P}", "").replaceAll("\\p{S}", "").replace("d", "."));
         return string.isEmpty() ? -1.00 : Double.parseDouble(string.contains(".") && string.split("\\.").length > 1 && string.split("\\.")[1].length() > 2 ? string.substring(0, string.split("\\.")[0].length() + 3) : string);
     }
+    default BigDecimal valueOfBigDecimal(String value) {
+        return BigDecimal.valueOf(Double.parseDouble(value));
+    }
 
     default List<String> colorizeListString(List<String> input) {
         final List<String> i = new ArrayList<>();
@@ -137,5 +141,13 @@ public interface UVersionable {
         player.setExp(0f);
         player.setLevel(0);
         player.giveExp(total);
+    }
+
+    default String toString(Location loc) {
+        return loc.getWorld().getName() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
+    }
+    default Location toLocation(String string) {
+        final String[] a = string.split(";");
+        return new Location(Bukkit.getWorld(a[0]), Double.parseDouble(a[1]), Double.parseDouble(a[2]), Double.parseDouble(a[3]), Float.parseFloat(a[4]), Float.parseFloat(a[5]));
     }
 }

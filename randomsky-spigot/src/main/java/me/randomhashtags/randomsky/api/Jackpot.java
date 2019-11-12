@@ -30,6 +30,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         if(instance == null) instance = new Jackpot();
         return instance;
     }
+
     public YamlConfiguration config;
     public int task;
     public List<Integer> countdownTasks;
@@ -77,7 +78,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "jackpot.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rpd, "jackpot.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "jackpot.yml"));
 
         gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
@@ -106,17 +107,16 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         top = new HashMap<>();
         purchasing = new HashMap<>();
 
-        final YamlConfiguration a = otherdata;
-        final long e = a.getLong("jackpot.pick next winner");
+        final long e = otherdata.getLong("jackpot.pick next winner");
         pickNextWinner = e == 0 ? started+winnerPickedEvery*1000 : e;
 
-        value = BigDecimal.valueOf(a.getDouble("jackpot.value"));
-        final ConfigurationSection j = a.getConfigurationSection("jackpot");
+        value = BigDecimal.valueOf(otherdata.getDouble("jackpot.value"));
+        final ConfigurationSection j = otherdata.getConfigurationSection("jackpot");
         if(j != null) {
             for(String s : j.getKeys(false)) {
                 if(!s.equals("value") && !s.equals("pick next winner")) {
                     final UUID u = UUID.fromString(s);
-                    final BigDecimal b = BigDecimal.valueOf(a.getInt("jackpot." + s));
+                    final BigDecimal b = BigDecimal.valueOf(otherdata.getInt("jackpot." + s));
                     ticketsSold.put(u, b);
                 }
             }
@@ -125,16 +125,17 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         sendConsoleMessage("&6[RandomPackage] &aLoaded Jackpot &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        final YamlConfiguration a = otherdata;
-        a.set("jackpot", null);
-        a.set("jackpot.pick next winner", pickNextWinner);
-        a.set("jackpot.value", value);
+        otherdata.set("jackpot", null);
+        otherdata.set("jackpot.pick next winner", pickNextWinner);
+        otherdata.set("jackpot.value", value);
         for(UUID u : ticketsSold.keySet()) {
-            a.set("jackpot." + u.toString(), ticketsSold.get(u).intValue());
+            otherdata.set("jackpot." + u.toString(), ticketsSold.get(u).intValue());
         }
         saveOtherData();
         scheduler.cancelTask(task);
-        for(int i : countdownTasks) scheduler.cancelTask(i);
+        for(int i : countdownTasks) {
+            scheduler.cancelTask(i);
+        }
     }
 
     public void pickWinner() {

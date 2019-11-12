@@ -4,6 +4,7 @@ import me.randomhashtags.randomsky.api.Homes;
 import me.randomhashtags.randomsky.api.ItemFilter;
 import me.randomhashtags.randomsky.api.RepairScrolls;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RandomSky extends JavaPlugin {
@@ -36,5 +37,6 @@ public final class RandomSky extends JavaPlugin {
     }
     public void disable() {
         Bukkit.getScheduler().cancelTasks(this);
+        HandlerList.unregisterAll(this);
     }
 }

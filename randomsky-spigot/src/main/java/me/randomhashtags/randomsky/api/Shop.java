@@ -1,10 +1,13 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.addon.ShopCategory;
+import me.randomhashtags.randomsky.addon.ShopItem;
+import me.randomhashtags.randomsky.addon.file.FileShopCategory;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.classes.island.Island;
-import me.randomhashtags.randomsky.util.classes.shop.ShopCategory;
-import me.randomhashtags.randomsky.util.classes.shop.ShopItem;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,6 +28,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.io.File.separator;
+
 public class Shop extends RSFeature implements Listener, CommandExecutor {
     private static Shop instance;
     public static Shop getShop() {
@@ -36,21 +41,22 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
     private UInventory inv;
     private String originBonus;
     private HashMap<String, UInventory> inventories;
-    private HashMap<String, List<ShopItem>> shopItems;
+
+    private HashMap<String, ShopCategory> shopTitles;
+
     private HashMap<Integer, String> invCategories;
     public ItemStack back;
-
-    private int LOADED = 0;
 
     private List<String> format, buy, buyusage, sell, sellusage, usagespacing;
 
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "shop.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "shop.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "shop.yml"));
+
+        shopTitles = new HashMap<>();
 
         inventories = new HashMap<>();
-        shopItems = new HashMap<>();
         invCategories = new HashMap<>();
 
         back = d(config, "categories.back");
@@ -69,34 +75,36 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
 
         if(!otherdata.getBoolean("saved default shops")) {
             final String[] A = new String[] {"BLOCKS", "CLAY", "CONTAINERS", "FARMING", "FENCES", "FISHING", "FLOWERS", "FOOD", "GLASS", "MOB_DROPS", "PERMISSION_BLOCKS", "POTIONS", "REDSTONE", "RESOURCE_NODES", "SAPLINGS", "SCIENCE", "SLABS", "SPAWNERS", "UTILITY", "WOOL"};
-            for(String s : A) save("shops", s + ".yml");
+            for(String s : A) {
+                save("shops", s + ".yml");
+            }
             otherdata.set("saved default shops", true);
             saveOtherData();
         }
-        final File R = rsd;
-        final String sep = separator;
         scheduler.runTaskAsynchronously(randomsky, () -> {
             for(String s : config.getConfigurationSection("categories").getKeys(false)) {
                 if(!s.equals("title") && !s.equals("size") && !s.equals("added lore") && !s.equals("background") && !s.equals("back")) {
                     final String p = "categories." + s + ".", opens = config.getString(p + "opens");
-                    final File f = new File(rsd + separator + "shops", opens + ".yml");
+                    final File f = new File(dataFolder + separator + "shops", opens + ".yml");
                     if(f.exists()) {
-                        final ShopCategory sc = new ShopCategory(f);
                         final int slot = config.getInt(p + "slot");
                         invCategories.put(slot, opens);
                         final ItemStack display = d(config, p.substring(0, p.length()-1));
-                        item = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
-                        if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
+                        itemMeta = display.getItemMeta(); lore.clear();
+                        if(itemMeta.hasLore()) {
+                            lore.addAll(itemMeta.getLore());
+                        }
                         lore.addAll(addedlore);
                         itemMeta.setLore(lore); lore.clear();
-                        item.setItemMeta(itemMeta);
-                        ii.setItem(slot, item);
+                        display.setItemMeta(itemMeta);
+                        ii.setItem(slot, display);
+                        new FileShopCategory(f, display, slot);
                     } else {
                         sendConsoleMessage("&6[RandomSky] &cERROR: Missing shop yml \"&f" + opens + "&c\"!");
                     }
                 }
             }
-            sendConsoleMessage("&6[RandomSky] &aLoaded " + LOADED + " shop categories &e(took " + (System.currentTimeMillis()-started) + "ms) [async]");
+            sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.SHOP_CATEGORY).size() + " Shop Categories &e(took " + (System.currentTimeMillis()-started) + "ms) [async]");
         });
         final ItemStack background = d(config, "categories.background");
         for(int i = 0; i < inv.getSize(); i++) {
@@ -152,7 +160,6 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             //shopItems.get(path).add(si);
         }
         inventories.put(opens, i);
-        LOADED++;
     }
     public void unload() {
         shopcategories = null;
@@ -193,10 +200,11 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         final String t = event.getView().getTitle(), it = inv.getTitle();
         final ShopCategory shop = valueOfShopTitle(t);
         if(t.equals(it) || shop != null) {
-            final ItemStack c = event.getCurrentItem();
-            final int r = event.getRawSlot();
             event.setCancelled(true);
             player.updateInventory();
+
+            final ItemStack c = event.getCurrentItem();
+            final int r = event.getRawSlot();
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
 
             if(t.equals(it) && invCategories.containsKey(r)) {
@@ -205,14 +213,14 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
                 if(c.equals(back)) {
                     viewMenu(player);
                 } else {
-                    final ShopItem s = shop.getItem(r);
+                    final ShopItem s = shop.getItems().get(r);
                     if(s != null) {
                         final String click = event.getClick().name();
                         if(click.contains("LEFT")) {
                             tryBuying(player, s, click.contains("SHIFT"));
                         } else if(click.contains("RIGHT")) {
                             trySelling(player, s, click.contains("SHIFT"));
-                        } else return;
+                        }
                     }
                 }
             }
@@ -220,9 +228,9 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
     }
 
     public void tryBuying(Player player, ShopItem s, boolean stack) {
-        final double price = s.buyPrice;
+        final double price = s.getBuyPrice().doubleValue();
         if(price > 0.00) {
-            final ItemStack purchased = s.getPurchased();
+            final ItemStack purchased = s.getPurchasedItem();
             final int amount = stack ? purchased.getMaxStackSize() : 1;
             final double total = round(price*amount, 2);
             final HashMap<String, String> replacements = new HashMap<>();
@@ -239,9 +247,9 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         }
     }
     public void trySelling(Player player, ShopItem s, boolean stack) {
-        final double price = s.sellPrice;
+        final double price = s.getSellPrice().doubleValue();
         if(price > 0.00) {
-            final ItemStack selling = s.getPurchased();
+            final ItemStack selling = s.getSoldItem();
             final int inva = getAmount(player.getInventory(), selling), amount = stack ? inva > 64 ? 64 : inva : 1;
             final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
             final double m = is != null ? is.sellPriceMultiplier : 1.00, total = round(price*amount*m, 2);
@@ -262,11 +270,6 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
     }
 
     public ShopCategory valueOfShopTitle(String title) {
-        for(ShopCategory s : ShopCategory.categories.values()) {
-            if(s.getInventoryTitle().equals(title)) {
-                return s;
-            }
-        }
-        return null;
+        return shopTitles.getOrDefault(title, null);
     }
 }

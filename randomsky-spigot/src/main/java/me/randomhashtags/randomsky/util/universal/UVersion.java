@@ -61,9 +61,6 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
         player.updateInventory();
     }
 
-    public final BigDecimal getBigDecimal(String value) {
-        return BigDecimal.valueOf(Double.parseDouble(value));
-    }
     public final BigDecimal getRandomBigDecimal(BigDecimal min, BigDecimal max) {
         final BigDecimal range = max.subtract(min);
         return min.add(range.multiply(new BigDecimal(Math.random())));
@@ -121,13 +118,6 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
             }
         } else e = input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
         return e;
-    }
-    public final String toString(Location loc) {
-        return loc.getWorld().getName() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
-    }
-    public final Location toLocation(String string) {
-        final String[] a = string.split(";");
-        return new Location(Bukkit.getWorld(a[0]), Double.parseDouble(a[1]), Double.parseDouble(a[2]), Double.parseDouble(a[3]), Float.parseFloat(a[4]), Float.parseFloat(a[5]));
     }
     public final String getRemainingTime(long time) {
         int sec = (int) TimeUnit.MILLISECONDS.toSeconds(time), min = sec/60, hr = min/60, d = hr/24;

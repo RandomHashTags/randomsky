@@ -13,7 +13,6 @@ public class CustomEnchants extends RSFeature {
         return instance;
     }
 
-    public boolean isEnabled = false;
     public YamlConfiguration config;
     private UInventory gemForgeExamine, gemForgeApply, gemForgeRemove;
 

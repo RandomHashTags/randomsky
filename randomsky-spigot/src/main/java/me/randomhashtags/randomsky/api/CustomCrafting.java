@@ -46,7 +46,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "custom crafting.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "custom crafting.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "custom crafting.yml"));
         removeRecipes = config.getStringList("remove recipes");
         recipes = new HashMap<>();
 
