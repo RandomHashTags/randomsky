@@ -27,16 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import static me.randomhashtags.randomsky.RandomSky.getPlugin;
+import static java.io.File.separator;
 
-public abstract class RSFeature extends RSStorage implements Listener, Loadable {
+public abstract class RSFeature extends RSStorage implements Listener, Loadable, Mathable {
     private boolean isEnabled = false;
     private static boolean mcmmoIsEnabled = false;
     public boolean isEnabled() { return isEnabled; }
     protected boolean mcmmoIsEnabled() { return mcmmoIsEnabled; }
 
-    public static final File rpd = getPlugin.getDataFolder();
-    public static final String separator = File.separator;
     public static final FactionsAPI fapi = FactionsAPI.getFactionsAPI();
     protected static final Economy eco = VaultAPI.getVaultAPI().getEconomy();
     private static final TreeMap<Integer, String> treemap = new TreeMap<>();
@@ -49,7 +47,7 @@ public abstract class RSFeature extends RSStorage implements Listener, Loadable 
     public void enable() {
         if(otherdataF == null) {
             save("_Data", "other.yml");
-            otherdataF = new File(rpd + separator + "_Data", "other.yml");
+            otherdataF = new File(dataFolder + separator + "_Data", "other.yml");
             otherdata = YamlConfiguration.loadConfiguration(otherdataF);
 
             treemap.put(1000, "M"); treemap.put(900, "CM"); treemap.put(500, "D"); treemap.put(400, "CD"); treemap.put(100, "C"); treemap.put(90, "XC");
@@ -62,18 +60,18 @@ public abstract class RSFeature extends RSStorage implements Listener, Loadable 
         }
         if(isEnabled) return;
         try {
-            load();
             isEnabled = true;
+            load();
             pluginmanager.registerEvents(this, randomsky);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public void disable() {
         if(!isEnabled) return;
         try {
-            unload();
             isEnabled = false;
+            unload();
             HandlerList.unregisterAll(this);
         } catch(Exception e) {
             e.printStackTrace();
@@ -83,7 +81,7 @@ public abstract class RSFeature extends RSStorage implements Listener, Loadable 
     public void saveOtherData() {
         try {
             otherdata.save(otherdataF);
-            otherdataF = new File(rpd + separator + "_Data", "other.yml");;
+            otherdataF = new File(dataFolder + separator + "_Data", "other.yml");;
             otherdata = YamlConfiguration.loadConfiguration(otherdataF);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,7 +103,7 @@ public abstract class RSFeature extends RSStorage implements Listener, Loadable 
         givedpCategories.add(inv);
     }
     public String toRoman(int number) {
-        /* This code is from "bhlangonijr" at https://stackoverflow.com/questions/12967896 */
+        // This code is from "bhlangonijr" at https://stackoverflow.com/questions/12967896
         if(number <= 0) return "";
         int l = treemap.floorKey(number);
         if(number == l) return treemap.get(number);
@@ -231,88 +229,5 @@ public abstract class RSFeature extends RSStorage implements Listener, Loadable 
             }
         }
         return item;
-    }
-
-
-
-    // Code by 'Boann' (https://stackoverflow.com/users/964243/boann) from https://stackoverflow.com/questions/3422673/how-to-evaluate-a-math-expression-given-in-string-form
-    protected double eval(final String str) {
-        return new Object() {
-            int pos = -1, ch;
-
-            void nextChar() {
-                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-            }
-
-            boolean eat(int charToEat) {
-                while (ch == ' ') nextChar();
-                if (ch == charToEat) {
-                    nextChar();
-                    return true;
-                }
-                return false;
-            }
-
-            double parse() {
-                nextChar();
-                double x = parseExpression();
-                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
-                return x;
-            }
-
-            // Grammar:
-            // expression = term | expression `+` term | expression `-` term
-            // term = factor | term `*` factor | term `/` factor
-            // factor = `+` factor | `-` factor | `(` expression `)`
-            //        | number | functionName factor | factor `^` factor
-
-            double parseExpression() {
-                double x = parseTerm();
-                for (;;) {
-                    if      (eat('+')) x += parseTerm(); // addition
-                    else if (eat('-')) x -= parseTerm(); // subtraction
-                    else return x;
-                }
-            }
-
-            double parseTerm() {
-                double x = parseFactor();
-                for (;;) {
-                    if      (eat('*')) x *= parseFactor(); // multiplication
-                    else if (eat('/')) x /= parseFactor(); // division
-                    else return x;
-                }
-            }
-
-            double parseFactor() {
-                if (eat('+')) return parseFactor(); // unary plus
-                if (eat('-')) return -parseFactor(); // unary minus
-
-                double x;
-                int startPos = this.pos;
-                if (eat('(')) { // parentheses
-                    x = parseExpression();
-                    eat(')');
-                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
-                    x = Double.parseDouble(str.substring(startPos, this.pos));
-                } else if (ch >= 'a' && ch <= 'z') { // functions
-                    while (ch >= 'a' && ch <= 'z') nextChar();
-                    String func = str.substring(startPos, this.pos);
-                    x = parseFactor();
-                    if (func.equals("sqrt")) x = Math.sqrt(x);
-                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
-                    else throw new RuntimeException("Unknown function: " + func);
-                } else {
-                    throw new RuntimeException("Unexpected: " + (char)ch);
-                }
-
-                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
-
-                return x;
-            }
-        }.parse();
     }
 }

@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.util.obj;
 
 import org.bukkit.Location;
 
-public class PolyBoundary {
+public final class PolyBoundary {
     public final Location center;
     public final int maxX, minX, maxZ, minZ, maxY, minY;
     public PolyBoundary(Location center, int radius) {
@@ -22,5 +22,4 @@ public class PolyBoundary {
         final int x = location.getBlockX(), y = location.getBlockY(), z = location.getBlockZ();
         return x <= maxX && x >= minX && y <= maxY && y >= minY && z <= maxZ && z >= minZ;
     }
-
 }

@@ -5,7 +5,6 @@ import me.randomhashtags.randomsky.supported.mechanics.SpawnerAPI;
 import me.randomhashtags.randomsky.util.Versionable;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -17,33 +16,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class UVersion extends YamlUpdater implements Versionable {
+public class UVersion extends YamlUpdater implements Versionable, UVersionable {
     private static UVersion instance;
     public static UVersion getUVersion() {
         if(instance == null) instance = new UVersion();
         return instance;
     }
 
-    public final RandomSky randomsky = RandomSky.getPlugin;
-    public final PluginManager pluginmanager = Bukkit.getPluginManager();
-    public final Random random = new Random();
-
-    public final BukkitScheduler scheduler = Bukkit.getScheduler();
-    public final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-    public final ConsoleCommandSender console = Bukkit.getConsoleSender();
     public ItemStack item = new ItemStack(Material.APPLE);
     public ItemMeta itemMeta = item.getItemMeta();
     public List<String> lore = new ArrayList<>();
@@ -63,12 +49,7 @@ public class UVersion extends YamlUpdater implements Versionable {
             updateYaml(f);
         }
     }
-    public final ItemStack getClone(ItemStack is) {
-        return getClone(is, null);
-    }
-    public final ItemStack getClone(ItemStack is, ItemStack def) {
-        return is != null ? is.clone() : def;
-    }
+
     public final void didApply(InventoryClickEvent event, Player player, ItemStack current, ItemStack cursor) {
         event.setCancelled(true);
         final int a = cursor.getAmount();
@@ -80,12 +61,6 @@ public class UVersion extends YamlUpdater implements Versionable {
         player.updateInventory();
     }
 
-    public final String formatBigDecimal(BigDecimal b) {
-        return formatBigDecimal(b, false);
-    }
-    public final String formatBigDecimal(BigDecimal b, boolean currency) {
-        return (currency ? NumberFormat.getCurrencyInstance() : NumberFormat.getInstance()).format(b);
-    }
     public final BigDecimal getBigDecimal(String value) {
         return BigDecimal.valueOf(Double.parseDouble(value));
     }
@@ -93,23 +68,7 @@ public class UVersion extends YamlUpdater implements Versionable {
         final BigDecimal range = max.subtract(min);
         return min.add(range.multiply(new BigDecimal(Math.random())));
     }
-    public final String formatDouble(double d) {
-        String decimals = Double.toString(d).split("\\.")[1];
-        if(decimals.equals("0")) { decimals = ""; } else { decimals = "." + decimals; }
-        return formatInt((int) d) + decimals;
-    }
-    public final String formatLong(long l) {
-        final String f = Long.toString(l);
-        final boolean c = f.contains(".");
-        String decimals = c ? f.split("\\.")[1] : f;
-        decimals = c ? decimals.equals("0") ? "" : "." + decimals : "";
-        return formatInt((int) l) + decimals;
-    }
-    public final String formatInt(int integer) { return String.format("%,d", integer); }
-    public final int getRemainingInt(String string) {
-        string = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string)).replaceAll("\\p{L}", "").replaceAll("\\s", "").replaceAll("\\p{P}", "").replaceAll("\\p{S}", "");
-        return string.isEmpty() ? -1 : Integer.parseInt(string);
-    }
+
     public final long getDelay(String input) {
         input = input.toLowerCase();
         long l = 0;
@@ -148,40 +107,7 @@ public class UVersion extends YamlUpdater implements Versionable {
         fw.setFireworkMeta(fwm);
         return fw;
     }
-    public final Color getColor(final String path) {
-        if(path == null) {
-            return null;
-        } else {
-            switch (path.toLowerCase()) {
-                case "aqua": return Color.AQUA;
-                case "black": return Color.BLACK;
-                case "blue": return Color.BLUE;
-                case "fuchsia": return Color.FUCHSIA;
-                case "gray": return Color.GRAY;
-                case "green": return Color.GREEN;
-                case "lime": return Color.LIME;
-                case "maroon": return Color.MAROON;
-                case "navy": return Color.NAVY;
-                case "olive": return Color.OLIVE;
-                case "orange": return Color.ORANGE;
-                case "purple": return Color.PURPLE;
-                case "red": return Color.RED;
-                case "silver": return Color.SILVER;
-                case "teal": return Color.TEAL;
-                case "white": return Color.WHITE;
-                case "yellow": return Color.YELLOW;
-                default: return null;
-            }
-        }
 
-    }
-    public final void sendConsoleMessage(String msg) {
-        console.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-    }
-    public final Double getRemainingDouble(String string) {
-        string = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string).replaceAll("\\p{L}", "").replaceAll("\\p{Z}", "").replaceAll("\\.", "d").replaceAll("\\p{P}", "").replaceAll("\\p{S}", "").replace("d", "."));
-        return string.isEmpty() ? -1.00 : Double.parseDouble(string.contains(".") && string.split("\\.").length > 1 && string.split("\\.")[1].length() > 2 ? string.substring(0, string.split("\\.")[0].length() + 3) : string);
-    }
     public final String toMaterial(String input, boolean realitem) {
         if(input.contains(":")) input = input.split(":")[0];
         if(input.contains(" ")) input = input.replace(" ", "");
@@ -239,8 +165,12 @@ public class UVersion extends YamlUpdater implements Versionable {
     }
     public final Enchantment getEnchantment(String string) {
         if(string != null) {
-            for(Enchantment enchant : Enchantment.values())
-                if(enchant != null && enchant.getName() != null && string.toLowerCase().replace("_", "").startsWith(enchant.getName().toLowerCase().replace("_", ""))) return enchant;
+            for(Enchantment enchant : Enchantment.values()) {
+                final String name = enchant != null ? enchant.getName() : null;
+                if(name != null && string.toLowerCase().replace("_", "").startsWith(name.toLowerCase().replace("_", ""))) {
+                    return enchant;
+                }
+            }
             string = string.toLowerCase().replace("_", "");
             if(string.startsWith("po")) { return Enchantment.ARROW_DAMAGE; // Power
             } else if(string.startsWith("fl")) { return Enchantment.ARROW_FIRE; // Flame
@@ -275,8 +205,9 @@ public class UVersion extends YamlUpdater implements Versionable {
         }
         return null;
     }
-    // From http://www.baeldung.com/java-round-decimal-number
+
     public final double round(double input, int decimals) {
+        // From http://www.baeldung.com/java-round-decimal-number
         if(decimals < 0) throw new IllegalArgumentException();
         BigDecimal bd = new BigDecimal(Double.toString(input));
         bd = bd.setScale(decimals, RoundingMode.HALF_UP);
@@ -287,13 +218,6 @@ public class UVersion extends YamlUpdater implements Versionable {
         return Double.toString(d);
     }
 
-    public final List<String> colorizeListString(List<String> input) {
-        final List<String> i = new ArrayList<>();
-        for(String s : input) {
-            i.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-        return i;
-    }
     public final int indexOf(Set<? extends Object> collection, Object value) {
         int i = 0;
         for(Object o : collection) {
@@ -302,16 +226,13 @@ public class UVersion extends YamlUpdater implements Versionable {
         }
         return -1;
     }
-    /*
-     * Credit to "Sahil Mathoo" from StackOverFlow at
-     * https://stackoverflow.com/questions/8154366
-     */
+
     public final String center(String s, int size) {
+        // Credit to "Sahil Mathoo" from StackOverFlow at https://stackoverflow.com/questions/8154366
         return center(s, size, ' ');
     }
     private String center(String s, int size, char pad) {
-        if(s == null || size <= s.length())
-            return s;
+        if(s == null || size <= s.length()) return s;
         StringBuilder sb = new StringBuilder(size);
         for(int i = 0; i < (size - s.length()) / 2; i++)  sb.append(pad);
         sb.append(s);
@@ -385,23 +306,7 @@ public class UVersion extends YamlUpdater implements Versionable {
         }
         return amount;
     }
-    public final int getTotalExperience(Player player) {
-        final double levelxp = LevelToExp(player.getLevel()), nextlevelxp = LevelToExp(player.getLevel() + 1), difference = nextlevelxp - levelxp;
-        final double p = (levelxp + (difference * player.getExp()));
-        return (int) Math.round(p);
-    }
-    public final void setTotalExperience(Player player, int total) {
-        player.setTotalExperience(0);
-        player.setExp(0f);
-        player.setLevel(0);
-        player.giveExp(total);
-    }
-    private double LevelToExp(int level) {
-        return level <= 16 ? (level * level) + (level * 6) : level <= 31 ? (2.5 * level * level) - (40.5 * level) + 360 : (4.5 * level * level) - (162.5 * level) + 2220;
-    }
-    public final String toReadableDate(Date d, String format) {
-        return new SimpleDateFormat(format).format(d);
-    }
+
     public final ItemStack getSpawner(String input) {
         String pi = input.toLowerCase(), type = null;
         if(pi.equals("mysterymobspawner")) {
@@ -471,28 +376,7 @@ public class UVersion extends YamlUpdater implements Versionable {
             }
         }
     }
-    public final PotionEffectType getPotionEffectType(String input) {
-        if(input != null && !input.isEmpty()) {
-            switch (input.toUpperCase()) {
-                case "STRENGTH": return PotionEffectType.INCREASE_DAMAGE;
-                case "MINING_FATIGUE": return PotionEffectType.SLOW_DIGGING;
-                case "SLOWNESS": return PotionEffectType.SLOW;
-                case "HASTE": return PotionEffectType.FAST_DIGGING;
-                case "JUMP": return PotionEffectType.JUMP;
-                case "INSTANT_HEAL":
-                case "INSTANT_HEALTH": return PotionEffectType.HEAL;
-                case "INSTANT_HARM":
-                case "INSTANT_DAMAGE": return PotionEffectType.HARM;
-                default:
-                    for(PotionEffectType p : PotionEffectType.values()) {
-                        if(p != null && input.equalsIgnoreCase(p.getName())) {
-                            return p;
-                        }
-                    }
-                    return null;
-            }
-        } else return null;
-    }
+
     public final List<Location> getChunkLocations(Chunk chunk) {
         final List<Location> l = new ArrayList<>();
         final int x = chunk.getX()*16, z = chunk.getZ()*16;
