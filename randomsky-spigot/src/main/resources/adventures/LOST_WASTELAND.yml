@@ -6,7 +6,6 @@ messages:
 name: "&b&lLost Wasteland"
 max players: 200
 teleport delay: 60
-map found in: ABANDONED_RUINS
 teleport locations:
   - "world;0;100;0;0;0"
 #
@@ -35,6 +34,7 @@ gui:
   - "&b{ONLINE} / {MAX}"
 #
 map:
+  found in: ABANDONED_RUINS
   item: "empty_map"
   name: "&b&lLost Wasteland Adventure Map"
   lore:

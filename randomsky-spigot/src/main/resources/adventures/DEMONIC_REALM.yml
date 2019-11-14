@@ -6,7 +6,6 @@ messages:
 name: "&e&lDemonic Realm"
 max players: 200
 teleport delay: 60
-map found in: LOST_WASTELAND
 teleport locations:
   - "world;0;100;0;0;0"
 #
@@ -34,6 +33,7 @@ gui:
   - "&e{ONLINE} / {MAX}"
 #
 map:
+  found in: LOST_WASTELAND
   item: "empty_map"
   name: "&e&lDemonic Realm Adventure Map"
   lore:

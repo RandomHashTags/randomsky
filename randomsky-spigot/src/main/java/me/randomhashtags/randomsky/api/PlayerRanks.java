@@ -46,7 +46,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
         int loaded = 0;
         for(String s : config.getConfigurationSection("ranks").getKeys(false)) {
             final String p = "ranks." + s + ".";
-            new PlayerRank(s, ChatColor.translateAlternateColorCodes('&', config.getString(p + "appearance")), d(config, "ranks." + s), config.getStringList(p + "attributes"));
+            new PlayerRank(s, colorize(config.getString(p + "appearance")), d(config, "ranks." + s), config.getStringList(p + "attributes"));
             loaded++;
         }
 
@@ -54,7 +54,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
 
         background = d(config, "gui.background");
         final int size = config.getInt("gui.size");
-        gui = new UInventory(null, size, ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, size, colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         for(String s : config.getConfigurationSection("gui").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size") && !s.equals("background")) {

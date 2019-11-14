@@ -73,9 +73,9 @@ public class Kits extends RSFeature implements Listener {
         claimed = colorizeListString(config.getStringList("lores.claimed"));
         locked = colorizeListString(config.getStringList("lores.locked"));
 
-        gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
-        preview = new UInventory(null, 54, ChatColor.translateAlternateColorCodes('&', config.getString("preview.title")));
+        preview = new UInventory(null, 54, colorize(config.getString("preview.title")));
 
         if(!otherdata.getBoolean("saved default kits")) {
             final String[] a = new String[]{"RANK", "STARTER"};

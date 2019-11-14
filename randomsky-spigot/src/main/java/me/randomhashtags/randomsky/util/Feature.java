@@ -24,6 +24,8 @@ public enum Feature {
     MYSTERY_GEM,
     PERMISSION_BLOCK,
 
+    PETS,
+
     PLAYER_RANK,
     PLAYER_SKILL,
     PLAYER_SKILL_LEVEL,

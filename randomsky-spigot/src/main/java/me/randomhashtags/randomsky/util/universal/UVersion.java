@@ -4,7 +4,6 @@ import me.randomhashtags.randomsky.RandomSky;
 import me.randomhashtags.randomsky.supported.mechanics.SpawnerAPI;
 import me.randomhashtags.randomsky.util.Versionable;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -20,8 +19,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import static java.io.File.separator;
 
 public class UVersion extends YamlUpdater implements Versionable, UVersionable {
     private static UVersion instance;
@@ -38,12 +42,12 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
         File f;
         final File d = randomsky.getDataFolder();
         if(folder != null && !folder.equals(""))
-            f = new File(d + File.separator + folder + File.separator, file);
+            f = new File(d + separator + folder + separator, file);
         else
-            f = new File(d + File.separator, file);
+            f = new File(d + separator, file);
         if(!f.exists()) {
             f.getParentFile().mkdirs();
-            randomsky.saveResource(folder != null && !folder.equals("") ? folder + File.separator + file : file, false);
+            randomsky.saveResource(folder != null && !folder.equals("") ? folder + separator + file : file, false);
         }
         if(folder == null || !folder.equals("_Data")) {
             updateYaml(f);
@@ -66,29 +70,6 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
         return min.add(range.multiply(new BigDecimal(Math.random())));
     }
 
-    public final long getDelay(String input) {
-        input = input.toLowerCase();
-        long l = 0;
-        if(input.contains("d")) {
-            final String[] s = input.split("d");
-            l += getRemainingDouble(s[0])*1000*60*60*24;
-            input = s.length > 1 ? s[1] : input;
-        }
-        if(input.contains("h")) {
-            final String[] s = input.split("h");
-            l += getRemainingDouble(s[0])*1000*60*60;
-            input = s.length > 1 ? s[1] : input;
-        }
-        if(input.contains("m")) {
-            final String[] s = input.split("m");
-            l += getRemainingDouble(s[0])*1000*60;
-            input = s.length > 1 ? s[1] : input;
-        }
-        if(input.contains("s")) {
-            l += getRemainingDouble(input.split("s")[0])*1000;
-        }
-        return l;
-    }
     public final void spawnFirework(Firework firework, Location loc) {
         if(firework != null) {
             final Firework fw = loc.getWorld().spawn(new Location(loc.getWorld(), loc.getX()+0.5, loc.getY(), loc.getZ()+0.5), Firework.class);
@@ -119,40 +100,7 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
         } else e = input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
         return e;
     }
-    public final String getRemainingTime(long time) {
-        int sec = (int) TimeUnit.MILLISECONDS.toSeconds(time), min = sec/60, hr = min/60, d = hr/24;
-        hr -= d*24;
-        min -= (hr*60)+(d*60*24);
-        sec -= (min*60)+(hr*60*60)+(d*60*60*24);
-        final String dys = d > 0 ? d + "d" + (hr != 0 ? " " : "") : "";
-        final String hrs = hr > 0 ? hr + "h" + (min != 0 ? " " : "") : "";
-        final String mins = min != 0 ? min + "m" + (sec != 0 ? " " : "") : "";
-        final String secs = sec != 0 ? sec + "s" : "";
-        return dys + hrs + mins + secs;
-    }
-    public final long getTime(String fromString) {
-        long time = 0;
-        if(fromString != null) {
-            fromString = ChatColor.stripColor(fromString);
-            if(fromString.contains("d")) {
-                time += getRemainingDouble(fromString.split("d")[0])*24*60*60;
-                if(fromString.contains("h") || fromString.contains("m") || fromString.contains("s")) fromString = fromString.split("d")[1];
-            }
-            if(fromString.contains("h")) {
-                time += getRemainingDouble(fromString.split("h")[0])*60*60;
-                if(fromString.contains("m") || fromString.contains("s")) fromString = fromString.split("h")[1];
-            }
-            if(fromString.contains("m")) {
-                time += getRemainingDouble(fromString.split("m")[0])*60;
-                if(fromString.contains("s")) fromString = fromString.split("m")[1];
-            }
-            if(fromString.contains("s")) {
-                time += getRemainingDouble(fromString.split("s")[0]);
-                //fromString = fromString.split("s")[0];
-            }
-        }
-        return time*1000;
-    }
+
     public final Enchantment getEnchantment(String string) {
         if(string != null) {
             for(Enchantment enchant : Enchantment.values()) {
@@ -323,20 +271,7 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
         }
         return null;
     }
-    public final void sendStringListMessage(CommandSender sender, List<String> message, HashMap<String, String> replacements) {
-        if(message != null && message.size() > 0 && !message.get(0).equals("")) {
-            for(String s : message) {
-                if(replacements != null) {
-                    for(String r : replacements.keySet()) {
-                        s = s.replace(r, replacements.get(r));
-                    }
-                }
-                if(s != null) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
-                }
-            }
-        }
-    }
+
     public final LivingEntity getHitEntity(ProjectileHitEvent event) {
         final List<Entity> n = event.getEntity().getNearbyEntities(0.0, 0.0, 0.0);
         return n.size() > 0 && n.get(0) instanceof LivingEntity ? (LivingEntity) n.get(0) : null;

@@ -16,7 +16,7 @@ public class FileFilterCategory extends RSAddon implements FilterCategory {
     }
     public String getIdentifier() { return getYamlName(); }
 
-    public String getTitle() { return ChatColor.translateAlternateColorCodes('&', yml.getString("title")); }
+    public String getTitle() { return colorize(yml.getString("title")); }
     public UInventory getInventory() {
         if(gui == null) {
             gui = new UInventory(null, yml.getInt("size"), getTitle());

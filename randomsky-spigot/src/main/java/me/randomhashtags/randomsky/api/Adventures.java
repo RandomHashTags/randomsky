@@ -1,6 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
+import me.randomhashtags.randomsky.addon.adventure.AdventureMap;
+import me.randomhashtags.randomsky.addon.file.FileAdventure;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -78,7 +80,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
         final Inventory gi = gui.getInventory();
         final ItemStack b = d(config, "gui.background");
         for(File f : new File(dataFolder + separator + "adventures").listFiles()) {
-            final Adventure a = new Adventure(f);
+            final Adventure a = new FileAdventure(f);
             gi.setItem(a.getSlot(), a.getItem());
             worlds.add(toLocation(a.getTeleportLocations().get(0)).getWorld());
         }
@@ -101,7 +103,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
     }
 
     public void viewAdventures(Player player) {
-        if(hasPermission(player, "RandomSky.adventures.view", true)) {
+        if(hasPermission(player, "RandomSky.adventure.view", true)) {
             final List<Adventure> allowed = RSPlayer.get(player.getUniqueId()).getAllowedAdventures();
             final int size = gui.getSize();
             player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
@@ -112,21 +114,23 @@ public class Adventures extends RSFeature implements CommandExecutor {
                 if(item != null) {
                     final Adventure a = Adventure.valueOf(i);
                     if(a != null) {
-                        final String max = Integer.toString(a.maxPlayers), online = Integer.toString(a.getPlayers().size());
+                        final String max = Integer.toString(a.getMaxPlayers()), online = Integer.toString(a.getPlayers().size());
                         itemMeta = item.getItemMeta(); lore.clear();
                         for(String s : itemMeta.getLore()) {
                             lore.add(s.replace("{ONLINE}", online).replace("{MAX}", max));
                         }
                         itemMeta.setLore(lore); lore.clear();
                         item.setItemMeta(itemMeta);
-                        if(a.mapFoundIn != null && !allowed.contains(a)) {
+                        final AdventureMap map = a.getRequiredMap();
+                        final String mapFoundIn = map != null ? map.getFoundIn() : null;
+                        if(mapFoundIn != null && !allowed.contains(a)) {
                             final ItemStack s = mapRequired.clone();
                             itemMeta = s.getItemMeta(); lore.clear();
                             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", item.getItemMeta().getDisplayName()));
                             lore.addAll(item.getItemMeta().getLore());
-                            final String r = a.mapFoundIn.getYamlName();
-                            for(String l : itemMeta.getLore())
-                                lore.add(l.replace("{REQ_ADVENTURE}", r));
+                            for(String l : itemMeta.getLore()) {
+                                lore.add(l.replace("{REQ_ADVENTURE}", mapFoundIn));
+                            }
                             itemMeta.setLore(lore); lore.clear();
                             item = s;
                             item.setItemMeta(itemMeta);
@@ -188,7 +192,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
     private void inventoryClickEvent(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
         final String t = event.getView().getTitle();
-        if(t != null && t.equals(gui.getTitle())) {
+        if(t.equals(gui.getTitle())) {
             event.setCancelled(true);
             player.updateInventory();
             final ItemStack c = event.getCurrentItem();

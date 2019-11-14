@@ -144,11 +144,11 @@ public class Homes extends RSFeature implements CommandExecutor {
                         final Location l = h.location;
                         final String x = Integer.toString(l.getBlockX()), y = Integer.toString(l.getBlockY()), z = Integer.toString(l.getBlockZ());
                         for(String o : p) {
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', o.replace("{NAME}", n).replace("{X}", x).replace("{Y}", y).replace("{Z}", z)));
+                            player.sendMessage(colorize(o.replace("{NAME}", n).replace("{X}", x).replace("{Y}", y).replace("{Z}", z)));
                         }
                     }
                 } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("{HOME_SIZE}", homesize)));
+                    player.sendMessage(colorize(s.replace("{HOME_SIZE}", homesize)));
                 }
             }
         }

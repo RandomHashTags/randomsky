@@ -1,10 +1,13 @@
 package me.randomhashtags.randomsky.util.universal;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.RandomSky;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,10 +20,8 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public interface UVersionable {
     BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -33,10 +34,10 @@ public interface UVersionable {
     Random random = new Random();
 
 
-    default ItemStack getClone(ItemStack is) {
+    default ItemStack getClone(@Nullable ItemStack is) {
         return getClone(is, null);
     }
-    default ItemStack getClone(ItemStack is, ItemStack def) {
+    default ItemStack getClone(@Nullable ItemStack is, @Nullable ItemStack def) {
         return is != null ? is.clone() : def;
     }
     default Color getColor(final String path) {
@@ -65,7 +66,7 @@ public interface UVersionable {
             }
         }
     }
-    default PotionEffectType getPotionEffectType(String input) {
+    default PotionEffectType getPotionEffectType(@Nullable String input) {
         if(input != null && !input.isEmpty()) {
             switch (input.toUpperCase()) {
                 case "STRENGTH": return PotionEffectType.INCREASE_DAMAGE;
@@ -89,8 +90,22 @@ public interface UVersionable {
             return null;
         }
     }
-    default void sendConsoleMessage(String msg) {
+    default void sendConsoleMessage(@NotNull String msg) {
         console.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+    }
+    default void sendStringListMessage(@NotNull CommandSender sender, @Nullable List<String> message, @Nullable HashMap<String, String> replacements) {
+        if(message != null && message.size() > 0 && !message.get(0).equals("")) {
+            for(String s : message) {
+                if(replacements != null) {
+                    for(String r : replacements.keySet()) {
+                        s = s.replace(r, replacements.get(r));
+                    }
+                }
+                if(s != null) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+                }
+            }
+        }
     }
 
     default String formatDouble(double d) {
@@ -128,26 +143,85 @@ public interface UVersionable {
         }
         return i;
     }
-    default String toReadableDate(Date d, String format) { return new SimpleDateFormat(format).format(d); }
+    default String colorize(@NotNull String input) { return input != null ? ChatColor.translateAlternateColorCodes('&', input) : ""; }
+    default String toReadableDate(@NotNull Date d, @NotNull String format) { return new SimpleDateFormat(format).format(d); }
 
     default double levelToExp(int level) { return level <= 16 ? (level * level) + (level * 6) : level <= 31 ? (2.5 * level * level) - (40.5 * level) + 360 : (4.5 * level * level) - (162.5 * level) + 2220; }
-    default int getTotalExperience(Player player) {
+    default int getTotalExperience(@NotNull Player player) {
         final double levelxp = levelToExp(player.getLevel()), nextlevelxp = levelToExp(player.getLevel() + 1), difference = nextlevelxp - levelxp;
         final double p = (levelxp + (difference * player.getExp()));
         return (int) Math.round(p);
     }
-    default void setTotalExperience(Player player, int total) {
+    default void setTotalExperience(@NotNull Player player, int total) {
         player.setTotalExperience(0);
         player.setExp(0f);
         player.setLevel(0);
         player.giveExp(total);
     }
 
-    default String toString(Location loc) {
+    default String toString(@NotNull Location loc) {
         return loc.getWorld().getName() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
     }
-    default Location toLocation(String string) {
+    default Location toLocation(@NotNull String string) {
         final String[] a = string.split(";");
         return new Location(Bukkit.getWorld(a[0]), Double.parseDouble(a[1]), Double.parseDouble(a[2]), Double.parseDouble(a[3]), Float.parseFloat(a[4]), Float.parseFloat(a[5]));
+    }
+
+    default long getDelay(@NotNull String input) {
+        input = input.toLowerCase();
+        long l = 0;
+        if(input.contains("d")) {
+            final String[] s = input.split("d");
+            l += getRemainingDouble(s[0])*1000*60*60*24;
+            input = s.length > 1 ? s[1] : input;
+        }
+        if(input.contains("h")) {
+            final String[] s = input.split("h");
+            l += getRemainingDouble(s[0])*1000*60*60;
+            input = s.length > 1 ? s[1] : input;
+        }
+        if(input.contains("m")) {
+            final String[] s = input.split("m");
+            l += getRemainingDouble(s[0])*1000*60;
+            input = s.length > 1 ? s[1] : input;
+        }
+        if(input.contains("s")) {
+            l += getRemainingDouble(input.split("s")[0])*1000;
+        }
+        return l;
+    }
+    default String getRemainingTime(long time) {
+        int sec = (int) TimeUnit.MILLISECONDS.toSeconds(time), min = sec/60, hr = min/60, d = hr/24;
+        hr -= d*24;
+        min -= (hr*60)+(d*60*24);
+        sec -= (min*60)+(hr*60*60)+(d*60*60*24);
+        final String dys = d > 0 ? d + "d" + (hr != 0 ? " " : "") : "";
+        final String hrs = hr > 0 ? hr + "h" + (min != 0 ? " " : "") : "";
+        final String mins = min != 0 ? min + "m" + (sec != 0 ? " " : "") : "";
+        final String secs = sec != 0 ? sec + "s" : "";
+        return dys + hrs + mins + secs;
+    }
+    default long getTime(@Nullable String fromString) {
+        long time = 0;
+        if(fromString != null) {
+            fromString = ChatColor.stripColor(fromString);
+            if(fromString.contains("d")) {
+                time += getRemainingDouble(fromString.split("d")[0])*24*60*60;
+                if(fromString.contains("h") || fromString.contains("m") || fromString.contains("s")) fromString = fromString.split("d")[1];
+            }
+            if(fromString.contains("h")) {
+                time += getRemainingDouble(fromString.split("h")[0])*60*60;
+                if(fromString.contains("m") || fromString.contains("s")) fromString = fromString.split("h")[1];
+            }
+            if(fromString.contains("m")) {
+                time += getRemainingDouble(fromString.split("m")[0])*60;
+                if(fromString.contains("s")) fromString = fromString.split("m")[1];
+            }
+            if(fromString.contains("s")) {
+                time += getRemainingDouble(fromString.split("s")[0]);
+                //fromString = fromString.split("s")[0];
+            }
+        }
+        return time*1000;
     }
 }

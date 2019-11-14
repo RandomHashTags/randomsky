@@ -60,7 +60,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         invCategories = new HashMap<>();
 
         back = d(config, "categories.back");
-        originBonus = ChatColor.translateAlternateColorCodes('&', config.getString("messages.origin bonus"));
+        originBonus = colorize(config.getString("messages.origin bonus"));
 
         format = colorizeListString(config.getStringList("lores.format"));
         buy = colorizeListString(config.getStringList("lores.buy"));
@@ -70,7 +70,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         usagespacing = colorizeListString(config.getStringList("lores.usage spacing"));
 
         final List<String> addedlore = colorizeListString(config.getStringList("categories.added lore"));
-        inv = new UInventory(null, config.getInt("categories.size"), ChatColor.translateAlternateColorCodes('&', config.getString("categories.title")));
+        inv = new UInventory(null, config.getInt("categories.size"), colorize(config.getString("categories.title")));
         final Inventory ii = inv.getInventory();
 
         if(!otherdata.getBoolean("saved default shops")) {
@@ -115,7 +115,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
     }
     public void createCategory(String path, String opens, YamlConfiguration yml) {
         //shopItems.put(path, new ArrayList<>());
-        final UInventory i = new UInventory(null, yml.getInt("size"), ChatColor.translateAlternateColorCodes('&', yml.getString("title")));
+        final UInventory i = new UInventory(null, yml.getInt("size"), colorize(yml.getString("title")));
         final Inventory ii = i.getInventory();
         for(String s : yml.getConfigurationSection("gui").getKeys(false)) {
             final String p = "gui." + s + ".";
@@ -147,7 +147,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
                             for(String S : sellusage) lore.add(S.replace("{STACK}", stack));
                         }
                     } else {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', e));
+                        lore.add(colorize(e));
                     }
                 }
                 itemMeta.setLore(lore); lore.clear();

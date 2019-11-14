@@ -66,7 +66,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         skills = new HashMap<>();
         viewing = new HashMap<>();
 
-        gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(config, "gui.background");
         back = d(config, "gui.back");
@@ -86,7 +86,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
                 lore.addAll(levelFormat);
                 k.setItemMeta(itemMeta); lore.clear();
 
-                UInventory i = new UInventory(null, 54, ChatColor.translateAlternateColorCodes('&', config.getString(p + "title")));
+                UInventory i = new UInventory(null, 54, colorize(config.getString(p + "title")));
                 final Inventory ii = i.getInventory();
                 int level = 1, highestSlot = 0;
                 for(String parent : config.getConfigurationSection("skills." + s).getKeys(false)) {
@@ -99,7 +99,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
                             itemMeta = d.getItemMeta();
                             itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
                             d.setItemMeta(itemMeta);
-                            ps.levels.add(new PlayerSkillLevel(ps, parent, level, slott, d, ChatColor.translateAlternateColorCodes('&', config.getString(O + "perk")), config.getStringList(O + "attributes")));
+                            ps.levels.add(new PlayerSkillLevel(ps, parent, level, slott, d, colorize(config.getString(O + "perk")), config.getStringList(O + "attributes")));
                             level++;
                         }
                         ii.setItem(slott, d);

@@ -1,5 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipMatch;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipOption;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
@@ -8,7 +10,6 @@ import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -83,7 +84,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "coinflip.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rpd, "coinflip.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "coinflip.yml"));
 
         isLegacy = EIGHT || NINE || TEN || ELEVEN;
 
@@ -91,18 +92,18 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         tax = config.getDouble("wager.tax");
         wagerAvailable = colorizeListString(config.getStringList("wager.status.can afford"));
         wagerUnavailable = colorizeListString(config.getStringList("wager.status.cannot afford"));
-        wagerName = ChatColor.translateAlternateColorCodes('&', config.getString("wager.name"));
+        wagerName = colorize(config.getString("wager.name"));
         wagerLore = colorizeListString(config.getStringList("wager.lore"));
 
-        yourSelection = ChatColor.translateAlternateColorCodes('&', config.getString("challenge.your selection"));
-        opponentSelection = ChatColor.translateAlternateColorCodes('&', config.getString("challenge.opponent selection"));
+        yourSelection = colorize(config.getString("challenge.your selection"));
+        opponentSelection = colorize(config.getString("challenge.opponent selection"));
         winnerLore = colorizeListString(config.getStringList("challenge.winner.lore"));
         countdown = d(config, "challenge.countdown");
         rollingLore = colorizeListString(config.getStringList("challenge.rolling.lore"));
 
-        gui = new UInventory(null, 54, ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
-        options = new UInventory(null, config.getInt("gui.options.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.options.title")));
-        challenge = new UInventory(null, config.getInt("challenge.size"), ChatColor.translateAlternateColorCodes('&', config.getString("challenge.title")));
+        gui = new UInventory(null, 54, colorize(config.getString("gui.title")));
+        options = new UInventory(null, config.getInt("gui.options.size"), colorize(config.getString("gui.options.title")));
+        challenge = new UInventory(null, config.getInt("challenge.size"), colorize(config.getString("challenge.title")));
         countdownStart = config.getInt("gui.options.countdown");
         addedlore = colorizeListString(config.getStringList("gui.options.added lore"));
         optionz = new LinkedHashMap<>();
@@ -116,7 +117,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                 itemMeta = dis.getItemMeta();
                 itemMeta.setLore(addedlore);
                 dis.setItemMeta(itemMeta);
-                final CoinFlipOption o = new CoinFlipOption(s, slot, ChatColor.translateAlternateColorCodes('&', config.getString(p + "chosen")), dis, d(config, p + "selection"), ChatColor.translateAlternateColorCodes('&', config.getString(p + "selection.color")));
+                final CoinFlipOption o = new CoinFlipOption(s, slot, colorize(config.getString(p + "chosen")), dis, d(config, p + "selection"), colorize(config.getString(p + "selection.color")));
                 optionz.put(slot, o);
                 oi.setItem(slot, dis);
             }
@@ -156,13 +157,12 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                 scheduler.cancelTask(i);
             }
         }
-        final YamlConfiguration a = otherdata;
-        a.set("coinflips", null);
+        otherdata.set("coinflips", null);
         for(CoinFlipMatch m : available) {
             final String u = m.creator().getUniqueId().toString();
-            a.set("coinflips." + u + ".created", m.created());
-            a.set("coinflips." + u + ".wager", m.wager());
-            a.set("coinflips." + u + ".option", m.option().path);
+            otherdata.set("coinflips." + u + ".created", m.created());
+            otherdata.set("coinflips." + u + ".wager", m.wager());
+            otherdata.set("coinflips." + u + ".option", m.option().path);
             m.delete();
         }
         saveOtherData();
@@ -182,8 +182,11 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                 item = UMaterial.PLAYER_HEAD_ITEM.getItemStack();
                 final SkullMeta s = (SkullMeta) item.getItemMeta();
                 final OfflinePlayer c = m.creator();
-                if(isLegacy) s.setOwner(c.getName());
-                else s.setOwningPlayer(c);
+                if(isLegacy) {
+                    s.setOwner(c.getName());
+                } else {
+                    s.setOwningPlayer(c);
+                }
                 s.setDisplayName(wagerName.replace("{PLAYER}", c.getName()));
                 final BigDecimal wager = m.wager();
                 final double wd = wager.doubleValue();
@@ -203,7 +206,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             player.updateInventory();
         }
     }
-    public void viewStats(Player player) {
+    public void viewStats(@NotNull Player player) {
         if(hasPermission(player, "RandomPackage.coinflip.stats", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
@@ -216,7 +219,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages.stats"), replacements);
         }
     }
-    public void tryCreating(Player player, BigDecimal w) {
+    public void tryCreating(@NotNull Player player, BigDecimal w) {
         if(hasPermission(player, "RandomPackage.coinflip.create", true)) {
             final CoinFlipMatch m = CoinFlipMatch.valueOf(player);
             if(m != null) {
@@ -257,7 +260,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public void tryCancelling(Player player) {
+    public void tryCancelling(@NotNull Player player) {
         if(hasPermission(player, "RandomPackage.coinflip.cancel", true)) {
             final CoinFlipMatch m = CoinFlipMatch.valueOf(player);
             if(m == null) {
@@ -270,7 +273,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public void tryChallenging(Player player, CoinFlipMatch match) {
+    public void tryChallenging(@NotNull Player player, @Nullable CoinFlipMatch match) {
         if(hasPermission(player, "RandomPackage.coinflip.challenge", true)) {
             player.closeInventory();
             final CoinFlipMatch f = CoinFlipMatch.valueOf(player);
@@ -375,7 +378,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             active.put(p, m);
         }
 
-        final String rollingName = ChatColor.translateAlternateColorCodes('&', config.getString("challenge.rolling.name"));
+        final String rollingName = colorize(config.getString("challenge.rolling.name"));
         final List<Integer> t = tasks.get(m);
         for(int i = 1; i <= countdownStart; i++) {
             final int I = i;
@@ -466,7 +469,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         final String winnerName = winner.getName(), color = winningOption.selectionColor, Lcolor = losingOption.selectionColor;
         eco.depositPlayer(winner, total.doubleValue()-taxed.doubleValue());
         item = winningOption.appear(); itemMeta = item.getItemMeta(); lore.clear();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("challenge.winner.name")).replace("{COLOR}", color).replace("{PLAYER}", winnerName));
+        itemMeta.setDisplayName(colorize(config.getString("challenge.winner.name")).replace("{COLOR}", color).replace("{PLAYER}", winnerName));
         for(String s : winnerLore) {
             lore.add(s.replace("{PLAYER}", winnerName).replace("{COLOR}", color));
         }

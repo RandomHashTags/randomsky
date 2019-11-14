@@ -1,10 +1,13 @@
 package me.randomhashtags.randomsky.api.addon;
 
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
+import me.randomhashtags.randomsky.addon.file.FileIslandChallenge;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandChallenge;
 import me.randomhashtags.randomsky.api.IslandAddon;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -27,6 +30,8 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.io.File.separator;
 
 public class IslandChallenges extends IslandAddon implements Listener, CommandExecutor {
     private static IslandChallenges instance;
@@ -51,8 +56,8 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
     public void load() {
         final long a = System.currentTimeMillis();
         save(null, "island challenges.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "island challenges.yml"));
-        settings = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "island settings.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island challenges.yml"));
+        settings = YamlConfiguration.loadConfiguration(new File(dataFolder, "island settings.yml"));
 
         claim = colorizeListString(config.getStringList("challenges.settings.completed.claim"));
         claimed = colorizeListString(config.getStringList("challenges.settings.completed.claimed"));
@@ -60,28 +65,23 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         progress = d(config, "challenges.settings.progress");
         locked = d(config, "challenges.settings.locked");
 
-        nextChallengeObjectivePrefix = ChatColor.translateAlternateColorCodes('&', config.getString("messages.next challenge objective prefix"));
+        nextChallengeObjectivePrefix = colorize(config.getString("messages.next challenge objective prefix"));
 
         gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
-        int loaded = 0;
-        for(String s : config.getConfigurationSection("challenges").getKeys(false)) {
-            if(!s.equals("settings")) {
-                final String p = "challenges." + s + ".";
-                final int slot = config.getInt(p + "slot");
-                final IslandChallenge c = new IslandChallenge(s, slot, ChatColor.translateAlternateColorCodes('&', config.getString(p + "name")), config.getDouble(p + "completion"), config.getStringList(p + "objective"), config.getStringList(p + "rewards"), config.getStringList(p + "attributes"));
-                loaded++;
-                item = locked.clone(); itemMeta = item.getItemMeta();
-                itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", c.name));
-                item.setItemMeta(itemMeta);
-                gi.setItem(slot, item);
-            }
+
+        for(File f : new File(dataFolder + separator + "island" + separator + "challenges").listFiles()) {
+            final IslandChallenge c = new FileIslandChallenge(f);
+            item = locked.clone(); itemMeta = item.getItemMeta();
+            itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", c.getName()));
+            item.setItemMeta(itemMeta);
+            gi.setItem(c.getSlot(), item);
         }
-        sendConsoleMessage("&6{RandomSky] &aLoaded " + loaded + " Island Challenges &e(took " + (System.currentTimeMillis()-a) + "ms)");
+        sendConsoleMessage("&6{RandomSky] &aLoaded " + newRSStorage.getAll(Feature.ISLAND_CHALLENGE).size() + " Island Challenges &e(took " + (System.currentTimeMillis()-a) + "ms)");
     }
 
     public void unload() {
-        IslandChallenge.paths.clear();
+        newRSStorage.unregisterAll(Feature.ISLAND_CHALLENGE);
     }
 
     public void viewChallenges(Player player) {
@@ -114,8 +114,8 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         final String a = c.path;
         final boolean isCompleted = completedChallenges.containsKey(a), isClaimed = isCompleted ? completedChallenges.get(a) : false;
         final double completion = c.completion;
-        final String N = c.name, C = formatDouble(completion);
-        final List<String> R = c.rewards, obj = c.objective;
+        final String N = c.getName(), C = formatDouble(completion);
+        final List<String> R = c.getRewards(), obj = c.getObjective();
         if(isCompleted) {
             item = completed.clone(); itemMeta = item.getItemMeta(); lore.clear();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", N));
@@ -144,13 +144,13 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         for(String s : itemMeta.getLore()) {
             if(s.contains("{OBJ}")) {
                 for(String o : obj) {
-                    String ob = ChatColor.translateAlternateColorCodes('&', o);
+                    String ob = colorize(o);
                     ob = isClaimed ? ChatColor.stripColor(ob) : ob;
                     lore.add(s.replace("{OBJ}", ob));
                 }
             } else if(s.equals("{REWARDS}")) {
                 for(String m : R) {
-                    lore.add(ChatColor.translateAlternateColorCodes('&', m.split(";")[1]));
+                    lore.add(colorize(m.split(";")[1]));
                 }
             } else {
                 lore.add(s);
@@ -204,7 +204,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void giveRewards(Player player, IslandChallenge c) {
         if(player != null && c != null) {
-            for(String s : c.rewards) {
+            for(String s : c.getRewards()) {
                 giveItem(player, d(null, s.split(";")[0]));
             }
         }

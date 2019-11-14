@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -17,7 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.HashMap;
 import java.util.List;
 
-public class MobStacker extends RSFeature {
+public class MobStacker extends RSFeature implements Listener {
     private static MobStacker instance;
     public static MobStacker getMobStacker() {
         if(instance == null) instance = new MobStacker();
@@ -26,18 +27,22 @@ public class MobStacker extends RSFeature {
 
     public YamlConfiguration config;
     private List<World> worlds;
-    public HashMap<World, Integer> tasks = new HashMap<>(), checkIntervals = new HashMap<>(), radius = new HashMap<>();
+    private HashMap<World, Integer> tasks, checkIntervals, radius;
 
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "mob stacker.yml");
         worlds = Bukkit.getWorlds();
+        tasks = new HashMap<>();
+        checkIntervals = new HashMap<>();
+        radius = new HashMap<>();
         sendConsoleMessage("&6[RandomSky] &aLoaded Mob Stacker &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
         for(World w : tasks.keySet()) {
             scheduler.cancelTask(tasks.get(w));
         }
+        tasks = null;
         StackedEntity.stacked.clear();
     }
 
@@ -47,6 +52,7 @@ public class MobStacker extends RSFeature {
     }
     public void stack(List<EntityType> types) {
         for(World w : worlds) {
+
         }
     }
     public void stack(World world, List<EntityType> types) {
@@ -57,14 +63,15 @@ public class MobStacker extends RSFeature {
     @EventHandler
     private void creatureSpawnEvent(CreatureSpawnEvent event) {
     }
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+
+    @EventHandler(priority = EventPriority.NORMAL)
     private void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         final Entity e = event.getEntity();
-        if(e instanceof LivingEntity && !(e instanceof Player)) {
+        if(!event.isCancelled() && e instanceof LivingEntity && !(e instanceof Player)) {
             final LivingEntity le = (LivingEntity) e;
         }
     }
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW)
     private void entityDamageEvent(EntityDamageEvent event) {
     }
 }

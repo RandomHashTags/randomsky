@@ -70,7 +70,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         }
 
         final int size = config.getInt("gui.size");
-        gui = new UInventory(null, size, ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, size, colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(config, "gui.background");
         for(String s : config.getConfigurationSection("gui").getKeys(false)) {
@@ -93,12 +93,12 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         for(String s : config.getConfigurationSection("shields").getKeys(false)) {
             doesntWorkAgainst.clear();
             for(String B : config.getStringList("shields." + s + "doesnt work against")) doesntWorkAgainst.add(UMaterial.match(B));
-            new CustomShield(s, ChatColor.translateAlternateColorCodes('&', config.getString("shields." + s + ".name")), colorizeListString(config.getStringList("shields." + s + ".lore")), doesntWorkAgainst);
+            new CustomShield(s, colorize(config.getString("shields." + s + ".name")), colorizeListString(config.getStringList("shields." + s + ".lore")), doesntWorkAgainst);
         }
         for(String s : config.getConfigurationSection("bows").getKeys(false)) {
             doesntWorkAgainst.clear();
             for(String B : config.getStringList("bows." + s + "doesnt work against")) doesntWorkAgainst.add(UMaterial.match(B));
-            new CustomBow(s, ChatColor.translateAlternateColorCodes('&', config.getString("bows." + s + ".name")), colorizeListString(config.getStringList("bows." + s + ".lore")), doesntWorkAgainst);
+            new CustomBow(s, colorize(config.getString("bows." + s + ".name")), colorizeListString(config.getStringList("bows." + s + ".lore")), doesntWorkAgainst);
         }
         sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Custom Crafting Recipes, " + CustomShield.paths.size() + " shields, and " + CustomBow.paths.size() + " bows &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
@@ -241,7 +241,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
                                 player.sendMessage(p.replace("{AMOUNT}", a).replace("{ITEM}", n));
                             }
                         } else {
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+                            player.sendMessage(colorize(s));
                         }
                     }
                 } else {

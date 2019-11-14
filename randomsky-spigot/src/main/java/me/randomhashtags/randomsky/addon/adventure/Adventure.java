@@ -1,22 +1,20 @@
 package me.randomhashtags.randomsky.addon.adventure;
 
 import me.randomhashtags.randomsky.addon.util.Itemable;
-import me.randomhashtags.randomsky.addon.util.Rewardable;
 import me.randomhashtags.randomsky.addon.util.Slotable;
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public interface Adventure extends Itemable, Rewardable, Slotable {
+public interface Adventure extends Itemable, Slotable { // TODO: add chest tiers
     String getName();
-    List<String> getItemLimitations();
+    Location getCenter();
+    List<String> getBlacklistedItems();
     AdventureMap getRequiredMap();
 
     List<String> getChestLocations();
     float getTeleportDelay();
     List<String> getTeleportLocations();
 
-    BigDecimal getMaxPlayers();
-    List<Player> getPlayers();
+    int getMaxPlayers();
 }

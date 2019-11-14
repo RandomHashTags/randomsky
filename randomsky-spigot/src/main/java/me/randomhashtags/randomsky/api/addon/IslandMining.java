@@ -61,7 +61,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
 
         generated = new ArrayList<>();
         final List<String> S = otherdata.getStringList("generated");
-        if(S != null && !S.isEmpty()) {
+        if(!S.isEmpty()) {
             for(String s : S) {
                 final Location l = toLocation(s);
                 if(!l.getWorld().getBlockAt(l).getType().name().contains("AIR")) {

@@ -5,6 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.world.registry.WorldData;
+import me.randomhashtags.randomsky.addon.file.FileIslandOrigin;
 import me.randomhashtags.randomsky.addon.island.IslandOrigin;
 import me.randomhashtags.randomsky.addon.PermissionBlock;
 import me.randomhashtags.randomsky.addon.ResourceNode;
@@ -12,12 +13,15 @@ import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandLevel;
+import me.randomhashtags.randomsky.addon.island.IslandRole;
 import me.randomhashtags.randomsky.event.InviteExpireEvent;
 import me.randomhashtags.randomsky.event.PlayerIslandBreakBlockEvent;
 import me.randomhashtags.randomsky.event.PlayerIslandInteractEvent;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.enums.InviteType;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -228,35 +232,25 @@ public class Islands extends IslandAddon implements CommandExecutor {
         pvpdmg = config.getBoolean("island.allowed damage.pvp");
 
         originSelected = colorizeListString(config.getStringList("origins.settings.selected"));
-        origin = new UInventory(null, config.getInt("origins.gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("origins.gui.title")));
+        origin = new UInventory(null, config.getInt("origins.gui.size"), colorize(config.getString("origins.gui.title")));
         final Inventory oi = origin.getInventory();
         final ItemStack b = d(config, "origins.gui.background");
         int origins = 0;
         final Plugin worldEdit = pluginmanager.getPlugin("WorldEdit");
         worldeditF = worldEdit.getDataFolder() + separator + "schematics";
 
-        for(String s : config.getConfigurationSection("origins").getKeys(false)) {
-            if(!s.equals("gui") && !s.equals("settings")) {
-                final String p = "origins." + s + ".", schematic = config.getString(p + "schematic");
-                final int slot = config.getInt(p + "slot");
-                final ItemStack i = d(config, "origins." + s);
-                final File F = new File(worldeditF, schematic + ".schematic");
-                try {
-                    new IslandOrigin(s, F, ChatColor.translateAlternateColorCodes('&', config.getString(p + "string")), slot, i, config.getStringList(p + "perks"));
-                    origins++;
-                    oi.setItem(slot, i);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        for(File f : new File(dataFolder + separator + "origins").listFiles()) {
+            final FileIslandOrigin o = new FileIslandOrigin(f);
+            oi.setItem(o.getSlot(), o.getItem());
         }
+
         for(int i = 0; i < origin.getSize(); i++) {
             if(oi.getItem(i) == null) {
                 oi.setItem(i, b);
             }
         }
 
-        confirmDelete = new UInventory(null, config.getInt("delete.size"), ChatColor.translateAlternateColorCodes('&', config.getString("delete.title")));
+        confirmDelete = new UInventory(null, config.getInt("delete.size"), colorize(config.getString("delete.title")));
         final Inventory cdi = confirmDelete.getInventory();
         deleteConfirm = d(config, "delete.confirm");
         deleteCancel = d(config, "delete.cancel");
@@ -277,10 +271,10 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 }
             }
         }
-        final String type = config.getString("gui.type"), title = ChatColor.translateAlternateColorCodes('&', config.getString("gui.title"));
+        final String type = config.getString("gui.type"), title = colorize(config.getString("gui.title"));
         final int size = config.getInt("gui.size");
-        if(type != null) gui = new UInventory(null, InventoryType.valueOf(type.toUpperCase()), title);
-        else gui = new UInventory(null, size, title);
+        gui = type != null ? new UInventory(null, InventoryType.valueOf(type.toUpperCase()), title) : new UInventory(null, size, title);
+
         final Inventory gi = gui.getInventory();
         for(String s : config.getConfigurationSection("gui").getKeys(false)) {
             if(!s.equals("title") && !s.equals("type") && !s.equals("size")) {
@@ -294,7 +288,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
         for(String s : config.getConfigurationSection("roles").getKeys(false)) {
             if(!s.equals("settings")) {
                 final String p = "roles." + s + ".";
-                final IslandRole role = new IslandRole(s, ChatColor.translateAlternateColorCodes('&', config.getString(p + "rank")), ChatColor.translateAlternateColorCodes('&', config.getString(p + "name")), colorizeListString(config.getStringList(p + "lore")), config.getStringList(p + "permissions"));
+                final IslandRole role = new IslandRole(s, colorize(config.getString(p + "rank")), colorize(config.getString(p + "name")), colorizeListString(config.getStringList(p + "lore")), config.getStringList(p + "permissions"));
                 if(dm.equals(s)) {
                     IslandRole.defaultMember = role;
                 } else if(dc.equals(s)) {
@@ -303,7 +297,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
             }
         }
 
-        members = new UInventory(null, 54, ChatColor.translateAlternateColorCodes('&', config.getString("members.title")));
+        members = new UInventory(null, 54, colorize(config.getString("members.title")));
         membersBack = d(config, "members.back");
         viewingMembers = colorizeListString(config.getStringList("roles.settings.viewing members"));
 
@@ -317,18 +311,18 @@ public class Islands extends IslandAddon implements CommandExecutor {
     }
     public void unload() {
         otherdata.set("spawn", spawn != null ? toString(spawn) : "null");
-        List<String> rd = new ArrayList<>();
+        final List<String> rd = new ArrayList<>();
         for(Location l : recentlyDeleted) {
             rd.add(toString(l));
         }
         otherdata.set("recently deleted", rd);
         saveOtherData();
-        islands = null;
-        origins = null;
 
         config = null;
         mining = null;
         islandWorld = null;
+
+        newRSStorage.unregisterAll(Feature.ISLAND_CHALLENGE, Feature.ISLAND_LEVEL, Feature.ISLAND_ORIGIN, Feature.ISLAND_PROGRESSIVE_SKILL, Feature.ISLAND_RANK, Feature.ISLAND_REGION_PROTECTION, Feature.ISLAND_SKILL, Feature.ISLAND_UPGRADE);
     }
     private void createIslandWorld() {
         Bukkit.createWorld(WorldCreator.name(islandWorld).type(WorldType.FLAT).generatorSettings("3;minecraft:air;127;decoration"));

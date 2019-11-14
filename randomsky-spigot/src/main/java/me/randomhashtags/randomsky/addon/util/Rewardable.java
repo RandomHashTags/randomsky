@@ -3,7 +3,6 @@ package me.randomhashtags.randomsky.addon.util;
 import java.util.List;
 
 public interface Rewardable {
-    int getMinRewardSize();
-    int getMaxRewardSize();
+    String getRewardSize();
     List<String> getRewards();
 }

@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.RepairScroll;
 import me.randomhashtags.randomsky.util.RSAddon;
 import org.bukkit.inventory.ItemStack;
@@ -12,13 +13,24 @@ import java.util.List;
 public class FileRepairScroll extends RSAddon implements RepairScroll {
     private ItemStack item;
     private int percentslot = -1;
+    private List<String> appliesto;
+
     public FileRepairScroll(File f) {
         load(f);
         addRepairScroll(this);
     }
     public String getIdentifier() { return getYamlName(); }
 
-    public List<String> getAppliesTo() { return yml.getStringList("applies to"); }
+    public List<String> getAppliesTo() {
+        if(appliesto == null) {
+            final List<String> a = new ArrayList<>();
+            for(String s : yml.getStringList("applies to")) {
+                a.add(s.toUpperCase());
+            }
+            appliesto = a;
+        }
+        return appliesto;
+    }
     public int getPercentSlot() {
         if(percentslot == -1) {
             final ItemMeta im = getItem().getItemMeta();
@@ -42,17 +54,19 @@ public class FileRepairScroll extends RSAddon implements RepairScroll {
         final ItemStack is = getItem();
         final ItemMeta m = is.getItemMeta();
         final List<String> lore = m.getLore(), l = new ArrayList<>();
-        for(String s : lore) l.add(s.replace("{PERCENT}", p));
+        for(String s : lore) {
+            l.add(s.replace("{PERCENT}", p));
+        }
         m.setLore(l);
         is.setItemMeta(m);
         return is;
     }
 
-    public boolean canBeApplied(ItemStack is) {
+    public boolean canBeApplied(@Nullable ItemStack is) {
         if(is != null) {
             final String m = is.getType().name();
             for(String s : getAppliesTo()) {
-                if(m.endsWith(s.toUpperCase())) {
+                if(m.endsWith(s)) {
                     return true;
                 }
             }

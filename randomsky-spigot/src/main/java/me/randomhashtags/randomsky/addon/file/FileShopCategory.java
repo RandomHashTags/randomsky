@@ -34,7 +34,7 @@ public class FileShopCategory extends RSAddon implements ShopCategory, UVersiona
     public ItemStack getItem() { return getClone(display); }
     public UInventory getInventory() {
         if(inv == null) {
-            inv = new UInventory(null, yml.getInt("size"), ChatColor.translateAlternateColorCodes('&', yml.getString("title")));
+            inv = new UInventory(null, yml.getInt("size"), colorize(yml.getString("title")));
             getItems();
         }
         return inv;
