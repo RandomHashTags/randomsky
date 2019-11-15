@@ -5,10 +5,9 @@ import me.randomhashtags.randomsky.addon.ShopItem;
 import me.randomhashtags.randomsky.addon.obj.ShopItemObj;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UVersionable;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +25,7 @@ public class FileShopCategory extends RSAddon implements ShopCategory, UVersiona
         load(f);
         this.display = display;
         this.slot = slot;
-        newRSStorage.register(Feature.SHOP_CATEGORY, this);
+        RSStorage.register(Feature.SHOP_CATEGORY, this);
     }
 
     public String getIdentifier() { return getYamlName(); }

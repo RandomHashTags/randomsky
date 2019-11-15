@@ -21,7 +21,7 @@ import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.enums.InviteType;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -322,7 +322,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
         mining = null;
         islandWorld = null;
 
-        newRSStorage.unregisterAll(Feature.ISLAND_CHALLENGE, Feature.ISLAND_LEVEL, Feature.ISLAND_ORIGIN, Feature.ISLAND_PROGRESSIVE_SKILL, Feature.ISLAND_RANK, Feature.ISLAND_REGION_PROTECTION, Feature.ISLAND_SKILL, Feature.ISLAND_UPGRADE);
+        RSStorage.unregisterAll(Feature.ISLAND_CHALLENGE, Feature.ISLAND_LEVEL, Feature.ISLAND_ORIGIN, Feature.ISLAND_PROGRESSIVE_SKILL, Feature.ISLAND_RANK, Feature.ISLAND_REGION_PROTECTION, Feature.ISLAND_SKILL, Feature.ISLAND_UPGRADE);
     }
     private void createIslandWorld() {
         Bukkit.createWorld(WorldCreator.name(islandWorld).type(WorldType.FLAT).generatorSettings("3;minecraft:air;127;decoration"));

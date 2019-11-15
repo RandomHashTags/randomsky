@@ -6,7 +6,7 @@ import me.randomhashtags.randomsky.addon.file.FileAdventure;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -90,10 +90,10 @@ public class Adventures extends RSFeature implements CommandExecutor {
                 gi.setItem(i, b);
             }
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.ADVENTURE).size() + " Adventures &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ADVENTURE).size() + " Adventures &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        newRSStorage.unregisterAll(Feature.ADVENTURE, Feature.ADVENTURE_MAP, Feature.ADVENTURE_MAP_FRAGMENT);
+        RSStorage.unregisterAll(Feature.ADVENTURE, Feature.ADVENTURE_MAP, Feature.ADVENTURE_MAP_FRAGMENT);
     }
 
     public void viewHelp(CommandSender sender) {

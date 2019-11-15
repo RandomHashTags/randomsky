@@ -10,7 +10,7 @@ import me.randomhashtags.randomsky.addon.island.IslandRank;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.obj.PolyBoundary;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,12 +42,12 @@ public class FileIsland extends RSAddon implements Island {
     public FileIsland(File f) {
         load(f);
         uuid = UUID.fromString(getYamlName());
-        newRSStorage.register(Feature.ISLAND, this);
+        RSStorage.register(Feature.ISLAND, this);
         load();
     }
     public static FileIsland get(@NotNull UUID uuid) {
         final String u = uuid.toString();
-        final Identifiable target = newRSStorage.get(Feature.ISLAND, u);
+        final Identifiable target = RSStorage.get(Feature.ISLAND, u);
         return target != null ? (FileIsland) target : new FileIsland(new File(dataFolder + separator + "_Data" + separator + "players", u + ".yml"));
     }
 
@@ -84,13 +84,13 @@ public class FileIsland extends RSAddon implements Island {
     public boolean isOpenToPublic() { return isOpenToPublic; }
     public IslandLevel getIslandLevel() {
         if(level == null) {
-            level = (IslandLevel) newRSStorage.get(Feature.ISLAND_LEVEL, getStringSettings()[0]);
+            level = (IslandLevel) RSStorage.get(Feature.ISLAND_LEVEL, getStringSettings()[0]);
         }
         return level;
     }
     public IslandOrigin getOrigin() {
         if(origin == null) {
-            origin = (IslandOrigin) newRSStorage.get(Feature.ISLAND_ORIGIN, getStringSettings()[1]);
+            origin = (IslandOrigin) RSStorage.get(Feature.ISLAND_ORIGIN, getStringSettings()[1]);
         }
         return origin;
     }
@@ -135,7 +135,7 @@ public class FileIsland extends RSAddon implements Island {
             allowedCrops = new ArrayList<>();
             final List<String> a = yml.getStringList("allowed crops");
             for(String s : a) {
-                final Identifiable i = newRSStorage.get(Feature.FARMING_RECIPE, s);
+                final Identifiable i = RSStorage.get(Feature.FARMING_RECIPE, s);
                 if(i != null) {
                     allowedCrops.add((FarmingRecipe) i);
                 }
@@ -148,7 +148,7 @@ public class FileIsland extends RSAddon implements Island {
             allowedNodes = new ArrayList<>();
             final List<String> a = yml.getStringList("allowed nodes");
             for(String s : a) {
-                final Identifiable i = newRSStorage.get(Feature.RESOURCE_NODE, s);
+                final Identifiable i = RSStorage.get(Feature.RESOURCE_NODE, s);
                 if(i != null) {
                     allowedNodes.add((ResourceNode) i);
                 }
@@ -181,7 +181,7 @@ public class FileIsland extends RSAddon implements Island {
             final ConfigurationSection c = yml.getConfigurationSection("members");
             if(c != null) {
                 for(String s : c.getKeys(false)) {
-                    final Identifiable rank = newRSStorage.get(Feature.ISLAND_RANK, yml.getString("members." + s + ".rank"));
+                    final Identifiable rank = RSStorage.get(Feature.ISLAND_RANK, yml.getString("members." + s + ".rank"));
                     if(rank != null) {
                         members.put(UUID.fromString(s), (IslandRank) rank);
                     }

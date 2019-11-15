@@ -30,6 +30,8 @@ public enum Feature {
 
     INVENTORY_PET,
 
+    ITEM_RECIPE,
+
     PLAYER_RANK,
     PLAYER_SKILL,
     PLAYER_SKILL_LEVEL,

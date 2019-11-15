@@ -1,0 +1,27 @@
+# Made by RandomHashTags
+messages:
+  unlock rank:
+    - "&e&l(!)&r &eUnlock a rank today at &nbuy.yourserver.com&r&e!"
+#
+gui:
+  title: "Rank Help"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  one:
+    slot: 2
+    rank: I
+  two:
+    slot: 3
+    rank: II
+  three:
+    slot: 4
+    rank: III
+  four:
+    slot: 5
+    rank: IV
+  five:
+    slot: 6
+    rank: V

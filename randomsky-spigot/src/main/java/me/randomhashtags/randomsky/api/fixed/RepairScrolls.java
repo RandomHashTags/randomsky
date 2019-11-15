@@ -4,7 +4,7 @@ import me.randomhashtags.randomsky.addon.RepairScroll;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.addon.file.FileRepairScroll;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -39,10 +39,10 @@ public class RepairScrolls extends RSFeature implements Listener {
                 new FileRepairScroll(f);
             }
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.REPAIR_SCROLL).size() + " Repair Scrolls &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.REPAIR_SCROLL).size() + " Repair Scrolls &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        newRSStorage.unregisterAll(Feature.REPAIR_SCROLL);
+        RSStorage.unregisterAll(Feature.REPAIR_SCROLL);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

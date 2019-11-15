@@ -7,10 +7,9 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.classes.island.Island;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -104,7 +103,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
                     }
                 }
             }
-            sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.SHOP_CATEGORY).size() + " Shop Categories &e(took " + (System.currentTimeMillis()-started) + "ms) [async]");
+            sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.SHOP_CATEGORY).size() + " Shop Categories &e(took " + (System.currentTimeMillis()-started) + "ms) [async]");
         });
         final ItemStack background = d(config, "categories.background");
         for(int i = 0; i < inv.getSize(); i++) {

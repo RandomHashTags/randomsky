@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -25,6 +25,6 @@ public class CustomEnchants extends RSFeature {
         sendConsoleMessage("&6[RandomSky] &aLoaded Custom Enchants &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        newRSStorage.unregisterAll(Feature.CUSTOM_ENCHANT, Feature.CUSTOM_ENCHANT_RARITY);
+        RSStorage.unregisterAll(Feature.CUSTOM_ENCHANT, Feature.CUSTOM_ENCHANT_RARITY);
     }
 }

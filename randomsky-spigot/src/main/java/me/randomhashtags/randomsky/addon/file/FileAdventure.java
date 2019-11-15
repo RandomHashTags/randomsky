@@ -5,7 +5,7 @@ import me.randomhashtags.randomsky.addon.adventure.AdventureMap;
 import me.randomhashtags.randomsky.addon.obj.AdventureMapObj;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +22,7 @@ public class FileAdventure extends RSAddon implements Adventure {
 
     public FileAdventure(File f) {
         load(f);
-        newRSStorage.register(Feature.ADVENTURE, this);
+        RSStorage.register(Feature.ADVENTURE, this);
     }
 
     public String getIdentifier() { return getYamlName(); }
@@ -44,7 +44,7 @@ public class FileAdventure extends RSAddon implements Adventure {
     public AdventureMap getRequiredMap() {
         if(map == null && yml.get("map") != null) {
             final AdventureMap map = new AdventureMapObj(getIdentifier(), api.d(yml, "map"), yml.getString("map.found in"));
-            newRSStorage.register(Feature.ADVENTURE_MAP, map);
+            RSStorage.register(Feature.ADVENTURE_MAP, map);
             this.map = map;
         }
         return map;

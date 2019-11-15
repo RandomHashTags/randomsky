@@ -1,0 +1,33 @@
+# Made by RandomHashTags
+appearance: "&e&lI&r "
+#
+item:
+  item: "nether_star"
+  name: "&6&lPlayer Rank (&r&e&lI&r&6&l)"
+  lore:
+    - "&7Click to unlock access to"
+    - "&7the Player Rank \"&e&lI&r&7\"!"
+    - " "
+    - "&6&l*&r &f/kit rank &e&lI"
+    - "&6&l*&r &f1x 54-slot /pv"
+    - "&6&l*&r &f/ah limit of 3 listings"
+    - "&6&l*&r &f/sethome up to 2 times"
+    - "&6&l*&r &fJoin up to 6 player islands"
+    - "&6&l*&r &fInvite up to 12 players to your island"
+    - "&6&l*&r &fChat cooldown reduced to 2s"
+    - "&6&l*&r &f/msg cooldown reduced to 1s"
+    - "&6&l*&r &f/craft"
+    - "&6&l*&r &f/tpahere"
+    - "&6&l*&r &f/combine"
+    - " "
+    - "&6&lBonus:&r &6&n+1&r &6Skill Level Tokens"
+    - "&7Redeemable with /skills"
+#
+attributes:
+  - "addPerm{RandomSky.kit.I}"
+  - "addPerm{RandomSky.ah.3}"
+  - "addPerm{RandomSky.sethome.2}"
+  - "addPerm{RandomSky.combine}"
+  - "addPerm{Essentials.craft}"
+  - "addPerm{Essentials.tpahere}"
+  - "Redeem{giveItem{skilltoken}}"

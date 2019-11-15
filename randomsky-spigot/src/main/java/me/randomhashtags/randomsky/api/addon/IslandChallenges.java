@@ -7,7 +7,7 @@ import me.randomhashtags.randomsky.addon.island.IslandChallenge;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -77,11 +77,11 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
             item.setItemMeta(itemMeta);
             gi.setItem(c.getSlot(), item);
         }
-        sendConsoleMessage("&6{RandomSky] &aLoaded " + newRSStorage.getAll(Feature.ISLAND_CHALLENGE).size() + " Island Challenges &e(took " + (System.currentTimeMillis()-a) + "ms)");
+        sendConsoleMessage("&6{RandomSky] &aLoaded " + RSStorage.getAll(Feature.ISLAND_CHALLENGE).size() + " Island Challenges &e(took " + (System.currentTimeMillis()-a) + "ms)");
     }
 
     public void unload() {
-        newRSStorage.unregisterAll(Feature.ISLAND_CHALLENGE);
+        RSStorage.unregisterAll(Feature.ISLAND_CHALLENGE);
     }
 
     public void viewChallenges(Player player) {

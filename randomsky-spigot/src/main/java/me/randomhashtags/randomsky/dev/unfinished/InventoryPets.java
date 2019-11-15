@@ -3,7 +3,7 @@ package me.randomhashtags.randomsky.dev.unfinished;
 import me.randomhashtags.randomsky.addon.file.FileInventoryPet;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.event.Listener;
 
 import java.io.File;
@@ -31,9 +31,9 @@ public class InventoryPets extends RSFeature implements Listener {
             new FileInventoryPet(f);
         }
         final HashMap<String, InventoryPet> p = InventoryPet.pets;
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + newRSStorage.getAll(Feature.INVENTORY_PET).size() + " Inventory Pets &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.INVENTORY_PET).size() + " Inventory Pets &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        newRSStorage.unregisterAll(Feature.INVENTORY_PET);
+        RSStorage.unregisterAll(Feature.INVENTORY_PET);
     }
 }

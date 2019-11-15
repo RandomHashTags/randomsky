@@ -1,11 +1,13 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.PlayerRank;
+import me.randomhashtags.randomsky.addon.util.Identifiable;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +20,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
 
 import java.io.File;
+
+import static java.io.File.separator;
 
 public class PlayerRanks extends RSFeature implements CommandExecutor {
     private static PlayerRanks instance;
@@ -42,12 +47,10 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "player ranks.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "player ranks.yml"));
-        int loaded = 0;
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "player ranks", "_settings.yml"));
         for(String s : config.getConfigurationSection("ranks").getKeys(false)) {
             final String p = "ranks." + s + ".";
             new PlayerRank(s, colorize(config.getString(p + "appearance")), d(config, "ranks." + s), config.getStringList(p + "attributes"));
-            loaded++;
         }
 
         perm = VaultAPI.getVaultAPI().perms;
@@ -58,9 +61,9 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
         final Inventory gi = gui.getInventory();
         for(String s : config.getConfigurationSection("gui").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size") && !s.equals("background")) {
-                final PlayerRank r = PlayerRank.paths.getOrDefault(config.getString("gui." + s + ".rank"), null);
-                if(r != null) {
-                    gi.setItem(config.getInt("gui." + s + ".slot"), r.item());
+                final Identifiable i = RSStorage.get(Feature.PLAYER_RANK, config.getString("gui." + s + ".rank"));
+                if(i != null) {
+                    gi.setItem(config.getInt("gui." + s + ".slot"), ((PlayerRank) i).getItem());
                 }
             }
         }
@@ -70,10 +73,10 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
             }
         }
 
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Player Ranks &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.PLAYER_RANK).size() + " Player Ranks &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        playerranks = null;
+        RSStorage.unregisterAll(Feature.PLAYER_RANK);
     }
 
     public void viewRanks(Player player) {
@@ -131,7 +134,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
     private void inventoryClickEvent(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
         final Inventory top = player.getOpenInventory().getTopInventory();
-        if(top.getHolder() == player && top.getTitle().equals(gui.getTitle())) {
+        if(top.getHolder() == player && event.getView().getTitle().equals(gui.getTitle())) {
             event.setCancelled(true);
             player.updateInventory();
             final int r = event.getRawSlot();

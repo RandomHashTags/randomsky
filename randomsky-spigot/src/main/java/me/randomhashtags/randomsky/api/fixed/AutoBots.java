@@ -1,10 +1,12 @@
-package me.randomhashtags.randomsky.dev.unfinished;
+package me.randomhashtags.randomsky.api.fixed;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandBot;
 import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +20,8 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.io.File.separator;
 
 public class AutoBots extends RSFeature implements CommandExecutor {
     // TODO: finish this feature
@@ -41,7 +45,7 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "auto bots/_settings.yml");
+        save(dataFolder + separator + "auto bots", "_settings.yml");
         if(!otherdata.getBoolean("saved default auto bot upgrades")) {
             final String[] a = new String[]{""};
             for(String s : a) save("auto bot upgrades", s + ".yml");
@@ -55,17 +59,16 @@ public class AutoBots extends RSFeature implements CommandExecutor {
             saveOtherData();
         }
 
-        gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
 
         viewingbot = new HashMap<>();
         editingbotinventory = new HashMap<>();
         upgradingbot = new HashMap<>();
 
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + (autobots != null ? autobots.size() : 0) + " Auto Bots and (" + (autobotupgrades != null ? autobotupgrades.size() : 0) + ") Auto Bot Upgrades &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.AUTO_BOT).size() + " Auto Bots and " + RSStorage.getAll(Feature.AUTO_BOT_UPGRADE).size() + " Auto Bot Upgrades &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        autobots = null;
-        autobotupgrades = null;
+        RSStorage.unregisterAll(Feature.AUTO_BOT, Feature.AUTO_BOT_UPGRADE);
     }
 
     public void viewBots(Player player) {
@@ -79,7 +82,7 @@ public class AutoBots extends RSFeature implements CommandExecutor {
         viewingbot.put(player, bot);
         editingbotinventory.put(bot, Arrays.asList(player));
     }
-    public void tryUpgrading(Player player, ActiveIslandBot bot, AutoBotUpgrade upgrade) {
+    public void tryUpgrading(@NotNull Player player, @NotNull ActiveIslandBot bot, @NotNull AutoBotUpgrade upgrade) {
         final HashMap<AutoBotUpgrade, Integer> upgrades = bot.getUpgrades();
         if(upgrades.containsKey(upgrade)) {
         }

@@ -1,58 +1,36 @@
 package me.randomhashtags.randomsky.util;
 
-import me.randomhashtags.randomsky.addon.*;
-import me.randomhashtags.randomsky.addon.adventure.Adventure;
-import me.randomhashtags.randomsky.addon.bot.AutoBot;
-import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
-import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
-import me.randomhashtags.randomsky.addon.enchant.CustomEnchantRarity;
-import me.randomhashtags.randomsky.addon.island.IslandSkill;
-import me.randomhashtags.randomsky.addon.realm.RealmEvent;
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
-import me.randomhashtags.randomsky.util.universal.UVersion;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public abstract class RSStorage extends UVersion {
-    protected static LinkedHashMap<String, Adventure> adventures;
-    protected static LinkedHashMap<String, AutoBot> autobots;
-    protected static LinkedHashMap<String, AutoBotUpgrade> autobotupgrades;
-    protected static LinkedHashMap<String, CustomEnchant> customenchantdisabled, customenchantenabled;
-    protected static LinkedHashMap<String, CustomEnchantRarity> customenchantrarities;
-    protected static LinkedHashMap<String, FarmingRecipe> farmingrecipes;
-    protected static LinkedHashMap<String, FilterCategory> filtercategories;
-    protected static LinkedHashMap<String, IslandSkill> islandskills;
-    protected static LinkedHashMap<String, Kit> kits;
-    protected static LinkedHashMap<String, Outpost> outposts;
-    protected static LinkedHashMap<String, PermissionBlock> permissionblocks;
-    protected static LinkedHashMap<String, PlayerRank> playerranks;
-    protected static LinkedHashMap<String, PlayerSkill> playerskills;
-    protected static LinkedHashMap<String, RealmEvent> realmevents;
-    protected static LinkedHashMap<String, RepairScroll> repairscrolls;
-    protected static LinkedHashMap<String, ResourceNode> resourcenodes;
-    protected static LinkedHashMap<String, ShopCategory> shopcategories;
+public final class RSStorage {
+    private static HashMap<Feature, HashMap<String, Identifiable>> FEATURES = new HashMap<>();
 
-    private void register(Identifiable object, String identity, Map tree) throws Exception {
-        final String i = object.getIdentifier();
-        if(tree.containsKey(i) || tree.containsValue(object)) {
-            throw new Exception(identity + " with identifier \"" + i + "\" is already registered!");
-        } else {
-            tree.put(i, object);
+    public static void register(Feature f, @NotNull Identifiable obj) {
+        if(!FEATURES.containsKey(f)) {
+            FEATURES.put(f, new HashMap<>());
         }
+        FEATURES.get(f).put(obj.getIdentifier(), obj);
     }
-    private void reg(Identifiable i, String identity, Map tree) {
-        if(tree == null) tree = new LinkedHashMap<>();
-        try {
-            register(i, identity, tree);
-        } catch(Exception e) {
-            e.printStackTrace();
+    public static void unregister(Feature f, @NotNull Identifiable obj) {
+        if(FEATURES.containsKey(f)) {
+            FEATURES.get(f).remove(obj.getIdentifier());
         }
     }
 
-    public FilterCategory getFilterCategory(String identifier) { return filtercategories != null ? filtercategories.get(identifier) : null; }
-    public void addFilterCategory(FilterCategory category) { reg(category, "Filter Category", filtercategories); }
-
-    public RepairScroll getRepairScroll(String identifier) { return repairscrolls != null ? repairscrolls.get(identifier) : null; }
-    public void addRepairScroll(RepairScroll scroll) { reg(scroll, "Repair Scroll", repairscrolls); }
+    public static Identifiable get(Feature f, @NotNull String identifier) {
+        return FEATURES.containsKey(f) ? FEATURES.get(f).getOrDefault(identifier, null) : null;
+    }
+    public static List<Identifiable> getAll(Feature f) {
+        return FEATURES.containsKey(f) ? new ArrayList<>(FEATURES.get(f).values()) : new ArrayList<>();
+    }
+    public static void unregisterAll(Feature...features) {
+        for(Feature f : features) {
+            FEATURES.remove(f);
+        }
+    }
 }

@@ -29,7 +29,7 @@ public class IslandItemRecipes extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "island farming.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rsd, "island farming.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island farming.yml"));
 
         int loaded = 0;
         for(String s : config.getConfigurationSection("").getKeys(false)) {

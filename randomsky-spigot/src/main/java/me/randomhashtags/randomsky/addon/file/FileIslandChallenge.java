@@ -4,7 +4,7 @@ import me.randomhashtags.randomsky.addon.island.IslandChallenge;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -18,7 +18,7 @@ public class FileIslandChallenge extends RSAddon implements IslandChallenge {
 
     public FileIslandChallenge(File f) {
         load(f);
-        newRSStorage.register(Feature.ISLAND_CHALLENGE, this);
+        RSStorage.register(Feature.ISLAND_CHALLENGE, this);
     }
 
     public String getIdentifier() { return getYamlName(); }
@@ -30,7 +30,7 @@ public class FileIslandChallenge extends RSAddon implements IslandChallenge {
     }
     public IslandChallenge getRequired() {
         if(required == null && yml.get("settings.requires completed challenge") != null) {
-            final Identifiable i = newRSStorage.get(Feature.ISLAND_CHALLENGE, yml.getString("settings.requires completed challenge"));
+            final Identifiable i = RSStorage.get(Feature.ISLAND_CHALLENGE, yml.getString("settings.requires completed challenge"));
             if(i != null) {
                 required = (IslandChallenge) i;
             }

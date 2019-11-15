@@ -2,7 +2,9 @@ package me.randomhashtags.randomsky.addon.file;
 
 import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.RepairScroll;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -17,7 +19,7 @@ public class FileRepairScroll extends RSAddon implements RepairScroll {
 
     public FileRepairScroll(File f) {
         load(f);
-        addRepairScroll(this);
+        RSStorage.register(Feature.REPAIR_SCROLL, this);
     }
     public String getIdentifier() { return getYamlName(); }
 

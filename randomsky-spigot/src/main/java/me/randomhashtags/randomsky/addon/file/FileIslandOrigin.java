@@ -3,7 +3,7 @@ package me.randomhashtags.randomsky.addon.file;
 import me.randomhashtags.randomsky.addon.island.IslandOrigin;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,7 +20,7 @@ public class FileIslandOrigin extends RSAddon implements IslandOrigin {
 
     public FileIslandOrigin(File f) {
         load(f);
-        newRSStorage.register(Feature.ISLAND_ORIGIN, this);
+        RSStorage.register(Feature.ISLAND_ORIGIN, this);
     }
 
     public String getIdentifier() { return getYamlName(); }

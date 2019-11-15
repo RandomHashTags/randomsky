@@ -4,6 +4,7 @@ import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import me.randomhashtags.randomsky.addon.util.Loadable;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.util.universal.UVersion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,7 +30,7 @@ import java.util.TreeMap;
 
 import static java.io.File.separator;
 
-public abstract class RSFeature extends RSStorage implements Listener, Loadable, Mathable {
+public abstract class RSFeature extends UVersion implements Listener, Loadable, Mathable {
     private boolean isEnabled = false;
     private static boolean mcmmoIsEnabled = false;
     public boolean isEnabled() { return isEnabled; }

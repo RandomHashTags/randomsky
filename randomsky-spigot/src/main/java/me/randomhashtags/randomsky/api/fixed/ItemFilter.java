@@ -5,7 +5,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.addon.file.FileFilterCategory;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.newRSStorage;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.Bukkit;
@@ -98,7 +98,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded Item Filter &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        newRSStorage.unregisterAll(Feature.FILTER_CATEGORY);
+        RSStorage.unregisterAll(Feature.FILTER_CATEGORY);
     }
 
     public void viewHelp(Player player) {

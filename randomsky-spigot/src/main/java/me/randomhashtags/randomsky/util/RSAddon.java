@@ -1,14 +1,16 @@
 package me.randomhashtags.randomsky.util;
 
 import me.randomhashtags.randomsky.RandomSkyAPI;
+import me.randomhashtags.randomsky.util.universal.UVersion;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public abstract class RSAddon extends RSStorage {
+public abstract class RSAddon extends UVersion {
     protected RandomSkyAPI api = RandomSkyAPI.getAPI();
     protected File file;
     protected YamlConfiguration yml;
+    private String ymlName;
     public void load(File file) {
         if(!file.exists()) {
         }
@@ -17,7 +19,12 @@ public abstract class RSAddon extends RSStorage {
     }
     public File getFile() { return file; }
     public YamlConfiguration getYaml() { return yml; }
-    public String getYamlName() { return file.getName().split("\\.yml")[0]; }
+    public String getYamlName() {
+        if(ymlName == null) {
+            ymlName = file.getName().split("\\.yml")[0];
+        }
+        return ymlName;
+    }
 
     public void save() {
         try {

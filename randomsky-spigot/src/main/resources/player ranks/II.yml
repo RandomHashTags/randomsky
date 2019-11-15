@@ -1,0 +1,36 @@
+# Made by RandomHashTags
+appearance: "&a&lII&r "
+#
+item:
+  item: "nether_star"
+  name: "&6&lPlayer Rank (&r&a&lII&r&6&l)"
+  lore:
+    - "&7Click to unlock access to"
+    - "&7the Player Rank \"&a&lII&r&7\"!"
+    - " "
+    - "&6&l*&r &f/kit rank &a&lII"
+    - "&6&l*&r &f2x 54-slot /pv"
+    - "&6&l*&r &f/ah limit of 4 listings"
+    - "&6&l*&r &f/sethome up to 3 times"
+    - "&6&l*&r &fJoin up to 10 player islands"
+    - "&6&l*&r &fInvite up to 14 players to your island"
+    - "&6&l*&r &fChat cooldown reduced to 2s"
+    - "&6&l*&r &f/msg cooldown reduced to 1s"
+    - "&6&l*&r &f/craft, /tpahere, /combine"
+    - "&6&l*&r &f/feed (10m cooldown)"
+    - "&6&l*&r &f/tinkerer"
+    - "&6&l*&r &fAbility to create [DISPOSAL] signs"
+    - " "
+    - "&6&lBonus:&r &6&n+2&r &6Skill Level Tokens"
+    - "&7Redeemable with /skills"
+#
+attributes:
+  - "addPerm{RandomSky.kit.II}"
+  - "addPerm{RandomSky.ah.4}"
+  - "addPerm{RandomSky.sethome.3}"
+  - "addPerm{RandomSky.combine}"
+  - "addPerm{RandomSky.tinkerer}"
+  - "addPerm{Essentials.craft}"
+  - "addPerm{Essentials.tpahere}"
+  - "addPerm{Essentials.feed}"
+  - "Redeem{giveItem{skilltoken;amount=2}}"
