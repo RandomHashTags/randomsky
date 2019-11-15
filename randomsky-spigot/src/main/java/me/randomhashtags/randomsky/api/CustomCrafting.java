@@ -20,8 +20,6 @@ import org.bukkit.inventory.*;
 import java.io.File;
 import java.util.*;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class CustomCrafting extends RSFeature implements CommandExecutor {
     private static CustomCrafting instance;
     public static CustomCrafting getCustomCrafting() {
@@ -45,12 +43,11 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "custom crafting.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "custom crafting.yml"));
+        save(null, "custom crafting/_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "custom crafting/_settings.yml"));
         removeRecipes = config.getStringList("remove recipes");
         recipes = new HashMap<>();
 
-        final Server server = getServer();
         final Iterator<Recipe> a = server.recipeIterator();
         final List<Recipe> b = new ArrayList<>();
         while(a.hasNext()) {
@@ -110,13 +107,18 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
 
     protected void createRecipe(String path) {
         final String p = "custom recipes." + path + ".";
-        final String type = config.getString(p + "type");
+        final String type = config.getString(p + "type", "");
         final ItemStack result = d(null, config.getString(p + "result"));
         final String P = path.replace(" ", "_");
-        if(type.equals("SHAPED")) {
-            createShapedRecipe(path, p, P, result);
-        } else if(type.equals("SHAPELESS")) {
-            createShapelessRecipe(path, p, P, result);
+        switch (type) {
+            case "SHAPED":
+                createShapedRecipe(path, p, P, result);
+                break;
+            case "SHAPELESS":
+                createShapelessRecipe(path, p, P, result);
+                break;
+            default:
+                break;
         }
     }
     protected void createShapedRecipe(String path, String p, String P, ItemStack result) {

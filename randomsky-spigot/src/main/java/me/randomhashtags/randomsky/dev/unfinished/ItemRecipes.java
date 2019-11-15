@@ -17,9 +17,9 @@ public class ItemRecipes extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "item recipes.yml");
+        save(null, "item recipes/_settings.yml");
 
-        config = YamlConfiguration.loadConfiguration(new File(rsd, "item recipes.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(rsd, "item recipes/_settings.yml"));
 
         for(String s : config.getConfigurationSection("recipes").getKeys(false)) {
             new ItemRecipe(s);

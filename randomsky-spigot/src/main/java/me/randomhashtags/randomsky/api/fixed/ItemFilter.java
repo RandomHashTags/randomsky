@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api;
+package me.randomhashtags.randomsky.api.fixed;
 
 import me.randomhashtags.randomsky.addon.FilterCategory;
 import me.randomhashtags.randomsky.util.Feature;
@@ -52,11 +52,16 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         if(l == 0) {
             viewHelp(player);
         } else {
-            final String a = args[0];
-            if(a.equals("toggle")) {
-                toggleFilter(player);
-            } else if(a.equals("edit")) {
-                viewCategories(player);
+            switch (args[0]) {
+                case "toggle":
+                    toggleFilter(player);
+                    break;
+                case "edit":
+                    viewCategories(player);
+                    break;
+                default:
+                    viewHelp(player);
+                    break;
             }
         }
         return true;
@@ -64,8 +69,8 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "item filter.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "item filter.yml"));
+        save(null, "filter categories/_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "filter categories", "_settings.yml"));
 
         categorySlots = new HashMap<>();
 

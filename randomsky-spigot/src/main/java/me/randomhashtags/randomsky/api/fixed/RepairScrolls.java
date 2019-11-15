@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api;
+package me.randomhashtags.randomsky.api.fixed;
 
 import me.randomhashtags.randomsky.addon.RepairScroll;
 import me.randomhashtags.randomsky.util.Feature;
@@ -31,8 +31,8 @@ public class RepairScrolls extends RSFeature implements Listener {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "repair scrolls.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "repair scrolls.yml"));
+        save(null, "repair scrolls/_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "repair scrolls/_settings.yml"));
         final File folder = new File(dataFolder + separator + "repair scrolls");
         if(folder.exists()) {
             for(File f : folder.listFiles()) {

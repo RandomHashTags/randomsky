@@ -4,7 +4,6 @@ import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -62,8 +61,8 @@ public class Kits extends RSFeature implements Listener {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "kits.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "kits.yml"));
+        save(null, "kits/_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "kits/_settings.yml"));
 
         back = d(config, "back");
         format = colorizeListString(config.getStringList("lores.format"));

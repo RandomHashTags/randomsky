@@ -1,5 +1,7 @@
 package me.randomhashtags.randomsky.addon.island;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
@@ -7,24 +9,24 @@ import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.addon.util.Attributable;
+import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.addon.util.Loadable;
 import me.randomhashtags.randomsky.util.obj.PolyBoundary;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-public interface Island extends Attributable, Loadable {
+public interface Island extends Identifiable, Attributable, Loadable {
     boolean isLoaded();
     UUID getUUID();
     long getCreatedTime();
     UUID getCreator();
     boolean isOpenToPublic();
-    IslandLevel getLevel();
+    IslandLevel getIslandLevel();
     IslandOrigin getOrigin();
     PolyBoundary getCurrentBoundary();
     PolyBoundary getMaxBoundary();
@@ -51,13 +53,15 @@ public interface Island extends Attributable, Loadable {
     }
 
     TreeMap<String, Location> getLocations();
-    default boolean setLocation(String identifier, Location l) {
+    default void setLocation(@NotNull String identifier, @Nullable Location l) {
         final TreeMap<String, Location> a = getLocations();
-        boolean b = a != null, exists = b && a.containsKey(identifier);
-        if(b) a.put(identifier, l);
-        return exists;
+        if(l == null) {
+            a.remove(identifier);
+        } else if(a != null) {
+            a.put(identifier, l);
+        }
     }
-    default Location getLocation(String identifier) {
+    default Location getLocation(@NotNull String identifier) {
         final TreeMap<String, Location> l = getLocations();
         return l != null ? l.get(identifier) : null;
     }
@@ -66,7 +70,6 @@ public interface Island extends Attributable, Loadable {
     default Location getWarp() { return getLocation("warp"); }
 
     List<UUID> getBannedPlayers();
-    List<PotionEffectType> getImmuneTo();
 
     HashMap<ResourceNode, BigDecimal> getMinedResourceNodes();
     HashMap<ResourceNode, Double> getResourceNodeRespawnRates();

@@ -2,7 +2,6 @@ package me.randomhashtags.randomsky.dev.unfinished;
 
 import me.randomhashtags.randomsky.addon.active.ActiveIslandBot;
 import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
-import me.randomhashtags.randomsky.addon.island.IslandUpgrade;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.ChatColor;
@@ -42,7 +41,7 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "auto bots.yml");
+        save(null, "auto bots/_settings.yml");
         if(!otherdata.getBoolean("saved default auto bot upgrades")) {
             final String[] a = new String[]{""};
             for(String s : a) save("auto bot upgrades", s + ".yml");

@@ -18,4 +18,13 @@ public abstract class RSAddon extends RSStorage {
     public File getFile() { return file; }
     public YamlConfiguration getYaml() { return yml; }
     public String getYamlName() { return file.getName().split("\\.yml")[0]; }
+
+    public void save() {
+        try {
+            yml.save(file);
+            yml = YamlConfiguration.loadConfiguration(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

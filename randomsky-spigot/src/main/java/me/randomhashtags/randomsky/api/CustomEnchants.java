@@ -1,6 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.newRSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,12 +19,12 @@ public class CustomEnchants extends RSFeature {
     private UInventory gemForgeExamine, gemForgeApply, gemForgeRemove;
 
     public void load() {
+        final long started = System.currentTimeMillis();
         save(null, "custom enchants.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "custom enchants.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "custom enchants.yml"));
+        sendConsoleMessage("&6[RandomSky] &aLoaded Custom Enchants &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        customenchantrarities = null;
-        customenchantenabled = null;
-        customenchantdisabled = null;
+        newRSStorage.unregisterAll(Feature.CUSTOM_ENCHANT, Feature.CUSTOM_ENCHANT_RARITY);
     }
 }

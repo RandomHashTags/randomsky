@@ -3,10 +3,7 @@ package me.randomhashtags.randomsky.util.universal;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.RandomSky;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -24,6 +21,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public interface UVersionable {
+    Server server = Bukkit.getServer();
     BukkitScheduler scheduler = Bukkit.getScheduler();
     ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     PluginManager pluginmanager = Bukkit.getPluginManager();
