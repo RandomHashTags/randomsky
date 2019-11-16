@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 1
+#
+cost:
+  - "$2500"
+#
+rewards:
+  - "SpawnerLimit=25"
+  - "IslandRadius=20"
+  - "AllowPlacement{Furnace}"
+  - "MaxMembers=11"

@@ -82,6 +82,7 @@ public class FileIsland extends RSAddon implements Island {
         return creator;
     }
     public boolean isOpenToPublic() { return isOpenToPublic; }
+    public void setOpenToPublic(boolean isOpenToPublic) { this.isOpenToPublic = isOpenToPublic; }
     public IslandLevel getIslandLevel() {
         if(level == null) {
             level = (IslandLevel) RSStorage.get(Feature.ISLAND_LEVEL, getStringSettings()[0]);

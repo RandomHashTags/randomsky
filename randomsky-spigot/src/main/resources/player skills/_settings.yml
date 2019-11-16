@@ -1,0 +1,89 @@
+# Made by RandomHashTags
+messages:
+  help:
+    - " "
+    - "&b&lPlayer Skills"
+    - "&7You can view your Player Skills at anytime with &f/skills&7. There"
+    - " &7are currently 3 different skill categories, each with its own"
+    - " &7unique perks and bonuses:"
+    - " &b&l*&r &fIsland"
+    - " &b&l*&r &fPvE"
+    - " &b&l*&r &fPvP"
+    - "&7To level up your /skills, you need to obtain &fPlayer Skill Tokens."
+    - " &7These can be purchased from other players, bought"
+    - " &7individually at &f&nbuy.yourserver.com&r&7, and whenever you redeem a"
+    - " &7new premium rank."
+    - " "
+    - "&7You myst have all previous perks in the category &nAND&r &7the"
+    - " &7same tier rank (or higher) than the perk level you are"
+    - " &7attempting to unlock. (i.e. You need Rank &e&lV&r &7to unlock any"
+    - " &7Level 5 skill."
+  redeem token:
+    - "&a&ll+&r &a1 Player Skill Unlock Token"
+    - "&7Access your Player Levels with /skills!"
+  #
+  dont have any tokens:
+    - "&c&l(!)&r &cYou do not have any skill unlock tokens available!"
+    - "&7Unlock some at &nbuy.yourserver.com&r&7!"
+  must unlock previous level:
+    - "&c&l(!)&r &cYou must unlock {TYPE} Skill Level {LEVEL} before unlocking this skill perk!"
+  advanced skill:
+    - "&a&l(!)&r &aYou have advanced your {TYPE} Skill &ato &eLevel {LEVEL}&a!"
+    - "&a&lPerk:&r &7{PERK}"
+#
+items:
+  token:
+    item: "magma_cream"
+    name: "&6&lPlayer Skill Token (&r&7Right-Click&6&l)"
+    lore:
+      - "&7Click to gain &6+1 &7Player"
+      - "&7Skill token which can"
+      - "&7be redeemed in /skills!"
+  shard:
+    item: "orange_dye"
+    name: "&6&lSkill Token Shard"
+    lore:
+      - "&7Combine with &n9 Skill Token Shards"
+      - "&7to create a &6&lSkill Token!"
+#
+gui:
+  title: "Player Levels ({TOKENS} Tokens)"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  back:
+    item: "barrier"
+    name: "&c&lMain Menu"
+    lore:
+      - "&7Click to return to"
+      - "&7the main class menu."
+  #
+  levels:
+    slot: 3
+    skill: ISLAND
+  pve:
+    slot: 4
+    skill: PVE
+  pvp:
+    slot: 5
+    skill: PVP
+#
+settings:
+  title: "Player Levels ({TOKENS} Tokens)"
+  size: 9
+  #
+  added lore:
+    - " "
+    - "&7Click to access a detailed"
+    - "&7view of each skill perk."
+  #
+  unlocked prefix: "&a&l"
+  unlocked level status: "&m"
+  unlocked:
+    - " "
+    - "&a&lUNLOCKED"
+  click to unlock:
+    - " "
+    - "&7Click to unlock this level!"
+    - "&c&lLOCKED (&r&7Requires &f&l{REQ_LEVEL}&r&c&l)"

@@ -4,6 +4,8 @@ import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -51,32 +53,34 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         plantGrownSentWhenEndsIn = new ArrayList<>();
         viewing = new ArrayList<>();
 
-        for(String s : config.getString("messages.plant grown sent when ends in").split(";")) plantGrownSentWhenEndsIn.add(Integer.parseInt(s));
+        for(String s : config.getString("messages.plant grown sent when ends in").split(";")) {
+            plantGrownSentWhenEndsIn.add(Integer.parseInt(s));
+        }
         final List<String> settingsFormat = colorizeListString(config.getStringList("info.settings.format"));
         completedStatus = colorizeListString(config.getStringList("info.settings.completed.status"));
         lockedStatus = colorizeListString(config.getStringList("info.settings.locked.status"));
         inprogressStatus = colorizeListString(config.getStringList("info.settings.in progress.status"));
         farmingRecipe = colorizeListString(config.getStringList("info.settings.farming recipe"));
-        needsRecipe = ChatColor.translateAlternateColorCodes('&', config.getString("info.settings.needs recipe"));
-        hasRecipe = ChatColor.translateAlternateColorCodes('&', config.getString("info.settings.has recipe"));
+        needsRecipe = colorize(config.getString("info.settings.needs recipe"));
+        hasRecipe = colorize(config.getString("info.settings.has recipe"));
 
-        completedPrefix = ChatColor.translateAlternateColorCodes('&', config.getString("info.settings.completed.prefix"));
-        lockedPrefix = ChatColor.translateAlternateColorCodes('&', config.getString("info.settings.locked.prefix"));
-        inprogressPrefix = ChatColor.translateAlternateColorCodes('&', config.getString("info.settings.in progress.prefix"));
+        completedPrefix = colorize(config.getString("info.settings.completed.prefix"));
+        lockedPrefix = colorize(config.getString("info.settings.locked.prefix"));
+        inprogressPrefix = colorize(config.getString("info.settings.in progress.prefix"));
 
         int loaded = 0;
         for(String s : config.getConfigurationSection("recipes").getKeys(false)) {
             if(!s.equals("default")) {
                 final String p = "recipes." + s + ".";
                 final ItemStack i = d(config, "recipes." + s);
-                new FarmingRecipe(s, ChatColor.translateAlternateColorCodes('&', config.getString(p + "recipe name")), UMaterial.valueOf(config.getString(p + "unlocks").toUpperCase()), i);
+                new FarmingRecipe(s, colorize(config.getString(p + "recipe name")), UMaterial.valueOf(config.getString(p + "unlocks").toUpperCase()), i);
                 loaded++;
             }
         }
         final String D = config.getString("recipes.default");
         for(String s : D.split("&&")) FarmingRecipe.defaults.add(FarmingRecipe.paths.get(s));
 
-        info = new UInventory(null, config.getInt("info.size"), ChatColor.translateAlternateColorCodes('&', config.getString("info.title")));
+        info = new UInventory(null, config.getInt("info.size"), colorize(config.getString("info.title")));
         final Inventory ii = info.getInventory();
         int level = 1;
         for(String s : config.getConfigurationSection("info.settings").getKeys(false)) {
@@ -84,7 +88,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 final String p = "info.settings." + s + ".", requiredSkill = config.getString(p + "required skill");
                 final int slot = config.getInt(p + "slot"), completionNumber = config.getInt(p + "completion");
                 final ItemStack display = d(config, "info.settings." + s);
-                new FarmingSkill(s, level, slot, completionNumber, ChatColor.translateAlternateColorCodes('&', config.getString(p + "type")), display, FarmingSkill.valueOf(requiredSkill), FarmingRecipe.valueOf(config.getString(p + "required recipe")));
+                new FarmingSkill(s, level, slot, completionNumber, colorize(config.getString(p + "type")), display, FarmingSkill.valueOf(requiredSkill), FarmingRecipe.valueOf(config.getString(p + "required recipe")));
                 item = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
                 if(completionNumber == 0 || requiredSkill == null) {
                     if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
@@ -101,9 +105,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Farming Recipes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        farmingrecipes = null;
-        FarmingSkill.deleteAll();
-        FarmingLimitIncrease.deleteAll();
+        RSStorage.unregisterAll(Feature.FARMING_RECIPE, Feature.FARMING_LIMIT_INCREASE);
     }
 
     public void viewFarming(Player player) {
@@ -141,7 +143,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                             }
                         } else if(s.equals("{FARMING_RECIPE}")) {
                             if(req != null && !isDefault) {
-                                final String R = isUnlocked ? hasRecipe : needsRecipe, reqN = req.recipeName;
+                                final String R = isUnlocked ? hasRecipe : needsRecipe, reqN = req.getRecipeName();
                                 for(String f : farmingRecipe) {
                                     lore.add(f.replace("{RECIPE_NAME}", reqN).replace("{HAS_RECIPE}", R));
                                 }
@@ -168,7 +170,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void blockGrowEvent(BlockGrowEvent event) {
         final Block b = event.getBlock();
-        if(!event.isCancelled() && b.getWorld().getName().equals(islandWorld)) {
+        if(b.getWorld().getName().equals(islandWorld)) {
             final Island is = Island.valueOf(b.getLocation());
             if(is != null) {
                 final UMaterial seed = fromBlock(event.getNewState().getData().toString());
@@ -275,15 +277,15 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 if(is == null) {
                     sendStringListMessage(player, settings.getStringList("messages.need island"), null);
                 } else {
-                    final List<FarmingRecipe> allowedCrops = is.allowedCrops;
+                    final List<FarmingRecipe> allowedCrops = is.getAllowedCrops();
                     if(!allowedCrops.contains(f)) {
                         final HashMap<String, String> replacements = new HashMap<>();
                         replacements.put("{PLAYER}", player.getName());
                         replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
-                        replacements.put("{TYPE}", f.recipeName);
+                        replacements.put("{TYPE}", f.getRecipeName());
                         removeItem(player, i, 1);
                         allowedCrops.add(f);
-                        is.cropsGrown.put(f, -1);
+                        is.getCropsGrown().put(f, null);
                         sendStringListMessage(player, config.getStringList("messages.unlocked recipe"), replacements);
                         player.updateInventory();
                     }
@@ -299,7 +301,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         final FarmingRecipe f = FarmingRecipe.valueOfSeed(UMaterial.match(i.getType().name(), i.getData().getData()));
         if(f != null) {
             final Island is = Island.valueOf(bl);
-            if(!is.allowedCrops.contains(f) || is.cropsGrown.getOrDefault(f, -1) == -1) {
+            if(!is.getAllowedCrops().contains(f) || is.getCropsGrown().getOrDefault(f, null) == null) {
                 event.setCancelled(true);
                 player.updateInventory();
             }

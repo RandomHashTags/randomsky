@@ -1,0 +1,75 @@
+# Made by RandomHashTags
+settings:
+  name: "&cPvP"
+  title: "PvP Skills"
+  max level: 5
+  slot: 5
+#
+level format:
+  - " &7&l{LEVEL}:&r &7{STATUS}{PERK}"
+#
+item:
+  item: "diamond_sword"
+  name: "&c&lPvP Skill"
+  lore:
+    - "&c&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&c&lLevels"
+    - "{LEVELS}"
+#
+levels:
+  1:
+    slot: 2
+    item: "melon_slice"
+    name: "Level 1"
+    lore:
+      - "&b&lPerk"
+      - " &7+2 Max HP"
+    perk: "+2 Max HP"
+    attributes:
+      - "PlayerSkillUnlock;addPotionEffect{health_boost:0:99999}"
+  2:
+    slot: 3
+    item: "redstone"
+    name: "Level 2"
+    lore:
+      - "&b&lPerk"
+      - " &7Bleed Passive"
+    perk: "Bleed Passive"
+    attributes:
+      - "PlayerSkillUnlock;"
+  3:
+    slot: 4
+    item: "shield"
+    name: "Level 3"
+    lore:
+      - "&b&lPerk"
+      - " &750% Chance to Ignore Shields"
+    perk: "50% Chance to Ignore Shields"
+    attributes:
+      - "PlayerSkillUnlock;"
+  4:
+    slot: 5
+    item: "anvil"
+    name: "Level 4"
+    lore:
+      - "&b&lPerk"
+      - " &72x Armor Durability"
+    perk: "2x Armor Durability"
+    attributes:
+      - "PlayerSkillUnlock;"
+  5:
+    slot: 6
+    item: "diamond_sword"
+    name: "Level 5"
+    lore:
+      - "&b&lPerk"
+      - " &7Duel Wield Ability"
+    perk: "Duel Wield Ability"
+    attributes:
+      - "PlayerSkillUnlock;"
+  back:
+    slot: 8
+    item: "back"
+#

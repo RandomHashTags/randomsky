@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 6
+#
+cost:
+  - "$1500000"
+#
+rewards:
+  - "SpawnerLimit=250"
+  - "IslandRadius=43"
+  - "AllowPlacement{Enchantment_Table}"

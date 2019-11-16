@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 5
+#
+cost:
+  - "$750000"
+#
+rewards:
+  - "SpawnerLimit=150"
+  - "IslandRadius=38"
+  - "AllowPlacement{Anvil}"
+  - "MaxMembers=13"

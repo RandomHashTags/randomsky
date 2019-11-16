@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 15
+#
+cost:
+  - "$1500000000"
+#
+rewards:
+  - "SpawnerLimit=3000"
+  - "IslandRadius=83"
+  - "MaxMembers=18"

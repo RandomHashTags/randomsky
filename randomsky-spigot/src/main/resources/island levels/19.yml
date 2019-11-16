@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 18
+#
+cost:
+  - "science:block:gold;amount=8"
+  - "$20000000000"
+#
+rewards:
+  - "SpawnerLimit=5500"
+  - "IslandRadius=96"
+  - "AllowPlacement{AutoCraftingBots;&bAuto Crafting Bots}"

@@ -1,0 +1,75 @@
+# Made by RandomHashTags
+settings:
+  name: "&eIsland"
+  title: "Island Skills"
+  max level: 5
+  slot: 3
+#
+level format:
+  - " &7&l{LEVEL}:&r &7{STATUS}{PERK}"
+#
+item:
+  item: "grass_block"
+  name: "&b&lIsland Skill"
+  lore:
+    - "&b&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&b&lLevels"
+    - "{LEVELS}"
+#
+levels:
+  1:
+    slot: 2
+    item: "experience_bottle"
+    name: "Level 1"
+    lore:
+      - "&b&lPerk"
+      - " &7+25% XP from Mob Spawner Mobs"
+    perk: "+25% XP from Mob Spawner Mobs"
+    attributes:
+      - ""
+  2:
+    slot: 3
+    item: "diamond_ore"
+    name: "Level 2"
+    lore:
+      - "&b&lPerk"
+      - " &7Resource Node Insta-respawn chance"
+    perk: "Resource Node Insta-respawn chance"
+    attributes:
+      - ""
+  3:
+    slot: 4
+    item: "diamond_sword"
+    name: "Level 3"
+    lore:
+      - "&b&lPerk"
+      - " &7/is skills level 200% faster"
+    perk: "/is skills level 200% faster"
+  4:
+    slot: 5
+    item: "feather"
+    name: "Level 4"
+    lore:
+      - "&b&lPerk"
+      - " &7Ability to /fly in all"
+      - " &7non-pvp zones"
+    perk: "/fly in all non-pvp zones"
+    attributes:
+      - ""
+  5:
+    slot: 6
+    item: "iron_chestplate"
+    name: "Level 5"
+    lore:
+      - "&b&lPerk"
+      - " &7-90% Durability loss in"
+      - " &7the island world"
+    perk: "-90% Durability loss in island world"
+    attributes:
+      - ""
+  back:
+    slot: 8
+    item: "back"
+#

@@ -3,10 +3,10 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.addon.ShopCategory;
 import me.randomhashtags.randomsky.addon.ShopItem;
 import me.randomhashtags.randomsky.addon.file.FileShopCategory;
+import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.classes.island.Island;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
@@ -161,7 +161,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         inventories.put(opens, i);
     }
     public void unload() {
-        shopcategories = null;
+        RSStorage.unregisterAll(Feature.SHOP_CATEGORY);
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {

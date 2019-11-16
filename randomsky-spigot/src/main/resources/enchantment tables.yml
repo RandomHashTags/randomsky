@@ -1,0 +1,99 @@
+# Made by RandomHashTags
+messages:
+  dont have required island level:
+    - "&c&l(!)&r &cYou do not have the required island level to purchase this enchantment book!"
+    - "&7Required Level: &n{REQUIRED}"
+    - "&7Your Island Level: &n{LEVEL}"
+  help:
+    - " "
+    - "&b&lEnchantment Tables"
+    - "&7Like in vanilla Minecraft, Enchantment Tables can be used to obtain vanilla enchantments"
+    - " &7for your equipment. However, instead of applying the enchantment directly to your"
+    - " &7equipment, &fyou exchange XP directly ^^for specific mystery books that are limited to a &fspecific item tier and type."
+    - " "
+    - "&7Once you obtain a book from the Enchantment Table, you can examine it to reveal the"
+    - " &7specific enchantment, then take it to an anvil to apply it to a matching item."
+    - " "
+  not enough exp:
+    - "&c&l(!)&r &cYou do not have enough EXP to purchase that."
+    - "&7Your XP: {XP}"
+#
+items:
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  locked:
+    item: "red_stained_glass_pane"
+    added lore:
+      - " "
+      - "&c&lLOCKED"
+      - "&cRequires Island Level &n{LEVEL}"
+#
+gui:
+  title: "Enchantments ({XP} EXP)"
+  size: 45
+  #
+  stone weapons:
+    slot: 1
+    item: "stone_sword"
+    name: "&f&lStone Weapons"
+  stone weapon enchant book:
+    required is level: 1
+    slot: 10
+  stone tools:
+    slot: 2
+    item: "stone_pickaxe"
+    name: "&f&lStone Tools"
+  stone tools enchant book:
+    required is level: 1
+    slot: 11
+  chainmail armor:
+    slot: 3
+    item: "chainmail_chestplate"
+    name: "&f&lChainmail Chestplate"
+  stone armor enchant book:
+    required is level: 3
+    slot: 12
+  iron weapons:
+    slot: 5
+    item: "iron_sword"
+    name: "&b&lIron Weapons"
+  iron weapon enchant book:
+    required is level: 6
+    slot: 14
+  iron tools:
+    slot: 6
+    item: "iron_pickaxe"
+    name: "&b&lIron Tools"
+  iron tool enchant book:
+    required is level: 7
+    slot: 15
+  iron armor:
+    slot: 7
+    item: "iron_chestplate"
+    name: "&b&lIron Armor"
+  iron armor enchant book:
+    required is level: 10
+    slot: 16
+  diamond weapons:
+    slot: 30
+    item: "diamond_sword"
+    name: "&e&lDiamond Weapons"
+  diamond weapon enchant book:
+    required is level: 12
+    slot: 39
+  diamond tools:
+    slot: 31
+    item: "diamond_pickaxe"
+    name: "&e&lDiamond Tools"
+  diamond tool enchant book:
+    required is level: 13
+    slot: 40
+  diamond armor:
+    slot: 32
+    item: "diamond_chestplate"
+    name: "&e&lDiamond Armor"
+  diamond armor enchant book:
+    requires is level: 13
+    slot: 41
+#

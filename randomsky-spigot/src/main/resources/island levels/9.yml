@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+slot: 8
+#
+cost:
+  - "$20000000"
+#
+rewards:
+  - "SpawnerLimit=750"
+  - "IslandRadius=52"

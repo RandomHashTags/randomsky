@@ -2,11 +2,13 @@ package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.PlayerSkillLevel;
+import me.randomhashtags.randomsky.addon.file.FilePlayerSkill;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,12 +21,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
+
+import static java.io.File.separator;
 
 public class PlayerSkills extends RSFeature implements CommandExecutor {
     private static PlayerSkills instance;
@@ -37,7 +39,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
 
     private UInventory gui;
     private ItemStack background, back;
-    public ItemStack token, shard;
+    private ItemStack token, shard;
 
     private HashMap<PlayerSkill, UInventory> skills;
     private HashMap<Player, PlayerSkill> viewing;
@@ -60,8 +62,8 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "player skills.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "player skills.yml"));
+        save(dataFolder + separator + "player skills", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "player skills", "_settings.yml"));
 
         skills = new HashMap<>();
         viewing = new HashMap<>();
@@ -72,63 +74,10 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         back = d(config, "gui.back");
         token = d(config, "items.token");
         shard = d(config, "items.shard");
-        int loaded = 0;
-        for(String s : config.getConfigurationSection("skills").getKeys(false)) {
-            if(!s.equals("settings")) {
-                final String p = "skills." + s + ".";
-                final int slot = config.getInt(p + "slot");
-                final ItemStack display = d(config, "skills." + s);
-                final PlayerSkill ps = new PlayerSkill(s, config.getInt(p + "max level"), slot, display);
-                final List<String> levelFormat = colorizeListString(config.getStringList(p + "level format"));
-                loaded++;
-                final ItemStack k = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
-                itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                lore.addAll(levelFormat);
-                k.setItemMeta(itemMeta); lore.clear();
 
-                UInventory i = new UInventory(null, 54, colorize(config.getString(p + "title")));
-                final Inventory ii = i.getInventory();
-                int level = 1, highestSlot = 0;
-                for(String parent : config.getConfigurationSection("skills." + s).getKeys(false)) {
-                    if(!parent.equals("type") && !parent.equals("title") && !parent.equals("max level") && !parent.equals("slot") && !parent.equals("level format") && !parent.equals("item") && !parent.equals("name") && !parent.equals("lore")) {
-                        final String O = p + parent + ".", it = config.getString(O + "item");
-                        final int slott = config.getInt(O + "slot");
-                        highestSlot = slott > highestSlot ? slott : highestSlot;
-                        final ItemStack d = it != null ? it.toLowerCase().equals("back") ? back : d(config, p + "." + parent) : new ItemStack(Material.AIR);
-                        if(d != back) {
-                            itemMeta = d.getItemMeta();
-                            itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-                            d.setItemMeta(itemMeta);
-                            ps.levels.add(new PlayerSkillLevel(ps, parent, level, slott, d, colorize(config.getString(O + "perk")), config.getStringList(O + "attributes")));
-                            level++;
-                        }
-                        ii.setItem(slott, d);
-                    }
-                }
-                final ItemStack[] con = ii.getContents().clone();
-                i = new UInventory(null, highestSlot%9 == 0 ? highestSlot : ((highestSlot+9)/9)*9, i.getTitle());
-                for(int z = 0; z < con.length && z < i.getSize(); z++) {
-                    final ItemStack target = con[z];
-                    ii.setItem(z, target != null ? target : background);
-                }
-
-                item = k.clone(); itemMeta = item.getItemMeta();
-                for(String m : itemMeta.getLore()) {
-                    if(m.equals("{LEVELS}")) {
-                        for(PlayerSkillLevel l : ps.levels) {
-                            final String L = Integer.toString(l.level), perk = l.perk;
-                            for(String lvl : levelFormat) {
-                                lore.add(lvl.replace("{LEVEL}", L).replace("{PERK}", perk));
-                            }
-                        }
-                    } else {
-                        lore.add(m);
-                    }
-                }
-                itemMeta.setLore(lore); lore.clear();
-                item.setItemMeta(itemMeta);
-                gi.setItem(slot, item);
-                skills.put(ps, i);
+        for(File f : new File(dataFolder + separator + "player skills").listFiles()) {
+            if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
+                final FilePlayerSkill skill = new FilePlayerSkill(f);
             }
         }
 
@@ -136,13 +85,13 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
             item = gi.getItem(i);
             if(item == null) gi.setItem(i, background);
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Player Skills &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.PLAYER_SKILL).size() + " Player Skills &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
         for(Player p : viewing.keySet()) {
             p.closeInventory();
         }
-        playerskills = null;
+        RSStorage.unregisterAll(Feature.PLAYER_SKILL, Feature.PLAYER_SKILL_LEVEL);
     }
 
     public void viewSkills(Player player) {
@@ -179,7 +128,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         }
     }
     public void viewSkillLevels(Player player, PlayerSkill skill) {
-        if(hasPermission(player, "RandomSky.skills.view." + skill.path, true)) {
+        if(hasPermission(player, "RandomSky.skills.view." + skill.getIdentifier(), true)) {
             player.closeInventory();
             final UInventory target = skills.get(skill);
             if(target != null) {

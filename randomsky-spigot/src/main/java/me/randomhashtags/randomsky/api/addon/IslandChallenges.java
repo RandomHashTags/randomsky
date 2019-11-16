@@ -5,6 +5,7 @@ import me.randomhashtags.randomsky.addon.file.FileIslandChallenge;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandChallenge;
 import me.randomhashtags.randomsky.api.IslandAddon;
+import me.randomhashtags.randomsky.event.island.IslandChallengeProgressEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
@@ -67,7 +68,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
         nextChallengeObjectivePrefix = colorize(config.getString("messages.next challenge objective prefix"));
 
-        gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
 
         for(File f : new File(dataFolder + separator + "island" + separator + "challenges").listFiles()) {
@@ -111,9 +112,9 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         }
     }
     private ItemStack getStatus(Inventory top, int i, IslandChallenge type, IslandChallenge c, HashMap<String, Boolean> completedChallenges, String P, String percent) {
-        final String a = c.path;
+        final String a = c.getIdentifier();
         final boolean isCompleted = completedChallenges.containsKey(a), isClaimed = isCompleted ? completedChallenges.get(a) : false;
-        final double completion = c.completion;
+        final double completion = c.getCompletion();
         final String N = c.getName(), C = formatDouble(completion);
         final List<String> R = c.getRewards(), obj = c.getObjective();
         if(isCompleted) {
@@ -182,20 +183,28 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                         if(next != null) {
                             for(String o : config.getStringList("messages.next challenge")) {
                                 if(o.contains("{OBJ}")) {
-                                    o = ChatColor.translateAlternateColorCodes('&', o.replace("{OBJ}", nextChallengeObjectivePrefix+ChatColor.stripColor(obj.get(0))));
-                                    for(Player p : on) p.sendMessage(o);
+                                    o = colorize(o.replace("{OBJ}", nextChallengeObjectivePrefix+ChatColor.stripColor(obj.get(0))));
+                                    for(Player p : on) {
+                                        p.sendMessage(o);
+                                    }
                                     for(int i = 1; i < obj.size(); i++) {
-                                        for(Player p : on) p.sendMessage(ChatColor.translateAlternateColorCodes('&', nextChallengeObjectivePrefix+ChatColor.stripColor(obj.get(i))));
+                                        for(Player p : on) {
+                                            p.sendMessage(colorize(nextChallengeObjectivePrefix+ChatColor.stripColor(obj.get(i))));
+                                        }
                                     }
                                 } else {
                                     o = o.replace("{NEXT_CHALLENGE}", nt);
-                                    for(Player p : on) p.sendMessage(ChatColor.translateAlternateColorCodes('&', o));
+                                    for(Player p : on) {
+                                        p.sendMessage(colorize(o));
+                                    }
                                 }
                             }
                         }
                     } else {
                         s = s.replace("{CHALLENGE}", type);
-                        for(Player p : on) p.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+                        for(Player p : on) {
+                            p.sendMessage(colorize(s));
+                        }
                     }
                 }
             }
@@ -379,10 +388,10 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                             for(String s : config.getStringList("messages.claimed")) {
                                 if(s.equals("{REWARDS}")) {
                                     for(String p : i.rewards) {
-                                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', p.split(";")[1]));
+                                        player.sendMessage(colorize(p.split(";")[1]));
                                     }
                                 } else {
-                                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("{CHALLENGE}", N)));
+                                    player.sendMessage(colorize(s.replace("{CHALLENGE}", N)));
                                 }
                             }
                         } else {

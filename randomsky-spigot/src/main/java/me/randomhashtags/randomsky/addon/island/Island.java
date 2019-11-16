@@ -26,6 +26,7 @@ public interface Island extends Identifiable, Attributable, Loadable {
     long getCreatedTime();
     UUID getCreator();
     boolean isOpenToPublic();
+    void setOpenToPublic(boolean isOpenToPublic);
     IslandLevel getIslandLevel();
     IslandOrigin getOrigin();
     PolyBoundary getCurrentBoundary();

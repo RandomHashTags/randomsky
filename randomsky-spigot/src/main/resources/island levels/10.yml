@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+slot: 9
+#
+cost:
+  - "$50000000"
+#
+rewards:
+  - "SpawnerLimit=1000"
+  - "IslandRadius=56"
+  - "AllowPlacement{Piston}"
+  - "MaxMembers=15"

@@ -47,10 +47,10 @@ public class IslandPermissionBlocks extends IslandAddon {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "island permission blocks.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rsd, "island permission blocks.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island permission blocks.yml"));
 
-        A = ChatColor.translateAlternateColorCodes('&', config.getString("permission blocks.gui.lores.allowed"));
-        D = ChatColor.translateAlternateColorCodes('&', config.getString("permission blocks.gui.lores.denied"));
+        A = colorize(config.getString("permission blocks.gui.lores.allowed"));
+        D = colorize(config.getString("permission blocks.gui.lores.denied"));
         addedLore = colorizeListString(config.getStringList("permission blocks.gui.lores.added lore"));
         regionMembers = d(config, "permission blocks.gui.region members");
         regionInfo = d(config, "permission blocks.gui.region info");
@@ -63,7 +63,7 @@ public class IslandPermissionBlocks extends IslandAddon {
 
         int loaded = 0;
         final int pbsize = config.getInt("permission blocks.gui.size");
-        gui = new UInventory(null, pbsize, ChatColor.translateAlternateColorCodes('&', config.getString("permission blocks.gui.title")));
+        gui = new UInventory(null, pbsize, colorize(config.getString("permission blocks.gui.title")));
         final Inventory gi = gui.getInventory();
         final List<String> prelore = config.getStringList("permission blocks.pre lore");
         for(String s : config.getConfigurationSection("permission blocks").getKeys(false)) {
@@ -72,7 +72,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                 final int radius = config.getInt(p + ".radius");
                 item = d(config, p);
                 itemMeta = item.getItemMeta(); lore.clear();
-                for(String l : prelore) lore.add(ChatColor.translateAlternateColorCodes('&', l.replace("{RADIUS}", Integer.toString(radius))));
+                for(String l : prelore) lore.add(colorize(l.replace("{RADIUS}", Integer.toString(radius))));
                 if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
                 itemMeta.setLore(lore); lore.clear();
                 item.setItemMeta(itemMeta);
@@ -97,7 +97,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                 final List<String> l = colorizeListString(config.getStringList(p + "lore"));
                 final int slot = config.getInt(p + "slot");
                 settings.put(slot, s);
-                settingsName.put(slot, n != null ? ChatColor.translateAlternateColorCodes('&', n) : null);
+                settingsName.put(slot, n != null ? colorize(n) : null);
                 settingsLore.put(slot, l);
 
                 item = disabled.clone();
@@ -153,7 +153,7 @@ public class IslandPermissionBlocks extends IslandAddon {
         }
     }
     private void updateRegionInfo(Player player, Inventory top, ActivePermissionBlock block) {
-        final String r = Integer.toString(block.getType().getRadius()), A = ChatColor.translateAlternateColorCodes('&', config.getString("permission blocks.gui.lores.allowed")), D = ChatColor.translateAlternateColorCodes('&', config.getString("permission blocks.gui.lores.denied"));
+        final String r = Integer.toString(block.getType().getRadius()), A = colorize(config.getString("permission blocks.gui.lores.allowed")), D = colorize(config.getString("permission blocks.gui.lores.denied"));
         final HashMap<String, String> e = new HashMap<>();
         for(int i : settings.keySet()) {
             final String s = settings.get(i);
@@ -260,12 +260,13 @@ public class IslandPermissionBlocks extends IslandAddon {
     private void inventoryClickEvent(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
         final Inventory top = player.getOpenInventory().getTopInventory();
-        if(top.getHolder() == player && top.getTitle().equals(gui.getTitle())) {
+        if(top.getHolder() == player && event.getView().getTitle().equals(gui.getTitle())) {
+            event.setCancelled(true);
+            player.updateInventory();
+
             final boolean editing = this.editing.containsKey(player);
             final int r = event.getRawSlot();
             final ItemStack c = event.getCurrentItem();
-            event.setCancelled(true);
-            player.updateInventory();
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR) || !editing) return;
             final ActivePermissionBlock a = this.editing.get(player);
             if(settings.containsKey(r)) {

@@ -1,6 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.PlayerRank;
+import me.randomhashtags.randomsky.addon.PlayerSkill;
+import me.randomhashtags.randomsky.addon.file.FilePlayerSkill;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
@@ -46,11 +48,13 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
     }
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "player ranks.yml");
+        save(dataFolder + separator + "player ranks", "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "player ranks", "_settings.yml"));
-        for(String s : config.getConfigurationSection("ranks").getKeys(false)) {
-            final String p = "ranks." + s + ".";
-            new PlayerRank(s, colorize(config.getString(p + "appearance")), d(config, "ranks." + s), config.getStringList(p + "attributes"));
+
+        for(File f : new File(dataFolder + separator + "player ranks").listFiles()) {
+            if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
+                final PlayerSkill skill = new FilePlayerSkill(f);
+            }
         }
 
         perm = VaultAPI.getVaultAPI().perms;
@@ -109,7 +113,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
             }
 
             removeItem(player, is, 1);
-            for(String s : p.attributes) {
+            for(String s : p.getAttributes()) {
                 final String S = s.toLowerCase();
                 if(S.startsWith("addperm{")) {
                     final String P = s.split("\\{")[1].split("}")[0];

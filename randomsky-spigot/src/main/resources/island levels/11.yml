@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 10
+#
+cost:
+  - "$100000000"
+#
+rewards:
+  - "SpawnerLimit=1250"
+  - "IslandRadius=61"
+  - "AllowPlacement{AutoMiners;&fAuto Miners}"

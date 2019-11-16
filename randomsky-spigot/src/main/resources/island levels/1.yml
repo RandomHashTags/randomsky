@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 0
+#
+cost:
+  - "$0"
+#
+rewards:
+  - "SpawnerLimit=10"
+  - "IslandRadius=16"
+  - "MaxMembers=10"

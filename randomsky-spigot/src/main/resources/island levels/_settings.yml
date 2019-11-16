@@ -1,0 +1,76 @@
+# Made by RandomHashTags
+messages:
+  level up:
+    - "&a&l(!)&r &aYour island is now level &n{TARGET_LEVEL}&r&a!"
+    - "&aNew Island Size: &7{SIZE} Blocks"
+  must unlock previous island levels:
+    - "&c&l(!)&r &cYou must unlock all previous island levels first!"
+  already unlocked level:
+    - "&c&l(!)&r &cYou have already unlocked this Island Level!"
+    - "&7Current Island Level: &n{LEVEL}"
+  cannot afford level up:
+    - "&c&l(!)&r &cYou cannot afford Island Level {TARGET_LEVEL}!"
+    - "&cCost: &7&l$&r&7{COST}"
+  #
+  level too low to place block:
+    - "&c&l(!)&r &cIsland Level is too low to place {BLOCK}!"
+    - "&7Requires /is level &l&n{REQ_LEVEL}"
+    - " "
+#
+settings:
+  default level: 1
+  locked blocks: # Has to be unlocked to be placed. Usually unlocked in the level's attributes
+  - "Furnace"
+  - "Redstone_wire"
+  - "Hopper"
+  - "Anvil"
+  - "Enchantment_Table"
+  - "Observer"
+  - "Piston"
+#
+items:
+  locked:
+    item: "red_stained_glass_pane"
+    name: "&c&lLevel {LEVEL}"
+    lore:
+      - "&c&lLOCKED"
+      - "{STATUS}"
+    unlocked:
+      item: "lime_stained_glass_pane"
+      name: "&a&lLevel {LEVEL}"
+      lore:
+        - "&a&lUNLOCKED"
+    #
+    current level:
+      - "&a&lCURRENT LEVEL"
+    click to level up:
+      - "&7Click to level up!"
+    cannot afford level up:
+      - "&cYou cannot afford this level up!"
+    requires level:
+      - "&cRequires Island Level &n{LEVEL}&r&c!"
+    #
+    lore formats:
+      spawner limit: " &a&l*&r &fSpawner Limit: {LIMIT}"
+      island radius: " &a&l*&r &fIsland Radius: {RADIUS}"
+      allow placement: " &a&l*&r &fAbility to place {BLOCK}"
+      max members: " &a&l*&r &f+1 Max Members ({MAX})"
+#
+gui:
+  title: "Island Levels"
+    size: 36
+    background:
+      item: "black_stained_glass_pane"
+      name: " "
+    #
+    format:
+      - " "
+      - "&b&lCost"
+      - " &f&l${COST}"
+      - " "
+      - "&a&lLevel Rewards"
+      - "{REWARDS}"
+      - " "
+      - "{STATUS}"
+    reward format: " &a&l*&r &f{REWARD}"
+#

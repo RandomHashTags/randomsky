@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 2
+#
+cost:
+  - "$25000"
+#
+rewards:
+  - "SpawnerLimit=50"
+  - "IslandRadius=25"
+  - "AllowPlacement{Redstone_Wire}"

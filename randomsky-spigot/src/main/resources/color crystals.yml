@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+messages:
+  dont have unlocked:
+    - "&c&l(!)&r &cYou do not have this chat color unlocked!"
+    - "&7Chat Colors are unlocked by redeeming Color Crystals purchasable at &nbuy.yourserver.com&r &7and as rare drops in world event loot tables!"
+#
+rarities:
+  default: COMMON
+  COMMON:
+#
+colors:
+  aqua:
+    color: "&b"
+    slot: 0
+  green:
+    color: "&a"
+    slot: 1
+  light purple:
+    color: "&d"
+    slot: 2

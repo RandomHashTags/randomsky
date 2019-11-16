@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 4
+#
+cost:
+  - "$250000"
+#
+rewards:
+  - "SpawnerLimit=100"
+  - "IslandRadius=34"
+  - "AllowePlacement{Hopper}"

@@ -1,5 +1,7 @@
 package me.randomhashtags.randomsky.api.addon;
 
+import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
+import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.universal.UInventory;
@@ -57,7 +59,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "island mining.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "island mining.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island mining.yml"));
 
         generated = new ArrayList<>();
         final List<String> S = otherdata.getStringList("generated");
@@ -127,7 +129,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 final UMaterial u = UMaterial.match(item);
                 this.scraps.add(u);
                 itemMeta = item.getItemMeta(); lore.clear();
-                for(String l : prelore) lore.add(ChatColor.translateAlternateColorCodes('&', l));
+                for(String l : prelore) lore.add(colorize(l));
                 if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
                 itemMeta.setLore(lore); lore.clear();
                 item.setItemMeta(itemMeta);
@@ -149,14 +151,14 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 for(String l : type.lore) {
                     if(l.equals("{LOOT}")) {
                         for(String L : loot)
-                            lore.add(ChatColor.translateAlternateColorCodes('&', L.split(";")[1]));
+                            lore.add(colorize(L.split(";")[1]));
                     } else {
                         lore.add(l);
                     }
                 }
                 itemMeta.setLore(lore); lore.clear();
                 item.setItemMeta(itemMeta);
-                new ResourceNode(s, type, IslandLevel.levels.get(config.getInt("nodes." + s + ".required island level")), config.getLong(p + "respawn time"), config.getDouble(p + "value"), harvest, node, ChatColor.translateAlternateColorCodes('&', config.getString(p + "node name")), config.getString(p + "node {TYPE}"), config.getString(p + "required node"), config.getInt(p + "completion"), item, loot);
+                new ResourceNode(s, type, IslandLevel.levels.get(config.getInt("nodes." + s + ".required island level")), config.getLong(p + "respawn time"), config.getDouble(p + "value"), harvest, node, colorize(config.getString(p + "node name")), config.getString(p + "node {TYPE}"), config.getString(p + "required node"), config.getInt(p + "completion"), item, loot);
                 nodes++;
             }
         }
@@ -164,9 +166,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
 
         final int size = config.getInt("gui.size");
         final List<String> format = colorizeListString(config.getStringList("gui.settings.format"));
-        lockedName = ChatColor.translateAlternateColorCodes('&', config.getString("gui.settings.locked.name"));
-        unlockedName = ChatColor.translateAlternateColorCodes('&', config.getString("gui.settings.unlocked.name"));
-        gui = new UInventory(null, size, ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        lockedName = colorize(config.getString("gui.settings.locked.name"));
+        unlockedName = colorize(config.getString("gui.settings.unlocked.name"));
+        gui = new UInventory(null, size, colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(config, "gui.background");
         final HashMap<String, ResourceNode> paths = ResourceNode.paths;
@@ -308,8 +310,8 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 w.dropItemNaturally(bl.clone().add(0.5, 1, 0.5), drop);
             }
             player.updateInventory();
-        } catch (NullPointerException e) {
-            final String s = ChatColor.translateAlternateColorCodes('&', "&6[RandomSky] &cError caught while trying to break &f" + block.getType().name() + ":" + block.getData() + "&c! &e" + version + "&c; &bReport this to RandomHashTags!");
+        } catch (Exception e) {
+            final String s = colorize("&6[RandomSky] &cError caught while trying to break &f" + block.getType().name() + ":" + block.getData() + "&c! &e" + VERSION + "&c; &bReport this to RandomHashTags!");
             sendConsoleMessage(s);
             player.sendMessage(s);
         }
@@ -325,42 +327,36 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         return null;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void inventoryClickEvent(InventoryClickEvent event) {
-        if(!event.isCancelled()) {
-            final Player player = (Player) event.getWhoClicked();
-            final Inventory top = player.getOpenInventory().getTopInventory();
-            if(top.getHolder() == player && event.getView().getTitle().equals(gui.getTitle())) {
-                event.setCancelled(true);
-                player.updateInventory();
-            }
+        final Player player = (Player) event.getWhoClicked();
+        final Inventory top = player.getOpenInventory().getTopInventory();
+        if(top.getHolder() == player && event.getView().getTitle().equals(gui.getTitle())) {
+            event.setCancelled(true);
+            player.updateInventory();
         }
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void blockBurnEvent(BlockBurnEvent event) {
-        if(!event.isCancelled()) {
-            final Location l = event.getBlock().getLocation();
-            if(l.getWorld().getName().equals(islandWorld)) {
-                final Island is = Island.valueOf(l);
-                if(is != null) {
-                    final ActiveResourceNode a = is.valueof(l);
-                    if(a != null) {
-                        event.setCancelled(true);
-                    }
+        final Location l = event.getBlock().getLocation();
+        if(l.getWorld().getName().equals(islandWorld)) {
+            final Island is = Island.valueOf(l);
+            if(is != null) {
+                final ActiveResourceNode a = is.valueof(l);
+                if(a != null) {
+                    event.setCancelled(true);
                 }
             }
         }
     }
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void islandPlaceBlockEvent(IslandPlaceBlockEvent event) {
-        if(!event.isCancelled()) {
-            final ItemStack i = event.item;
-            if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
-                final List<String> l = i.getItemMeta().getLore();
-                if(l.containsAll(resourceItemFormat) || l.containsAll(resourceFormat)) {
-                    event.setCancelled(true);
-                    sendStringListMessage(event.player, config.getStringList("messages.cannot place resource items"), null);
-                }
+        final ItemStack i = event.item;
+        if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
+            final List<String> l = i.getItemMeta().getLore();
+            if(l.containsAll(resourceItemFormat) || l.containsAll(resourceFormat)) {
+                event.setCancelled(true);
+                sendStringListMessage(event.player, config.getStringList("messages.cannot place resource items"), null);
             }
         }
     }
@@ -384,8 +380,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     }
     @EventHandler
     private void structureGrowEvent(StructureGrowEvent event) {
-        for(BlockState b : event.getBlocks())
+        for(BlockState b : event.getBlocks()) {
             generated.add(b.getLocation());
+        }
     }
     @EventHandler
     private void leavesDecayEvent(LeavesDecayEvent event) {
@@ -404,7 +401,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         }
         event.setCancelled(true);
         w.getBlockAt(l).setType(Material.AIR);
-        for(ItemStack i : drops) w.dropItemNaturally(l, i);
+        for(ItemStack i : drops) {
+            w.dropItemNaturally(l, i);
+        }
     }
     @EventHandler
     private void entityDeathEvent(EntityDeathEvent event) {
@@ -419,74 +418,70 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void playerIslandBreakBlockEvent(PlayerIslandBreakBlockEvent event) {
-        if(!event.isCancelled()) {
-            final Player player = event.player;
-            final Island is = event.island;
-            final BlockBreakEvent e = event.breakEvent;
-            final Location l = e.getBlock().getLocation();
-            final ActiveResourceNode a = is.valueof(l);
-            if(a != null) {
-                final HarvestResourceNodeEvent r = new HarvestResourceNodeEvent(player, is, a);
-                pluginmanager.callEvent(r);
+        final Player player = event.player;
+        final Island is = event.island;
+        final BlockBreakEvent e = event.breakEvent;
+        final Location l = e.getBlock().getLocation();
+        final ActiveResourceNode a = is.valueof(l);
+        if(a != null) {
+            final HarvestResourceNodeEvent r = new HarvestResourceNodeEvent(player, is, a);
+            pluginmanager.callEvent(r);
 
-                final HashMap<String, String> replacements = new HashMap<>();
-                replacements.put("{TYPE}", a.type.nodeName);
-                replacements.put("{TIME}", getRemainingTime(a.cooldownExpiration-System.currentTimeMillis()));
-                event.setCancelled(true);
-                dmgDurability(player.getItemInHand());
-                if(player.isSneaking()) {
-                    a.delete();
-                    l.getWorld().dropItemNaturally(l, a.type.item());
-                    sendStringListMessage(player, config.getStringList("messages.destroyed"), replacements);
-                } else if(System.currentTimeMillis() >= a.cooldownExpiration) {
-                    a.harvest(player);
-                } else {
-                    sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
-                    sendStringListMessage(player, config.getStringList("messages.nodes.pickup"), replacements);
-                }
+            final HashMap<String, String> replacements = new HashMap<>();
+            replacements.put("{TYPE}", a.type.nodeName);
+            replacements.put("{TIME}", getRemainingTime(a.cooldownExpiration-System.currentTimeMillis()));
+            event.setCancelled(true);
+            dmgDurability(player.getItemInHand());
+            if(player.isSneaking()) {
+                a.delete();
+                l.getWorld().dropItemNaturally(l, a.type.item());
+                sendStringListMessage(player, config.getStringList("messages.destroyed"), replacements);
+            } else if(System.currentTimeMillis() >= a.cooldownExpiration) {
+                a.harvest(player);
+            } else {
+                sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
+                sendStringListMessage(player, config.getStringList("messages.nodes.pickup"), replacements);
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void playerIslandInteractEvent(PlayerIslandInteractEvent event) {
-        if(!event.isCancelled()) {
-            final PlayerInteractEvent e = event.interactEvent;
-            final Block b = e.getClickedBlock();
-            if(b != null) {
-                final Island is = event.island;
-                final Player player = event.player;
-                final String a = e.getAction().name();
-                final Location bl = b.getLocation();
-                final ActiveResourceNode n = is.valueof(bl);
-                if(a.contains("RIGHT") && n != null) {
-                    final HashMap<String, String> replacements = new HashMap<>();
-                    replacements.put("{TYPE}", n.type.nodeName);
-                    final long s = System.currentTimeMillis(), c = n.cooldownExpiration;
-                    if(s >= c) {
-                        sendStringListMessage(player, config.getStringList("messages.nodes.ready to be harvested"), replacements);
-                    } else {
-                        final String t = getRemainingTime(c-s);
-                        replacements.put("{TIME}", t.equals("") ? "0" : t);
-                        sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
+        final PlayerInteractEvent e = event.interactEvent;
+        final Block b = e.getClickedBlock();
+        if(b != null) {
+            final Island is = event.island;
+            final Player player = event.player;
+            final String a = e.getAction().name();
+            final Location bl = b.getLocation();
+            final ActiveResourceNode n = is.valueof(bl);
+            if(a.contains("RIGHT") && n != null) {
+                final HashMap<String, String> replacements = new HashMap<>();
+                replacements.put("{TYPE}", n.type.nodeName);
+                final long s = System.currentTimeMillis(), c = n.cooldownExpiration;
+                if(s >= c) {
+                    sendStringListMessage(player, config.getStringList("messages.nodes.ready to be harvested"), replacements);
+                } else {
+                    final String t = getRemainingTime(c-s);
+                    replacements.put("{TIME}", t.equals("") ? "0" : t);
+                    sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
+                }
+            } else if(a.contains("LEFT") && !player.getGameMode().equals(GameMode.CREATIVE) && n == null) {
+                final ItemStack it = e.getItem();
+                final Material type = it != null ? it.getType() : null;
+                if(type == null || type.equals(Material.AIR) || it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().containsAll(cosmeticFormat)) {
+                    final UUID u = player.getUniqueId();
+                    final Island i = Island.players.getOrDefault(u, null), on = Island.valueOf(bl);
+                    final RSPlayer pdata = RSPlayer.get(u);
+                    if(pdata.instaBreakTutorial) {
+                        sendStringListMessage(player, config.getStringList("messages.insta break tutorial"), null);
+                        pdata.instaBreakTutorial = false;
                     }
-                } else if(a.contains("LEFT") && !player.getGameMode().equals(GameMode.CREATIVE) && n == null) {
-                    final ItemStack it = e.getItem();
-                    final Material type = it != null ? it.getType() : null;
-                    if(type == null || type.equals(Material.AIR) || it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().containsAll(cosmeticFormat)) {
-                        final UUID u = player.getUniqueId();
-                        final Island i = Island.players.getOrDefault(u, null), on = Island.valueOf(bl);
-                        final RSPlayer pdata = RSPlayer.get(u);
-                        if(pdata.instaBreakTutorial) {
-                            sendStringListMessage(player, config.getStringList("messages.insta break tutorial"), null);
-                            pdata.instaBreakTutorial = false;
-                        }
-                        if(on != null && on.equals(i) && pdata.instantBlockBreak) {
-                            if(!generated.contains(bl)) {
-                                breakBlock(player, pdata, b);
-                            }
+                    if(on != null && on.equals(i) && pdata.instantBlockBreak) {
+                        if(!generated.contains(bl)) {
+                            breakBlock(player, pdata, b);
                         }
                     }
                 }

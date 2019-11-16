@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
-import me.randomhashtags.randomsky.dev.ItemRecipe;
+import me.randomhashtags.randomsky.addon.ItemRecipe;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
 import me.randomhashtags.randomsky.util.RSStorage;

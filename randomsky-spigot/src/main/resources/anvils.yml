@@ -1,0 +1,43 @@
+# Made by RandomHashTags
+messages:
+  cannot put item in:
+    - "&c&l(!)&r  &cYou cannot put this item into the anvil!"
+  nothing to combine:
+    - "&c&l(!)&r &cNothing to combine!"
+#
+items:
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  confirm:
+    tax: 2.5
+    #
+    item: "red_stained_glass_pane"
+    name: "&a&lConfirm"
+    lore:
+      - "&7Click to confirm given item"
+      - "&7modification for &"
+  invalid recipe:
+    item: "barrier"
+    name: "&c&lInvalid Recipe"
+    lore:
+      - "&cMissing Items"
+      - "&7You need to place two items"
+      - "&7that can be combined with an"
+      - "&7Anvil in the slots above."
+#
+gui:
+  title: "Anvil"
+  size: 27
+  #
+  air 1:
+    slot: 3
+  air 2:
+    slot: 5
+  recipe slot:
+    slot: 13
+    item: "recipe"
+  confirm slot:
+    slot: 22
+    item: "confirm"
+#

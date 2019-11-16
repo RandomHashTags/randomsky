@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+settings:
+  slot: 19
+#
+cost:
+  - "science:block:gold;amount=32"
+  - "$50000000000"
+#
+rewards:
+  - "SpawnerLimit=5750"
+  - "IslandRadius=100"
+  - "AllowPlacement{CollectionChests}"
+  - "AllowSmeltable{unrefined:iron}"
+  - "AllowSmeltable{unrefined:diamond}"
