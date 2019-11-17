@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api.ready;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.Home;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -32,7 +33,7 @@ public class Homes extends RSFeature implements CommandExecutor {
         if(c.equals("home")) {
             tryGoing(player, l == 0 ? null : args[0]);
         } else if(c.equals("homelist")) {
-            homelist(player);
+            viewHomelist(player);
         } else if(c.equals("sethome")) {
             if(l == 0) {
                 sendStringListMessage(player, config.getStringList("messages.sethome usage"), null);
@@ -49,7 +50,6 @@ public class Homes extends RSFeature implements CommandExecutor {
         return true;
     }
 
-
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "homes.yml");
@@ -58,7 +58,7 @@ public class Homes extends RSFeature implements CommandExecutor {
     }
     public void unload() {
     }
-    public void tryGoing(Player player, String home) {
+    public void tryGoing(@NotNull Player player, @NotNull String home) {
         if(hasPermission(player, "RandomSky.home", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{NAME}", home);
@@ -81,7 +81,7 @@ public class Homes extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages.no home of that name"), replacements);
         }
     }
-    public void trySetting(Player player, String home) {
+    public void trySetting(@NotNull Player player, @NotNull String home) {
         if(hasPermission(player, "RandomSky.sethome", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
@@ -106,7 +106,7 @@ public class Homes extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public int getMaxHomes(Player player) {
+    public int getMaxHomes(@NotNull Player player) {
         for(int i = 100; i >= 0; i--) {
             if(player.hasPermission("RandomSky.sethome." + i)) {
                 return i;
@@ -114,7 +114,7 @@ public class Homes extends RSFeature implements CommandExecutor {
         }
         return 0;
     }
-    public void tryDeleting(Player player, String home) {
+    public void tryDeleting(@NotNull Player player, @NotNull String home) {
         if(hasPermission(player, "RandomSky.delhome", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{NAME}", home);
@@ -130,7 +130,7 @@ public class Homes extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages.delhome not found"), replacements);
         }
     }
-    public void homelist(Player player) {
+    public void viewHomelist(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.homelist", true)) {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();

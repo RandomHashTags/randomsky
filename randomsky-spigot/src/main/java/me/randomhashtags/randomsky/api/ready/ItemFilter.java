@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api.ready;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.FilterCategory;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.Feature;
@@ -102,13 +103,13 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         RSStorage.unregisterAll(Feature.FILTER_CATEGORY);
     }
 
-    public void viewHelp(Player player) {
+    public void viewHelp(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.filter.help", true)) {
             sendStringListMessage(player, config.getStringList("messages.help"), null);
         }
     }
 
-    public void viewCategories(Player player) {
+    public void viewCategories(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.filter.view", true)) {
             player.closeInventory();
             player.openInventory(Bukkit.createInventory(player, gui.getSize(), gui.getTitle()));
@@ -128,7 +129,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         if(isFiltered) is.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         return is;
     }
-    public void toggleFilter(Player player) {
+    public void toggleFilter(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.filter.toggle", true)) {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final boolean status = !pdata.filter;
@@ -136,7 +137,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages." + (status ? "en" : "dis") + "able"), null);
         }
     }
-    public void viewCategory(Player player, FilterCategory category) {
+    public void viewCategory(@NotNull Player player, @NotNull FilterCategory category) {
         if(category != null && player != null && hasPermission(player, "RandomSky.filter.view." + category.getIdentifier(), true)) {
             player.closeInventory();
             final List<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();

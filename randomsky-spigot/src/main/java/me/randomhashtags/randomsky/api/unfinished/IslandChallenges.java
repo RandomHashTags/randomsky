@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api.addon;
+package me.randomhashtags.randomsky.api.unfinished;
 
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
 import me.randomhashtags.randomsky.addon.file.FileIslandChallenge;

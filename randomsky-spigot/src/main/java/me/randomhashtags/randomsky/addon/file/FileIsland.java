@@ -39,6 +39,8 @@ public class FileIsland extends RSAddon implements Island {
     private TreeMap<String, Location> locations;
     private List<UUID> bannedPlayers;
 
+    public FileIsland(IslandOrigin origin, UUID creator, Location center) {
+    }
     public FileIsland(File f) {
         load(f);
         uuid = UUID.fromString(getYamlName());
@@ -223,66 +225,68 @@ public class FileIsland extends RSAddon implements Island {
             isOpenToPublic = Boolean.parseBoolean(booleans[0]);
         }
     }
+    public void backup() {
+        if(boolSettings != null) {
+            final String bools = isOpenToPublic + ";";
+            yml.set("settings.bool", bools);
+        }
+        if(stringSettings != null) {
+            final String string = getIslandLevel().getIdentifier() + ";" + getOrigin().getIdentifier() + ";" + getTag() + ";" + getDescription();
+            yml.set("settings.string", string);
+        }
+
+        if(currentBoundary != null) {
+            yml.set("settings.boundary.current.center", currentBoundary.getCenter().toString());
+            yml.set("settings.boundary.current.size", currentBoundary.getX() + ";" + currentBoundary.getY() + ";" + currentBoundary.getZ());
+        }
+        if(maxBoundary != null) {
+            yml.set("settings.boundary.max.center", maxBoundary.getCenter().toString());
+            yml.set("settings.boundary.max.size", maxBoundary.getX() + ";" + maxBoundary.getY() + ";" + maxBoundary.getZ());
+        }
+
+        if(tags != null) {
+            yml.set("settings.tags", tags);
+        }
+
+        if(allowedCrops != null) {
+            final List<String> crops = new ArrayList<>();
+            for(FarmingRecipe r : allowedCrops) {
+                crops.add(r.getIdentifier());
+            }
+            yml.set("allowed crops", crops);
+        }
+        if(allowedNodes != null) {
+            final List<String> nodes = new ArrayList<>();
+            for(ResourceNode n : allowedNodes) {
+                nodes.add(n.getIdentifier());
+            }
+            yml.set("allowed nodes", nodes);
+        }
+        if(allowedMobs != null) {
+            yml.set("allowed mobs", allowedMobs);
+        }
+
+        if(ratings != null) {
+            yml.set("ratings", ratings.toString());
+        }
+        if(members != null) {
+            yml.set("members", members.toString());
+        }
+
+        if(locations != null) {
+            yml.set("locations", locations.toString());
+        }
+
+        if(bannedPlayers != null) {
+            yml.set("banned players", bannedPlayers.toString());
+        }
+
+        save();
+    }
     public void unload() {
         if(isLoaded) {
             isLoaded = false;
-
-            if(boolSettings != null) {
-                final String bools = isOpenToPublic + ";";
-                yml.set("settings.bool", bools);
-            }
-            if(stringSettings != null) {
-                final String string = getIslandLevel().getIdentifier() + ";" + getOrigin().getIdentifier() + ";" + getTag() + ";" + getDescription();
-                yml.set("settings.string", string);
-            }
-
-            if(currentBoundary != null) {
-                yml.set("settings.boundary.current.center", currentBoundary.getCenter().toString());
-                yml.set("settings.boundary.current.size", currentBoundary.getX() + ";" + currentBoundary.getY() + ";" + currentBoundary.getZ());
-            }
-            if(maxBoundary != null) {
-                yml.set("settings.boundary.max.center", maxBoundary.getCenter().toString());
-                yml.set("settings.boundary.max.size", maxBoundary.getX() + ";" + maxBoundary.getY() + ";" + maxBoundary.getZ());
-            }
-
-            if(tags != null) {
-                yml.set("settings.tags", tags);
-            }
-
-            if(allowedCrops != null) {
-                final List<String> crops = new ArrayList<>();
-                for(FarmingRecipe r : allowedCrops) {
-                    crops.add(r.getIdentifier());
-                }
-                yml.set("allowed crops", crops);
-            }
-            if(allowedNodes != null) {
-                final List<String> nodes = new ArrayList<>();
-                for(ResourceNode n : allowedNodes) {
-                    nodes.add(n.getIdentifier());
-                }
-                yml.set("allowed nodes", nodes);
-            }
-            if(allowedMobs != null) {
-                yml.set("allowed mobs", allowedMobs);
-            }
-
-            if(ratings != null) {
-                yml.set("ratings", ratings.toString());
-            }
-            if(members != null) {
-                yml.set("members", members.toString());
-            }
-
-            if(locations != null) {
-                yml.set("locations", locations.toString());
-            }
-
-            if(bannedPlayers != null) {
-                yml.set("banned players", bannedPlayers.toString());
-            }
-
-            save();
+            backup();
         }
     }
 }

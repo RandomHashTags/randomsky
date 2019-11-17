@@ -32,8 +32,10 @@ gui:
   #
   air 1:
     slot: 3
+    item: "air"
   air 2:
     slot: 5
+    item: "air"
   recipe slot:
     slot: 13
     item: "recipe"

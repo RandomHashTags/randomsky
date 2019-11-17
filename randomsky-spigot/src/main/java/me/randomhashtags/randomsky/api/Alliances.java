@@ -103,12 +103,12 @@ public class Alliances extends RSFeature implements CommandExecutor {
         int loaded = 0, relations = 0;
         for(String s : config.getConfigurationSection("roles").getKeys(false)) {
             final String p = "roles." + s + ".";
-            new AllianceRole(s, config.getString(p + "tag"), config.getString(p + "chat tag"), ChatColor.translateAlternateColorCodes('&', config.getString(p + "color")), config.getStringList(p + "granted permissions"));
+            new AllianceRole(s, config.getString(p + "tag"), config.getString(p + "chat tag"), colorize(config.getString(p + "color")), config.getStringList(p + "granted permissions"));
             loaded++;
         }
         for(String s : config.getConfigurationSection("relations").getKeys(false)) {
             final String p = "relations." + s + ".";
-            new AllianceRelation(s, ChatColor.translateAlternateColorCodes('&', config.getString(p + "color")), config.getBoolean(p + "damageable"));
+            new AllianceRelation(s, colorize(config.getString(p + "color")), config.getBoolean(p + "damageable"));
             relations++;
         }
 
@@ -140,7 +140,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     public void viewHelp(CommandSender sender) {
         if(hasPermission(sender, "RandomSky.alliance.help", true)) {
             for(String s : config.getStringList("messages.help"))
-                sender.sendMessage(center(ChatColor.translateAlternateColorCodes('&', s), 60));
+                sender.sendMessage(center(colorize(s), 60));
         }
     }
     public void tryChangingRelation(Player player, String tag, AllianceRelation relation) {
@@ -264,7 +264,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 for(String k : relation.keySet()) {
                     s = s.replace("{" + k.toUpperCase() + "}", relation.get(k));
                 }
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+                sender.sendMessage(colorize(s));
             }
         }
     }

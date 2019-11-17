@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.List;
 
 public class FilePlayerRank extends RSAddon implements PlayerRank {
+    private int rankValue = -999;
     private ItemStack is;
     private String appearance;
     private List<String> attributes;
@@ -20,6 +21,13 @@ public class FilePlayerRank extends RSAddon implements PlayerRank {
     }
 
     public String getIdentifier() { return getYamlName(); }
+
+    public int getRankValue() {
+        if(rankValue == -999) {
+            rankValue = yml.getInt("rank value");
+        }
+        return rankValue;
+    }
     public ItemStack getItem() {
         if(is == null) {
             is = api.d(yml, "item");

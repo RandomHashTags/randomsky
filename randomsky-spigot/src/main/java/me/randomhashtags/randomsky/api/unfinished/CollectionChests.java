@@ -2,6 +2,7 @@ package me.randomhashtags.randomsky.api.unfinished;
 
 import me.randomhashtags.randomsky.util.RSFeature;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -34,8 +35,9 @@ public class CollectionChests extends RSFeature {
     private void blockPlaceEvent(BlockPlaceEvent event) {
         final ItemStack i = event.getItemInHand();
         if(i.isSimilar(collectionchest)) {
+            final Player player = event.getPlayer();
             event.setCancelled(true);
-            event.getPlayer().updateInventory();
+            player.updateInventory();
         }
     }
 }

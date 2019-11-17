@@ -3,6 +3,8 @@ package me.randomhashtags.randomsky.api.ready;
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandBot;
 import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
+import me.randomhashtags.randomsky.addon.file.FileAutoBot;
+import me.randomhashtags.randomsky.addon.file.FileAutoBotUpgrade;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
@@ -17,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +62,13 @@ public class AutoBots extends RSFeature implements CommandExecutor {
             saveOtherData();
         }
 
+        for(File f : new File(dataFolder + separator + "auto bots" + separator + "upgrades").listFiles()) {
+            new FileAutoBotUpgrade(f);
+        }
+        for(File f : new File(dataFolder + separator + "auto bots").listFiles()) {
+            new FileAutoBot(f);
+        }
+
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
 
         viewingbot = new HashMap<>();
@@ -71,13 +81,14 @@ public class AutoBots extends RSFeature implements CommandExecutor {
         RSStorage.unregisterAll(Feature.AUTO_BOT, Feature.AUTO_BOT_UPGRADE);
     }
 
-    public void viewBots(Player player) {
+    public void viewBots(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.autobot", true)) {
             player.closeInventory();
             player.openInventory(gui.getInventory());
+            player.updateInventory();
         }
     }
-    public void viewBotInventory(Player player, ActiveIslandBot bot) {
+    public void viewBotInventory(@NotNull Player player, @NotNull ActiveIslandBot bot) {
         player.closeInventory();
         viewingbot.put(player, bot);
         editingbotinventory.put(bot, Arrays.asList(player));

@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.ShopCategory;
 import me.randomhashtags.randomsky.addon.ShopItem;
 import me.randomhashtags.randomsky.addon.file.FileShopCategory;
@@ -172,7 +173,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         return true;
     }
 
-    public void viewMenu(Player player) {
+    public void viewMenu(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.shop.menu", true)) {
             player.closeInventory();
             player.openInventory(Bukkit.createInventory(player, inv.getSize(), inv.getTitle()));
@@ -181,7 +182,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             player.updateInventory();
         }
     }
-    public void view(Player player, String shop) {
+    public void view(@NotNull Player player, String shop) {
         if(inventories.containsKey(shop)) {
             player.closeInventory();
             final UInventory i = inventories.get(shop);
@@ -226,7 +227,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         }
     }
 
-    public void tryBuying(Player player, ShopItem s, boolean stack) {
+    public void tryBuying(@NotNull Player player, @NotNull ShopItem s, boolean stack) {
         final double price = s.getBuyPrice().doubleValue();
         if(price > 0.00) {
             final ItemStack purchased = s.getPurchasedItem();
@@ -245,7 +246,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             }
         }
     }
-    public void trySelling(Player player, ShopItem s, boolean stack) {
+    public void trySelling(@NotNull Player player, @NotNull ShopItem s, boolean stack) {
         final double price = s.getSellPrice().doubleValue();
         if(price > 0.00) {
             final ItemStack selling = s.getSoldItem();
@@ -257,7 +258,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             replacements.put("{SELL}", formatDouble(price));
             replacements.put("{ITEM}", toMaterial(selling.getType().name(), false));
             replacements.put("{AMOUNT}", Integer.toString(amount));
-            replacements.put("{BONUS}", m != 1.00 ? originBonus.replace("{ORIGIN}", is.getOrigin().string).replace("{PERCENT}", formatDouble(round((m-1)*100, 2))) : "");
+            replacements.put("{BONUS}", m != 1.00 ? originBonus.replace("{ORIGIN}", is.getOrigin().getName()).replace("{PERCENT}", formatDouble(round((m-1)*100, 2))) : "");
             if(inva == 0) {
                 sendStringListMessage(player, config.getStringList("messages.not enough to sell"), replacements);
             } else {

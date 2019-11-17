@@ -1,13 +1,14 @@
 package me.randomhashtags.randomsky.util;
 
-import me.randomhashtags.randomsky.RandomSky;
+import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
 import me.randomhashtags.randomsky.addon.alliance.Alliance;
 import me.randomhashtags.randomsky.addon.PlayerRank;
 import me.randomhashtags.randomsky.addon.active.Home;
 import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
-import me.randomhashtags.randomsky.util.universal.UVersion;
+import me.randomhashtags.randomsky.util.universal.UVersionable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,20 +21,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class RSPlayer {
-    private static final String s = File.separator, folder = RandomSky.getPlugin.getDataFolder() + s + "_Data" + s + "players";
-    private static final UVersion uv = UVersion.getUVersion();
+import static java.io.File.separator;
+
+public class RSPlayer implements UVersionable {
+    private static final String folder = dataFolder + separator + "_Data" + separator + "players";
     public static final HashMap<UUID, RSPlayer> players = new HashMap<>();
 
     private boolean isLoaded = false;
     private UUID uuid;
-    private File file = null;
-    private YamlConfiguration yml = null;
-    private Island island = null;
-    private Alliance alliance = null;
-    private UUID islandUUID = null, allianceUUID = null;
-    private ChatChannels chat = null;
-    private PlayerRank rank = null;
+    private File file;
+    private YamlConfiguration yml;
+    private Island island;
+    private Alliance alliance;
+    private UUID islandUUID, allianceUUID;
+    private ChatChannels chat;
+    private PlayerRank rank;
 
     public BigDecimal canDeleteIslandTime, coinflipWonCash, coinflipLostCash, coinflipTaxesPaid, jackpotWonCash;
     public int skillTokens = 0, coinflipWins = 0, coinflipLosses = 0, jackpotTickets = 0, jackpotWins = 0;
@@ -63,7 +65,7 @@ public class RSPlayer {
                     f.createNewFile();
                     chat = new ChatChannels(ChatChannel.GLOBAL, true, true, true, false, false, false);
                     backup = true;
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -76,9 +78,12 @@ public class RSPlayer {
     public static RSPlayer get(UUID player) { return players.getOrDefault(player, new RSPlayer(player)).load(); }
     public void backup() {
         yml.set("name", Bukkit.getOfflinePlayer(uuid).getName());
-        yml.set("rank", getRank() != null ? rank.path : "null");
+        if(rank != null) {
+            yml.set("rank", rank.getIdentifier());
+        }
         yml.set("island", islandUUID != null ? islandUUID.toString() : "null");
         yml.set("alliance", allianceUUID != null ? allianceUUID.toString() : "null");
+
         final ChatChannels cc = getChat();
         final String chat = cc.current + ";" + cc.global + ";" + cc.island + ";" + cc.alliance + ";" + cc.ally + ";" + cc.truce + ";" + cc.local;
         final String booleans = tpaRequests + ";" + privateMessage + ";" + filterChat + ";" + islandInviteNotifications + ";" + payRequests + ";" + memberVisiting + ";" + punchToKick + ";" + instantBlockBreak + ";" + instantBreakPickup + ";" + clearInventoryConfirmation + ";" + auctionBuyConfirm + ";" + auctionSellConfirm + ";" + coinflipNotifications + ";" + bleedNotifications + ";" + enchantDebug + ";" + breakParticles + ";" + filter + ";" + instaBreakTutorial + ";" + jackpotCountdown;
@@ -92,13 +97,27 @@ public class RSPlayer {
         for(Kit k : getKitExpirations().keySet()) {
             yml.set("kits." + k.getYamlName(), kitExpirations.get(k));
         }
-        final List<String> homez = new ArrayList<>(), filtered = new ArrayList<>(), adv = new ArrayList<>();
-        for(Home h : getHomes()) homez.add(h.name + ";" + uv.toString(h.location));
-        yml.set("homes", homez);
-        for(UMaterial u : getFilteredItems()) filtered.add(u.name());
-        yml.set("filtered items", filtered);
-        for(Adventure a : getAllowedAdventures()) adv.add(a.getYamlName());
-        yml.set("allowed adventures", adv);
+        if(homes != null) {
+            for(Home h : homes) {
+                yml.set("homes." + h.name, h.location.toString());
+            }
+        }
+        if(filteredItems != null) {
+            final List<String> filtered = new ArrayList<>();
+            for(UMaterial u : filteredItems) {
+                filtered.add(u.name());
+            }
+            yml.set("filtered items", filtered);
+        }
+
+        if(allowedAdventures != null) {
+            final List<String> adv = new ArrayList<>();
+            for(Adventure a : getAllowedAdventures()) {
+                adv.add(a.getIdentifier());
+            }
+            yml.set("allowed adventures", adv);
+        }
+
         save();
     }
     public RSPlayer load() {
@@ -106,10 +125,7 @@ public class RSPlayer {
             isLoaded = true;
 
             final String[] booleans = yml.getString("booleans").split(";"), ints = yml.getString("ints").split(";"), longs = yml.getString("longs").split(";");
-            final String U = yml.getString("island"), UU = yml.getString("alliance"), R = yml.getString("rank");
-            if(R != null && !R.equals("null")) {
-                rank = PlayerRank.paths.get(R);
-            }
+            final String U = yml.getString("island"), UU = yml.getString("alliance");
             if(U != null && !U.equals("null")) {
                 islandUUID = UUID.fromString(U);
                 island = Island.get(islandUUID);
@@ -176,9 +192,10 @@ public class RSPlayer {
 
     public PlayerRank getRank() {
         if(rank == null) {
-            final String R = yml.getString("rank");
+            final String R = yml.getString("rank", null);
             if(R != null && !R.equals("null")) {
-                rank = PlayerRank.paths.get(R);
+                final Identifiable i = RSStorage.get(Feature.PLAYER_RANK, R);
+                rank = i != null ? (PlayerRank) i : null;
             }
         }
         return rank;
@@ -210,9 +227,11 @@ public class RSPlayer {
     public List<Home> getHomes() {
         if(homes == null) {
             homes = new ArrayList<>();
-            for(String s : yml.getStringList("homes")) {
-                final String name = s.split(";")[0];
-                homes.add(new Home(name, uv.toLocation(s.substring(name.length()+1))));
+            final ConfigurationSection h = yml.getConfigurationSection("homes");
+            if(h != null) {
+                for(String name : h.getKeys(false)) {
+                    homes.add(new Home(name, yml.getLocation("homes." + name)));
+                }
             }
         }
         return homes;
@@ -230,8 +249,10 @@ public class RSPlayer {
         if(allowedAdventures == null) {
             allowedAdventures = new ArrayList<>();
             for(String s : yml.getStringList("allowed adventures")) {
-                final Adventure a = Adventure.adventures.getOrDefault(s, null);
-                if(a != null) allowedAdventures.add(a);
+                final Identifiable i = RSStorage.get(Feature.ADVENTURE, s);
+                if(i != null) {
+                    allowedAdventures.add((Adventure) i);
+                }
             }
         }
         return allowedAdventures;
@@ -247,9 +268,11 @@ public class RSPlayer {
     }
 
     public int getPlayerSkillLevel(PlayerSkill skill) {
-        for(ActivePlayerSkill a : skills)
-            if(a.type.equals(skill))
+        for(ActivePlayerSkill a : skills) {
+            if(a.type.equals(skill)) {
                 return a.level;
+            }
+        }
         return 0;
     }
 }

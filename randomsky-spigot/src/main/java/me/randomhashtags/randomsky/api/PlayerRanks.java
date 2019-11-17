@@ -106,7 +106,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
             final PlayerRank pr = pdata.getRank();
             event.setCancelled(true);
             player.updateInventory();
-            if(pr == null || p.priority > pr.priority) {
+            if(pr == null || p.getRankValue() > pr.getRankValue()) {
                 pdata.setRank(p);
             } else {
                 return;

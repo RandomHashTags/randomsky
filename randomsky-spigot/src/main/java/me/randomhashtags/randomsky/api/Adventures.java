@@ -76,7 +76,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
         worlds = new ArrayList<>();
 
         mapRequired = d(config, "gui.map required");
-        gui = new UInventory(null, config.getInt("gui.size"), ChatColor.translateAlternateColorCodes('&', config.getString("gui.title")));
+        gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         final ItemStack b = d(config, "gui.background");
         for(File f : new File(dataFolder + separator + "adventures").listFiles()) {

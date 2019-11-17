@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api.addon;
+package me.randomhashtags.randomsky.api.unfinished;
 
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
