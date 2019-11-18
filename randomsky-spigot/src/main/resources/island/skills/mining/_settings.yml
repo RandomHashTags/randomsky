@@ -1,46 +1,46 @@
 # Made by RandomHashTags
 messages:
   cannot place fragment:
-  - "&c&l(!)&r &cYou cannot place this resource node fragment!"
+    - "&c&l(!)&r &cYou cannot place this resource node fragment!"
   cannot place resource items:
-  - "&c&l(!)&r &cYou cannot place Resource items!"
+    - "&c&l(!)&r &cYou cannot place Resource items!"
   #
   nodes:
     placed:
-    - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
-    - "&7You can pickup this node by shift-breaking it!"
+      - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
+      - "&7You can pickup this node by shift-breaking it!"
     placed notify:
-    - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
+      - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
     destroyed:
-    - "&c&l(!)&r &c{TYPE} has been destroyed!"
+      - "&c&l(!)&r &c{TYPE} has been destroyed!"
     respawn:
-    - "&e&l(!)&r &e{TYPE} Resource Node will respawn in &n{TIME}!"
+      - "&e&l(!)&r &e{TYPE} Resource Node will respawn in &n{TIME}!"
     pickup:
-    - "&e&l(!)&r &eTo pickup a resource node block, you must be sneaking while breaking it."
+      - "&e&l(!)&r &eTo pickup a resource node block, you must be sneaking while breaking it."
     ready to be harvested:
-    - "&e&l(!)&r &e{TYPE} Resource Node is ready to be harvested!"
+      - "&e&l(!)&r &e{TYPE} Resource Node is ready to be harvested!"
     mined:
-    - "&e&l(!)&r &e{TYPE} Resource Node mined: &7{PROGRESS} / {MAX} (&e{PROGRESS%}%&7)"
+      - "&e&l(!)&r &e{TYPE} Resource Node mined: &7{PROGRESS} / {MAX} (&e{PROGRESS%}%&7)"
     #
     level too low to place node:
-    - "&c&l(!)&r &cIsland Mining Level is too low to place {TYPE} Resource Node!"
-    - "&7Requires /is Mining Level &l&n{REQUIRED_LEVEL}"
+      - "&c&l(!)&r &cIsland Mining Level is too low to place {TYPE} Resource Node!"
+      - "&7Requires /is Mining Level &l&n{REQUIRED_LEVEL}"
     skill advanced:
-    - " "
-    - " &6&l**&r &6Your Mining Skill has advanced to &lLevel {LEVEL}&r&6! &6&l**"
-    - "&7Members can now placed {NODE} on the island!"
-    - " "
+      - " "
+      - " &6&l**&r &6Your Mining Skill has advanced to &lLevel {LEVEL}&r&6! &6&l**"
+      - "&7Members can now placed {NODE} on the island!"
+      - " "
 #
 skill:
   slot: 3
   item: "diamond_pickaxe"
   name: "&a&lMining"
   lore:
-  - " "
-  - "&b&lLevel"
-  - " &f{LEVEL}"
-  - " "
-  - "&7Click to view Island Mining levels!"
+    - " "
+    - "&b&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&7Click to view Island Mining levels!"
 #
 gui:
   title: "/is mining"
@@ -51,27 +51,27 @@ gui:
   #
   settings:
     format:
-    - " "
-    - "&f{COMPLETION%}% &7Complete"
-    - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
-    - "{OR}"
-    - " "
-    - "{RESPAWN_RATE}"
+      - " "
+      - "&f{COMPLETION%}% &7Complete"
+      - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
+      - "{OR}"
+      - " "
+      - "{RESPAWN_RATE}"
     or format:
-    - " &7&l&nOR"
-    - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
+      - " &7&l&nOR"
+      - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
     respawn rate:
-    - "&f{RESPAWN%}% &7Respawn Rate"
-    - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
+      - "&f{RESPAWN%}% &7Respawn Rate"
+      - "&7{PROGRESS} / {COMPLETION} {TYPE} Harvested"
     #
     locked:
       name: "&c&l{NAME}"
       added lore:
-      - "&c&lLOCKED"
+        - "&c&lLOCKED"
     unlocked:
       name: "&a&l{NAME}"
       added lore:
-      - "&a&lUNLOCKED"
+        - "&a&lUNLOCKED"
   #
   log:
     slot: 0
@@ -145,14 +145,14 @@ bots:
     item: "armor_stand"
     name: "&6&lAuto Mining Bot (&r&7Right-Click&6&l)"
     lore:
-    - "&7Place on an accessed"
-    - "&7island to create an"
-    - "&7auto resource node miner!"
-    - " "
-    - "&6&lRadius:&r &f{RADIUS} blocks"
-    - "&6&lInventory Size:&r {INV_SIZE}"
-    - "&6&lScan Interval:&r &f{SCAN_INTERVAL}"
-    - "&6&lBlocks Per Interval:&r &f{BLOCKS_PER_INTERVAL}"
+      - "&7Place on an accessed"
+      - "&7island to create an"
+      - "&7auto resource node miner!"
+      - " "
+      - "&6&lRadius:&r &f{RADIUS} blocks"
+      - "&6&lInventory Size:&r {INV_SIZE}"
+      - "&6&lScan Interval:&r &f{SCAN_INTERVAL}"
+      - "&6&lBlocks Per Interval:&r &f{BLOCKS_PER_INTERVAL}"
 #
 resources:
   pre lore:
@@ -174,7 +174,7 @@ resource item:
   cobblestone:
     item: "cobblestone"
     lore:
-    - "&7You can craft Chainmail Armor with this."
+      - "&7You can craft Chainmail Armor with this."
   iron ingot:
     item: "iron_ingot"
   diamond:
@@ -185,32 +185,32 @@ resource fragments:
     item: "dead_bush"
     name: "&fLog Resource Fragment"
     lore:
-    - " "
-    - "&8&lRecipe"
-    - " &f&l*&r &f5x = Log Node"
-    - " "
-    - "&7Can be created into Resource Nodes."
+      - " "
+      - "&8&lRecipe"
+      - " &f&l*&r &f5x = Log Node"
+      - " "
+      - "&7Can be created into Resource Nodes."
   cobblestone:
     item: "light_gray_dye"
     name: "&fCobblestone Resource Fragment"
     lore:
-    - " "
-    - "&8&lRecipe"
-    - " &f&l*&r &f64x = Cobblestone Node"
-    - " "
-    - "&7Can be created into Resource Nodes."
+      - " "
+      - "&8&lRecipe"
+      - " &f&l*&r &f64x = Cobblestone Node"
+      - " "
+      - "&7Can be created into Resource Nodes."
   #
   mob_spawner:
     item: "prismarine_shard"
     name: "&f&lSpawner Shard (&r&7{TYPE}&f&l)"
     lore:
-    - "&7Combine with &l&n9&r &f&lSpawner Shards"
-    - "&f&l(&r&7{TYPE}&f&l)&r &7to create a new"
-    - "&f&lMob Spawner (&r&7{TYPE}&f&l)&r&7!"
+      - "&7Combine with &l&n9&r &f&lSpawner Shards"
+      - "&f&l(&r&7{TYPE}&f&l)&r &7to create a new"
+      - "&f&lMob Spawner (&r&7{TYPE}&f&l)&r&7!"
 #
 scraps:
   pre lore:
-  - "&7Resource"
+    - "&7Resource"
   #
   oak:
     item: "oak_button"
@@ -272,48 +272,48 @@ nodes:
   types:
     DEFAULT:
       lore:
-      - "&7Resource Node"
-      - " "
-      - "&f&lLoot"
-      - "{LOOT}"
-      - " "
-      - "&f&lRespawn Time"
-      - " &f{RESPAWN}"
-      - " "
-      - "&7Place this resource node on your island!"
+        - "&7Resource Node"
+        - " "
+        - "&f&lLoot"
+        - "{LOOT}"
+        - " "
+        - "&f&lRespawn Time"
+        - " &f{RESPAWN}"
+        - " "
+        - "&7Place this resource node on your island!"
     RARE:
       lore:
-      - "&7Resource Node"
-      - " "
-      - "&8&lLoot"
-      - "{LOOT}"
-      - " "
-      - "&8&lRespawn Time"
-      - " &8{RESPAWN}"
-      - " "
-      - "&7Place this resource node on your island!"
+        - "&7Resource Node"
+        - " "
+        - "&8&lLoot"
+        - "{LOOT}"
+        - " "
+        - "&8&lRespawn Time"
+        - " &8{RESPAWN}"
+        - " "
+        - "&7Place this resource node on your island!"
     GOLD:
       lore:
-      - "&7Resource Node"
-      - " "
-      - "&e&lLoot"
-      - "{LOOT}"
-      - " "
-      - "&e&lRespawn Time"
-      - " &e{RESPAWN}"
-      - " "
-      - "&7Place this resource node on your island!"
+        - "&7Resource Node"
+        - " "
+        - "&e&lLoot"
+        - "{LOOT}"
+        - " "
+        - "&e&lRespawn Time"
+        - " &e{RESPAWN}"
+        - " "
+        - "&7Place this resource node on your island!"
     DIAMOND:
       lore:
-      - "&7Resource Node"
-      - " "
-      - "&b&lLoot"
-      - "{LOOT}"
-      - " "
-      - "&b&lRespawn Time"
-      - " &b{RESPAWN}"
-      - " "
-      - "&7Place this resource node on your island!"
+        - "&7Resource Node"
+        - " "
+        - "&b&lLoot"
+        - "{LOOT}"
+        - " "
+        - "&b&lRespawn Time"
+        - " &b{RESPAWN}"
+        - " "
+        - "&7Place this resource node on your island!"
   # "respawn time" is the default respawn time, and is measured in seconds!
   log:
     type: DEFAULT
@@ -326,7 +326,7 @@ nodes:
     item: "oak_log"
     name: "&fLog Node"
     loot:
-    - "scrap:oak; &f&l*&r &f1x Wood Scrap"
+      - "scrap:oak; &f&l*&r &f1x Wood Scrap"
   cobblestone:
     type: DEFAULT
     required island level: 4
@@ -341,7 +341,7 @@ nodes:
     item: "cobblestone"
     name: "&fCobblestone Node"
     loot:
-    - "scrap:stone; &f&l*&r &f1x Stone Scrap"
+      - "scrap:stone; &f&l*&r &f1x Stone Scrap"
   coal:
     type: DEFAULT
     required island level: 8
@@ -356,7 +356,7 @@ nodes:
     item: "coal_ore"
     name: "&fCoal Ore Node"
     loot:
-    - "resource:coal; &f&l*&r &f1x Coal"
+      - "resource:coal; &f&l*&r &f1x Coal"
   iron:
     type: RARE
     respawn time: 300
@@ -370,7 +370,7 @@ nodes:
     item: "iron_ore"
     name: "&8Iron Ore Node"
     loot:
-    - "scrap:iron; &8&l*&r &81x Iron Scrap"
+      - "scrap:iron; &8&l*&r &81x Iron Scrap"
   gold:
     type: GOLD
     respawn time: 60
@@ -398,15 +398,15 @@ nodes:
     item: "diamond_ore"
     name: "&bDiamond Ore Node"
     loot:
-    - "scrap:diamond; &b&l*&r &b1x Diamond Scrap"
+      - "scrap:diamond; &b&l*&r &b1x Diamond Scrap"
 #
 unrefined:
   iron block:
     item: "iron_block"
     name: "&8Unrefined Iron Block"
     lore:
-    - "&7Smelt in a furnace to refine"
-    - "&7into a &8Refined Iron Block."
+      - "&7Smelt in a furnace to refine"
+      - "&7into a &8Refined Iron Block."
   diamond block:
     item: "diamond_block"
     name: "&bUnrefined Diamond Block"

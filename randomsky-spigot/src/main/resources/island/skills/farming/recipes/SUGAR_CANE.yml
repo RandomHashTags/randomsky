@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&eSugar Cane"
 unlocks: SUGAR_CANE_ITEM
-recipe name: "&eSugar Cane"
-#
-settings:
-  daily limit: 15000
-  completion: 15000
-  type: "Sugar Canes"
 #
 item:
   item: "paper"

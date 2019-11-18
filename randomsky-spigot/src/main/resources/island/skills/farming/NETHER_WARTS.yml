@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 5
+  type: "Nether Warts"
+  required skill: BEETROOTS
+  required recipe: NETHER_WARTS
+  daily limit: 50000
+  completion: 100000
+#
+item:
+  item: "nether_wart"
+  name: "Nether Warts"
+#

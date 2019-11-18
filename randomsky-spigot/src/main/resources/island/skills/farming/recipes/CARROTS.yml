@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&eCarrot"
 unlocks: CARROT_ITEM
-recipe name: "&eCarrot"
-#
-settings:
-  daily limit: 10000
-  completion: 2500
-  type: "Carrots"
 #
 item:
   item: "paper"

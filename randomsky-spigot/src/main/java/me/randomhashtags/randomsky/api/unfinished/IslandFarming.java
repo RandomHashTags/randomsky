@@ -1,9 +1,12 @@
 package me.randomhashtags.randomsky.api.unfinished;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
 import me.randomhashtags.randomsky.addon.file.FileFarmingRecipe;
+import me.randomhashtags.randomsky.addon.file.FileFarmingSkill;
 import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.addon.island.skill.FarmingSkill;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.util.Feature;
@@ -58,8 +61,10 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "island farming", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island farming", "_settings.yml"));
+
+        final String farmingFolder = dataFolder + separator + "island" + separator + "skills" + separator + "farming";
+        save(farmingFolder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(farmingFolder, "_settings.yml"));
         settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island", "_settings.yml"));
 
         plantGrownSentWhenEndsIn = new ArrayList<>();
@@ -68,6 +73,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         for(String s : config.getString("messages.plant grown sent when ends in").split(";")) {
             plantGrownSentWhenEndsIn.add(Integer.parseInt(s));
         }
+
         final List<String> settingsFormat = colorizeListString(config.getStringList("info.settings.format"));
         completedStatus = colorizeListString(config.getStringList("info.settings.completed.status"));
         lockedStatus = colorizeListString(config.getStringList("info.settings.locked.status"));
@@ -80,7 +86,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         lockedPrefix = colorize(config.getString("info.settings.locked.prefix"));
         inprogressPrefix = colorize(config.getString("info.settings.in progress.prefix"));
 
-        for(File f : new File(dataFolder + separator + "island farming" + separator + "recipes").listFiles()) {
+        for(File f : new File(farmingFolder + separator + "recipes").listFiles()) {
             new FileFarmingRecipe(f);
         }
 
@@ -94,33 +100,20 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
 
         info = new UInventory(null, config.getInt("info.size"), colorize(config.getString("info.title")));
         final Inventory ii = info.getInventory();
-        int level = 1;
-        for(String s : config.getConfigurationSection("info.settings").getKeys(false)) {
-            if(!s.equals("format") && !s.equals("needs recipe") && !s.equals("has recipe") && !s.equals("completed") && !s.equals("locked") && !s.equals("in progress") && !s.equals("farming recipe")) {
-                final String p = "info.settings." + s + ".", requiredSkill = config.getString(p + "required skill");
-                final int slot = config.getInt(p + "slot"), completionNumber = config.getInt(p + "completion");
-                final ItemStack display = d(config, "info.settings." + s);
-                new FarmingSkill(s, level, slot, completionNumber, colorize(config.getString(p + "type")), display, FarmingSkill.valueOf(requiredSkill), FarmingRecipe.valueOf(config.getString(p + "required recipe")));
-                item = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
-                if(completionNumber == 0 || requiredSkill == null) {
-                    if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-                } else {
-                    lore.addAll(settingsFormat);
-                }
-                itemMeta.setLore(lore); lore.clear();
-                item.setItemMeta(itemMeta);
-                ii.setItem(slot, item);
-                level++;
+
+        for(File f : new File(farmingFolder).listFiles()) {
+            if(!f.isDirectory() && !f.getAbsoluteFile().getName().equals("_settings.yml")) {
+                final FarmingSkill skill = new FileFarmingSkill(f);
+                ii.setItem(skill.getSlot(), skill.getItem());
             }
         }
-        FarmingSkill.paths.put("default", FarmingSkill.paths.get(D.split("&&")[0]));
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.FARMING_RECIPE).size() + " Farming Recipes and " + RSStorage.getAll(Feature.FARMING_LIMIT_INCREASE) + " Farming Limit Increasers &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
         RSStorage.unregisterAll(Feature.FARMING_RECIPE, Feature.FARMING_LIMIT_INCREASE);
     }
 
-    public void viewFarming(Player player) {
+    public void viewFarming(@NotNull Player player) {
         final Island island = Island.players.getOrDefault(player.getUniqueId(), null);
         if(island == null) {
             sendStringListMessage(player, settings.getStringList("messages.need island"), null);
@@ -138,7 +131,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 final FarmingSkill is = FarmingSkill.slots.getOrDefault(i, null);
                 if(is != null) {
                     final FarmingSkill r = is.required;
-                    final FarmingRecipe req = is.requiredRecipe, previousRecipe = r != null ? r.requiredRecipe : null;
+                    final FarmingRecipe req = is.getRequiredRecipe(), previousRecipe = r != null ? r.requiredRecipe : null;
                     final boolean isDefault = defaults.contains(req), isUnlocked = r == null || allowedCrops.contains(req);
                     final double c = is.completion, p = previousRecipe != null ? cropsGrown.getOrDefault(previousRecipe, -1) : 0;
                     double percent = (p/c)*100;
@@ -155,7 +148,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                             }
                         } else if(s.equals("{FARMING_RECIPE}")) {
                             if(req != null && !isDefault) {
-                                final String R = isUnlocked ? hasRecipe : needsRecipe, reqN = req.getRecipeName();
+                                final String R = isUnlocked ? hasRecipe : needsRecipe, reqN = req.getName();
                                 for(String f : farmingRecipe) {
                                     lore.add(f.replace("{RECIPE_NAME}", reqN).replace("{HAS_RECIPE}", R));
                                 }
@@ -166,7 +159,9 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                     }
                     itemMeta.setLore(lore); lore.clear();
                     item.setItemMeta(itemMeta);
-                    if(r == null || p >= 100) item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
+                    if(r == null || p >= 100) {
+                        item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
+                    }
                 }
             }
             player.updateInventory();

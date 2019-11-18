@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 3
+  type: "Sugar Canes"
+  required skill: CARROTS
+  required recipe: SUGAR_CANE
+  daily limit: 15000
+  completion: 15000
+#
+item:
+  item: "sugar_cane"
+  name: "Sugar Cane"
+#

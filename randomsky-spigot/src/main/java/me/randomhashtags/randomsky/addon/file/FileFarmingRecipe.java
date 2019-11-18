@@ -8,12 +8,10 @@ import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.math.BigDecimal;
 
 public class FileFarmingRecipe extends RSAddon implements FarmingRecipe {
     private UMaterial unlocks;
-    private String recipeName, type;
-    private BigDecimal dailyLimit, completion;
+    private String name;
     private ItemStack is;
 
     public FileFarmingRecipe(File f) {
@@ -29,29 +27,11 @@ public class FileFarmingRecipe extends RSAddon implements FarmingRecipe {
         }
         return unlocks;
     }
-    public String getRecipeName() {
-        if(recipeName == null) {
-            recipeName = colorize(yml.getString("recipe name"));
+    public String getName() {
+        if(name == null) {
+            name = colorize(yml.getString("name"));
         }
-        return recipeName;
-    }
-    public BigDecimal getDailyLimit() {
-        if(dailyLimit == null) {
-            dailyLimit = BigDecimal.valueOf(yml.getDouble("settings.daily limit", -1));
-        }
-        return dailyLimit;
-    }
-    public BigDecimal getCompletion() {
-        if(completion == null) {
-            completion = BigDecimal.valueOf(yml.getDouble("settings.completion", -1));
-        }
-        return completion;
-    }
-    public String getType() {
-        if(type == null) {
-            type = colorize(yml.getString("settings.type"));
-        }
-        return type;
+        return name;
     }
     public ItemStack getItem() {
         if(is == null) {

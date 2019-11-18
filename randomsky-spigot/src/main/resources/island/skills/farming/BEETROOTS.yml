@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 4
+  type: "Beetroot"
+  required skill: SUGAR_CANE
+  required recipe: BEETROOTS
+  daily limit: 20000
+  completion: 75000
+#
+item:
+  item: "beetroot_seeds"
+  name: "Beetroot"
+#

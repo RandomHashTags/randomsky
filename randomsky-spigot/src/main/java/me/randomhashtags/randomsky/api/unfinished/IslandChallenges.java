@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api.unfinished;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
 import me.randomhashtags.randomsky.addon.file.FileIslandChallenge;
 import me.randomhashtags.randomsky.addon.island.Island;
@@ -57,8 +58,8 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void load() {
         final long a = System.currentTimeMillis();
-        save(dataFolder + separator + "island challenges", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island challenges", "_settings.yml"));
+        save(dataFolder + separator + "island" + separator + "challenges", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "challenges", "_settings.yml"));
         settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island settings", "_settings.yml"));
 
         claim = colorizeListString(config.getStringList("challenges.settings.completed.claim"));
@@ -72,7 +73,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
 
-        for(File f : new File(dataFolder + separator + "island challenges").listFiles()) {
+        for(File f : new File(dataFolder + separator + "island" + separator + "challenges").listFiles()) {
             final IslandChallenge c = new FileIslandChallenge(f);
             item = locked.clone(); itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", c.getName()));
@@ -86,7 +87,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         RSStorage.unregisterAll(Feature.ISLAND_CHALLENGE);
     }
 
-    public void viewChallenges(Player player) {
+    public void viewChallenges(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.island.challenges", true)) {
             final Island is = Island.players.getOrDefault(player.getUniqueId(), null);
             if(is == null) {
@@ -96,28 +97,28 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                 final IslandChallenge type = challenge.type;
                 final HashMap<String, Boolean> completedChallenges = is.completedChallenges;
                 final double p = challenge.progress;
-                final String P = formatDouble(p), percent = formatDouble(round((p/challenge.type.completion)*100, 2));
+                final String P = formatDouble(p), percent = formatDouble(round((p/challenge.getChallenge().getCompletion().doubleValue())*100, 2));
                 player.closeInventory();
                 final int size = gui.getSize();
                 player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
                 final Inventory top = player.getOpenInventory().getTopInventory();
                 top.setContents(gui.getInventory().getContents());
                 for(int i = 0; i < size; i++) {
-                    final IslandChallenge c = IslandChallenge.slots.getOrDefault(i, null);
-                    if(c != null) {
-                        top.setItem(i, getStatus(top, i, type, c, completedChallenges, P, percent));
+                    final IslandChallenge isChallenge = IslandChallenge.slots.getOrDefault(i, null);
+                    if(isChallenge != null) {
+                        top.setItem(i, getStatus(top, i, type, isChallenge, completedChallenges, P, percent));
                     }
                 }
                 player.updateInventory();
             }
         }
     }
-    private ItemStack getStatus(Inventory top, int i, IslandChallenge type, IslandChallenge c, HashMap<String, Boolean> completedChallenges, String P, String percent) {
-        final String a = c.getIdentifier();
+    private ItemStack getStatus(Inventory top, int i, IslandChallenge type, IslandChallenge isChallenge, HashMap<String, Boolean> completedChallenges, String P, String percent) {
+        final String a = isChallenge.getIdentifier();
         final boolean isCompleted = completedChallenges.containsKey(a), isClaimed = isCompleted ? completedChallenges.get(a) : false;
-        final double completion = c.getCompletion();
-        final String N = c.getName(), C = formatDouble(completion);
-        final List<String> R = c.getRewards(), obj = c.getObjective();
+        final double completion = isChallenge.getCompletion();
+        final String N = isChallenge.getName(), C = formatDouble(completion);
+        final List<String> R = isChallenge.getRewards(), obj = isChallenge.getObjective();
         if(isCompleted) {
             item = completed.clone(); itemMeta = item.getItemMeta(); lore.clear();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", N));
@@ -130,7 +131,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
             }
             itemMeta.setLore(lore); lore.clear();
             item.setItemMeta(itemMeta);
-        } else if(type == c) {
+        } else if(type == isChallenge) {
             item = progress.clone(); itemMeta = item.getItemMeta(); lore.clear();
             itemMeta.setDisplayName(item.getItemMeta().getDisplayName().replace("{NAME}", N));
             for(String s : itemMeta.getLore()) {
@@ -212,8 +213,8 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         }
     }
 
-    public void giveRewards(Player player, IslandChallenge c) {
-        if(player != null && c != null) {
+    public void giveRewards(@NotNull Player player, IslandChallenge c) {
+        if(c != null) {
             for(String s : c.getRewards()) {
                 giveItem(player, d(null, s.split(";")[0]));
             }
@@ -372,11 +373,11 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
             final Island island = RSPlayer.get(player.getUniqueId()).getIsland();
             final ActiveIslandChallenge a = island.challenge;
             if(a != null) {
-                final IslandChallenge i = IslandChallenge.slots.getOrDefault(r, null), type = a.type;
+                final IslandChallenge i = IslandChallenge.slots.getOrDefault(r, null), type = a.getChallenge();
                 if(i != null) {
                     final String t = i.path;
-                    final HashMap<String, Boolean> completed = island.completedChallenges;
-                    if(a.type == i) {
+                    final HashMap<String, Boolean> completed = island.getCompletedChallenges();
+                    if(type == i) {
                         sendStringListMessage(player, config.getStringList("messages.must complete before claiming rewards"), null);
                     } else if(completed.containsKey(t)) {
                         if(!completed.get(t)) {
@@ -385,10 +386,10 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                             player.updateInventory();
                             top.setItem(r, getStatus(top, r, type, i, completed, null, null));
 
-                            final String N = i.name;
+                            final String N = i.getName();
                             for(String s : config.getStringList("messages.claimed")) {
                                 if(s.equals("{REWARDS}")) {
-                                    for(String p : i.rewards) {
+                                    for(String p : i.getRewards()) {
                                         player.sendMessage(colorize(p.split(";")[1]));
                                     }
                                 } else {

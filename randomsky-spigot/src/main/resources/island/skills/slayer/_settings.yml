@@ -1,18 +1,18 @@
 # Made by RandomHashTags
 messages:
   mobs slain:
-  - "&e&l(!)7r &e{TYPE} slain: &7{PROGRESS} / {COMPLETION} (&e{COMPLETION%}&7)"
+    - "&e&l(!)7r &e{TYPE} slain: &7{PROGRESS} / {COMPLETION} (&e{COMPLETION%}&7)"
 #
 skill:
   slot: 2
   item: "diamond_sword"
   name: "&a&lSlayer"
   lore:
-  - " "
-  - "&b&lLevel"
-  - " &f{LEVEL}"
-  - " "
-  - "&7Click to view Island Slayer levels!"
+    - " "
+    - "&b&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&7Click to view Island Slayer levels!"
 #
 gui:
   title: "/is slayer"
@@ -34,14 +34,14 @@ gui:
     unlocked:
       name: "&a&l{NAME}"
       lore:
-      - "&a&lUNLOCKED"
+        - "&a&lUNLOCKED"
     locked:
       name: "&c&l{NAME}"
       lore:
-      - "&c&lLOCKED"
+        - "&c&lLOCKED"
     respawn rate:
-    - "&f{RESPAWN%}% &7Respawn Rate"
-    - "&7{PROGRESS} {TYPE} Slain"
+      - "&f{RESPAWN%}% &7Respawn Rate"
+      - "&7{PROGRESS} {TYPE} Slain"
   #
 #
 mobs:

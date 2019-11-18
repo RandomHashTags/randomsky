@@ -26,3 +26,44 @@ gui:
   title: "Challenges"
   size: 18
 #
+settings:
+  completed:
+    claim:
+      - "&a&lCOMPLETE"
+      - "&7Click to claim reward!"
+    claimed:
+      - "&a&lCLAIMED"
+    item: "lime_stained_glass_pane"
+    name: "&a&l{NAME}"
+    lore:
+      - " "
+      - "&b&lObjective"
+      - "&f&m{OBJ}"
+      - " "
+      - "&a&lReward"
+      - "{REWARDS}"
+      - " "
+      - "{STATUS}"
+  progress:
+    item: "yellow_stained_glass_pane"
+    name: "&e&l{NAME}"
+    lore:
+      - " "
+      - "&b&lObjective"
+      - "{OBJ}"
+      - " "
+      - "&a&lReward"
+      - "{REWARDS}"
+      - " "
+      - "&e&lProgress"
+      - " &f{PERCENT}% (&7{PROGRESS}&f/&7{COMPLETION}&f)"
+  locked:
+    item: "red_stained_glass_pane"
+    name: "&c&l{NAME}"
+    lore:
+      - " "
+      - "&b&lObjective"
+      - "{OBJ}"
+      - " "
+      - "&c&lLOCKED (&r&7Complete Previous&c&l)"
+#

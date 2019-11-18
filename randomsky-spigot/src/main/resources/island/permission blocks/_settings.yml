@@ -1,0 +1,190 @@
+# Made by RandomHashTags
+messages:
+  add member:
+    - " "
+    - "&a&l(!)&r &aType the username(s) of the players you with to grant access to."
+    - "&7You can add multiple users at once with a '&l,&r&7' in between each name."
+    - " "
+  registered member:
+    - "&a&l(!)&r &aRegistered '&f{PLAYER}&a' to the block protected region!"
+    - "&7These members will have access to all allowed region settings."
+  member already registered:
+    - "&c&l(!)&r &c{PLAYER} is already a registered member!"
+  removed member:
+    - "&c&l(!) {PLAYER} has been removed from the protected region!"
+  setting enable:
+    - "&6&l(!) {SETTING}&r &6- &a&lALLOWED"
+  setting disable:
+    - "&6&l(!) {SETTING}&r &6- &c&lDENIED"
+  #
+  placed:
+    - "&a&l(!)&r &aRegion Protection block registered on your island!"
+    - "&7Right-Click the block to view block settings!"
+  #
+  no permission to interact in protected region:
+    - "&c&l(!)&r &cYou do not have permission to interact in this protected region!"
+  no permimssion to change protected region settings:
+    - "&c&l(!)&r &cYou do not have access to change region settings!"
+  no permission to add members to protection region:
+    - "&c&l(!)&r &cYou do not have permission to add members!"
+  no permission to break blocks in protected region:
+    - "&c&l(!)&r &cYou cannot break blocks in this protected region!"
+  no permission to damage entities in region:
+    - "&c&l(!)&r &cYou cannot damage entities in this protected region!"
+  no permission to interact with entities in protected region:
+    - "&c&l(!)&r &cYou cannot interact with entities in this protected region!"
+#
+items:
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+#
+lores:
+  pre lore:
+    - "&7Place on an accessed island"
+    - "&7to create a protected area"
+    - "&7only accessed members can interact with!"
+    - " "
+    - "&6&lRadius:&r &f{RADIUS} blocks"
+  #
+  allowed: "&a&lALLOWED"
+  denied: "&c&lDENIED"
+  added lore:
+    - "&7Click to toggle this setting."
+  #
+  no members:
+    - "&7No region members!"
+  members:
+    - "&b&lMembers"
+    - " &b&l*&r &f{MEMBERS}"
+  public region:
+    - "&7No region members!"
+    - "&6&lPublic Region"
+#
+gui:
+  title: "Region Settings"
+  size: 27
+  #
+  region members:
+    slot: 3
+    item: "book"
+    name: "&b&lRegion Members"
+    lore:
+      - " "
+      - "{MEMBERS}"
+      - " "
+      - "&7Members have access to"
+      - "&7allowed region settings."
+  region info:
+    slot: 4
+    item: "anvil"
+    name: "&e&lRegion Info"
+    lore:
+      - "&e&lRadius:&r &f{RADIUS} blocks"
+      - " "
+      - "&e&lSettings"
+      - " &fInteract: {INTERACT}"
+      - " &fInteract With Doors: {INTERACT_WITH_DOORS}"
+      - " &fInteract With Levers: {INTERACT_WITH_LEVERS}"
+      - " &fInteract With Pressure Plates: {INTERACT_WITH_PRESSURE_PLATES}"
+      - " &fInteract With Hoppers: {INTERACT_WITH_HOPPERS}"
+      - " &fInteract With Chests: {INTERACT_WITH_CHESTS}"
+      - " &fInteract With Entities: {INTERACT_WITH_ENTITIES}"
+      - " &fDamage Entities: {DAMAGE_ENTITIES}"
+      - " &fPickup Exp: {PICKUP_EXP}"
+      - " &fPickup Items: {PICKUP_ITEMS}"
+      - " &fDrop Items: {DROP_ITEMS}"
+      - " &fPlace Blocks: {PLACE_BLOCKS}"
+      - " &fBreak Blocks: {BREAK_BLOCKS}"
+      - " &fHarvest Resource Nodes: {HARVEST_RESOURCE_NODES}"
+      - " &fPublic Region: {PUBLIC_REGION}"
+      - " &fSafe Pvp: {SAFE_PVP}"
+  add member:
+    slot: 5
+    item: "book_and_quill"
+    name: "&a&lAdd Member"
+    lore:
+      - "&7Click to enter a"
+      - "&7player name to add"
+      - "&7to the region."
+#
+settings:
+  enabled:
+    item: "lime_stained_glass_pane"
+    name: "&a&l{NAME}"
+  disabled:
+    item: "red_stained_glass_pane"
+    name: "&c&l{NAME}"
+  #
+  interact:
+    slot: 9
+    name: "Interact"
+  interact with doors:
+    slot: 10
+    name: "Interact With Doors"
+  interact with levers:
+    slot: 11
+    name: "Interact With Levers"
+  interact with pressure plates:
+    slot: 12
+    name: "Interact With Pressure Plates"
+  interact with hoppers:
+    slot: 13
+    name: "Interact With Hoppers"
+  interact with chests:
+    slot: 14
+    name: "Interact With Chests"
+  interact with entities:
+    slot: 15
+    name: "Interact With Entities"
+  damage entities:
+    slot: 16
+    name: "Damage Entities"
+  pickup exp:
+    slot: 17
+    name: "Pickup Exp"
+  pickup items:
+    slot: 18
+    name: "Pickup Items"
+  drop items:
+    slot: 19
+    name: "Drop Items"
+  place blocks:
+    slot: 20
+    name: "Place Blocks"
+  break blocks:
+    slot: 21
+    name: "Break Blocks"
+  harvest resource nodes:
+    slot: 22
+    name: "Harvest Resource Nodes"
+    lore:
+      - "&fAllow players to harvest the"
+      - "&fresources from available resource"
+      - "&fnodes, they do &c&nNOT&r &fgain"
+      - "&faccess to destroy the"
+      - "&fnode."
+      - " "
+  public region:
+    slot: 23
+    name: "Public Region"
+    lore:
+      - "&fAdds ALL players (including non-members)"
+      - "&fto this Permission Block's"
+      - "&fregion. The block's other"
+      - "&ftoggles will still apply,"
+      - "&fby every player on the"
+      - "&fserver will be treated as"
+      - "&fif they are on the block's"
+      - "&fmember list."
+      - " "
+  safe pvp:
+    slot: 24
+    name: "Safe Pvp"
+    lore:
+      - "&fAllows players to PvP"
+      - "&finside the region. Players"
+      - "&fKeep Inventory Items INSIDE"
+      - "&fthe region!"
+      - " "
+#

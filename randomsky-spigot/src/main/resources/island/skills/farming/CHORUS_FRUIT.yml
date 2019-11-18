@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 8
+  type: "Chorus Fruit"
+  required skill: PUMPKINS
+  required recipe: CHORUS_FRUIT
+  daily limit: 1000
+  completion: 7500000
+#
+item:
+  item: "chorus_plant"
+  name: "Chorus Fruit"
+#

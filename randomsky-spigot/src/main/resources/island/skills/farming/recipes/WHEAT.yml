@@ -1,10 +1,6 @@
 # Made by RandomHashTags
+name: "&eWheat"
 unlocks: WHEAT_SEEDS
-recipe name: "&eWheat"
-#
-settings:
-  daily limit: 1000
-  type: "Wheat"
 #
 item:
   item: "paper"

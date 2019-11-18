@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 1
+  type: "Potatoes"
+  required skill: WHEAT
+  required recipe: POTATOES
+  daily limit: 5000
+  completion: 100
+#
+item:
+  item: "potato"
+  name: "Potatoes"
+#

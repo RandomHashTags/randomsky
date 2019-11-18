@@ -49,8 +49,8 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "island levels.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island levels.yml"));
+        save(dataFolder + separator + "island" + separator + "levels", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "levels", "_setings.yml"));
 
         lockedBlocks = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
         locked = d(config, "settings.locked");
         unlocked = d(config, "settings.unlocked");
 
-        for(File f : new File(dataFolder + separator + "island levels").listFiles()) {
+        for(File f : new File(dataFolder + separator + "island" + separator + "levels").listFiles()) {
             if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
                 final IslandLevel lvl = new FileIslandLevel(f);
                 final int level = lvl.getLevel();
@@ -104,8 +104,8 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
         if(hasPermission(player, "RandomSky.island.levels", true)) {
             final Island is = Island.players.getOrDefault(player.getUniqueId(), null);
             if(is != null) {
-                final IslandLevel L = is.level;
-                final int size = gui.getSize(), isLevel = L.level;
+                final IslandLevel L = is.getIslandLevel();
+                final int size = gui.getSize(), isLevel = L.getLevel();
                 final double bal = eco.getBalance(player);
                 player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
                 final Inventory top = player.getOpenInventory().getTopInventory();
@@ -124,7 +124,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
         }
     }
     private long get$Cost(IslandLevel level) {
-        for(String s : level.cost) {
+        for(String s : level.getCost()) {
             if(s.startsWith("$")) {
                 return Long.parseLong(s.split("\\$")[1]);
             }
@@ -191,21 +191,21 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void islandPlaceBlockEvent(IslandPlaceBlockEvent event) {
-        final ItemStack i = event.item;
+        final ItemStack i = event.getItem();
         final String b = UMaterial.match(i).name().toLowerCase();
-        final Island island = event.island;
-        final IslandLevel level = island.level;
+        final Island island = event.getIsland();
+        final IslandLevel level = island.getIslandLevel();
         if(lockedBlocks.containsKey(b)) {
             final IslandLevel req = IslandLevel.paths.getOrDefault(lockedBlocks.get(b), null);
             if(req != null) {
-                final int reql = req.level, l = level.level;
+                final int reql = req.getLevel(), l = level.getLevel();
                 if(l < reql) {
                     event.setCancelled(true);
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{REQ_LEVEL}", Integer.toString(reql));
                     replacements.put("{BLOCK}", b.toUpperCase());
                     replacements.put("{LEVEL}", Integer.toString(l));
-                    sendStringListMessage(event.player, config.getStringList("messages.level too low to place block"), replacements);
+                    sendStringListMessage(event.getPlayer(), config.getStringList("messages.level too low to place block"), replacements);
                 }
             }
         }
@@ -223,11 +223,11 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
 
             final Island is = Island.players.get(player.getUniqueId());
-            final IslandLevel level = IslandLevel.slots.getOrDefault(r, null), current = is.level;
+            final IslandLevel level = IslandLevel.slots.getOrDefault(r, null), current = is.getIslandLevel();
             if(level != null) {
                 double bal = eco.getBalance(player);
                 final long cost = get$Cost(level);
-                final int currentLevel = current.level, targetLevel = level.level;
+                final int currentLevel = current.getLevel(), targetLevel = level.getLevel();
 
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{LEVEL}", Integer.toString(currentLevel));
@@ -245,12 +245,12 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                     eco.withdrawPlayer(player, cost);
                     bal -= cost;
                     sendStringListMessage(player, config.getStringList("messages.level up"), replacements);
-                    final int cu = current.slot;
+                    final int cu = current.getSlot();
                     final IslandLevel next = IslandLevel.levels.getOrDefault(targetLevel+1, null);
                     top.setItem(cu, getStatus(bal, cu, current, targetLevel));
-                    top.setItem(r, getStatus(bal, level.slot, level, targetLevel));
+                    top.setItem(r, getStatus(bal, level.getSlot(), level, targetLevel));
                     if(next != null) {
-                        final int slot = next.slot;
+                        final int slot = next.getSlot();
                         top.setItem(slot, getStatus(bal, slot, next, targetLevel));
                     }
                     player.updateInventory();

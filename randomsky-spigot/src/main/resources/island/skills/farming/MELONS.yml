@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 6
+  type: "Melons"
+  required skill: NETHER_WARTS
+  required recipe: MELONS
+  daily limit: 250000
+  completion: 250000
+#
+item:
+  item: "melon_slice"
+  name: "Melons"
+#

@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&eNether Warts"
 unlocks: NETHER_WART
-recipe name: "&eNether Warts"
-#
-settings:
-  daily limit: 50000
-  completion: 100000
-  type: "Nether Warts"
 #
 item:
   item: "paper"

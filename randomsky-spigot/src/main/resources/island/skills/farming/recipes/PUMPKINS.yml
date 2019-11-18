@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&ePumpkins"
 unlocks: PUMPKIN_SEEDS
-recipe name: "&ePumpkins"
-#
-settings:
-  daily limit: 500000
-  completion: 5000000
-  type: "Pumpkins"
 #
 item:
   item: "paper"

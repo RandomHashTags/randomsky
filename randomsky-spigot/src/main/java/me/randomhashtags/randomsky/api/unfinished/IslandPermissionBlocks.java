@@ -4,7 +4,9 @@ import me.randomhashtags.randomsky.addon.PermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static java.io.File.separator;
+
 public class IslandPermissionBlocks extends IslandAddon {
     private static IslandPermissionBlocks instance;
     public static IslandPermissionBlocks getIslandPermissionBlocks() {
@@ -46,8 +50,8 @@ public class IslandPermissionBlocks extends IslandAddon {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "island permission blocks.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island permission blocks.yml"));
+        save(dataFolder + separator + "island" + separator + "permission blocks", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "permission blocks", "_settings.yml"));
 
         A = colorize(config.getString("permission blocks.gui.lores.allowed"));
         D = colorize(config.getString("permission blocks.gui.lores.denied"));
@@ -61,7 +65,6 @@ public class IslandPermissionBlocks extends IslandAddon {
         editations = new HashMap<>();
         editing = new HashMap<>();
 
-        int loaded = 0;
         final int pbsize = config.getInt("permission blocks.gui.size");
         gui = new UInventory(null, pbsize, colorize(config.getString("permission blocks.gui.title")));
         final Inventory gi = gui.getInventory();
@@ -77,7 +80,6 @@ public class IslandPermissionBlocks extends IslandAddon {
                 itemMeta.setLore(lore); lore.clear();
                 item.setItemMeta(itemMeta);
                 new PermissionBlock(s, item, radius);
-                loaded++;
             }
         }
 
@@ -109,9 +111,10 @@ public class IslandPermissionBlocks extends IslandAddon {
                 gi.setItem(i, background);
             }
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Islands Permission Blocks &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ISLAND_PERMISSION_BLOCK).size() + " Islands Permission Blocks &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
+        RSStorage.unregisterAll(Feature.ISLAND_PERMISSION_BLOCK);
     }
 
     public void viewPermissionBlock(Player player, ActivePermissionBlock block) {
@@ -179,9 +182,11 @@ public class IslandPermissionBlocks extends IslandAddon {
         }
     }
     private void updateRegionMembers(Player player, Inventory top, ActivePermissionBlock block) {
-        final List<String> r = colorizeListString(config.getStringList("permission blocks.gui.lores." + (block.publicRegion ? "public region" : block.members.isEmpty() ? "no members" : "members")));
+        final List<String> r = colorizeListString(config.getStringList("permission blocks.gui.lores." + (block.publicRegion ? "public region" : block.getMembers().isEmpty() ? "no members" : "members")));
         final List<String> m = new ArrayList<>();
-        for(UUID u : block.members) m.add(Bukkit.getOfflinePlayer(u).getName());
+        for(UUID u : block.getMembers()) {
+            m.add(Bukkit.getOfflinePlayer(u).getName());
+        }
 
         for(int i : editations.keySet()) {
             final String s = editations.get(i);
@@ -213,44 +218,12 @@ public class IslandPermissionBlocks extends IslandAddon {
         }
     }
     private boolean isAllowed(ActivePermissionBlock block, String setting) {
-        if(setting.equals("interact")) return block.interact;
-        else if(setting.equals("interact with doors")) return block.interactWithDoors;
-        else if(setting.equals("interact with levers")) return block.interactWithLevers;
-        else if(setting.equals("interact with pressure plates")) return block.interactWithPressurePlates;
-        else if(setting.equals("interact with hoppers")) return block.interactWithHoppers;
-        else if(setting.equals("interact with chests")) return block.interactWithChests;
-        else if(setting.equals("interact with entities")) return block.interactWithEntities;
-        else if(setting.equals("damage entities")) return block.damageEntities;
-        else if(setting.equals("pickup exp")) return block.pickupExp;
-        else if(setting.equals("pickup items")) return block.pickupItems;
-        else if(setting.equals("drop items")) return block.dropItems;
-        else if(setting.equals("placed blocks")) return block.placeBlocks;
-        else if(setting.equals("break blocks")) return block.breakBlocks;
-        else if(setting.equals("harvest resource nodes")) return block.harvestResourceNodes;
-        else if(setting.equals("public region")) return block.publicRegion;
-        else if(setting.equals("safe pvp")) return block.safePVP;
-        else return false;
+        return block.getSetting(setting);
     }
     private void toggleSetting(Player player, ActivePermissionBlock block, int slot) {
         if(settings.containsKey(slot)) {
             final String setting = settings.get(slot);
-            if(setting.equals("interact")) block.interact = !block.interact;
-            else if(setting.equals("interact with doors")) block.interactWithDoors = !block.interactWithDoors;
-            else if(setting.equals("interact with levers")) block.interactWithLevers = !block.interactWithLevers;
-            else if(setting.equals("interact with pressure plates")) block.interactWithPressurePlates = !block.interactWithPressurePlates;
-            else if(setting.equals("interact with hoppers")) block.interactWithHoppers = !block.interactWithHoppers;
-            else if(setting.equals("interact with chests")) block.interactWithChests = !block.interactWithChests;
-            else if(setting.equals("interact with entities")) block.interactWithEntities = !block.interactWithEntities;
-            else if(setting.equals("damage entities")) block.damageEntities = !block.damageEntities;
-            else if(setting.equals("pickup exp")) block.pickupExp = !block.pickupExp;
-            else if(setting.equals("pickup items")) block.pickupItems = !block.pickupItems;
-            else if(setting.equals("drop items")) block.dropItems = !block.dropItems;
-            else if(setting.equals("placed blocks")) block.placeBlocks = !block.placeBlocks;
-            else if(setting.equals("break blocks")) block.breakBlocks = !block.breakBlocks;
-            else if(setting.equals("harvest resource nodes")) block.harvestResourceNodes = !block.harvestResourceNodes;
-            else if(setting.equals("public region")) block.publicRegion = !block.publicRegion;
-            else if(setting.equals("safe pvp")) block.safePVP = !block.safePVP;
-            else return;
+            block.setSetting(setting, !block.getSetting(setting));
             updateSetting(player, player.getOpenInventory().getTopInventory(), slot, block);
         }
     }
@@ -288,26 +261,26 @@ public class IslandPermissionBlocks extends IslandAddon {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void playerIslandBreakBlockEvent(PlayerIslandBreakBlockEvent event) {
-        final Player player = event.player;
+        final Player player = event.getPlayer();
         final UUID uuid = player.getUniqueId();
-        final Island is = event.island;
-        final BlockBreakEvent e = event.breakEvent;
+        final Island is = event.getIsland();
+        final BlockBreakEvent e = event.getEvent();
         final Block b = e.getBlock();
         final Location l = b.getLocation();
         final World w = l.getWorld();
         final ActivePermissionBlock a = is.valueOF(l);
         final List<ActivePermissionBlock> nearby = is.getNearbyPermissionBlocks(l);
-        if(!is.members.containsKey(uuid)) {
+        if(!is.getMembers().containsKey(uuid)) {
             if(!nearby.isEmpty()) {
                 final String mat = UMaterial.getItem(b).name();
                 final boolean isDoor = mat.contains("DOOR"), isLever = mat.equals("LEVER"), isHopper = mat.equals("HOPPER"), isChest = mat.equals("CHEST") || mat.equals("TRAPPED_CHEST") || mat.equals("ENDER_CHEST");
                 for(ActivePermissionBlock p : nearby) {
-                    if(p.publicRegion || p.members.contains(uuid)) {
-                        if(isDoor && p.interactWithDoors
-                                || isLever && p.interactWithLevers
-                                || isHopper && p.interactWithHoppers
-                                || isChest && p.interactWithChests
-                                || !isDoor && !isLever && !isHopper && !isChest && p.interact) {
+                    if(p.publicRegion || p.getMembers().contains(uuid)) {
+                        if(isDoor && p.getSetting("interact with doors")
+                                || isLever && p.getSetting("interact with levers")
+                                || isHopper && p.getSetting("interact with hoppers")
+                                || isChest && p.getSetting("interact with chests")
+                                || !isDoor && !isLever && !isHopper && !isChest && p.getSetting("interact")) {
                             return;
                         } else {
                             event.setCancelled(true);
@@ -324,7 +297,7 @@ public class IslandPermissionBlocks extends IslandAddon {
             final PermissionBlock type = a.getType();
             event.setCancelled(true);
             dmgDurability(player.getItemInHand());
-            is.permissionBlocks.remove(a);
+            is.getPermissionBlocks().remove(a);
             a.delete();
             w.dropItemNaturally(l.clone().add(0.5, 0.5, 0.5), type.item());
         }
@@ -382,7 +355,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                         } else {
                             final World w = bl.getWorld();
                             final PermissionBlock type = pb.getType();
-                            is.permissionBlocks.remove(pb);
+                            is.getPermissionBlocks().remove(pb);
                             pb.delete();
                             w.dropItemNaturally(bl.clone().add(0.5, 0.5, 0.5), type.item());
                             spawnParticle(RSPlayer.get(u), w, bl, type.item());

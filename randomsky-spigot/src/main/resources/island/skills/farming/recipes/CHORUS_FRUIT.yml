@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&eChorus Fruit"
 unlocks: CHORUS_FLOWER
-recipe name: "&eChorus Fruit"
-#
-settings:
-  daily limit: 1000
-  completion: 7500000
-  type: "Chorus Fruit"
 #
 item:
   item: "paper"

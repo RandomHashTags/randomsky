@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+settings:
+  slot: 0
+  type: "Wheat"
+  required recipe: WHEAT
+  daily limit: 1000
+#
+item:
+  item: "wheat_seeds"
+  name: "&a&lWheat"
+  lore:
+    - " "
+    - "&7You're a natural farmer!"
+#

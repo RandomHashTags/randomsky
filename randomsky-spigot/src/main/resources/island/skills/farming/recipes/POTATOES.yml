@@ -1,11 +1,6 @@
 # Made by RandomHashTags
+name: "&ePotatoes"
 unlocks: POTATO_ITEM
-recipe name: "&ePotatoes"
-#
-settings:
-  daily limit: 5000
-  completion: 100
-  type: "Potatoes"
 #
 item:
   item: "paper"

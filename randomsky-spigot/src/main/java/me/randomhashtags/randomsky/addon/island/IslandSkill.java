@@ -1,10 +1,11 @@
 package me.randomhashtags.randomsky.addon.island;
 
 import me.randomhashtags.randomsky.addon.util.Itemable;
+import me.randomhashtags.randomsky.addon.util.Slotable;
 
-import java.util.LinkedHashMap;
+import java.math.BigDecimal;
 
-public interface IslandSkill extends Itemable {
-    String getString();
-    LinkedHashMap<String, IslandProgressiveSkill> getSkills();
+public interface IslandSkill extends Itemable, Slotable {
+    String getType();
+    BigDecimal getCompletion();
 }

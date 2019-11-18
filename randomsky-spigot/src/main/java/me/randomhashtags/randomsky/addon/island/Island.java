@@ -81,7 +81,7 @@ public interface Island extends Identifiable, Attributable, Loadable {
     List<ActiveIslandSkill> getSkills();
     List<String> getCompletedSkills();
     List<ActiveIslandChallenge> getChallenges();
-    List<String> getCompletedChallenges();
+    HashMap<String, Boolean> getCompletedChallenges();
 
     List<ActivePermissionBlock> getPermissionBlocks();
     List<ActiveResourceNode> getActiveResourceNodes();

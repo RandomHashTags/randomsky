@@ -58,19 +58,19 @@ items:
 #
 gui:
   title: "Island Levels"
-    size: 36
-    background:
-      item: "black_stained_glass_pane"
-      name: " "
-    #
-    format:
-      - " "
-      - "&b&lCost"
-      - " &f&l${COST}"
-      - " "
-      - "&a&lLevel Rewards"
-      - "{REWARDS}"
-      - " "
-      - "{STATUS}"
-    reward format: " &a&l*&r &f{REWARD}"
+  size: 36
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  format:
+    - " "
+    - "&b&lCost"
+    - " &f&l${COST}"
+    - " "
+    - "&a&lLevel Rewards"
+    - "{REWARDS}"
+    - " "
+    - "{STATUS}"
+  reward format: " &a&l*&r &f{REWARD}"
 #
