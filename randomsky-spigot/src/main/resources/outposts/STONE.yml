@@ -1,0 +1,46 @@
+# Made by RandomHashTags
+item:
+  item: "chainmail_chestplate"
+  name: "&8&l&nStone Outpost"
+  lore:
+    - " "
+    - "&7Click to travel to this Outpost!"
+    - " "
+    - "&8&lStatus:&r {STATUS}"
+    - "&8&lAttacking:&r {ATTACKING}"
+    - "&8&lControlling:&r {CONTROLLING}"
+    - "&8&lCap %:&r {CAPTURE_PERCENT}%"
+    - " "
+    - "&8&lGear Limit:"
+    - " &8&l*&r &8Stone Weapons, Chainmail Armor"
+    - " "
+    - "&8&lPerks:"
+    - " &8&l*&r &f+15% Crop Growth"
+    - " &8&l*&r &f+50% DMG to &8Rabbit, Chicken, Cow, Spider"
+    - " &8&l*&r &f+50% /is farming XP"
+    - " &8&l*&r &f+15% /tinkerer XP rates"
+    - " &8&l*&r &f+25% DMG to The &5&lBandit King"
+    - " &8&l*&r &fNo Enchant, Anvil /spawn tax"
+    - " &8&l*&r &fResource Node Instant-respawn chance"
+    - " &8&l*&r &fDuel Wield Ability in non /outpost"
+    - " &8&l*&r &f/battleroyale starter item"
+    - " &8&l*&r &f1.15x Sell Sign: &8Chorus Fruit, Potatoes, Wheat"
+#
+scoreboard:
+  title: "&b&lRandom&e&lSky&r &7{MONTH}/{DATE}"
+  score start: 15
+  scores:
+    - "&a"
+    - "&8&l&nStone Outpost"
+    - "&b"
+    - "&f&lControlling:&r {CONTROLLING}"
+    - "&f&lAttacking:&r {ATTACKING}"
+    - "&f&lStatus:&r {STATUS}"
+    - "&f&lCap %:&r {CAPTURE_PERCENT}%"
+    - "&f{PLAYERS} players"
+    - " "
+    - "&e&lServer"
+    - "&7randomsky.com"
+#
+attributes:
+  - ""

@@ -1,0 +1,46 @@
+# Made by RandomHashTags
+item:
+  item: "diamond_chestplate"
+  name: "&e&lDiamond Outpost"
+  lore:
+    - " "
+    - "&7Click to travel to this Outpost!"
+    - " "
+    - "&e&lStatus:&r {STATUS}"
+    - "&e&lAttacking:&r {ATTACKING}"
+    - "&e&lControlling:&r {CONTROLLING}"
+    - "&e&lCap %:&r {CAPTURE_PERCENT}%"
+    - " "
+    - "&e&lGear Limit:"
+    - " &e&l*&r &eDiamond Weapons, Armor"
+    - " "
+    - "&e&lPerks:"
+    - " &e&l*&r &f+10% Mob Drops"
+    - " &e&l*&r &f+50% DMG to &ePig Zombie, Blaze"
+    - " &e&l*&r &f+50% /is mining XP"
+    - " &e&l*&r &f+25% DMG to &5&lYijki's Shadow"
+    - " &e&l*&r &fReduced /enchanter, /anvil costs"
+    - " &e&l*&r &fReduced /adventure leave timer"
+    - " &e&l*&r &fNo Hunger Loss in /battleroyale"
+    - " &e&l*&r &f2x Gem Drop Chance from Nodes"
+    - " &e&l*&r &f/feed Sign at Outpost"
+    - " &e&l*&r &f1.15x Sell Sign: &ePumpkins, Beetroots, Carrots"
+#
+scoreboard:
+  title: "&b&lRandom&e&lSky&r &7{MONTH}/{DATE}"
+  score start: 15
+  scores:
+    - "&a"
+    - "&e&l&nDiamond Outpost"
+    - "&b"
+    - "&e&lControlling:&r {CONTROLLING}"
+    - "&e&lAttacking:&r {ATTACKING}"
+    - "&e&lStatus:&r {STATUS}"
+    - "&e&lCap %:&r {CAPTURE_PERCENT}%"
+    - "&e{PLAYERS} players"
+    - " "
+    - "&e&lServer"
+    - "&7randomsky.com"
+#
+attributes:
+  - ""

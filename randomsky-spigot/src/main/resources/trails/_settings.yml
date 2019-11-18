@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+messages:
+  dont have unlocked:
+    - "&c&l(!)&r &cYou do not have this trail unlocked!"
+    - "&7Particle Trails are unlocked by redeeming notes purchasable at &nbuy.yourserver.com&r &7and as rare drops in world event loot tables!"
+#
+gui:
+  title: "Trails"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  format:
+    - "{LORE}"
+    - " "
+    - "&6Rarity: {RARITY}"
+  locked:
+    item: "red_stained_glass_Pane"
+    name: "&c&l{NAME}"
+    lore:
+      - "&c&lLOCKED"
+#

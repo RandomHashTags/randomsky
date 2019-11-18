@@ -1,0 +1,33 @@
+# Made by RandomHashTags
+messages:
+  teleporting out of outpost:
+    - "&e&l(!)&r &eYou will be shuttled from this Outpost in {TIME}..."
+  countdown:
+    - 20
+    - 15
+    - 10
+    - 5
+    - 4
+    - 3
+    - 2
+    - 1
+#
+gui:
+  title: "Outposts"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  stone:
+    slot: 3
+    teleports to: STONE
+  iron:
+    slot: 4
+    teleports to: IRON
+  diamond:
+    slot: 5
+    teleports to: DIAMOND
+#
+statuses:
+  controlled: "&a&lCONTROLLED"
+#

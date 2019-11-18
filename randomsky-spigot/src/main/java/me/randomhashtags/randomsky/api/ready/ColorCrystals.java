@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api.unfinished;
+package me.randomhashtags.randomsky.api.ready;
 
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;

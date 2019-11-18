@@ -1,0 +1,47 @@
+# Made by RandomHashTags
+messages:
+  dont have unlocked:
+    - "&c&l(!)&r &cYou do not have this title unlocked!"
+    - "&7Unlock titles from &nbuy.yourserver.com&r&7, /realms, /adventure bosses and other special world events!"
+#
+gui:
+  title: "Titles"
+  size: 27
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  format:
+    - " "
+    - "&6Rarity: {RARITY}"
+  locked:
+    item: "red_stained_glass_pane"
+    name: "&c&l{TITLE}"
+    lore:
+      - "&c&lLOCKED"
+#
+titles:
+  "#KOTH": COMMON
+  Capped it!: COMMON
+  Yoink!: COMMON
+  Fisher: COMMON
+  Hooked: COMMON
+  Gold Digger: COMMON
+  Parkour God: COMMON
+  Pixie: COMMON
+  Farmer: COMMON
+  Hero: COMMON
+  Town Guard: COMMON
+  Auctioneer: COMMON
+  Mine!: COMMON
+  Sniped: COMMON
+  Merchant: COMMON
+  Cosmonaut: COMMON
+  Evil: COMMON
+  King Slayer: UNCOMMON
+  Bitten: UNCOMMON
+  Shadow: UNCOMMON
+  Royalty: RARE
+  Plagued: RARE
+  Demonic: RARE
+  Elitist: RARE

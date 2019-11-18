@@ -8,13 +8,34 @@ rarities:
   default: COMMON
   COMMON:
 #
+items:
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  format:
+    - " "
+    - "&6Color: {COLOR}{NAME}"
+    - "&6Rarity: {RARITY}"
+    - "{STATUS}"
+  locked:
+    item: "red_stained_glass_pane"
+    name: "&c&l{NAME}"
+    lore:
+      - "&c&lLOCKED"
+      - "&cRequired Rank V to unlock!"
+      - "&7Unlock at buy.yourserver.com!"
+#
 colors:
-  aqua:
+  Aqua:
     color: "&b"
     slot: 0
-  green:
+    rarity: Common
+  Green:
     color: "&a"
     slot: 1
-  light purple:
+    rarity: Common
+  Light Purple:
     color: "&d"
     slot: 2
+    rarity: Common

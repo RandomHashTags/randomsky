@@ -1,0 +1,33 @@
+# Made by RandomHashTags
+messages:
+  help:
+    - " "
+    - "&b&lLast Man Standing"
+    - "&7Last Man Standing, or \"&b&n/lms&r&7\" is a continuous &bKOTH-like event &7located within a &cPvP-enabled &7arena."
+    - " "
+    - "&7The LMS (longest surviving player) will receive &b$ and XP every minute&7, increasing throughout the map and the longer the player remains LMS. Additionally, &b/adventure loot will spawn every 2 minutes &7in the LMS arena chest."
+    - " "
+    - "&7Any player whi reains the LMS for &b10 minutes &7will also receive a &brandom /realm point note. &7(limit 1 per day per player)"
+    - " "
+#
+gui:
+  title: "LMS"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  click to enter:
+    slot: 4
+    item: "clock"
+    name: "&a&lLast Man Standing"
+    lore:
+      - "&7Continue to receive prizes when"
+      - "&7you are the player that has been"
+      - "&7in the LMS arena the longest!"
+      - " "
+      - "&e&lCurrent LMS:&r"
+      - "&e&lLoot Earned:&r &f&l$&r&f{MONEY_EARNED} &e&l+&r &f{EXP_EARNED} EXP &e&l+&r &f{CHESTS_EARNED} Chests"
+      - "&e&lLast Location:&r {LAST_LOC_X}x, {LAST_LOC_Y}y, {LAST_LOC_Z}z"
+      - "&e&lPlayers:&r &f{PLAYERS}"
+#

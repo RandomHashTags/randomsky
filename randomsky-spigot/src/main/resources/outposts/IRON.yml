@@ -1,0 +1,45 @@
+# Made by RandomHashTags
+item:
+  item: "iron_chestplate"
+  name: "&b&lIron Outpost"
+  lore:
+    - " "
+    - "&7Click to travel to this Outpost!"
+    - " "
+    - "&b&lStatus:&r {STATUS}"
+    - "&b&lAttacking:&r {ATTACKING}"
+    - "&b&lControlling:&r {CONTROLLING}"
+    - "&b&lCap %:&r {CAPTURE_PERCENT}%"
+    - " "
+    - "&b&lGear Limit:"
+    - " &b&l*&r &bIron Weapons, Armor"
+    - " "
+    - "&b&lPerks:"
+    - " &b&l*&r &f+1.25x XP from mobs"
+    - " &b&l*&r &f+50% DMG to &bZombie, Skeleton"
+    - " &b&l*&r &f+50% /is slayer XP"
+    - " &b&l*&r &f-10% Gem Break Chance (EX: 50% -> 45%)"
+    - " &b&l*&r &f+25% DMG to The &5&lPlague Doctor"
+    - " &b&l*&r &fAbility to /fly in non-pvp"
+    - " &b&l*&r &fNo hunger loss in adventures"
+    - " &b&l*&r &f/fix Sign at Outpost"
+    - " &b&l*&r &f1.15x Sell Sign: &bSugar Cane, Melons, Nether Warts"
+#
+scoreboard:
+  title: "&b&lRandom&e&lSky&r &7{MONTH}/{DATE}"
+  score start: 15
+  scores:
+    - "&a"
+    - "&b&l&nIron Outpost"
+    - "&b"
+    - "&a&lControlling:&r {CONTROLLING}"
+    - "&a&lAttacking:&r {ATTACKING}"
+    - "&a&lStatus:&r {STATUS}"
+    - "&a&lCap %:&r {CAPTURE_PERCENT}%"
+    - "&a{PLAYERS} players"
+    - " "
+    - "&e&lServer"
+    - "&7randomsky.com"
+#
+attributes:
+  - ""
