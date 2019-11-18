@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Handyman"
+settings:
+  slot: 11
+  completion: 1
+  unlocks when completed: POTATO_FARMER
+  objective:
+    - "&fUse 1x Stone Repair Scroll"
+  rewards:
+    - "Handyman Island Challenge Reward; &a&l*&r &fSharpness Stone Sword"
+#
+attributes:
+  - "RepairScrollUsed;path=stone"

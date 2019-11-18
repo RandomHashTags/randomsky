@@ -4,8 +4,10 @@ import me.randomhashtags.randomsky.addon.alliance.Alliance;
 import me.randomhashtags.randomsky.addon.alliance.AllianceMember;
 import me.randomhashtags.randomsky.addon.alliance.AllianceRelation;
 import me.randomhashtags.randomsky.addon.alliance.AllianceRelationship;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.enums.InviteType;
 import me.randomhashtags.randomsky.util.classes.RSInvite;
 import org.bukkit.Bukkit;
@@ -29,7 +31,7 @@ import java.util.UUID;
 
 public class Alliances extends RSFeature implements CommandExecutor {
     private static Alliances instance;
-    public static final Alliances getAlliances() {
+    public static Alliances getAlliances() {
         if(instance == null) instance = new Alliances();
         return instance;
     }
@@ -99,7 +101,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "alliances.yml");
-        config = YamlConfiguration.loadConfiguration(new File(rsd, "alliances.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "alliances.yml"));
         int loaded = 0, relations = 0;
         for(String s : config.getConfigurationSection("roles").getKeys(false)) {
             final String p = "roles." + s + ".";
@@ -114,7 +116,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
 
         tagMin = config.getInt("settings.tag min");
         tagMax = config.getInt("settings.tag max");
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Alliance Roles and " + relations + " Alliance Relations &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ALLIANCE_ROLE).size() + " Alliance Roles and " + RSStorage.getAll(Feature.ALLIANCE_RELATION).size() + " Alliance Relations &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
     }

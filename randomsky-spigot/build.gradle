@@ -4,13 +4,23 @@ apply plugin: 'java-library'
 repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     mavenLocal()
+
+    maven { url "http://nexus.hc.to/content/repositories/pub_releases" } // Vault
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
+
+    implementation 'net.milkbowl.vault:VaultAPI:1.7'
 }
 
 configurations {
+    compile.exclude group: 'com.typesafe'
+    compile.exclude group: 'org.apache'
+    compile.exclude group: 'org.kitteh'
+    compile.exclude group: 'org.spongepowered'
+    compile.exclude group: 'commons-codec'
+
     compile.exclude group: 'com.darkblade12'
     compile.exclude group: 'org.hamcrest'
     compile.exclude group: 'me.lucko'
@@ -24,7 +34,6 @@ configurations {
 
     compile.exclude group: 'junit'
     compile.exclude group: 'commons-lang'
-
 }
 
 shadowJar {

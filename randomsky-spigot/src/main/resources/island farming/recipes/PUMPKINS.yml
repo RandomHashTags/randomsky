@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: PUMPKIN_SEEDS
+recipe name: "&ePumpkins"
+#
+settings:
+  daily limit: 500000
+  completion: 5000000
+  type: "Pumpkins"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&ePumpkins&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&ePumpkins&r &7on your island!"

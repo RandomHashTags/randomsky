@@ -1,0 +1,15 @@
+# Made by RandomHashTags
+unlocks: WHEAT_SEEDS
+recipe name: "&eWheat"
+#
+settings:
+  daily limit: 1000
+  type: "Wheat"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eWheat&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nWheat Seeds&r &7on your island!"

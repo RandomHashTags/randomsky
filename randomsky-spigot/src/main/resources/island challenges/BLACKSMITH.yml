@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Blacksmith"
+settings:
+  slot: 9
+  completion: 1
+  unlocks when completed: BANDIT_KILLER
+  objective:
+    - "&fCraft a Chainmail Chestplate"
+  rewards:
+    - "repairscroll:stone:50; &a&l*&r &f50% Stone Repair Scroll"
+#
+attributes:
+  - "CraftItem=chainmail_chestplate"

@@ -1,0 +1,19 @@
+# Made by RandomHashTags
+item:
+  item: "bone_meal"
+  name: "&fFarming Limit Increase: &l&nI"
+  lore:
+    - "&7Right-Click on the island you"
+    - "&7to wish to increase a"
+    - "&7selectable daily farmable"
+    - "&7material by &f+1% &7(temporarily)"
+    - " "
+    - "&f&lApply To"
+    - " &f&l*&r &f&nWheat"
+    - " &f&l*&r &f&nPotatoes"
+    - " &f&l*&r &f&nCarrots"
+#
+applyable to:
+  - WHEAT
+  - POTATOES
+  - CARROTS

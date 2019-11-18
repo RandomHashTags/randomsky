@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: CHORUS_FLOWER
+recipe name: "&eChorus Fruit"
+#
+settings:
+  daily limit: 1000
+  completion: 7500000
+  type: "Chorus Fruit"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eChorus Fruit&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nChorus Fruit&r &7on your island!"

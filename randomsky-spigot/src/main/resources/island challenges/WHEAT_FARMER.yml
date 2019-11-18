@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Wheat Farmer"
+settings:
+  slot: 3
+  completion: 50
+  unlocks when completed: BREAD_MAKER
+  objective:
+    - "&fManually Harvest 50 Wheat"
+  rewards:
+    - "stone_pickaxe; &a&l*&r &fStone Pick"
+#
+attributes:
+  - "BlockBreak;isCrop;crop=wheat_seeds"

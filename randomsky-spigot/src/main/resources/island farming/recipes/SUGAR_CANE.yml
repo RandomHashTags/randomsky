@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: SUGAR_CANE_ITEM
+recipe name: "&eSugar Cane"
+#
+settings:
+  daily limit: 15000
+  completion: 15000
+  type: "Sugar Canes"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eSugar Cane&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nSugar Cane&r &7on your island!"

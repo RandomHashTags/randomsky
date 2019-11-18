@@ -4,11 +4,13 @@ import me.randomhashtags.randomsky.addon.PlayerRank;
 import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.file.FilePlayerSkill;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
+import me.randomhashtags.randomsky.supported.economy.Vault;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,7 +24,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
 
 import java.io.File;
 
@@ -57,7 +58,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
             }
         }
 
-        perm = VaultAPI.getVaultAPI().perms;
+        perm = Vault.getVault().getPermission();
 
         background = d(config, "gui.background");
         final int size = config.getInt("gui.size");

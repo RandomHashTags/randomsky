@@ -1,7 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,6 +25,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.io.File.separator;
+
 public class Kits extends RSFeature implements Listener {
     private static Kits instance;
     public static Kits getKits() {
@@ -30,7 +34,6 @@ public class Kits extends RSFeature implements Listener {
         return instance;
     }
 
-    public boolean isEnabled = false;
     public YamlConfiguration config;
     private UInventory gui, preview;
     private ItemStack back;
@@ -61,8 +64,8 @@ public class Kits extends RSFeature implements Listener {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "kits/_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "kits/_settings.yml"));
+        save(dataFolder + separator + "kits", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "kits", "_settings.yml"));
 
         back = d(config, "back");
         format = colorizeListString(config.getStringList("lores.format"));
@@ -83,7 +86,7 @@ public class Kits extends RSFeature implements Listener {
             saveOtherData();
         }
 
-        for(File f : new File(rsd + separator + "kits").listFiles()) {
+        for(File f : new File(dataFolder + separator + "kits").listFiles()) {
             final Kit k = new Kit(f);
             item = k.getItem();
             itemMeta = item.getItemMeta(); lore.clear();
@@ -98,10 +101,10 @@ public class Kits extends RSFeature implements Listener {
             item.setItemMeta(itemMeta);
             gi.setItem(k.getSlot(), item);
         }
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + (kits != null ? kits.size() : 0) + " Kits &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.CUSTOM_KIT).size() + " Kits &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        kits = null;
+        RSStorage.unregisterAll(Feature.CUSTOM_KIT);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

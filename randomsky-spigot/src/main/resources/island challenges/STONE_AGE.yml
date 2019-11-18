@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+name: "Stone Age"
+settings:
+  slot: 5
+  completion: 64
+  unlocks when completed: CAVEMAN
+  objective:
+    - "&fHarvest 64 Cobble Fragments"
+    - "&ffrom a Cobblestone Generator"
+  rewards:
+    - "node:cobblestone; &a&l*&r &fCobblestone Resource Node"
+#
+attributes:
+  - "HarvestNaturalResource;cobblestone"

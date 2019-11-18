@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.util.universal;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -1672,12 +1673,14 @@ public enum UMaterial {
         }
         return t != null ? t : match(m, d);
     }
-    public static UMaterial match(String name) {
+    public static UMaterial match(@NotNull String name) {
+        name = name.toUpperCase();
         try {
-            return valueOf(name.toUpperCase());
+            return valueOf(name);
         } catch (Exception e) {
-            final byte d = name.contains(":") ? Byte.parseByte(name.split(":")[1]) : 0;
-            name = name.split(":")[0].toUpperCase();
+            final String[] values = name.split(":");
+            final byte d = values.length > 1 ? Byte.parseByte(values[1]) : 0;
+            name = values[0];
             if(inUMemory.containsKey(name + d)) return inUMemory.get(name + d);
             for(UMaterial u : values()) {
                 if(u.name().equals(name)) {

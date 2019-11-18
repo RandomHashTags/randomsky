@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+name: "Not A Noob"
+settings:
+  slot: 14
+  completion: 3
+  unlocks when completed: BANDIT_LOVER
+  objective:
+    - "&fUnlock /is level 3"
+  rewards:
+    - "chickenspawner; &a&l*&r &fChicken Spawner"
+#
+attributes:
+  - "IslandLevel>=3"
+  - "UpgradeIslandLevel;level=3"

@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: POTATO_ITEM
+recipe name: "&ePotatoes"
+#
+settings:
+  daily limit: 5000
+  completion: 100
+  type: "Potatoes"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&ePotatoes&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nPotatoes&r &7on your island!"

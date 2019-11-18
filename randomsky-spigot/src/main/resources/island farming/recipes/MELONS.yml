@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: MELON_SEEDS
+recipe name: "&eMelons"
+#
+settings:
+  daily limit: 250000
+  completion: 250000
+  type: "Melons"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eMelons&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock te ability to plant"
+    - "&e&nMelons&r &7on your island!"

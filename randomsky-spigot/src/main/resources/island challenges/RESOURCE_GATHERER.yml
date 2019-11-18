@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Resource Gatherer"
+settings:
+  slot: 2
+  completion: 25
+  unlocks when completed: WHEAT_FARMER
+  objective:
+    - "&fHarvest 25 Wood Resource Nodes"
+  rewards:
+    - "stone_hoe; &a&l*&r &fStone Hoe"
+#
+attributes:
+  - "HarvestResourceNode;path=log"

@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: NETHER_WART
+recipe name: "&eNether Warts"
+#
+settings:
+  daily limit: 50000
+  completion: 100000
+  type: "Nether Warts"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eNether Warts&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nNether Warts&r &7on your island!"

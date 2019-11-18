@@ -1,0 +1,15 @@
+# Made by RandomHashTags
+name: "Zombie Survivor"
+settings:
+  slot: 16
+  completion: 1
+  unlocks when completed: APOCALYPSE_LOOTER
+  objective:
+    - "&fUnlock access to the Lost"
+    - "&fWasteland /adventure"
+  rewards:
+    - "Zombie Survivor Island Challenge Reward; &a&l*&r &fStone Sword with 1 Socket"
+#
+attributes:
+  - "HasAdventureMap;yml=LOST_WASTELAND"
+  - "UnlockAdventure;yml=LOST_WASTELAND"

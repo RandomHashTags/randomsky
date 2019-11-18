@@ -76,6 +76,10 @@ public class RSPlayer implements UVersionable {
         if(backup) backup();
     }
     public static RSPlayer get(UUID player) { return players.getOrDefault(player, new RSPlayer(player)).load(); }
+
+    public boolean isOnline() {
+        return Bukkit.getOfflinePlayer(uuid).isOnline();
+    }
     public void backup() {
         yml.set("name", Bukkit.getOfflinePlayer(uuid).getName());
         if(rank != null) {

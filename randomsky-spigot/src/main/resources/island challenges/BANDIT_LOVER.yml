@@ -1,0 +1,15 @@
+# Made by RandomHashTags
+name: "Bandit Lover"
+settings:
+  slot: 15
+  completion: 25
+  unlocks when completed: ZOMBIE_SURVIVOR
+  objective:
+    - "&fLoot 25 Chests in the"
+    - "&fAbandoned Ruins /adventure"
+  rewards:
+    - "mysterygem:stone"
+    - "adventuremapfragment:LOST_WASTELAND; &a&l*&r &fLost Wasteland Map Fragment"
+#
+attributes:
+  - "LootAdventureChest;adventure=ABANDONED_RUINS"

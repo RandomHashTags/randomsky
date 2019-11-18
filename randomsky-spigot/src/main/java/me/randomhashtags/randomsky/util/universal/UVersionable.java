@@ -3,12 +3,15 @@ package me.randomhashtags.randomsky.util.universal;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.RandomSky;
+import me.randomhashtags.randomsky.supported.economy.Vault;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -22,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public interface UVersionable {
     Server server = Bukkit.getServer();
+    ServicesManager servicesManager = Bukkit.getServicesManager();
     BukkitScheduler scheduler = Bukkit.getScheduler();
     ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     PluginManager pluginmanager = Bukkit.getPluginManager();
@@ -30,6 +34,7 @@ public interface UVersionable {
     RandomSky randomsky = RandomSky.getPlugin;
     File dataFolder = randomsky.getDataFolder();
     Random random = new Random();
+    Economy eco = Vault.getVault().getEconomy();
 
 
     default ItemStack getClone(@Nullable ItemStack is) {

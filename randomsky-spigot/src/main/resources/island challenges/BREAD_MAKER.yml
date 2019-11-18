@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Bread Maker"
+settings:
+  slot: 4
+  completion: 32
+  unlocks when completed: STONE_AGE
+  objective:
+    - "&fSell 32 Bread using /sell"
+  rewards:
+    - "lava_bucket; &a&l*&r &fLava Bucket"
+#
+attributes:
+  - "SoldItem;type=Bread"

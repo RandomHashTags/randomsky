@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: CARROT_ITEM
+recipe name: "&eCarrot"
+#
+settings:
+  daily limit: 10000
+  completion: 2500
+  type: "Carrots"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eCarrots&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nCarrots&r &7on your island!"

@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+name: "Rabbit Hunter"
+settings:
+  slot: 7
+  completion: 100
+  unlocks when completed: VANILLA_ENCHANT
+  objective:
+    - "&fKill 100 Rabbits"
+  rewards:
+    - "leather_helmet; &a&l*&r &fLeather Cap"
+    - "leather_chestplate; &a&l*&r &fLeather Tunic"
+    - "leather_leggings; &a&l*&r &fLeather Pants"
+    - "leather_boots; &a&l*&r &fLeather Boots"
+#
+attributes:
+  - "SlainMob;type=Rabbit"

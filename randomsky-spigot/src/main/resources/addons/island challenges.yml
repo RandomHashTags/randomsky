@@ -1,31 +1,5 @@
 # Made by RandomHashTags
-messages:
-  must complete before claiming rewards:
-  - "&c&l(!)&r &cYou must fully complete this challenge to claim its rewards!"
-  must complete challenge requirements:
-  - "&c&l(!)&r &cYou must complete ALL of the challenge requirements to claim its rewards!"
-  claimed:
-  - "&a&l(!)&r &aReward claimed for the &n{CHALLENGE}&r &achallenge!"
-  - "{REWARDS}"
-  already claimed:
-  - "&c&l(!)&r &cYou have already claimed the reward for this challenge!"
-  complete:
-  - " "
-  - "&a&l(!)&r &aChallenge Completed:&r &e&n{CHALLENGE}"
-  - " "
-  - "{NEXT_CHALLENGE}"
-  next challenge objective prefix: "&7"
-  next challenge:
-  - "&e&lNew Challenge:&r &e&n{NEXT_CHALLENGE}"
-  - "&7&lObjective:&r {OBJ}"
-  - " "
-  - "&7View your /challenges to claim your reward!"
-  - " "
-#
-gui:
-  title: "Challenges"
-  size: 18
-#
+
 challenges:
   settings:
     completed:

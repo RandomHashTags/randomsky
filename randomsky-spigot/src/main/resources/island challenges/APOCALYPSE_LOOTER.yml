@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Apocalypse Looter"
+settings:
+  slot: 17
+  completion: 10
+  objective:
+    - "&fLoot 10 Chests in Lost"
+    - "&fWasteland /adventure"
+  rewards:
+    - "node:iron; &a&l*&r &f1x Iron Resource Node"
+#
+attributes:
+  - "LootAdventureChest;adventure=LOST_WASTELAND;IncreaseLootedAdventureChest"

@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "New Beginnings"
+settings:
+  slot: 0
+  completion: 5
+  unlocks when completed: LUMBERJACK
+  objective:
+    - "&fPlant 5 Saplings"
+  rewards:
+    - "node:log; &a&l*&r &fLog Node"
+#
+attributes:
+  - "BlockPlace;block=oak_sapling"

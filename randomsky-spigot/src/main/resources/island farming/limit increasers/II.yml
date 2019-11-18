@@ -1,0 +1,19 @@
+# Made by RandomHashTags
+item:
+  item: "bone_meal"
+  name: "&bFarming Limit Increase: &l&nII"
+  lore:
+    - "&7Right-Click on the island you"
+    - "&7to wish to increase a"
+    - "&7selectable daily farmable"
+    - "&7material by &b+10% &7(temporarily)"
+    - " "
+    - "&b&lApply To"
+    - " &b&l*&r &b&nSugar Cane"
+    - " &b&l*&r &b&nBeetroot"
+    - " &b&l*&r &b&nNether Warts"
+#
+applyable to:
+  - SUGAR_CANE
+  - BEETROOTS
+  - NETHER_WARTS

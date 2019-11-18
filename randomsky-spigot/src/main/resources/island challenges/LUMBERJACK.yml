@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+name: "Lumberjack"
+settings:
+  slot: 1
+  completion: 20
+  unlocks when completed: RESOURCE_GATHERER
+  objective:
+    - "&fHarvest 20 Wood Node Fragments"
+    - "&ffrom breaking down trees"
+  rewards:
+    - "stone_axe; &a&l*&r &fStone Axe"
+#
+attributes:
+  - "BlockBreak;isGenerated;blockis=LOG"

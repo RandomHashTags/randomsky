@@ -1,0 +1,16 @@
+# Made by RandomHashTags
+unlocks: BEETROOT_SEEDS
+recipe name: "&eBeetroot"
+#
+settings:
+  daily limit: 20000
+  completion: 75000
+  type: "Beetroot"
+#
+item:
+  item: "paper"
+  name: "&a&lFarming Recipe (&r&eBeetroot&a&l)"
+  lore:
+    - "&7Click to learn this recipe"
+    - "&7to unlock the ability to plant"
+    - "&e&nBeetroot&r &7on your island!"

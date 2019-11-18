@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Caveman"
+settings:
+  slot: 6
+  completion: 50
+  unlocks when completed: RABBIT_HUNTER
+  objective:
+    - "&fHarvest 50 Cobblestone Nodes"
+  rewards:
+    - "rabbitspawner; &a&l*&r &fRabbit Spawner"
+#
+attributes:
+  - "HarvestResourceNode;path=cobblestone"

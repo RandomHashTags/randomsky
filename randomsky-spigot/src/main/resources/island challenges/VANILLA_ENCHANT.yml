@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+name: "Vanilla Enchant"
+settings:
+  slot: 8
+  completion: 5
+  unlocks when completed: BLACKSMITH
+  objective:
+    - "&fPurchase 5x Stone Enchantment"
+    - "&fBooks from an Enchanting Table"
+  rewards:
+    - "Vanilla Enchant Island Challenge Reward; &a&l*&r &fEff. III Mending Stone Pick"
+#
+attributes:
+  - ""

@@ -5,7 +5,6 @@ import me.randomhashtags.randomsky.addon.util.Loadable;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import me.randomhashtags.randomsky.util.universal.UVersion;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,7 +36,6 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
     protected boolean mcmmoIsEnabled() { return mcmmoIsEnabled; }
 
     public static final FactionsAPI fapi = FactionsAPI.getFactionsAPI();
-    protected static final Economy eco = VaultAPI.getVaultAPI().getEconomy();
     private static final TreeMap<Integer, String> treemap = new TreeMap<>();
 
     public static YamlConfiguration otherdata;

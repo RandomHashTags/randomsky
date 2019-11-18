@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,9 +57,9 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void load() {
         final long a = System.currentTimeMillis();
-        save(null, "island challenges.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island challenges.yml"));
-        settings = YamlConfiguration.loadConfiguration(new File(dataFolder, "island settings.yml"));
+        save(dataFolder + separator + "island challenges", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island challenges", "_settings.yml"));
+        settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island settings", "_settings.yml"));
 
         claim = colorizeListString(config.getStringList("challenges.settings.completed.claim"));
         claimed = colorizeListString(config.getStringList("challenges.settings.completed.claimed"));
@@ -71,7 +72,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
 
-        for(File f : new File(dataFolder + separator + "island" + separator + "challenges").listFiles()) {
+        for(File f : new File(dataFolder + separator + "island challenges").listFiles()) {
             final IslandChallenge c = new FileIslandChallenge(f);
             item = locked.clone(); itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", c.getName()));
@@ -163,7 +164,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         return item;
     }
 
-    public void increaseChallenge(Event event, Player player, Island island, double increment) {
+    public void increaseChallenge(Event event, Player player, Island island, BigDecimal increment) {
         final IslandChallengeProgressEvent e = new IslandChallengeProgressEvent(event, player, island, increment);
         pluginmanager.callEvent(e);
         if(!e.isCancelled()) {

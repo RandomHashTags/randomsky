@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+name: "Bandit Killer"
+settings:
+  slot: 10
+  completion: 5
+  unlocks when completed: HANDYMAN
+  objective:
+    - "&fKill 5 Bandits"
+  rewards:
+    - "shield:stone; &a&l*&r &fStone Shield"
+#
+attributes:
+  - "KilledBandit"

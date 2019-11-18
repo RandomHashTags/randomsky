@@ -121,7 +121,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             final String p = "gui." + s + ".";
             final int slot  = yml.getInt(p + "slot");
             final String P =  yml.getString(p + "prices");
-            final String[] prices = P != null ? P.split(";") : new String[] { "0.00", "0.00"};
+            final String[] prices = P != null ? P.split(";") : new String[] { "0.00", "0.00" };
             final double buyprice = Double.parseDouble(prices[0]), sellprice = Double.parseDouble(prices[1]);
             final ItemStack display = yml.getString(p + ".item").toLowerCase().equals("back") ? back : d(yml, "gui." + s), purchased = d(yml, p + "custom");
             item = display.clone();
