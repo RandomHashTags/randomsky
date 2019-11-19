@@ -3,8 +3,14 @@ settings:
   slot: 16
 #
 cost:
-  - "$2500000000"
+  - "$1000000000"
 #
 rewards:
-  - "SpawnerLimit=4000"
-  - "IslandRadius=88"
+  - "SpawnerLimit=3500"
+  - "IslandRadius=58"
+  - "AllowPlacement{unlimitedxCollectionChest}"
+  - "AllowPlacement{unlimitedxAutoPlantingBot}"
+  - "AllowPlacement{20xAutoSellBot}"
+  - "AllowPlacement{20xAutoBundleBot}"
+  - "AllowPlacement{2xNetherArmorTransformers}"
+  - "SpawnerStackLimit=20"

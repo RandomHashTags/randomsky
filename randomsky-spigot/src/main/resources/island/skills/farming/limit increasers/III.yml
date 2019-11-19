@@ -1,0 +1,19 @@
+# Made by RandomHashTags
+item:
+  item: "bone_meal"
+  name: "&eFarming Limit Increase: &l&nIII"
+  lore:
+    - "&7Right-Click on the island you"
+    - "&7wish to increase a"
+    - "&7selectable daily farmable"
+    - "&7material by &e+{PERCENT}% &7(temporarily)"
+    - " "
+    - "&e&lApply To"
+    - " &e&l*&r &e&nPumpkins"
+    - " &e&l*&r &e&nMelons"
+    - " &e&l*&r &e&nChorus Fruit"
+#
+applyable to:
+  - PUMPKINS
+  - MELONS
+  - CHORUS_FRUIT

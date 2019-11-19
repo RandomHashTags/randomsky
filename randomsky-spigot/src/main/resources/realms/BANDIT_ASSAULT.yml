@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+settings:
+  slot: 4
+  name: "Bandit Assault"
+  max time allowed per day: 60*30 # Measured in seconds
+  portal required island level: 13
+#
+shop:
+  title: "Bandit Assault"
+  size: 54
+#
+item:
+  item: "chainmail_helmet"
+  name: "&f&lBandit Assault"
+  lore:
+    - "&7Help the Town Guards defend"
+    - "&7against the invading cutthroat"
+    - "&7bandits!"
+    - " "
+    - "&eBandit Assault Points: &f&n{POINTS}"
+    - "&eDaily Time Left: &f{TIME_LEFT}"
+#

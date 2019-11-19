@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.api.unfinished;
+package me.randomhashtags.randomsky.api;
 
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.util.RSFeature;

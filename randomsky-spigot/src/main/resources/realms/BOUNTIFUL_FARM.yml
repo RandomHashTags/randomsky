@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+settings:
+  slot: 3
+  name: "Bountiful Farm"
+  max time allowed per day: 60*30 # Measured in seconds
+  portal required island level: 11
+#
+shop:
+  title: "Bountiful Farm"
+  size: 54
+#
+item:
+  item: "wheat_seeds"
+  name: "&f&lBountiful Farm"
+  lore:
+    - "&7Nutrient rich soil ready"
+    - "&7to supply life to anything"
+    - "&7that's planted."
+    - " "
+    - "&eBountiful Farm Points: &f&n{POINTS}"
+    - "&eDaily Time Left: &f{TIME_LEFT}"
+#

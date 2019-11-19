@@ -1,0 +1,46 @@
+# Made by RandomHashTags
+randomdwarfminepointnote:
+  item: "paper"
+  name: "&f&lRandom&r &6&l&nDwarf Mine&r &f&lPoint Note"
+  lore:
+    - "&7Contains one of the following:"
+    - " "
+    - "&f&lRandom Loot (&r&71 item&f&l)"
+    - "&f&l*&r &f{AMOUNT}x {REWARD}"
+  reward size: 1
+  rewards:
+    - "realmpointnote:DWARF_MINE:1000"
+    - "realmpointnote:DWARF_MINE:1250"
+    - "realmpointnote:DWARF_MINE:1500"
+    - "realmpointnote:DWARF_MINE:1750"
+    - "realmpointnote:DWARF_MINE:2000"
+#
+randomlostwastelandrecipepage:
+  item: "book"
+  name: "&6&lrandom Recipe Page&r &b[Lost Wasteland]"
+  lore:
+    - "&7Contains one of the following:"
+    - " "
+    - "&f&lRandom Loot (&r&71 item&f&l)"
+    - " &f&l*&r &f{AMOUNT}x {REWARD}"
+  reward size: 1
+  rewards:
+    - "itemrecipepage:LOST_WASTELAND:MASH_SOUP"
+    - "itemrecipepage:LOST_WASTELAND:UNDEAD_MUSHROOM"
+    - "itemrecipepage:LOST_WASTELAND:ADMIRAL_FISH_PIE"
+#
+rankgenerator:
+  item: "nether_star"
+  name: "&6&lRank Generator"
+  lore:
+    - "&7Contains one of the following:"
+    - " "
+    - "&f&lRandom Loot (&r&71 item&f&l)"
+    - " &f&l*&r &f{AMOUNT}x {REWARD}"
+  reward size: 1
+  rewards:
+    - "playerrank:I"
+    - "playerrank:II"
+    - "playerrank:III"
+    - "playerrank:IV"
+    - "playerrank:V"

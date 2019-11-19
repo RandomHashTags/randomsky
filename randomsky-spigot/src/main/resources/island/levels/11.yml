@@ -3,9 +3,13 @@ settings:
   slot: 10
 #
 cost:
-  - "$100000000"
+  - "$50000000"
 #
 rewards:
   - "SpawnerLimit=1250"
-  - "IslandRadius=61"
-  - "AllowPlacement{AutoMiners;&fAuto Miners}"
+  - "IslandRadius=36"
+  - "AllowPlacement{SkeletonSpawner}"
+  - "AllowPlacement{1xAutoSellBot}"
+  - "AllowPlacement{10xAutoMiningBot}"
+  - "MaxFilteredCollectionChestItems=4"
+  - "AllowPlacement{BountifulFarmRealmPortal}"

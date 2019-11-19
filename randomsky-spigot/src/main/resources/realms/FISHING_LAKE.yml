@@ -1,0 +1,21 @@
+# Made by RandomHashTags
+settings:
+  slot: 0
+  name: "Fishing Lake"
+  max time allowed per day: 60*30 # Measured in seconds
+  portal required island level: 5
+#
+shop:
+  title: "Fishing Lake"
+  size: 54
+#
+item:
+  item: "fishing_rod"
+  name: "&f&lFishing Lake"
+  lore:
+    - "&7A peaceful lake full to"
+    - "&7the brim with fish!"
+    - " "
+    - "&eFishing Lake Points: &f&n{POINTS}"
+    - "&eDaily Time Left: &f{TIME_LEFT}"
+#

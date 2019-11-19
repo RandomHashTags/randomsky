@@ -18,7 +18,6 @@ item:
     - "&6&l*&r &fChat cooldown reduced to 2s"
     - "&6&l*&r &f/msg cooldown reduced to 1s"
     - "&6&l*&r &f/craft, /tpahere, /combine"
-    - "&6&l*&r &f/feed (10m cooldown)"
     - "&6&l*&r &f/tinkerer"
     - "&6&l*&r &fAbility to create [DISPOSAL] signs"
     - " "
@@ -33,5 +32,4 @@ attributes:
   - "addPerm{RandomSky.tinkerer}"
   - "addPerm{Essentials.craft}"
   - "addPerm{Essentials.tpahere}"
-  - "addPerm{Essentials.feed}"
   - "Redeem{giveItem{skilltoken;amount=2}}"

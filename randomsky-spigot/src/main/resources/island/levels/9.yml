@@ -6,4 +6,8 @@ cost:
 #
 rewards:
   - "SpawnerLimit=750"
-  - "IslandRadius=52"
+  - "IslandRadius=32"
+  - "AllowPlacement{4xAutoCraftingBot}"
+  - "AllowPlacement{3xCollectionChestItems}"
+  - "AllowPlacement{6xAutoMiningBot}"
+  - "AllowPlacement{EnchantedForestRealmPortal}"

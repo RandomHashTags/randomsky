@@ -2,10 +2,14 @@
 slot: 9
 #
 cost:
-  - "$50000000"
+  - "$40000000"
 #
 rewards:
   - "SpawnerLimit=1000"
-  - "IslandRadius=56"
+  - "IslandRadius=34"
   - "AllowPlacement{Piston}"
+  - "AllowPlacement{DiamondOre}"
+  - "AllowPlacement{ZombieSpawner}"
+  - "AllowPlacement{8xAutoPlanterBot}"
+  - "AllowPlacement{40xCollectionChest}"
   - "MaxMembers=15"

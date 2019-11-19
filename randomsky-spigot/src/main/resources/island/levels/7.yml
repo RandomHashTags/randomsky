@@ -7,5 +7,11 @@ cost:
 #
 rewards:
   - "SpawnerLimit=250"
-  - "IslandRadius=43"
+  - "IslandRadius=28"
   - "AllowPlacement{Enchantment_Table}"
+  - "AllowPlacement{SpiderSpawner}"
+  - "AllowPlacement{2xTeleportPad}"
+  - "AllowPlacement{1xAutoCraftingBot}"
+  - "AllowPlacement{24xCollectionChest}"
+  - "AllowPlacement{2xCollectionChestItems}"
+  - "AllowPlacement{DwarfMineRealmPortal}"

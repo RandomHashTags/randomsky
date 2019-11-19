@@ -3,8 +3,15 @@ settings:
   slot: 14
 #
 cost:
-  - "$1000000000"
+  - "$300000000"
 #
 rewards:
   - "SpawnerLimit=2500"
-  - "IslandRadius=79"
+  - "IslandRadius=50"
+  - "AllowPlacement{20xAutoPlanterBot}"
+  - "AllowPlacement{80xCollectionChest}"
+  - "AllowPlacement{8xAutoSellBot}"
+  - "AllowPlacement{8xAutoBundleBot}"
+  - "AllowPlacement{unlimitedxAutoMiningBot}"
+  - "AllowPlacement{NetherQuartzOre}"
+  - "AllowPlacement{GhastSpawner}"

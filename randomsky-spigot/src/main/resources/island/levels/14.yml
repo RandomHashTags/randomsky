@@ -3,9 +3,13 @@ settings:
   slot: 13
 #
 cost:
-  - "$500000000"
+  - "$175000000"
 #
 rewards:
   - "SpawnerLimit=2000"
-  - "IslandRadius=75"
+  - "IslandRadius=46"
+  - "AllowPlacement{Beacon}"
+  - "AllowPlacement{ObsidianNode}"
+  - "AllowLighting{DeadZonePortal}"
+  - "SpawnerStackLimit=15"
   - "MaxMembers=17"

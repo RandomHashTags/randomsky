@@ -3,9 +3,15 @@ settings:
   slot: 11
 #
 cost:
-  - "$200000000"
+  - "$70000000"
 #
 rewards:
   - "SpawnerLimit=1500"
-  - "IslandRadius=65"
+  - "IslandRadius=38"
+  - "AllowFished{Pufferfish}"
+  - "AllowPlacement{ZombiePigmanSpawner}"
+  - "AllowPlacement{8xTeleportPad}"
+  - "AllowPlacement{8xAutoCraftingBot}"
+  - "AllowPlacement{GoldOre}"
+  - "AllowPlacement{1xAutoBundleBot}"
   - "MaxMembers=16"

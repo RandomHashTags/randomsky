@@ -3,10 +3,30 @@ messages:
   recipes can be obtained:
     - "&e&l(!)&r &eRecipes can be obtained inside /adventures OR by crafting 9 Item Recipe Pages together!"
 #
+items:
+  recipe:
+    item: "paper"
+    name: "&b&lItem Recipe (&r&f{RECIPE}&b&l)"
+    lore:
+      - "&7Right-Click this item recipe to grant"
+      - "&7the island it was claimed on the"
+      - "&7ability to craft &f{RECIPE}&7!"
+      - " "
+      - "&b&lIsland Requirements"
+      - " &b&l*&r &f{REQUIREMENTS}"
+  page:
+    item: "iron_nugget"
+    name: "&b&lItem Recipe Page (&r&f{RECIPE}&b&l)"
+    lore:
+      - "&7Combine with &n9 Item Recipe Pages"
+      - "&7to craft a &b&lItem Recipe (&r&f{RECIPE}&b&l)&r&7!"
+#
 gui:
   title: "Custom Item Recipes"
-  size: 18
-  #
+  size: 36
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
   locked:
     item: "red_stained_glass_pane"
     name: "&c&lLocked"

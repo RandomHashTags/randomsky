@@ -3,9 +3,15 @@ settings:
   slot: 17
 #
 cost:
-  - "$5000000000"
+  - "$2000000000"
 #
 rewards:
-  - "SpawnerLimit=5000"
-  - "IslandRadius=92"
+  - "SpawnerLimit=4000"
+  - "IslandRadius=64"
+  - "AllowPlacement{unlimitedxAutoCraftingBot}"
+  - "AllowPlacement{unlimitedxTeleportPad}"
+  - "AllowPlacement{unlimitedxAutoBundleBot}"
+  - "AllowPlacement{unlimitedxAutoSellBot}"
+  - "AllowPlacement{unlimitedxNetherArmorTransformer}"
+  - "AllowSmeltable{UnrefinedIron&UnrefinedDiamond}"
   - "MaxMembers=19"

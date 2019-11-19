@@ -1,0 +1,30 @@
+# Made by RandomHashTags
+gui:
+  title: "Realms"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  lores:
+    click to view realm shop:
+      - " "
+      - "&7Click to view this realm's shop!"
+#
+items:
+  portal:
+    item: "ender_eye"
+    name: "&6&lRealm Portal (&r&f{REALM}&6&l)"
+    lore:
+      - " "
+      - "&7Place on an island to gain portal"
+      - "&7access to the &f{REALM} &7Realm!"
+      - " "
+      - "&cRequires /is level {LEVEL}"
+  point note:
+    item: "paper"
+    name: "&a&l{AMOUNT} Realm Points (&r&f{REALM}&a&l)"
+    lore:
+      - "&7Right-Click to redeem for"
+      - "&a&n{AMOUNT}&r &f{REALM} &7/realm points!"
+#

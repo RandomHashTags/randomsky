@@ -7,5 +7,6 @@ cost:
 #
 rewards:
   - "SpawnerLimit=50"
-  - "IslandRadius=25"
+  - "IslandRadius=20"
   - "AllowPlacement{Redstone_Wire}"
+  - "AllowPlacement{CowSpawner}"

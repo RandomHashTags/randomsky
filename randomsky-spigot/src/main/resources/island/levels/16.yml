@@ -3,9 +3,11 @@ settings:
   slot: 15
 #
 cost:
-  - "$1500000000"
+  - "$600000000"
 #
 rewards:
   - "SpawnerLimit=3000"
-  - "IslandRadius=83"
+  - "IslandRadius=54"
+  - "AllowPlacement{20xTeleportPad}"
+  - "AllowPlacement{20xAutoCraftingBot}"
   - "MaxMembers=18"

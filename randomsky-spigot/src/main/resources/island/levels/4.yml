@@ -7,5 +7,5 @@ cost:
 #
 rewards:
   - "SpawnerLimit=75"
-  - "IslandRadius=29"
+  - "IslandRadius=22"
   - "MaxMembers=12"

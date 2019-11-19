@@ -7,9 +7,13 @@ import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.List;
 
 public class FileItemRecipe extends RSAddon implements ItemRecipe {
+    private int slot = -999;
+    private String name;
     private ItemStack is;
+    private List<String> islandRequirements;
 
     public FileItemRecipe(File f) {
         load(f);
@@ -17,10 +21,30 @@ public class FileItemRecipe extends RSAddon implements ItemRecipe {
     }
 
     public String getIdentifier() { return getYamlName(); }
+
+    public int getSlot() {
+        if(slot == -999) {
+            slot = yml.getInt("settings.slot");
+        }
+        return slot;
+    }
+    public String getName() {
+        if(name == null) {
+            name = colorize(yml.getString("settings.name"));
+        }
+        return name;
+    }
+
     public ItemStack getItem() {
         if(is == null) {
             is = api.d(yml, "item");
         }
         return getClone(is);
+    }
+    public List<String> getIslandRequirements() {
+        if(islandRequirements == null) {
+            islandRequirements = yml.getStringList("requirements");
+        }
+        return islandRequirements;
     }
 }

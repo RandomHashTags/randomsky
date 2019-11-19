@@ -7,6 +7,8 @@ cost:
 #
 rewards:
   - "SpawnerLimit=500"
-  - "IslandRadius=47"
+  - "IslandRadius=30"
   - "AllowPlacement{Observer}"
+  - "AllowFished{Clownfish}"
+  - "AllowPlacement{4xAutoMiningBot}"
   - "MaxMembers=14"
