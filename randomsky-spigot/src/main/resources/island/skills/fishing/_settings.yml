@@ -1,1 +1,5 @@
 # Made by RandomHashTags
+skill:
+  item: "fishing_rod"
+  name: "&a&lFishing"
+  type: "Fishing"

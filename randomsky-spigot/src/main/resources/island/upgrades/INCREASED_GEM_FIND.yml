@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 8
+#
+item:
+  item: "emerald"
+  name: "&6&lIncreased Gem Find"
+  lore:
+    - "&7Increased chance to receive gems"
+    - "&7from mining."
+#
+attributes:
+  - ""

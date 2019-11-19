@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 5
+#
+item:
+  item: "mob_spawner"
+  name: "&6&lIncreased Mob Spawning"
+  lore:
+    - "&7Increase the rates mobs spawn from"
+    - "&7spawners."
+#
+attributes:
+  - ""

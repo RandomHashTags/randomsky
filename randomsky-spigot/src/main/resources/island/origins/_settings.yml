@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+lores:
+  selected:
+    - " "
+    - "&a&l* YOUR ORIGIN *"
+#
+gui:
+  title: "Island Origins"
+  create island title: "Choose your Island Origin..."
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "

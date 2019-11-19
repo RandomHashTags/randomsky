@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 9
+#
+item:
+  item: "magma_block"
+  name: "&6&lIncreased Auto Mobs Killed"
+  lore:
+    - "&7Increase the amount of stacked mobs"
+    - "&7that die due to magma damage."
+#
+attributes:
+  - ""

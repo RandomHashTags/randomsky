@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 3
+#
+item:
+  item: "feather"
+  name: "&6&lFlight on Island"
+  lore:
+    - "&7Allow /fly on your island!"
+#
+attributes:
+  - ""

@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+settings:
+  slot: 4
+#
+item:
+  item: "carrot_item"
+  name: "&6&lIncrease Daily Farming Limit"
+  lore:
+    - "&7Increase the amount your daily farming"
+    - "&7restrictions are raised after each"
+    - "&7day crops are grown to 100%."
+#
+attributes:
+  - ""

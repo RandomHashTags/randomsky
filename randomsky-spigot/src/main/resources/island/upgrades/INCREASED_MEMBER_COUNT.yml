@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 2
+#
+item:
+  item: "book"
+  name: "&6&lIncreased Member Count"
+  lore:
+    - "&7Increase the maximum amount of"
+    - "&7members you can have on your island."
+#
+attributes:
+  - ""

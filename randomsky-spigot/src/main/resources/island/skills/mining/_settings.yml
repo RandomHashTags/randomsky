@@ -32,15 +32,9 @@ messages:
       - " "
 #
 skill:
-  slot: 3
   item: "diamond_pickaxe"
   name: "&a&lMining"
-  lore:
-    - " "
-    - "&b&lLevel"
-    - " &f{LEVEL}"
-    - " "
-    - "&7Click to view Island Mining levels!"
+  type: "Mining"
 #
 gui:
   title: "/is mining"

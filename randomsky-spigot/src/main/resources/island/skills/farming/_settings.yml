@@ -19,15 +19,9 @@ default recipes:
   - POTATOES
 #
 skill:
-  slot: 0
   item: "wheat"
   name: "&a&lFarming"
-  lore:
-    - " "
-    - "&b&lLevel"
-    - " &f{LEVEL}"
-    - " "
-    - "&7Click to view Island Farming levels!"
+  type: "Farming"
 #
 info:
   title: "Farming Info ({PLAYER})"

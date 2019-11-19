@@ -248,7 +248,7 @@ delete:
     item: "cancel"
 #
 name:
-  length: 3:16
+  length: 3-16
   case sensitive: false
   blacklisted:
     - "`"
@@ -283,17 +283,6 @@ name:
     - ">"
     - "/"
     - "?"
-#
-origins:
-  selected:
-    - " "
-    - "&a&l* YOUR ORIGIN *"
-  gui:
-    title: "Island Origins"
-    size: 9
-    background:
-      item: "black_stained_glass_pane"
-      name: " "
 #
 gui:
   title: "Island ({PLAYER})"
@@ -411,14 +400,6 @@ members:
     name: "&c&lPrevious Menu"
     lore:
       - "&7Click to return to the main menu!"
-#
-skills:
-  title: "Island Skills"
-  size: 9
-  background:
-    item: "black_stained_glass_pane"
-    name: " "
-  #
 #
 open islands:
   gui:

@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 14
+#
+item:
+  item: "glowstone_dust"
+  name: "&6&lIncreased Gold Refining"
+  lore:
+    - "&7Increase the chance to successfully smelt"
+    - "&7a piece of Unrefined Gold Scrap."
+#
+attributes:
+  - ""

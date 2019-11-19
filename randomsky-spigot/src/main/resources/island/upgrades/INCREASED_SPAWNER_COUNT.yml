@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 15
+#
+item:
+  item: "spawner"
+  name: "&6&lIncreased Spawner Count"
+  lore:
+    - "&7Increase the amount of Mob Spawners placeable"
+    - "&7on the Island."
+#
+attributes:
+  - ""

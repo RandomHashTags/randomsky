@@ -1,8 +1,8 @@
 package me.randomhashtags.randomsky;
 
-import me.randomhashtags.randomsky.api.ready.Homes;
-import me.randomhashtags.randomsky.api.ready.ItemFilter;
-import me.randomhashtags.randomsky.api.ready.RepairScrolls;
+import me.randomhashtags.randomsky.api.Homes;
+import me.randomhashtags.randomsky.api.ItemFilter;
+import me.randomhashtags.randomsky.api.RepairScrolls;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 1
+#
+item:
+  item: "coal"
+  name: "&6&lIncreased Furnace Fuel Efficiency"
+  lore:
+    - "&7Burn fuel more efficiently for a"
+    - "&7longer burn time per item!"
+#
+attributes:
+  - ""

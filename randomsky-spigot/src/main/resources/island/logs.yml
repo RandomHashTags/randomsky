@@ -1,0 +1,53 @@
+# Made by RandomHashTags
+gui:
+  title: "{CREATOR}'s Island Logs"
+  size: 18
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  mob spawner edits:
+    slot: 0
+    item: "spawner"
+    name: "&e&lMob Spawner Edits"
+    logs: MOB_SPAWNER_EDITS
+  auto bot edits:
+    slot: 1
+    item: "armor_stand"
+    name: "&e&lAuto Bot Edits"
+    logs: AUTO_BOT_EDITS
+  science block edits:
+    slot: 2
+    item: "purple_glazed_terracotta"
+    name: "&e&lScience Block Edits"
+    logs: SCIENCE_BLOCK_EDITS
+  resource node edits:
+    slot: 3
+    item: "gold_ore"
+    name: "&e&lResource Node Edits"
+    logs: RESOURCE_NODE_EDITS
+  member ban:
+    slot: 4
+    item: "barrier"
+    name: "&e&lMember Ban"
+    logs: MEMBER_BANS
+  member kick:
+    slot: 5
+    item: "anvil"
+    name: "&e&lMember Kick"
+    logs: MEMBER_KICKS
+  member invite:
+    slot: 6
+    item: "paper"
+    name: "&e&lMember Invite"
+    logs: MEMBER_INVITES
+  member role edit:
+    slot: 7
+    item: "writable_book"
+    name: "&e&lMember Role Edit"
+    logs: MEMBER_ROLE_EDITS
+  #
+#
+lores:
+  no logs found:
+    - "&cNo logs found!"

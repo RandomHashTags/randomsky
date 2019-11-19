@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 12
+#
+item:
+  item: "wheat"
+  name: "&6&lIncrease Crop Growth"
+  lore:
+    - "&7Increase the chance for a crop to"
+    - "&7double grow."
+#
+attributes:
+  - ""

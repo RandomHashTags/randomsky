@@ -1,14 +1,14 @@
 package me.randomhashtags.randomsky.attribute.condition;
 
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
-import me.randomhashtags.randomsky.api.ready.CustomEnchants;
+import me.randomhashtags.randomsky.api.unfinished.CustomEnchants;
 import me.randomhashtags.randomsky.attribute.AbstractEventCondition;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
-import static me.randomhashtags.randomsky.api.ready.CustomEnchants.getCustomEnchants;
+import static me.randomhashtags.randomsky.api.unfinished.CustomEnchants.getCustomEnchants;
 
 public class HasCustomEnchantEquipped extends AbstractEventCondition {
     @Override

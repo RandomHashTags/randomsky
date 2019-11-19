@@ -4,15 +4,9 @@ messages:
     - "&e&l(!)7r &e{TYPE} slain: &7{PROGRESS} / {COMPLETION} (&e{COMPLETION%}&7)"
 #
 skill:
-  slot: 2
   item: "diamond_sword"
   name: "&a&lSlayer"
-  lore:
-    - " "
-    - "&b&lLevel"
-    - " &f{LEVEL}"
-    - " "
-    - "&7Click to view Island Slayer levels!"
+  type: "Slayer"
 #
 gui:
   title: "/is slayer"

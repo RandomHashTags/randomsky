@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 11
+#
+item:
+  item: "experience_bottle"
+  name: "&6&lIncreased Pet XP on use"
+  lore:
+    - "&7Increase the XP gained when using"
+    - "&7Inventory Pets."
+#
+attributes:
+  - ""

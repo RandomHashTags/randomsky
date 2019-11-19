@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 0
+#
+item:
+  item: "furnace"
+  name: "&6&lIncreased Smelting Speed"
+  lore:
+    - "&7Increase the time it takes for your"
+    - "&7island furnaces to smelt an item."
+#
+attributes:
+  - ""

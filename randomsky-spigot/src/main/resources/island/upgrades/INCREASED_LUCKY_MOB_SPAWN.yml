@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 16
+#
+item:
+  item: "prismarine_shard"
+  name: "&6&lIncreased Lucky Mob Spawn"
+  lore:
+    - "&7Mob Spawner mobs have a chance to"
+    - "&7spawn a Lucky version."
+#
+attributes:
+  - ""

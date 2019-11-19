@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 6
+#
+item:
+  item: "enchantment_bottle"
+  name: "&6&lIncreased Mob Spawner EXP"
+  lore:
+    - "&7Increase the Xp dropped from Mob"
+    - "&7Spawner mobs."
+#
+attributes:
+  - ""

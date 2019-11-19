@@ -1,0 +1,27 @@
+# Made by RandomHashTags
+settings:
+  string: "&bServer Confederation"
+  schematic: "ServerConfederation"
+  slot: 3
+#
+item:
+  item: "diamond"
+  name: "&b&lServer Federation"
+  lore:
+    - "&7The intergalactic republic of the Servonauts."
+    - " "
+    - "&b&lPerks:"
+    - " &b&l*&r &f+25% XP Gain"
+    - " &b&l*&r &f+10% outgoing PvE Damage"
+    - " &b&l*&r &f-5% incoming PvP Damage"
+    - " "
+    - "&7You seek to restore and protect"
+    - "&7balance and order in the Servoverse"
+    - "&7against the cult of chaos."
+    - " "
+    - "&7Click to join the &b&nServer Federation&r&7!"
+#
+attributes:
+  - "XPGainMultiplier=1.25"
+  - "OutgoingPvEDamageMultiplier=1.10"
+  - "IncomingPvPDamage=0.90"

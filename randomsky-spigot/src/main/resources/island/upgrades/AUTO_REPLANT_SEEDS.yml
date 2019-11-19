@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 13
+#
+item:
+  item: "wheat_seed"
+  name: "&6&lAuto Replant Seeds"
+  lore:
+    - "&7Auto replant most fully grown crops"
+    - "&7when manually harvested."
+#
+attributes:
+  - ""

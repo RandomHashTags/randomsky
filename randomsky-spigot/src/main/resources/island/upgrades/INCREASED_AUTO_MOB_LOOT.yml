@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+settings:
+  slot: 10
+#
+item:
+  item: "chest"
+  name: "&6&lIncreased Auto Mob Loot"
+  lore:
+    - "&7Increased loot from stacked mobs"
+    - "&7that are auto killed and have their"
+    - "&7loot picked up by a Collection Chest."
+#
+attributes:
+  - ""

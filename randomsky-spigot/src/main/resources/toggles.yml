@@ -1,0 +1,171 @@
+# Made by RandomHashTags
+messages:
+  invalid id:
+    - "&c&l(!)&r &cInvalid player toggle from id, please enter 1-24"
+  toggled on:
+    - "&e&l(!) {NAME}:&r &a&lENABLED"
+  toggled off:
+    - "&e&l(!) {NAME}&r &c&lDISABLED"
+  #
+  insta break enabled on island:
+    - "&e&l(!)&r &eInstabreak is enabled on your island! This feature can be disabled in &n/toggles."
+#
+gui:
+  title: "Player Toggles"
+  size: 27
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  enabled:
+    item: "lime_stained_glass_pane"
+    name: "&a&l{NAME}"
+    lore:
+      - "{LORE}"
+      - "&a&lENABLED"
+  disabled:
+    item: "red_stained_glass_pane"
+    name: "&c&l{NAME}"
+    lore:
+      - "{LORE}"
+      - "&c&lDISABLED"
+#
+default value: true # is enabled by default?
+#
+toggles:
+  /tpa Requests:
+    slot: 0
+    lore:
+      - "&7Toggle if players can send"
+      - "&7you /tpa requests."
+      - " "
+      - "&7Toggle #1"
+  Private Messages:
+    slot: 1
+    lore:
+      - "&7Toggle if players can send you /msg's!"
+  Filter Chat:
+    slot: 2
+    default value: false
+    lore:
+      - "&7Toggle if player chat will be filtered."
+  Island Invite Notifications:
+    slot: 3
+    lore:
+      - "&7Toggle player island invite notifications"
+  /pay Requests:
+    slot: 4
+    lore:
+      - "&7Toggle if players can send"
+      - "&7you money with /pay."
+  Member Visiting:
+    slot: 5
+    lore:
+      - "&7Toggle if members can /is visit you!"
+  Punch to Kick:
+    slot: 6
+    lore:
+      - "&7Toggle if punching players on your"
+      - "&7island will send them to spawn."
+  Instant Block Break:
+    slot: 7
+    lore:
+      - "&7Toggle if blocks break instantly"
+      - "&7while on an allowed island/"
+  Instant Break Pickup:
+    slot: 8
+    lore:
+      - "&7Toggle if you automatically"
+      - "&7pickup items when instantly"
+      - "&7breaking them."
+  /ci Confirmation:
+    slot: 9
+    lore:
+      - "&7Toggle if you will be"
+      - "&7prompted to confirm"
+      - "&7when running /clearinventory."
+  Auction Buy Confirm:
+    slot: 10
+    lore:
+      - "&7Toggle being prompted with"
+      - "&7an /h buy confirm menu."
+  Auction Sell Confirm:
+    slot: 11
+    lore:
+      - "&7Toggle being prompted with"
+      - "&7an /ah sell confirm menu."
+  Coin Flip Notifications:
+    slot: 12
+    lore:
+      - "&7Toggle receiving coin flip"
+      - "&7win notifications within"
+      - "&7your specified threshold."
+  Bleed Notifications:
+    slot: 13
+    lore:
+      - "&7Toggle receiving messages"
+      - "&7when inflicted with bleed."
+  Toggle Enchant Debug:
+    slot: 14
+    lore:
+      - "&7Toggle receiving debug"
+      - "&7from various events"
+      - "&7caused by custom enchants."
+      - "&7(EX: Healing)"
+  Toggle Break Particles:
+    slot: 15
+    lore:
+      - "&7Toggle receiving the"
+      - "&7block break effect when"
+      - "&7it is instantly broken."
+      - "&7(This can help improve FPS)"
+  Toggle Jackpot Countdown:
+    slot: 16
+    lore:
+      - "&7Toggle receiving the"
+      - "&7countdown timer when"
+      - "&7a /jackpot is about"
+      - "&7to be drawn."
+  Toggle Player Portal Travel:
+    slot: 17
+    lore:
+      - "&7Toggle traveling through player"
+      - "&7placed Player Portals that"
+      - "&7leads to their /is warp!"
+  Player Level Up Notifications:
+    slot: 18
+    lore:
+      - "&7Toggle receiving the message"
+      - "&7when a player levels up"
+      - "&7their island."
+  Challenge Message on Join:
+    slot: 19
+    lore:
+      - "&7Toggle receiving a message"
+      - "&7on join of your current"
+      - "&7challenge requirement."
+  Toggle /battleroyale Notifications:
+    slot: 20
+    lore:
+      - "&7Toggle receiving the countdown"
+      - "&7messages of a starting"
+      - "&7/battleroyale match!"
+  Toggle Dead Zone Entry:
+    slot: 21
+    default value: false
+    lore:
+      - "&7Toggle the ability to travel"
+      - "&7through valid Dead Zone portals."
+      - " "
+      - "&7The Dead Zone is &cDANGEROUS!"
+      - "&cPvP-Enabled, Inventory Loss, No Teleports."
+      - "&7(/help deadzone to learn more)"
+  Adventure PvP Outgoing DMG:
+    slot: 22
+    default value: false
+    lore:
+      - "&7While disabled, you are &c&nunable&r &7to deal"
+      - "&c&nOUTGOING&r &7damage to players in /adventures."
+      - "&7This is to prevent yourself from accidentally"
+      - "&7going Neutral or Chaotic where certain"
+      - "&7items can be dropped on death."
+#

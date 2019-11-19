@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 17
+#
+item:
+  item: "anvil"
+  name: "&6&lDecreased Item Durability"
+  lore:
+    - "&7Decrease the chance for an item to"
+    - "&7take durability loss."
+#
+attributes:
+  - ""

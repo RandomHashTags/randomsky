@@ -1,0 +1,28 @@
+# Made by RandomHashTags
+gui:
+  title: "Island Skills"
+  size: 9
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  #
+  format:
+    - " "
+    - "&b&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&7Click to view Island {TYPE} levels!"
+  #
+  farming:
+    slot: 0
+    views: FARMING
+  slayer:
+    slot: 1
+    views: SLAYER
+  mining:
+    slot: 2
+    views: MINING
+  fishing:
+    slot: 3
+    views: FISHING
+#

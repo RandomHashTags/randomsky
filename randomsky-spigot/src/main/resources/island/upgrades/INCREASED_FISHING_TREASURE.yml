@@ -1,0 +1,13 @@
+# Made by RandomHashTags
+settings:
+  slot: 7
+#
+item:
+  item: "fishing_rod"
+  name: "&6&lIncreased /fishing Treasure"
+  lore:
+    - "&7Increased chance to receive Treasure"
+    - "&7from fishing."
+#
+attributes:
+  - ""
