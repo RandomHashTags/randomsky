@@ -1,0 +1,7 @@
+# Made by RandomHashTags
+item:
+  item: "iron_block"
+  name: "&8Unrefined Iron Block"
+  lore:
+    - "&7Smelt in a furnace to refine"
+    - "&7into a &8Refined Iron Block."

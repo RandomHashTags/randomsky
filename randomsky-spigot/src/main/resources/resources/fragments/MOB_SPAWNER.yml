@@ -1,0 +1,8 @@
+# Made by RandomHashTags
+item:
+  item: "prismarine_shard"
+  name: "&f&lSpawner Shard (&r&7{TYPE}&f&l)"
+  lore:
+    - "&7Combine with &l&n9&r &f&lSpawner Shards"
+    - "&f&l(&r&7{TYPE}&f&l)&r &7to create a new"
+    - "&f&lMob Spawner (&r&7{TYPE}&f&l)&r&7!"

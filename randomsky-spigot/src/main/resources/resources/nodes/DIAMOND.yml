@@ -1,0 +1,17 @@
+# Made by RandomHashTags
+settings:
+  rarity: DIAMOND
+  respawn time: 900
+  value: 125000
+  harvest block: DIAMOND_ORE
+  node block: IRON_BLOCK
+  node name: "Diamond"
+  node {TYPE}: "Diamond Nodes"
+  required nodes:
+    IRON: 2500
+#
+item:
+  item: "diamond_ore"
+  name: "&bDiamond Ore Node"
+  loot:
+    - "scrap:diamond; &b&l*&r &b1x Diamond Scrap"

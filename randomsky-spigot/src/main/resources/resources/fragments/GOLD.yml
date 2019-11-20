@@ -1,0 +1,10 @@
+# Made by RandomHashTags
+item:
+  item: "gold_nugget"
+  name: "&eGold Ore Resource Fragment"
+  lore:
+    - " "
+    - "&8&lRecipe"
+    - " &e&l*&r &e32x = Gold Ore Node"
+    - " "
+    - "&7Can be created into Resource Nodes."

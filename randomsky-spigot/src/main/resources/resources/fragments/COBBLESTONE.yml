@@ -1,0 +1,10 @@
+# Made by RandomHashTags
+item:
+  item: "light_gray_dye"
+  name: "&fCobblestone Resource Fragment"
+  lore:
+    - " "
+    - "&8&lRecipe"
+    - " &f&l*&r &f64x = Cobblestone Node"
+    - " "
+    - "&7Can be created into Resource Nodes."

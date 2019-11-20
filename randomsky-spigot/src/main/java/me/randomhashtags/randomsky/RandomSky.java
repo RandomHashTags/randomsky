@@ -14,10 +14,11 @@ public final class RandomSky extends JavaPlugin {
     private ItemFilter itemfilter;
     private RepairScrolls repairscrolls;
 
+    @Override
     public void onEnable() {
         enable();
     }
-
+    @Override
     public void onDisable() {
         disable();
     }

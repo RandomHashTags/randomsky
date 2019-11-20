@@ -1,0 +1,77 @@
+# Made by RandomHashTags
+messages:
+  placed:
+    - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
+    - "&7You can pickup this node by shift-breaking it!"
+  placed notify:
+    - "&a&l(!)&r &a{TYPE} Resource Node placed on your island!"
+  destroyed:
+    - "&c&l(!)&r &c{TYPE} has been destroyed!"
+  respawn:
+    - "&e&l(!)&r &e{TYPE} Resource Node will respawn in &n{TIME}!"
+  pickup:
+    - "&e&l(!)&r &eTo pickup a resource node block, you must be sneaking while breaking it."
+  ready to be harvested:
+    - "&e&l(!)&r &e{TYPE} Resource Node is ready to be harvested!"
+  mined:
+    - "&e&l(!)&r &e{TYPE} Resource Node mined: &7{PROGRESS} / {MAX} (&e{PROGRESS%}%&7)"
+  #
+  level too low to place node:
+    - "&c&l(!)&r &cIsland Mining Level is too low to place {TYPE} Resource Node!"
+    - "&7Requires /is Mining Level &l&n{REQUIRED_LEVEL}"
+  skill advanced:
+    - " "
+    - " &6&l**&r &6Your Mining Skill has advanced to &lLevel {LEVEL}&r&6! &6&l**"
+    - "&7Members can now placed {NODE} on the island!"
+    - " "
+#
+default node: LOG
+#
+rarities:
+  default: DEFAULT
+  #
+  DEFAULT:
+    lore:
+      - "&7Resource Node"
+      - " "
+      - "&f&lLoot"
+      - "{LOOT}"
+      - " "
+      - "&f&lRespawn Time"
+      - " &f{RESPAWN}"
+      - " "
+      - "&7Place this resource node on your island!"
+  RARE:
+    lore:
+      - "&7Resource Node"
+      - " "
+      - "&8&lLoot"
+      - "{LOOT}"
+      - " "
+      - "&8&lRespawn Time"
+      - " &8{RESPAWN}"
+      - " "
+      - "&7Place this resource node on your island!"
+  GOLD:
+    lore:
+      - "&7Resource Node"
+      - " "
+      - "&e&lLoot"
+      - "{LOOT}"
+      - " "
+      - "&e&lRespawn Time"
+      - " &e{RESPAWN}"
+      - " "
+      - "&7Place this resource node on your island!"
+  DIAMOND:
+    lore:
+      - "&7Resource Node"
+      - " "
+      - "&b&lLoot"
+      - "{LOOT}"
+      - " "
+      - "&b&lRespawn Time"
+      - " &b{RESPAWN}"
+      - " "
+      - "&7Place this resource node on your island!"
+#

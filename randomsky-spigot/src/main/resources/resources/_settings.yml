@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+messages:
+  cannot place fragment:
+    - "&c&l(!)&r &cYou cannot place this resource node fragment!"
+  cannot place resource items:
+    - "&c&l(!)&r &cYou cannot place Resource items!"
+#
+lore:
+  - " "
+  - "&7&lRESOURCE ITEM"
+  - "&7This item can be used for crafting."
+#
+items:
+  oak_planks:
+  stick:
+  cobblestone:
+    item: "cobblestone"
+    lore:
+      - "&7You can craft Chainmail Armor with this."
+  iron_ingot:
+  diamond:
+#

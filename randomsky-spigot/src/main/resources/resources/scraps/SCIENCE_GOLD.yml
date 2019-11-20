@@ -1,0 +1,9 @@
+# Made by RandomHashTags
+item:
+  item: "yellow_dye"
+  name: "&eGold Scrap"
+  lore:
+    - "&7/science Resource"
+    - " "
+    - "&7Combine 64x together"
+    - "&7to created a &eGold Ingot&7!"

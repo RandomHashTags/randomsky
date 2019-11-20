@@ -1,0 +1,7 @@
+# Made by RandomHashTags
+item:
+  item: "iron_block"
+  name: "&8Refined Iron Block"
+  lore:
+    - "&7Combine &816x &7together"
+    - "&7to craft a &8Iron ore Resource Node."

@@ -1,0 +1,18 @@
+# Made by RandomHashTags
+settings:
+  rarity: DEFAULT
+  required island level: 8
+  respawn time: 240
+  value: 5000
+  harvest block: COAL_ORE
+  node block: STONE
+  node name: "Coal"
+  node {TYPE}: "Coal Nodes"
+  required nodes:
+    COBBLESTONE: 250
+#
+item:
+  item: "coal_ore"
+  name: "&fCoal Ore Node"
+  loot:
+    - "resource:coal; &f&l*&r &f1x Coal"

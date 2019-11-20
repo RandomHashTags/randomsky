@@ -1,0 +1,17 @@
+# Made by RandomHashTags
+settings:
+  rarity: GOLD
+  respawn time: 60
+  value: 0
+  harvest block: GOLD_ORE
+  node block: GOLD_BLOCK
+  node name: "Gold"
+  node {TYPE}: "Gold Nodes"
+  required nodes:
+    DIAMOND: 50000
+#
+item:
+  item: "gold_ore"
+  name: "&eGold Ore Node"
+  loot:
+    - "scrap:gold; &e&l*&r &e1x Gold Scrap"

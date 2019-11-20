@@ -105,7 +105,7 @@ public interface UVersionable {
                     }
                 }
                 if(s != null) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+                    sender.sendMessage(colorize(s));
                 }
             }
         }

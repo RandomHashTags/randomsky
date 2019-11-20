@@ -1,0 +1,57 @@
+# Made by RandomHashTags
+settings:
+  values:
+    VALUE_1:
+      string: "Lost Wasteland Maps Unlocked"
+    VALUE_2:
+      string: "Demonic Realm Maps Unlocked"
+  #
+  EXPLORER_SKIT:
+    list:
+      - "&a&lExplorer /skit"
+    completion:
+      VALUE_1: 250
+  WARRIOR_SKIT:
+    list:
+      - "&b&lElite Battle Royale"
+      - "&b&lIron in /koth"
+      - "&b&lWarrior /skit"
+    completion:
+      VALUE_1: 750
+      VALUE_2: 125
+  CHAMPION_SKIT:
+    list:
+      - "&e&lDiamond in /koth"
+      - "&e&lChampion /skit"
+    completion:
+      VALUE_1: 2000
+      VALUE_2: 250
+  DEAD_ZONE:
+    list:
+      - "&c&lDead Zone"
+    completion:
+      VALUE_2: 300
+#
+messages:
+  view:
+    - " "
+    - "&6&l<&r&e&l*&r&6&l> Player /skit Fund <&r&e&l*&r&6&l>"
+    - "&7Unlock /adventure maps to contribute to the /fund to unlock /skit from previous maps for the entire galaxy."
+    - " "
+    - "{CONTENT}"
+    - " "
+  #
+  progress bar:
+    symbol: ":"
+    length: 100
+    achieved: "&e"
+    not achieved: "&7"
+  # {PROGRESS_BAR} is the progress bar
+  content:
+    - " {LIST}"
+    - "   {PROGRESS_BAR}"
+  completed: "&m"
+#
+attributes:
+  - "PlayerRedeemAdventureMap;identifier=LOST_WASTELAND;IncreaseSkyKitFundValue=VALUE_1:1"
+  - "PlayerRedeemRealmMap;identifier=DEMONIC_REALM;IncreaseSkyKitFundValue=VALUE_2:1"

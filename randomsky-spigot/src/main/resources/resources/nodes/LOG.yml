@@ -1,6 +1,6 @@
 # Made by RandomHashTags
 settings:
-  type: DEFAULT
+  rarity: DEFAULT
   respawn time: 60
   value: 500
   harvest block: OAK_LOG
@@ -11,6 +11,5 @@ settings:
 item:
   item: "oak_log"
   name: "&fLog Node"
-#
-loot:
-- "scrap:oak; &f&l*&r &f1x Wood Scrap"
+  loot:
+    - "scrap:oak; &f&l*&r &f1x Wood Scrap"

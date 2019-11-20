@@ -1,0 +1,7 @@
+# Made by RandomHashTags
+item:
+  item: "diamond_block"
+  name: "&bRefined Diamond Block"
+  lore:
+    - "&7Combine &b16x &7together"
+    - "&7to craft a &bDiamond ore Resource Node."

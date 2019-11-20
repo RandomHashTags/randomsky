@@ -15,6 +15,7 @@ import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.api.skill.IslandFarming;
 import me.randomhashtags.randomsky.api.skill.IslandMining;
+import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
@@ -835,7 +836,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                     final ResourceNode n = ResourceNode.valueOf(i);
                     final PermissionBlock pb = n == null ? PermissionBlock.valueOf(i) : null;
                     if(n != null) {
-                        final IslandLevel requiredLevel = n.requiredLevel;
+                        final IslandLevel requiredLevel = n.getRequiredIslandLevel();
                         final String nodeName = n.getNodeName();
                         if(is.getAllowedNodes().contains(n) || requiredLevel == null || is.getIslandLevel().getLevel() >= requiredLevel.level) {
                             new ActiveResourceNode(n, l);
@@ -853,7 +854,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                             sendStringListMessage(player, mining.config.getStringList("messages.nodes.level too low to place node"), replacements);
                         }
                     } else if(pb != null) {
-                        is.permissionBlocks.add(new ActivePermissionBlock(l, pb));
+                        is.getPermissionBlocks().add(new ActivePermissionBlock(l, pb));
                     } else {
                         final IslandPlaceBlockEvent e = new IslandPlaceBlockEvent(player, is, i, b);
                         pluginmanager.callEvent(e);
@@ -868,7 +869,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
             player.updateInventory();
         }
     }
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void blockBreakEvent(BlockBreakEvent event) {
         final Player player = event.getPlayer();
         final World w = player.getWorld();
@@ -877,12 +878,13 @@ public class Islands extends IslandAddon implements CommandExecutor {
             final Location l = b.getLocation();
             final Island is = Island.valueOf(b.getLocation());
             if(is != null) {
-                final PlayerIslandBreakBlockEvent e = new PlayerIslandBreakBlockEvent(player, is, event);
-                pluginmanager.callEvent(e);
-                event.setCancelled(e.isCancelled());
-                if(!event.isCancelled()) {
-                    final UUID uuid = player.getUniqueId();
-                    if(is.members.containsKey(uuid)) {
+                final UUID uuid = player.getUniqueId();
+                if(is.getMembers().containsKey(uuid)) {
+                    final IslandBreakBlockEvent e = new IslandBreakBlockEvent(event, player.getItemInHand(), is);
+                    pluginmanager.callEvent(e);
+                    final boolean cancelled = e.isCancelled();
+                    event.setCancelled(cancelled);
+                    if(!cancelled) {
                         final RSPlayer pdata = RSPlayer.get(uuid);
                         boolean did = false, instant = pdata.instantBreakPickup;
                         final MaterialData md = b.getState().getData();

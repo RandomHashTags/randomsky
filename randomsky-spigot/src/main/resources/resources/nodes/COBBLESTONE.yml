@@ -1,0 +1,18 @@
+# Made by RandomHashTags
+settings:
+  rarity: DEFAULT
+  required island level: 4
+  respawn time: 120
+  value: 1000
+  harvest block: COBBLESTONE
+  node block: STONE
+  node name: "Cobblestone"
+  node {TYPE}: "Cobblestone Nodes"
+  required nodes:
+    LOG: 50
+#
+item:
+  item: "cobblestone"
+  name: "&fCobblestone Node"
+  loot:
+    - "scrap:stone; &f&l*&r &f1x Stone Scrap"

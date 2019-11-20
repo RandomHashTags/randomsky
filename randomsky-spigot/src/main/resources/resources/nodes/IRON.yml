@@ -1,0 +1,18 @@
+# Made by RandomHashTags
+settings:
+  rarity: RARE
+  respawn time: 300
+  value: 25000
+  harvest block: IRON_ORE
+  node block: IRON_BLOCK
+  node name: "Iron"
+  node {TYPE}: "Iron Nodes"
+  required nodes:
+    COAL: 1000
+    COBBLESTONE: 1000
+#
+item:
+  item: "iron_ore"
+  name: "&8Iron Ore Node"
+  loot:
+    - "scrap:iron; &8&l*&r &81x Iron Scrap"

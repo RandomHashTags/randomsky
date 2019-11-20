@@ -1,0 +1,10 @@
+# Made by RandomHashTags
+item:
+  item: "dead_bush"
+  name: "&fLog Resource Fragment"
+  lore:
+    - " "
+    - "&8&lRecipe"
+    - " &f&l*&r &f5x = Log Node"
+    - " "
+    - "&7Can be created into Resource Nodes."

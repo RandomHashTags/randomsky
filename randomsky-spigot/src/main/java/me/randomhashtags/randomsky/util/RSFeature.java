@@ -2,6 +2,7 @@ package me.randomhashtags.randomsky.util;
 
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import me.randomhashtags.randomsky.addon.util.Loadable;
+import me.randomhashtags.randomsky.api.unfinished.CustomEnchants;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import me.randomhashtags.randomsky.util.universal.UVersion;
@@ -35,7 +36,6 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
     public boolean isEnabled() { return isEnabled; }
     protected boolean mcmmoIsEnabled() { return mcmmoIsEnabled; }
 
-    public static final FactionsAPI fapi = FactionsAPI.getFactionsAPI();
     private static final TreeMap<Integer, String> treemap = new TreeMap<>();
 
     public static YamlConfiguration otherdata;
