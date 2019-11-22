@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 4
+  required island level: 10
+  entity: ZOMBIE
+  slayer {TYPE}: "Zombies"
+  required: SPIDER
+  completion: 25000
+#
+item:
+  item: "player_head_item"
+  name: "Zombie"

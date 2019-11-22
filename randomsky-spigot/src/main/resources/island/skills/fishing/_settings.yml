@@ -1,5 +1,46 @@
 # Made by RandomHashTags
+messages:
+  level up:
+    - "&a&l***&r {NAME}&r &ahas increased to level &n{NEW_LEVEL}&r &a&l***"
+  examine the catch:
+    - "&7You examine the catch..."
+  got away:
+    - "&cIt got away.."
+  caught:
+    - "&a.. you caught a &f{TYPE}&a!"
+#
 skill:
   item: "fishing_rod"
   name: "&a&lFishing"
   type: "Fishing"
+#
+fish types:
+  TROUT:
+    item type: "raw_fish"
+    received item:
+      item: "raw_fish"
+      name: "&fTrout"
+#
+fish exp:
+  TROUT: 210-256
+#
+rods:
+  added lore:
+    - " "
+    - "&f&lLevel"
+    - " &f{LEVEL}"
+    - " "
+    - "&f&lEXP"
+    - " "
+    - "&7Can catch up to &f{MAX_TYPE}"
+    - "&7on the proper island level."
+  #
+  STONE:
+    max type: TROUT
+    item: "fishing_rod"
+    name: "&fStone Fishing Rod &a(&r&7Level {LEVEL}&f&l)"
+    lore:
+      - "&7A fishing rod made of spider silk."
+    levels:
+      3: 545
+      4: 772

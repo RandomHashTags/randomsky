@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 6
+  required island level: 12
+  entity: PIG_ZOMBIE
+  slayer {TYPE}: "Zombie Pigmans"
+  required: SKELETON
+  completion: 350000
+#
+item:
+  item: "player_head_item"
+  name: "Zombie Pigman"

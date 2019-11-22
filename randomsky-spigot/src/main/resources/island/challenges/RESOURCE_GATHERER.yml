@@ -1,4 +1,17 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #2/27 (/is challenges): &eYou can use /help crafting for more information about Custom Crafting on RandomSky."
+  - " "
+  - "&ePlace the Wood Resource Node:"
+  - " "
+  - " &e&l*&r &eRight-clicking nodes show how long until they respawn"
+  - " "
+  - " &e&l*&r &eOnce it changes to a Log you can mine it with your first to obtain your first Wood Node Fragment!"
+  - " "
+  - " &e&l*&r &eTo move the node, crouch and mine to break the block."
+  - " "
+#
 name: "Resource Gatherer"
 settings:
   slot: 2

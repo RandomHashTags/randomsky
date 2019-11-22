@@ -1,4 +1,13 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #3/27 (/is challenges): &eWater saturates blocks within a &l4 block radius.."
+  - " "
+  - "&eOn RandomSky, the light level does not affect the crop growth speed."
+  - " "
+  - " &e&l*&r &eYou can purchase Water Buckets in the Utility category in the &l/shop."
+  - " "
+#
 name: "Wheat Farmer"
 settings:
   slot: 3

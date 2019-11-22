@@ -1,7 +1,16 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #7/27 (/is challenges): &eResource Nodes are special blocks that when"
+  - " &eplaced on your island &ncontinually generated resources&r &ethat can be collected. You can"
+  - " &euse &n/help resourcenodes&r &efor more information."
+  - " "
+  - "&eYou can pick up placed nodes by crouching/sneaking as you break them."
+  - " "
+#
 name: "Caveman"
 settings:
-  slot: 6
+  slot: 7
   completion: 50
   unlocks when completed: RABBIT_HUNTER
   objective:

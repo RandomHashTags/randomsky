@@ -1,9 +1,16 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #4/27 (/is challenges): &eBread sells for more money than 3x Wheat."
+  - " "
+  - "&eYou can use &n/shop&r &eto check out the sell price for each item."
+  - " "
+#
 name: "Bread Maker"
 settings:
   slot: 4
   completion: 32
-  unlocks when completed: STONE_AGE
+  unlocks when completed: BECOME_A_FISHERMAN
   objective:
     - "&fSell 32 Bread using /sell"
   rewards:

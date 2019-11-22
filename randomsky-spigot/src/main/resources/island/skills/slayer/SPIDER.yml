@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 3
+  required island level: 7
+  entity: SPIDER
+  slayer {TYPE}: "Spiders"
+  required: COW
+  completion: 7500
+#
+item:
+  item: "player_head_item"
+  name: "Spider"

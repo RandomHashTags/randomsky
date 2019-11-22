@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 8
+  required island level: 15
+  entity: GHAST
+  slayer {TYPE}: "Ghasts"
+  required: BLAZE
+  completion: 2000000
+#
+item:
+  item: "player_head_item"
+  name: "Ghast"

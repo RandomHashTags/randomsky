@@ -1,7 +1,14 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #6/27 (/is challenges): &eCobblestone Resource Fragments can be obtained by mining the cobblestone from cobblestone generators which you can buy using &6Lava &eand &bWater&e."
+  - " "
+  - "&eYou can purchase Water and Lava Buckets from the &n/shop."
+  - " "
+#
 name: "Stone Age"
 settings:
-  slot: 5
+  slot: 6
   completion: 64
   unlocks when completed: CAVEMAN
   objective:

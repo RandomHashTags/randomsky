@@ -1,0 +1,8 @@
+# Made by RandomHashTags
+settings:
+  slot: 0
+  entity: RABBIT
+  slayer {TYPE}: "Rabbits"
+  item: "rabbit_hide"
+  name: "Rabbit"
+#

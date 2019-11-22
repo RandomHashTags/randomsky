@@ -1,0 +1,25 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #9/27 (/is challenges): &ePermission Blocks are used to protect your island."
+  - " &eYou can use &n/help permissions&r &efor more information."
+  - " "
+  - "&eYou can purchase them from the Permission Block category in the &n/shop."
+  - " "
+  - "&eThe Permission Block radius applies vertically and horizontally however cannot overlap with already existing Permission Block regions."
+  - " "
+  - "&eIsland Co-Leaders+ can set each Permission Block to grant access to island members or even non-members for public grinders with the Public Region option."
+  - " "
+#
+name: "Always Use Protected"
+settings:
+  slot: 9
+  completion: 1
+  unlocks when completed: VANILLA_ENCHANT
+  objective:
+    - "&fPlace a Permission Block"
+  rewards:
+    - "permissionblock:THREE;amount=16; &a&l*&r &f16 Radius Permission Block"
+#
+attributes:
+  - "IslandPlaceBlock;blockIsPermissionBlock=true;PlayerIncreaseIslandSkill=ALWAYS_USE_PROTECTION:1"

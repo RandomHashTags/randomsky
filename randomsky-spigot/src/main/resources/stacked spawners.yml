@@ -1,0 +1,14 @@
+# Made by RandomHashTags
+messages:
+  view total:
+    - "&e&l(!)&r &eThis block has &n{AMOUNT}x&r &e({TYPE}) spawner(s) in it."
+  add more spawners:
+    - "&7To add more spawners to this block, simply right-click it with spawners of the same type in your hand!"
+  added:
+    - " &a&l+&r &a{AMOUNT}x ({TYPE}) spawners &7(total: &n{TOTAL}&r&7)"
+  #
+  only stack upto max:
+    - "&c&l(!)&r &cYou may only stack up to {MAX}x spawners per block!"
+#
+max stack size:
+  RABBIT: 10

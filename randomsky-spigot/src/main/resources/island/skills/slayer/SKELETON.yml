@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 5
+  required island level: 11
+  entity: SKELETON
+  slayer {TYPE}: "Skeletons"
+  required: ZOMBIE
+  completion: 100000
+#
+item:
+  item: "player_head_item"
+  name: "Skeleton"

@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 7
+  required island level: 13
+  entity: BLAZE
+  slayer {TYPE}: "Blazes"
+  required: ZOMBIE_PIGMAN
+  completion: 800000
+#
+item:
+  item: "player_head_item"
+  name: "Blaze"

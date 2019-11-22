@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+settings:
+  slot: 2
+  required island level: 3
+  entity: COW
+  slayer {TYPE}: "Cows"
+  required: CHICKEN
+  completion: 2500
+#
+item:
+  item: "player_head_item"
+  name: "Cow"

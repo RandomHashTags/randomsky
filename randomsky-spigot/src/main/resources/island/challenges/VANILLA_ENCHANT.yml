@@ -1,7 +1,16 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #10/27 (/is challenges): &eYou can use &n/xp&r &eto check how much experience you have."
+  - " "
+  - "&eExperience can be used at Enchantment Tables, Anvils and at the Gem Forge at /spawn."
+  - " "
+  - "&eYou can also bottle experience with &n/xpbottle <amount>"
+  - " "
+#
 name: "Vanilla Enchant"
 settings:
-  slot: 8
+  slot: 10
   completion: 5
   unlocks when completed: BLACKSMITH
   objective:

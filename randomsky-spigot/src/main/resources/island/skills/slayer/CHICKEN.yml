@@ -1,0 +1,11 @@
+# Made by RandomHashTags
+settings:
+  slot: 1
+  entity: CHICKEN
+  slayer {TYPE}: "Chickens"
+  required: RABBIT
+  completion: 750
+#
+item:
+  item: "player_head_item"
+  name: "Chicken"

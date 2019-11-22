@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #5/27 (/is challenges): &eBYou can purchase Fishing Rods from the &n/shop."
+  - " "
+  - "&eEach catch will increase the EXP on your rod. Once you gain enough EXP your rod will level up, increasing the chance you catch fish and treasure."
+  - " "
+#
+name: "Become A Fisherman"
+settings:
+  slot: 5
+  completion: 5
+  unlocks when completed: STONE_AGE
+  objective:
+    - "&fFish Up 5 Trout"
+  rewards:
+    - "lava_bucket; &a&l*&r &fLava Bucket"
+#
+attributes:
+  - "FishCaught"

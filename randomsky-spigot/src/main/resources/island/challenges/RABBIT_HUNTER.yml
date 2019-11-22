@@ -1,9 +1,18 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #8/27 (/is challenges): &ePassive Mobs require Glass blocks nearby to spawn."
+  - " "
+  - "&eYou do not need a rank or Silk Touch to mine spawners - you can even break them with your hand."
+  - " "
+  - "&eOn RandomSky, the light level does not affect the mob spawn speed."
+  - " "
+#
 name: "Rabbit Hunter"
 settings:
-  slot: 7
+  slot: 8
   completion: 100
-  unlocks when completed: VANILLA_ENCHANT
+  unlocks when completed: ALWAYS_USE_PROTECTION
   objective:
     - "&fKill 100 Rabbits"
   rewards:
