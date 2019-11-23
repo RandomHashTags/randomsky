@@ -1,4 +1,8 @@
 # Made by RandomHashTags
+settings:
+  percents: 1;100 # <min>;<max>
+  duration: 86400 # Measured in seconds | default 86400 (24 hours)
+#
 item:
   item: "bone_meal"
   name: "&eFarming Limit Increase: &l&nIII"
@@ -13,7 +17,7 @@ item:
     - " &e&l*&r &e&nMelons"
     - " &e&l*&r &e&nChorus Fruit"
 #
-applyable to:
+applies to:
   - PUMPKINS
   - MELONS
   - CHORUS_FRUIT

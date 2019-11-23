@@ -131,7 +131,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     }
     private void disbandall(CommandSender sender, boolean async) {
         final long s = System.currentTimeMillis();
-        final HashMap<UUID, Alliance> a = Alliance.cached;
+        final HashMap<UUID, Alliance> a = Alliance.CACHE;
         final int size = a.size();
         for(Alliance al : a.values()) {
             al.disband();

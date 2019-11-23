@@ -21,6 +21,11 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public interface Island extends Identifiable, Attributable, Loadable {
+    HashMap<UUID, Island> CACHE = new HashMap<>();
+    static Island fromUUID(UUID uuid) {
+        return null;
+    }
+
     boolean isLoaded();
     UUID getUUID();
     long getCreatedTime();

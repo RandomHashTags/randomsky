@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.api.skill;
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
+import me.randomhashtags.randomsky.addon.file.FileFarmingLimitIncreaser;
 import me.randomhashtags.randomsky.addon.file.FileFarmingRecipe;
 import me.randomhashtags.randomsky.addon.file.FileFarmingSkill;
 import me.randomhashtags.randomsky.addon.island.Island;
@@ -53,7 +54,6 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
     private List<String> farmingRecipe, completedStatus, lockedStatus, inprogressStatus;
     private List<Player> viewing;
     private String completedPrefix, lockedPrefix, inprogressPrefix, hasRecipe, needsRecipe;
-
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return true;
@@ -107,6 +107,10 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 ii.setItem(skill.getSlot(), skill.getItem());
             }
         }
+        for(File f : new File(farmingFolder + separator + "limit increasers").listFiles()) {
+            new FileFarmingLimitIncreaser(f);
+        }
+
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.FARMING_RECIPE).size() + " Farming Recipes and " + RSStorage.getAll(Feature.FARMING_LIMIT_INCREASE) + " Farming Limit Increasers &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
@@ -133,13 +137,13 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                     final FarmingSkill r = is.required;
                     final FarmingRecipe req = is.getRequiredRecipe(), previousRecipe = r != null ? r.requiredRecipe : null;
                     final boolean isDefault = defaults.contains(req), isUnlocked = r == null || allowedCrops.contains(req);
-                    final double c = is.completion, p = previousRecipe != null ? cropsGrown.getOrDefault(previousRecipe, -1) : 0;
+                    final double c = is.getCompletion().doubleValue(), p = previousRecipe != null ? cropsGrown.getOrDefault(previousRecipe, BigDecimal.ZERO).doubleValue() : 0;
                     double percent = (p/c)*100;
                     if(percent > 100) percent = 100;
 
                     itemMeta = item.getItemMeta(); lore.clear();
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    final String NAME = ChatColor.stripColor(itemMeta.getDisplayName()), completion = formatDouble(c), progress = formatDouble(p == -1 ? 0.00 : p > c ? c : p), T = r != null ? r.type : is.type, P = percent > 0.00 ? formatDouble(round(percent, 2)) : "0";
+                    final String NAME = ChatColor.stripColor(itemMeta.getDisplayName()), completion = formatDouble(c), progress = formatDouble(p == -1 ? 0.00 : Math.min(p, c)), T = r != null ? r.type : is.type, P = percent > 0.00 ? formatDouble(round(percent, 2)) : "0";
                     itemMeta.setDisplayName((r == null || percent >= 100.00 ? completedPrefix : isUnlocked && p != -1 ? inprogressPrefix : lockedPrefix) + NAME);
                     for(String s : itemMeta.getLore()) {
                         if(s.equals("{STATUS}")) {
@@ -211,9 +215,9 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
         if(allowedCrops.contains(crop) && cropsGrown.get(crop) != null) {
             final ActiveIslandSkill skill = island.farmingSkill;
             final FarmingSkill current = (FarmingSkill) skill.skill, nextSkill = FarmingSkill.valueOf(current);
-            final FarmingRecipe ne = nextSkill.requiredRecipe;
+            final FarmingRecipe ne = nextSkill.getRequiredRecipe();
             if(ne != null && !allowedCrops.contains(ne)) return;
-            final int a = island.cropsGrown.getOrDefault(crop, 0)+1;
+            final BigDecimal a = island.getCropsGrown().getOrDefault(crop, BigDecimal.ZERO).add(BigDecimal.ONE);
             cropsGrown.put(crop, a);
             skill.progress++;
             final double p = skill.progress, c = nextSkill.completion, percent = round((p/c)*100, 2);
@@ -222,14 +226,14 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
             final String d = formatDouble(p);
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{PROGRESS}", d);
-            replacements.put("{TYPE}", crop.getRecipeName());
+            replacements.put("{TYPE}", crop.getName());
             replacements.put("{MAX}", formatDouble(c));
             replacements.put("{PROGRESS%}", formatDouble(percent));
             if(percent == 100) {
                 final FarmingSkill n = FarmingSkill.levels.getOrDefault(nextSkill.level, null);
                 if(n == null) return;
                 replacements.put("{LEVEL}", Integer.toString(nextSkill.level));
-                replacements.put("{TYPE}", n.type);
+                replacements.put("{TYPE}", n.getType());
                 island.farmingSkill = new ActiveIslandSkill(n, n.level, 0);
                 cropsGrown.put(ne, BigDecimal.ZERO);
                 final List<String> ad = config.getStringList("messages.skill advanced");
@@ -289,7 +293,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                         final HashMap<String, String> replacements = new HashMap<>();
                         replacements.put("{PLAYER}", player.getName());
                         replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
-                        replacements.put("{TYPE}", f.getRecipeName());
+                        replacements.put("{TYPE}", f.getName());
                         removeItem(player, i, 1);
                         allowedCrops.add(f);
                         is.getCropsGrown().put(f, null);

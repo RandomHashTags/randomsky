@@ -1,4 +1,8 @@
 # Made by RandomHashTags
+settings:
+  percents: 1;100 # <min>;<max>
+  duration: 86400 # Measured in seconds | default 86400 (24 hours)
+#
 item:
   item: "bone_meal"
   name: "&fFarming Limit Increase: &l&nI"
@@ -13,7 +17,7 @@ item:
     - " &f&l*&r &f&nPotatoes"
     - " &f&l*&r &f&nCarrots"
 #
-applyable to:
+applies to:
   - WHEAT
   - POTATOES
   - CARROTS

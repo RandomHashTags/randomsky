@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface Alliance extends Loadable {
-    HashMap<UUID, Alliance> cached = new HashMap<>();
+    HashMap<UUID, Alliance> CACHE = new HashMap<>();
 
     boolean isLoaded();
     long getCreation();

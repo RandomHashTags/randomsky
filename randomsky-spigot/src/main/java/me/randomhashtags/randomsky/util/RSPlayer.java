@@ -1,11 +1,12 @@
 package me.randomhashtags.randomsky.util;
 
-import me.randomhashtags.randomsky.addon.PlayerSkill;
-import me.randomhashtags.randomsky.addon.adventure.Adventure;
-import me.randomhashtags.randomsky.addon.alliance.Alliance;
-import me.randomhashtags.randomsky.addon.PlayerRank;
+import com.sun.istack.internal.Nullable;
+import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.addon.active.Home;
-import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.addon.adventure.Adventure;
+import me.randomhashtags.randomsky.addon.obj.ChatChannelsObj;
+import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
+import me.randomhashtags.randomsky.addon.obj.JackpotStats;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import me.randomhashtags.randomsky.util.universal.UVersionable;
@@ -16,40 +17,34 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static java.io.File.separator;
 
-public class RSPlayer implements UVersionable {
+public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPlayer {
     private static final String folder = dataFolder + separator + "_Data" + separator + "players";
     public static final HashMap<UUID, RSPlayer> players = new HashMap<>();
 
-    private boolean isLoaded = false;
-    private UUID uuid;
+    private boolean isLoaded = false, filter = false;
+    private UUID uuid, allianceUUID, islandUUID;
     private File file;
     private YamlConfiguration yml;
-    private Island island;
-    private Alliance alliance;
-    private UUID islandUUID, allianceUUID;
     private ChatChannels chat;
     private PlayerRank rank;
+    private CoinFlipStats coinflipStats;
+    private JackpotStats jackpotStats;
 
-    public BigDecimal canDeleteIslandTime, coinflipWonCash, coinflipLostCash, coinflipTaxesPaid, jackpotWonCash;
-    public int skillTokens = 0, coinflipWins = 0, coinflipLosses = 0, jackpotTickets = 0, jackpotWins = 0;
-    public boolean tpaRequests = true, privateMessage = true, filterChat = false, islandInviteNotifications = true, payRequests = true, memberVisiting = true, punchToKick = true, instantBlockBreak = true, instantBreakPickup = true,
-            clearInventoryConfirmation = true, auctionBuyConfirm = true, auctionSellConfirm = true, coinflipNotifications = true, bleedNotifications = true, enchantDebug = true, breakParticles = true,
-            filter = false, instaBreakTutorial = true, jackpotCountdown = true;
+    public BigDecimal canDeleteIslandTime;
+    private int skillTokens = 0;
 
     private List<Home> homes;
     public List<AuctionedItem> auctions;
-    private List<Adventure> allowedAdventures;
-    public List<ActivePlayerSkill> skills;
-    private List<UMaterial> filteredItems;
+    private Set<Adventure> allowedAdventures;
+    private Set<UMaterial> filteredItems;
 
-    private HashMap<Kit, Long> kitExpirations;
+    private HashMap<CustomKit, Long> kitExpirations;
+    private HashMap<PlayerSkill, Integer> playerSkills;
+    private HashMap<ToggleType, Boolean> toggles;
 
     public RSPlayer(UUID uuid) {
         this.uuid = uuid;
@@ -63,7 +58,7 @@ public class RSPlayer implements UVersionable {
                         folder.mkdirs();
                     }
                     f.createNewFile();
-                    chat = new ChatChannels(ChatChannel.GLOBAL, true, true, true, false, false, false);
+                    chat = new ChatChannelsObj();
                     backup = true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -88,30 +83,22 @@ public class RSPlayer implements UVersionable {
         yml.set("island", islandUUID != null ? islandUUID.toString() : "null");
         yml.set("alliance", allianceUUID != null ? allianceUUID.toString() : "null");
 
-        final ChatChannels cc = getChat();
-        final String chat = cc.current + ";" + cc.global + ";" + cc.island + ";" + cc.alliance + ";" + cc.ally + ";" + cc.truce + ";" + cc.local;
-        final String booleans = tpaRequests + ";" + privateMessage + ";" + filterChat + ";" + islandInviteNotifications + ";" + payRequests + ";" + memberVisiting + ";" + punchToKick + ";" + instantBlockBreak + ";" + instantBreakPickup + ";" + clearInventoryConfirmation + ";" + auctionBuyConfirm + ";" + auctionSellConfirm + ";" + coinflipNotifications + ";" + bleedNotifications + ";" + enchantDebug + ";" + breakParticles + ";" + filter + ";" + instaBreakTutorial + ";" + jackpotCountdown;
-        final String ints = skillTokens + ";" + coinflipWins + ";" + coinflipLosses + ";" + jackpotTickets + ";" + jackpotWins;
-        final String longs = coinflipWonCash + ";" + coinflipLostCash + ";" + coinflipTaxesPaid + ";" + jackpotWonCash;
-        yml.set("booleans", booleans);
-        yml.set("ints", ints);
-        yml.set("longs", longs);
-        yml.set("chat", chat);
-        yml.set("kits", null);
-        for(Kit k : getKitExpirations().keySet()) {
-            yml.set("kits." + k.getYamlName(), kitExpirations.get(k));
+        if(chat != null) {
+            yml.set("chat.current", chat.getCurrent().name());
+            yml.set("chat.active", chat.getActive().toArray());
         }
+
+        if(kitExpirations != null) {
+            yml.set("kits", null);
+            for(CustomKit k : getKitExpirations().keySet()) {
+                yml.set("kits." + k.getIdentifier() + ".expiration", kitExpirations.get(k));
+            }
+        }
+
         if(homes != null) {
             for(Home h : homes) {
                 yml.set("homes." + h.name, h.location.toString());
             }
-        }
-        if(filteredItems != null) {
-            final List<String> filtered = new ArrayList<>();
-            for(UMaterial u : filteredItems) {
-                filtered.add(u.name());
-            }
-            yml.set("filtered items", filtered);
         }
 
         if(allowedAdventures != null) {
@@ -119,7 +106,29 @@ public class RSPlayer implements UVersionable {
             for(Adventure a : getAllowedAdventures()) {
                 adv.add(a.getIdentifier());
             }
-            yml.set("allowed adventures", adv);
+            yml.set("adventures.allowed", adv);
+        }
+
+        yml.set("filter.enabled", filter);
+        if(filteredItems != null) {
+            final Set<String> filtered = new HashSet<>();
+            for(UMaterial u : filteredItems) {
+                filtered.add(u.name());
+            }
+            yml.set("filter.items", filtered);
+        }
+
+        yml.set("player skills.tokens", skillTokens);
+        if(playerSkills != null) {
+            for(PlayerSkill s : playerSkills.keySet()) {
+                yml.set("player skills." + s.getIdentifier(), playerSkills.get(s));
+            }
+        }
+
+        if(toggles != null) {
+            for(ToggleType t : toggles.keySet()) {
+                yml.set("toggles." + t.name(), toggles.get(t));
+            }
         }
 
         save();
@@ -128,48 +137,17 @@ public class RSPlayer implements UVersionable {
         if(!isLoaded) {
             isLoaded = true;
 
-            final String[] booleans = yml.getString("booleans").split(";"), ints = yml.getString("ints").split(";"), longs = yml.getString("longs").split(";");
-            final String U = yml.getString("island"), UU = yml.getString("alliance");
-            if(U != null && !U.equals("null")) {
-                islandUUID = UUID.fromString(U);
-                island = Island.get(islandUUID);
-                island.load();
+            final String[] ints = yml.getString("ints").split(";"), longs = yml.getString("longs").split(";");
+            final String island = yml.getString("island"), alliance = yml.getString("alliance");
+            if(island != null && !island.equals("null")) {
+                islandUUID = UUID.fromString(island);
             }
-            if(UU != null && !UU.equals("null")) {
-                allianceUUID = UUID.fromString(UU);
-                alliance = Alliance.get(allianceUUID);
-                alliance.load();
+            if(alliance != null && !alliance.equals("null")) {
+                allianceUUID = UUID.fromString(alliance);
             }
-            tpaRequests = Boolean.parseBoolean(booleans[0]);
-            privateMessage = Boolean.parseBoolean(booleans[1]);
-            filterChat = Boolean.parseBoolean(booleans[2]);
-            islandInviteNotifications = Boolean.parseBoolean(booleans[3]);
-            payRequests = Boolean.parseBoolean(booleans[4]);
-            memberVisiting = Boolean.parseBoolean(booleans[5]);
-            punchToKick = Boolean.parseBoolean(booleans[6]);
-            instantBlockBreak = Boolean.parseBoolean(booleans[7]);
-            instantBreakPickup = Boolean.parseBoolean(booleans[8]);
-            clearInventoryConfirmation = Boolean.parseBoolean(booleans[9]);
-            auctionBuyConfirm = Boolean.parseBoolean(booleans[10]);
-            auctionSellConfirm = Boolean.parseBoolean(booleans[11]);
-            coinflipNotifications = Boolean.parseBoolean(booleans[12]);
-            bleedNotifications = Boolean.parseBoolean(booleans[13]);
-            enchantDebug = Boolean.parseBoolean(booleans[14]);
-            breakParticles = Boolean.parseBoolean(booleans[15]);
-            filter = Boolean.parseBoolean(booleans[16]);
-            instaBreakTutorial = Boolean.parseBoolean(booleans[17]);
-            jackpotCountdown = Boolean.parseBoolean(booleans[18]);
+            filter = yml.getBoolean("filter.enabled");
 
             skillTokens = Integer.parseInt(ints[0]);
-            coinflipWins = Integer.parseInt(ints[1]);
-            coinflipLosses = Integer.parseInt(ints[2]);
-            jackpotTickets = Integer.parseInt(ints[3]);
-            jackpotWins = Integer.parseInt(ints[4]);
-
-            coinflipWonCash = Long.parseLong(longs[0]);
-            coinflipLostCash = Long.parseLong(longs[1]);
-            coinflipTaxesPaid = Long.parseLong(longs[2]);
-            jackpotWonCash = Long.parseLong(longs[3]);
         }
         return this;
     }
@@ -182,17 +160,9 @@ public class RSPlayer implements UVersionable {
 
     public boolean isLoaded() { return isLoaded; }
     public UUID getUUID() { return uuid; }
+    public UUID getAllianceUUID() { return allianceUUID; }
+    public UUID getIslandUUID() { return islandUUID; }
     public YamlConfiguration getYaml() { return yml; }
-    public Island getIsland() { return island; }
-    public void setIsland(Island island) {
-        this.island = island;
-        islandUUID = island != null ? island.getUUID() : null;
-    }
-    public Alliance getAlliance() { return alliance; }
-    public void setAlliance(Alliance alliance) {
-        this.alliance = alliance;
-        allianceUUID = alliance != null ? alliance.getUUID() : null;
-    }
 
     public PlayerRank getRank() {
         if(rank == null) {
@@ -204,24 +174,51 @@ public class RSPlayer implements UVersionable {
         }
         return rank;
     }
-    public void setRank(PlayerRank rank) {
+    public void setRank(@Nullable PlayerRank rank) {
         this.rank = rank;
     }
-    public ChatChannels getChat() {
+    public ChatChannels getChatChannels() {
         if(chat == null) {
-            final String[] chat = yml.getString("chat").split(";");
-            this.chat = new ChatChannels(ChatChannel.valueOf(chat[0]), Boolean.parseBoolean(chat[1]), Boolean.parseBoolean(chat[2]), Boolean.parseBoolean(chat[3]), Boolean.parseBoolean(chat[4]), Boolean.parseBoolean(chat[5]), Boolean.parseBoolean(chat[6]));
+            final ChatChannel current = ChatChannel.valueOf(yml.getString("chat.current"));
+            final Set<ChatChannel> active = new HashSet<>();
+            for(String s : yml.getStringList("chat.active")) {
+                active.add(ChatChannel.valueOf(s));
+            }
+            chat = new ChatChannelsObj(current, active);
         }
         return chat;
     }
+    public CoinFlipStats getCoinFlipStats() {
+        if(coinflipStats == null) {
+            final String pre = "stats.coinflip.";
+            final BigDecimal wins = BigDecimal.valueOf(yml.getDouble(pre + "wins")), losses = BigDecimal.valueOf(yml.getDouble(pre + "losses")), wonCash = BigDecimal.valueOf(yml.getDouble(pre + "won cash"));
+            final BigDecimal lostCash = BigDecimal.valueOf(yml.getDouble(pre + "lost cash")), taxesPaid = BigDecimal.valueOf(yml.getDouble(pre + "taxes paid"));
+            coinflipStats = new CoinFlipStats(yml.getBoolean(pre + "notifications"), wins, losses, wonCash, lostCash, taxesPaid);
+        }
+        return coinflipStats;
+    }
+    public JackpotStats getJackpotStats() {
+        if(jackpotStats == null) {
+            final String pre = "stats.jackpot.";
+            final BigDecimal ticketsPurchased = BigDecimal.valueOf(yml.getDouble(pre + "tickets purchased")), wonCash = BigDecimal.valueOf(yml.getDouble(pre + "won cash")), timesWon = BigDecimal.valueOf(yml.getDouble(pre + "times won"));
+            jackpotStats = new JackpotStats(yml.getBoolean(pre + "notifications"), ticketsPurchased, wonCash, timesWon);
+        }
+        return jackpotStats;
+    }
 
-    public HashMap<Kit, Long> getKitExpirations() {
+    public int getSkillTokens() { return skillTokens; }
+    public void setSkillTokens(int skillTokens) { this.skillTokens = skillTokens; }
+
+    public HashMap<CustomKit, Long> getKitExpirations() {
         if(kitExpirations == null) {
             kitExpirations = new HashMap<>();
             final ConfigurationSection kits = yml.getConfigurationSection("kits");
             if(kits != null) {
                 for(String s : kits.getKeys(false)) {
-                    kitExpirations.put(Kit.kits.get(s), yml.getLong("kits." + s));
+                    final Identifiable i = RSStorage.get(Feature.CUSTOM_KIT, s);
+                    if(i != null) {
+                        kitExpirations.put((CustomKit) i, yml.getLong("kits." + s + ".expiration"));
+                    }
                 }
             }
         }
@@ -240,19 +237,11 @@ public class RSPlayer implements UVersionable {
         }
         return homes;
     }
-    public List<UMaterial> getFilteredItems() {
-        if(filteredItems == null) {
-            filteredItems = new ArrayList<>();
-            for(String s : yml.getStringList("filtered items")) {
-                filteredItems.add(UMaterial.valueOf(s));
-            }
-        }
-        return filteredItems;
-    }
-    public List<Adventure> getAllowedAdventures() {
+
+    public Set<Adventure> getAllowedAdventures() {
         if(allowedAdventures == null) {
-            allowedAdventures = new ArrayList<>();
-            for(String s : yml.getStringList("allowed adventures")) {
+            allowedAdventures = new HashSet<>();
+            for(String s : yml.getStringList("adventures.allowed")) {
                 final Identifiable i = RSStorage.get(Feature.ADVENTURE, s);
                 if(i != null) {
                     allowedAdventures.add((Adventure) i);
@@ -262,6 +251,46 @@ public class RSPlayer implements UVersionable {
         return allowedAdventures;
     }
 
+    public boolean hasActiveFilter() { return filter; }
+    public void setFilter(boolean active) { filter = active; }
+    public Set<UMaterial> getFilteredItems() {
+        if(filteredItems == null) {
+            filteredItems = new HashSet<>();
+            for(String s : yml.getStringList("filter.items")) {
+                filteredItems.add(UMaterial.valueOf(s));
+            }
+        }
+        return filteredItems;
+    }
+
+    public HashMap<PlayerSkill, Integer> getPlayerSkills() {
+        if(playerSkills == null) {
+            playerSkills = new HashMap<>();
+            final ConfigurationSection c = yml.getConfigurationSection("player skills");
+            if(c != null) {
+                for(String s : c.getKeys(false)) {
+                    if(!s.equals("tokens")) {
+                        final Identifiable i = RSStorage.get(Feature.PLAYER_SKILL, s);
+                        if(i != null) {
+                            playerSkills.put((PlayerSkill) i, yml.getInt("player skills." + s));
+                        }
+                    }
+                }
+            }
+        }
+        return playerSkills;
+    }
+
+    public HashMap<ToggleType, Boolean> getToggles() {
+        if(toggles == null) {
+            toggles = new HashMap<>();
+            for(String s : yml.getConfigurationSection("toggles").getKeys(false)) {
+                toggles.put(ToggleType.valueOf(s), yml.getBoolean("toggles." + s));
+            }
+        }
+        return toggles;
+    }
+
     private void save() {
         try {
             yml.save(file);
@@ -269,14 +298,5 @@ public class RSPlayer implements UVersionable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public int getPlayerSkillLevel(PlayerSkill skill) {
-        for(ActivePlayerSkill a : skills) {
-            if(a.type.equals(skill)) {
-                return a.level;
-            }
-        }
-        return 0;
     }
 }
