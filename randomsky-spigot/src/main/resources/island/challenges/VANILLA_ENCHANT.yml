@@ -12,7 +12,7 @@ name: "Vanilla Enchant"
 settings:
   slot: 10
   completion: 5
-  unlocks when completed: BLACKSMITH
+  unlocks when completed: TINKER_TAILER_SOLDIER_SPY
   objective:
     - "&fPurchase 5x Stone Enchantment"
     - "&fBooks from an Enchanting Table"

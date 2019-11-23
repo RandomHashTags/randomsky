@@ -1,0 +1,20 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #20/27 (/is challenges): &eElite bandits have a chance to spawn in the place"
+  - " &eof a normal Bandit in &n/adventures&r &e- the closer you are to the center, the higher the"
+  - " &echance they will spawn."
+  - " "
+#
+name: "Elite Bandit Destroyer"
+settings:
+  slot: 20
+  completion: 10
+  unlocks when completed: ELITE_BANDIT_DESTROYER
+  objective:
+    - "&fKill an Elite Bandit in Abandoned Ruins"
+  rewards:
+    - "Elite Bandit Destroyer Rewards; &a&l*&r &fStone Sword wth 1 Socket"
+#
+attributes:
+  - ""

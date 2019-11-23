@@ -1,9 +1,9 @@
 # Made by RandomHashTags
 name: "Zombie Survivor"
 settings:
-  slot: 16
+  slot: 22
   completion: 1
-  unlocks when completed: APOCALYPSE_LOOTER
+  unlocks when completed: INTERDIMENSIONAL_TRAVEL
   objective:
     - "&fUnlock access to the Lost"
     - "&fWasteland /adventure"

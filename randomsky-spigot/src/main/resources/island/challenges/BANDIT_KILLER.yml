@@ -1,7 +1,14 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #14/27 (/is challenges): &eAdventures are &nfully PvP-enabled maps&r &epopulated with bandits defending loot filled treasure chests. Use &n/help adventures&r &efor more information."
+  - " "
+  - "&eThe loot chests &nrestock every 10-30 minutes."
+  - " "
+#
 name: "Bandit Killer"
 settings:
-  slot: 10
+  slot: 14
   completion: 5
   unlocks when completed: HANDYMAN
   objective:

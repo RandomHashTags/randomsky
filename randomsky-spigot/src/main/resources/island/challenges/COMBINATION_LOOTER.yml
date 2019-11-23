@@ -1,0 +1,24 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #18/27 (/is challenges): &eMobs which spawn from spawners have a chance to drop spawner shards of the same mob tier when killed by players."
+  - " "
+  - "&eIf you combine 9 spawner shards together, it will create a spawner."
+  - " "
+  - "&eYou can also stack spawners into a maximum of 10 spawners per block. You can &nRight-Click&r &ea spawner to check its spawner stack size."
+  - " "
+  - "&e/is level 14 and 17 increases the amount of spawners per stack."
+  - " "
+#
+name: "Combination Looter"
+settings:
+  slot: 18
+  completion: 1
+  unlocks when completed: BANDIT_LOOTER
+  objective:
+    - "&fCombine 9x Spawner Shards"
+  rewards:
+    - "resourcenode:COAL; &a&l*&r &fCoal Resource Node"
+#
+attributes:
+  - ""

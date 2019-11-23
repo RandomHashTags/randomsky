@@ -1,0 +1,12 @@
+# Made by RandomHashTags
+messages:
+  defeated:
+    - " "
+    - "&b&l(!)&r &bPlague Doctor has been defeated by a group of adventurers!"
+    - "&b&lTop Damaging Adventurers:"
+    - " &b&l{PLACEMENT}.&r &f{PLAYER} - &b({DMG%}% DMG Dealt)"
+    - " "
+#
+settings:
+  recorded top damaging players: 3
+#

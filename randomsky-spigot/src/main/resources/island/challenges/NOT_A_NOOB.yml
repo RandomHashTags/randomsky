@@ -1,9 +1,11 @@
 # Made by RandomHashTags
+
+#
 name: "Not A Noob"
 settings:
-  slot: 14
+  slot: 17
   completion: 3
-  unlocks when completed: BANDIT_LOVER
+  unlocks when completed: COMBINATION_LOOTER
   objective:
     - "&fUnlock /is level 3"
   rewards:

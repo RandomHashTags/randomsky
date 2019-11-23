@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #11/27 (/is challenges): &eDo /tinkerer if you're a Rank II+, or find the Tinkerer at &n/spawn&r &eto trade any unwanted gear and exchange for XP bottles."
+  - " "
+  - "&eYou can visit the Tinkerer at &n/spawn&r &e(or remotely with &n/tinkerer&r &eif you have RankII+) to exchange enchanted gear for EXP and gems for dust."
+  - " "
+  - "&eAll trades with the Tinkerer are irreversible."
+  - " "
+#
+name: "Tinker Tailer Soldier Spy"
+settings:
+  slot: 11
+  completion: 5
+  unlocks when completed: BLACKSMITH
+  objective:
+    - "&fTinker 5 unwanted books or armor pieces"
+  rewards:
+    - "xpbottle:2500; &a&l*&r &f2500 XP"
+#
+attributes:
+  - ""

@@ -16,6 +16,8 @@ public enum Feature {
     COLLECTION_CHEST,
     COLOR_CRYSTAL,
 
+    CUSTOM_BOSS,
+
     CUSTOM_ENCHANT,
     CUSTOM_ENCHANT_RARITY,
     CUSTOM_KIT,

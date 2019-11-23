@@ -1,0 +1,21 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #19/27 (/is challenges): &eChests are scattered across the /adventure."
+  - " &eYou need to kill all the mobs surrounding them to access the loot inside."
+  - " "
+#
+name: "Bandit Looter"
+settings:
+  slot: 19
+  completion: 10
+  unlocks when completed: ELITE_BANDIT_DESTROYER
+  objective:
+    - "&fLoot 10 Chests in the"
+    - "&fAbandoned Ruins /adventure"
+  rewards:
+    - "mysterygem:stone"
+    - "adventuremapfragment:LOST_WASTELAND; &a&l*&r &fLost Wasteland Map Fragment"
+#
+attributes:
+  - "LootAdventureChest;adventure=ABANDONED_RUINS"

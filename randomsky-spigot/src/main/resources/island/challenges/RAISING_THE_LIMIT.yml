@@ -1,0 +1,22 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #16/27 (/is challenges): &eCarrots and above require a recipe unlocked to plant. Farming Recipes can be obtained from &n/adventures&r &eor by other players on the &n/ah."
+  - " "
+  - "&eThere is a limit to the amount of crops you can farm each day. You can yse &n/help dailyfarming&r &efor more information about Daily Farming Quotas."
+  - " "
+  - "&eYou can temporarily increase this limit with Farming Limit Increases which can be obtained from &n/adventures."
+  - " "
+#
+name: "Raising the Limit!"
+settings:
+  slot: 16
+  completion: 1
+  unlocks when completed: NOT_A_NOOB
+  objective:
+    - "&fUse a Farming Limit Increaser"
+  rewards:
+    - "Furnace; &a&l*&r &fFurance"
+#
+attributes:
+  - ""

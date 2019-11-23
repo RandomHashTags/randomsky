@@ -1,0 +1,23 @@
+# Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #13/27 (/is challenges): &eBattle Royales run every 2 hours."
+  - " "
+  - "&eYou can use &n/br&r &eand click the sword to join a match."
+  - " "
+  - "&eWhen you arrive, you will be frozen in place until the match starts. The last man standing will be crowned winner and will receive a Battle Royale Lootbag."
+  - " "
+#
+name: "Fortnut"
+settings:
+  slot: 13
+  completion: 1
+  unlocks when completed: BANDIT_KILLER
+  objective:
+    - "&fAttempt to join a Battle"
+    - "&fRoyale"
+  rewards:
+    - "SPLASH_POTION_HEALING_1;amount=8; &a&l*&r &f8x Splash Pots (Healing I)"
+#
+attributes:
+  - ""

@@ -1,9 +1,16 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #15/27 (/is challenges): &eYou can place Repair Scrolls on damaged armor/weapon pieces to repair them by the 5 displayed on the scroll."
+  - " "
+  - "&eRepair Scrolls can be obtained from &n/adventures&r &eor by other players on the &n/ah."
+  - " "
+#
 name: "Handyman"
 settings:
-  slot: 11
+  slot: 15
   completion: 1
-  unlocks when completed: POTATO_FARMER
+  unlocks when completed: RAISING_THE_LIMIT
   objective:
     - "&fUse 1x Stone Repair Scroll"
   rewards:

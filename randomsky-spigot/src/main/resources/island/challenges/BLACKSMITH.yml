@@ -1,13 +1,18 @@
 # Made by RandomHashTags
+tutorial message:
+  - " "
+  - "&6&l(!)&r &6TUTORIAL #12/27 (/is challenges): &eChainmail Armor can be crafted with Resource Cobblestone in the default armor recipe."
+  - " "
+#
 name: "Blacksmith"
 settings:
-  slot: 9
+  slot: 12
   completion: 1
-  unlocks when completed: BANDIT_KILLER
+  unlocks when completed: FORTNUT
   objective:
     - "&fCraft a Chainmail Chestplate"
   rewards:
-    - "repairscroll:stone:50; &a&l*&r &f50% Stone Repair Scroll"
+    - "repairscroll:CHAIN:50; &a&l*&r &f50% Chain Repair Scroll"
 #
 attributes:
   - "CraftItem=chainmail_chestplate"

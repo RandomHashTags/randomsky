@@ -13,6 +13,9 @@ messages:
   has not discovered recipe:
     - "&c&l(!)&r &cYour Island has not discovered the recipe to plant {TYPE}!"
     - "&7Farming Recipes can be found inside the /adventures!"
+  too low to plant:
+    - "&c&l(!)&r &cIsland Farming Level is too low to plant {TYPE}!"
+    - "&7Requires /is Farming Level &l&n{REQ_LEVEL}"
 #
 default recipes:
   - WHEAT

@@ -29,5 +29,7 @@ gui:
     teleports to: DIAMOND
 #
 statuses:
+  idle: "&7&lIDLE"
   controlled: "&a&lCONTROLLED"
+  under attack: "&c&lUNDER ATTACK"
 #
