@@ -1,6 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
-import me.randomhashtags.randomsky.addon.obj.AuctionedItem;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+import me.randomhashtags.randomsky.addon.AuctionViewType;
+import me.randomhashtags.randomsky.addon.obj.AuctionedItemObj;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
@@ -21,13 +24,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static java.io.File.separator;
 import static java.util.Map.Entry.comparingByKey;
 import static java.util.stream.Collectors.toMap;
-import static java.io.File.separator;
 
 public class AuctionHouse extends RSFeature implements CommandExecutor {
     private static AuctionHouse instance;
@@ -47,19 +49,19 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
     private List<String> clickToBuyStatus, cancelStatus, format, categoryFormat, collectionBinInAuction, collectionBinClaim;
     private String organization;
 
-    private HashMap<Player, AuctionedItem> purchasing;
+    private HashMap<Player, AuctionedItemObj> purchasing;
     private List<Integer> confirmAuctionSlots, cancelAuctionSlots, confirmPurchaseSlots, cancelPurchaseSlots, slots;
 
     private HashMap<Player, HashMap<ItemStack, BigDecimal>> auctioning;
 
-    public HashMap<UUID, List<AuctionedItem>> auctions;
-    public HashMap<Long, AuctionedItem> auctionHouse;
-    public HashMap<UMaterial, HashMap<String, List<AuctionedItem>>> category;
+    public HashMap<UUID, List<AuctionedItemObj>> auctions;
+    public HashMap<Long, AuctionedItemObj> auctionHouse;
+    public HashMap<UMaterial, HashMap<String, List<AuctionedItemObj>>> category;
     public HashMap<Player, Integer> page;
-    public HashMap<Player, String> viewing;
+    public HashMap<Player, AuctionViewType> viewing;
     public HashMap<Player, UMaterial> viewingCategory;
 
-    private HashMap<AuctionedItem, Integer> task;
+    private HashMap<AuctionedItemObj, Integer> task;
 
     public String getIdentifier() { return "AUCTION_HOUSE"; }
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -129,7 +131,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         organization = config.getString("auction house.organization");
         auctionExpiration = config.getLong("auction house.auction expiration")*1000;
         collectionbinExpiration = config.getLong("auction house.collection bin expiration")*1000;
-        format = config.getStringList("auction house.format");
+        format = colorizeListString(config.getStringList("auction house.format"));
         clickToBuyStatus = colorizeListString(config.getStringList("auction house.status.click to buy"));
         cancelStatus = colorizeListString(config.getStringList("auction house.status.cancel"));
         categoryView = d(config, "auction house.category view");
@@ -237,25 +239,25 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             for(String uuid : au.getKeys(false)) {
                 final UUID u = UUID.fromString(uuid);
                 auctions.put(u, new ArrayList<>());
-                final List<AuctionedItem> p = auctions.get(u);
+                final List<AuctionedItemObj> p = auctions.get(u);
                 for(String a : data.getConfigurationSection("auctions." + uuid).getKeys(false)) {
                     final long l = Long.parseLong(a);
                     final ItemStack i = data.getItemStack("auctions." + uuid + "." + a + ".item");
-                    final AuctionedItem ai = new AuctionedItem(l, u, i, BigDecimal.valueOf(data.getDouble("auctions." + uuid + "." + a + ".price")));
-                    ai.claimable = data.getBoolean("auctions." + uuid + "." + a + ".claimable");
-                    final boolean c = ai.claimable;
+                    final AuctionedItemObj ai = new AuctionedItemObj(l, u, i, BigDecimal.valueOf(data.getDouble("auctions." + uuid + "." + a + ".price")));
+                    ai.setClaimable(data.getBoolean("auctions." + uuid + "." + a + ".claimable"));
+                    final boolean claimable = ai.isClaimable();
                     boolean deleted = false;
-                    if(c && now >= l+collectionbinExpiration) {
-                        ai.claimable = false;
+                    if(claimable && now >= l+collectionbinExpiration) {
+                        ai.setClaimable(false);
                         deleted = true;
-                    } else if(!c && now >= l+auctionExpiration) {
-                        ai.claimable = true;
+                    } else if(!claimable && now >= l+auctionExpiration) {
+                        ai.setClaimable(true);
                     }
                     if(deleted) {
                         d++;
                     } else {
                         p.add(ai);
-                        if(ai.claimable) {
+                        if(ai.isClaimable()) {
                             cb++;
                         } else {
                             auctionHouse.put(l, ai);
@@ -278,7 +280,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         try {
             data.save(dataF);
             data = YamlConfiguration.loadConfiguration(dataF);
-        } catch(IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -290,11 +292,11 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         data.set("auctions", null);
         for(UUID u : auctions.keySet()) {
             final String s = u.toString(), p = "auctions." + s + ".";
-            for(AuctionedItem a : auctions.get(u)) {
-                final long l = a.auctionTime;
-                data.set(p + l + ".price", a.price);
-                data.set(p + l + ".claimable", a.claimable);
-                data.set(p + l + ".item", a.item());
+            for(AuctionedItemObj a : auctions.get(u)) {
+                final long l = a.getAuctionedTime();
+                data.set(p + l + ".price", a.getPrice().doubleValue());
+                data.set(p + l + ".claimable", a.isClaimable());
+                data.set(p + l + ".item", a.getItem().toString());
             }
         }
         save();
@@ -302,28 +304,36 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
 
     public void unload() {
         backup(false);
-        for(Player p : page.keySet()) p.closeInventory();
-        for(Player p : viewingCategory.keySet()) p.closeInventory();
-        for(AuctionedItem i : task.keySet()) scheduler.cancelTask(task.get(i));
+        for(Player p : page.keySet()) {
+            p.closeInventory();
+        }
+        for(Player p : viewingCategory.keySet()) {
+            p.closeInventory();
+        }
+        for(AuctionedItemObj i : task.keySet()) {
+            scheduler.cancelTask(task.get(i));
+        }
     }
 
-    public void viewHelp(CommandSender sender) {
+    public void viewHelp(@NotNull CommandSender sender) {
         if(hasPermission(sender, "RandomSky.ah.help", true)) {
             sendStringListMessage(sender, config.getStringList("messages.help"), null);
         }
     }
 
-    public void updatePage(Player player) {
+    public void updatePage(@NotNull Player player) {
         if(viewing.containsKey(player)) {
             final Inventory top = player.getOpenInventory().getTopInventory();
             final ItemStack air = new ItemStack(Material.AIR);
-            for(int i : slots) top.setItem(i, air);
+            for(int i : slots) {
+                top.setItem(i, air);
+            }
             final int p = page.get(player), S = auctionHouse.size()-1, starting = (p-1)*(slots.size()-1);
-            final String v = viewing.get(player);
+            final AuctionViewType v = viewing.get(player);
             switch (v) {
-                case "CATEGORY_VIEW":
+                case CATEGORY_VIEW:
                     int cat = 0, cate = 0;
-                    HashMap<UMaterial, HashMap<String, List<AuctionedItem>>> y = new HashMap<>();
+                    HashMap<UMaterial, HashMap<String, List<AuctionedItemObj>>> y = new HashMap<>();
                     for(UMaterial u : category.keySet()) {
                         y.put(u, new HashMap<>());
                         cate += category.get(u).keySet().size();
@@ -340,8 +350,8 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                         for(String s : y.get(u).keySet()) {
                             final String listings = Integer.toString(y.get(u).get(s).size());
                             BigDecimal lowestPrice = BigDecimal.ZERO;
-                            for(AuctionedItem ai : y.get(u).get(s)) {
-                                final BigDecimal price = ai.price;
+                            for(AuctionedItemObj ai : y.get(u).get(s)) {
+                                final BigDecimal price = ai.getPrice();
                                 if(lowestPrice.equals(BigDecimal.ZERO) || price.doubleValue() < lowestPrice.doubleValue()) {
                                     lowestPrice = price;
                                 }
@@ -360,23 +370,23 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                     }
                     setPages(v, cate, top, air, p);
                     break;
-                case "AUCTION_HOUSE":
+                case AUCTION_HOUSE:
                     setPages(v, 0, top, air, p);
                     final UUID u = player.getUniqueId();
                     int ahitem = starting+(p == 1 ? 0 : 1);
                     for(int i : slots) {
                         if(ahitem <= S) {
                             final long l = (long) auctionHouse.keySet().toArray()[ahitem];
-                            final AuctionedItem a = auctionHouse.get(l);
-                            final UUID auctioner = a.auctioner;
-                            final String pr = formatBigDecimal(a.price), seller = Bukkit.getOfflinePlayer(auctioner).getName();
-                            item = a.item(); itemMeta = item.getItemMeta();
+                            final AuctionedItemObj a = auctionHouse.get(l);
+                            final UUID auctioner = a.getAuctioner();
+                            final String pr = formatBigDecimal(a.getPrice()), seller = Bukkit.getOfflinePlayer(auctioner).getName();
+                            item = a.getItem(); itemMeta = item.getItemMeta();
                             if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
                             for(String s : format) {
                                 if(s.equals("{STATUS}")) {
                                     lore.addAll(auctioner.equals(u) ? cancelStatus : clickToBuyStatus);
                                 } else {
-                                    lore.add(colorize(s.replace("{PRICE}", pr).replace("{SELLER}", seller)));
+                                    lore.add(s.replace("{PRICE}", pr).replace("{SELLER}", seller));
                                 }
                             }
                             itemMeta.setLore(lore); lore.clear();
@@ -386,30 +396,36 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                         }
                     }
                     break;
-                case "COLLECTION_BIN":
-                    final List<AuctionedItem> cb = getCollectionBin(player);
+                case COLLECTION_BIN:
+                    final List<AuctionedItemObj> cb = getCollectionBin(player);
                     slot = (int) slots.toArray()[0];
-                    for(AuctionedItem a : cb) {
+                    for(AuctionedItemObj a : cb) {
                         if(slots.contains(slot)) {
-                            final String price = formatBigDecimal(a.price);
-                            item = a.item(); itemMeta = item.getItemMeta(); lore.clear();
-                            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-                            final boolean c = a.claimable;
-                            final List<String> type = c ? collectionBinClaim : collectionBinInAuction;
-                            final String t = getRemainingTime(a.auctionTime+(c ? collectionbinExpiration : auctionExpiration)-System.currentTimeMillis());
+                            final String price = formatBigDecimal(a.getPrice());
+                            item = a.getItem(); itemMeta = item.getItemMeta(); lore.clear();
+                            if(itemMeta.hasLore()) {
+                                lore.addAll(itemMeta.getLore());
+                            }
+                            final boolean claimable = a.isClaimable();
+                            final List<String> type = claimable ? collectionBinClaim : collectionBinInAuction;
+                            final String t = getRemainingTime(a.getAuctionedTime()+(claimable ? collectionbinExpiration : auctionExpiration)-System.currentTimeMillis());
                             for(String s : type) {
                                 lore.add(s.replace("{PRICE}", price).replace("{TIME}", t));
                             }
                             itemMeta.setLore(lore); lore.clear();
                             item.setItemMeta(itemMeta);
                             top.setItem(slot, item);
-                            if(slot+1 < slots.size()) slot = (int) slots.toArray()[slot+1];
-                            else slot = -1;
+                            if(slot+1 < slots.size()) {
+                                slot = (int) slots.toArray()[slot+1];
+                            } else {
+                                slot = -1;
+                            }
                         }
                     }
                     setPages(v, cb.size(), top, air, p);
                     break;
-                default: break;
+                default:
+                    break;
             }
             for(int i = 0; i < top.getSize(); i++) {
                 if(!slots.contains(i)) {
@@ -426,28 +442,32 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         viewingCategory.put(player, material);
         final UUID u = player.getUniqueId();
         int slot = (int) slots.toArray()[0];
-        for(AuctionedItem a : category.get(material).get(name)) {
-            final UUID auctioner = a.auctioner;
-            final String price = formatBigDecimal(a.price), seller = Bukkit.getOfflinePlayer(a.auctioner).getName();
-            item = a.item(); itemMeta = item.getItemMeta(); lore.clear();
-            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
+        for(AuctionedItemObj a : category.get(material).get(name)) {
+            final UUID auctioner = a.getAuctioner();
+            final String price = formatBigDecimal(a.getPrice()), seller = Bukkit.getOfflinePlayer(auctioner).getName();
+            item = a.getItem(); itemMeta = item.getItemMeta(); lore.clear();
+            if(itemMeta.hasLore()) {
+                lore.addAll(itemMeta.getLore());
+            }
             for(String s : format) {
                 if(s.equals("{STATUS}")) {
                     lore.addAll(auctioner.equals(u) ? cancelStatus : clickToBuyStatus);
                 } else {
-                    lore.add(colorize(s.replace("{PRICE}", price).replace("{SELLER}", seller)));
+                    lore.add(s.replace("{PRICE}", price).replace("{SELLER}", seller));
                 }
             }
             itemMeta.setLore(lore); lore.clear();
             item.setItemMeta(itemMeta);
             top.setItem(slot, item);
-            if(slot+1 < slots.size()) slot = (int) slots.toArray()[slot+1];
+            if(slot+1 < slots.size()) {
+                slot = (int) slots.toArray()[slot+1];
+            }
         }
         player.updateInventory();
     }
 
-    private void setPages(String type, int size, Inventory top, ItemStack air, int p) {
-        final int maxpage = ((type.equals("AUCTION_HOUSE") ? auctionHouse.size() : size)/(slots.size()+1))+1;
+    private void setPages(AuctionViewType type, int size, Inventory top, ItemStack air, int p) {
+        final int maxpage = ((type == AuctionViewType.AUCTION_HOUSE ? auctionHouse.size() : size)/(slots.size()+1))+1;
         final String max = Integer.toString(maxpage);
         final ItemStack prev = p <= 1 ? air : previousPage.clone(), next = p < maxpage ? nextPage.clone() : air;
         if(prev != air) {
@@ -470,77 +490,75 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         top.setItem(nextPageSlot, next);
     }
 
-    public void view(Player player, int page) {
-        if(hasPermission(player, "RandomSky.ah.view", true)) {
-            player.closeInventory();
+    private void viewType(Player player, AuctionViewType type, int page, UInventory gui) {
+        viewType(player, type, page, gui, null, null);
+    }
+    private void viewType(Player player, AuctionViewType type, int page, UInventory gui, UMaterial material, String name) {
+        player.closeInventory();
+        if(page > 0) {
             this.page.put(player, page);
-            viewing.put(player, "AUCTION_HOUSE");
-            final int size = ah.getSize();
-            player.openInventory(Bukkit.createInventory(player, size, ah.getTitle()));
-            final Inventory top = player.getOpenInventory().getTopInventory();
-            top.setContents(ah.getInventory().getContents());
-            updatePage(player);
         }
-    }
-    public void viewCategories(Player player) {
-        if(hasPermission(player, "RandomSky.ah.view.categories", true)) {
-            player.closeInventory();
-            page.put(player, 1);
-            viewing.put(player, "CATEGORY_VIEW");
-            final int size = categories.getSize();
-            player.openInventory(Bukkit.createInventory(player, size, categories.getTitle()));
-            final Inventory top = player.getOpenInventory().getTopInventory();
-            top.setContents(categories.getInventory().getContents());
-            updatePage(player);
+        if(type != null) {
+            viewing.put(player, type);
         }
-    }
-    public void viewCategory(Player player, UMaterial material, String name) {
-        if(hasPermission(player, "RandomSky.ah.view.category", true)) {
-            player.closeInventory();
-            player.openInventory(Bukkit.createInventory(null, categoryItems.getSize(), categoryItems.getTitle()));
-            final Inventory top = player.getOpenInventory().getTopInventory();
-            top.setContents(categoryItems.getInventory().getContents());
+        final int size = gui.getSize();
+        player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
+        final Inventory top = player.getOpenInventory().getTopInventory();
+        top.setContents(gui.getInventory().getContents());
+        if(material != null) {
             updatePage(player, top, material, name);
-        }
-    }
-    public void viewCollectionBin(Player player) {
-        if(hasPermission(player, "RandomSky.ah.view.collectionbin", true)) {
-            player.closeInventory();
-            page.put(player, 1);
-            viewing.put(player, "COLLECTION_BIN");
-            player.openInventory(Bukkit.createInventory(player, collectionbin.getSize(), collectionbin.getTitle()));
-            final Inventory top = player.getOpenInventory().getTopInventory();
-            top.setContents(collectionbin.getInventory().getContents());
+        } else {
             updatePage(player);
         }
     }
-    public void nextPage(Player player) {
+
+    public void view(@NotNull Player player, int page) {
+        if(hasPermission(player, "RandomSky.ah.view", true)) {
+            viewType(player, AuctionViewType.AUCTION_HOUSE, page, ah);
+        }
+    }
+    public void viewCategories(@NotNull Player player) {
+        if(hasPermission(player, "RandomSky.ah.view.categories", true)) {
+            viewType(player, AuctionViewType.CATEGORY_VIEW, 1, categories);
+        }
+    }
+    public void viewCategory(@NotNull Player player, @NotNull UMaterial material, @Nullable String name) {
+        if(hasPermission(player, "RandomSky.ah.view.category", true)) {
+            viewType(player, null, -1, categoryItems, material, name);
+        }
+    }
+    public void viewCollectionBin(@NotNull Player player) {
+        if(hasPermission(player, "RandomSky.ah.view.collectionbin", true)) {
+            viewType(player, AuctionViewType.COLLECTION_BIN, 1, collectionbin);
+        }
+    }
+    public void nextPage(@NotNull Player player) {
         if(viewing.containsKey(player)) {
             page.put(player, page.get(player)+1);
             updatePage(player);
         }
     }
-    public void previousPage(Player player) {
+    public void previousPage(@NotNull Player player) {
         if(viewing.containsKey(player)) {
             page.put(player, page.get(player)-1);
             updatePage(player);
         }
     }
-    public void expire(Player player, AuctionedItem a) {
-        final ItemStack i = a.item();
-        if(a.claimable) {
+    public void expire(@NotNull Player player, @NotNull AuctionedItemObj a) {
+        final ItemStack i = a.getItem();
+        if(a.isClaimable()) {
             giveItem(player, i);
             auctions.get(player.getUniqueId()).remove(a);
         } else {
-            a.claimable = true;
-            auctionHouse.remove(a.auctionTime);
+            a.setClaimable(true);
+            auctionHouse.remove(a.getAuctionedTime());
             category.get(UMaterial.match(i)).get(i.getItemMeta().getDisplayName()).remove(a);
-            a.auctionTime = System.currentTimeMillis();
+            a.setAuctionTime(System.currentTimeMillis());
         }
         updatePage(player);
     }
 
-    public void confirmAuction(Player player, ItemStack item, BigDecimal price) {
+    public void confirmAuction(@NotNull Player player, @NotNull ItemStack item, @NotNull BigDecimal price) {
         if(hasPermission(player, "RandomSky.ah.sell", true)) {
             final String p = formatBigDecimal(price);
             player.closeInventory();
@@ -570,13 +588,13 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             auctioning.get(player).put(item, price);
         }
     }
-    public void auction(Player player, ItemStack item, BigDecimal price) {
+    public void auction(@NotNull Player player, @NotNull ItemStack item, @NotNull BigDecimal price) {
         if(hasPermission(player, "RandomSky.ah.auction", true)) {
             final UUID u = player.getUniqueId();
             if(!auctions.containsKey(u)) auctions.put(u, new ArrayList<>());
             final long l = System.currentTimeMillis();
             final UMaterial um = UMaterial.match(item);
-            final AuctionedItem a = new AuctionedItem(l, u, item, price);
+            final AuctionedItemObj a = new AuctionedItemObj(l, u, item, price);
             auctions.get(u).add(a);
             auctionHouse.put(l, a);
             addToCategoryView(a, um);
@@ -588,25 +606,25 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             sendStringListMessage(player, config.getStringList("messages.listed"), replacements);
         }
     }
-    private void addToCategoryView(AuctionedItem ai, UMaterial um) {
-        final ItemStack i = ai.item();
+    private void addToCategoryView(AuctionedItemObj ai, UMaterial um) {
+        final ItemStack i = ai.getItem();
         if(!category.containsKey(um)) category.put(um, new HashMap<>());
         final String dn = i.getItemMeta().hasDisplayName() ? i.getItemMeta().getDisplayName() : null;
-        final HashMap<String, List<AuctionedItem>> m = category.get(um);
+        final HashMap<String, List<AuctionedItemObj>> m = category.get(um);
         if(!m.containsKey(dn)) m.put(dn, new ArrayList<>());
         m.get(dn).add(ai);
     }
-    public void cancelAuction(Player player, AuctionedItem a) {
-        auctionHouse.remove(a.auctionTime);
-        a.claimable = true;
+    public void cancelAuction(@NotNull Player player, @NotNull AuctionedItemObj a) {
+        auctionHouse.remove(a.getAuctionedTime());
+        a.setClaimable(true);
         sendStringListMessage(player, config.getStringList("messages.cancelled listing"), null);
     }
-    public void tryPurchasing(Player player, AuctionedItem a) {
-        if(a != null && hasPermission(player, "RandomSky.ah.buy", true)) {
+    public void tryPurchasing(@NotNull Player player, @NotNull AuctionedItemObj a) {
+        if(hasPermission(player, "RandomSky.ah.buy", true)) {
             player.closeInventory();
 
-            final ItemStack its = a.item();
-            final String p = formatBigDecimal(a.price), it = its.hasItemMeta() && its.getItemMeta().hasDisplayName() ? its.getItemMeta().getDisplayName() : toMaterial(UMaterial.match(its).name(), false);
+            final ItemStack its = a.getItem();
+            final String p = formatBigDecimal(a.getPrice()), it = its.hasItemMeta() && its.getItemMeta().hasDisplayName() ? its.getItemMeta().getDisplayName() : toMaterial(UMaterial.match(its).name(), false);
             final int size = purchaseItem.getSize();
             player.openInventory(Bukkit.createInventory(player, size, purchaseItem.getTitle().replace("{PRICE}", p)));
             final Inventory top = player.getOpenInventory().getTopInventory();
@@ -630,10 +648,10 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         }
     }
 
-    public List<AuctionedItem> getCollectionBin(Player player) {
+    public List<AuctionedItemObj> getCollectionBin(@NotNull Player player) {
         return auctions.getOrDefault(player.getUniqueId(), new ArrayList<>());
     }
-    public ItemStack getPlayerCollectionBin(Player player) {
+    public ItemStack getPlayerCollectionBin(@NotNull Player player) {
         final String size = Integer.toString(getCollectionBin(player).size());
         item = collectionBin.clone(); itemMeta = item.getItemMeta();
         for(String s : itemMeta.getLore()) {
@@ -643,23 +661,23 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         item.setItemMeta(itemMeta);
         return item;
     }
-    public AuctionedItem valueOf(Player player, int slot, String type) {
+    public AuctionedItemObj valueOf(@NotNull Player player, int slot, String type) {
         final String T = type;
         type = type.toUpperCase();
         final int page = this.page.getOrDefault(player, 0), p = (page-1)*slots.size();
         switch (type) {
             case "COLLECTION_BIN":
-                final List<AuctionedItem> bin = getCollectionBin(player);
-                return bin.size() > p+slot ? (AuctionedItem) bin.toArray()[p+slot] : null;
+                final List<AuctionedItemObj> bin = getCollectionBin(player);
+                return bin.size() > p+slot ? (AuctionedItemObj) bin.toArray()[p+slot] : null;
             case "AUCTION_HOUSE":
-                final Collection<AuctionedItem> ah = auctionHouse.values();
-                return ah.size() > p+slot ? (AuctionedItem) ah.toArray()[p+slot] : null;
+                final Collection<AuctionedItemObj> ah = auctionHouse.values();
+                return ah.size() > p+slot ? (AuctionedItemObj) ah.toArray()[p+slot] : null;
             default:
                 final UMaterial u = viewingCategory.get(player);
                 final String a = "CATEGORY_" + u.name() + "_";
                 final String[] b = T.split(a);
                 String s = b.length == 1 ? null : b[1];
-                final List<AuctionedItem> i = category.get(u).get(s);
+                final List<AuctionedItemObj> i = category.get(u).get(s);
                 return slot < i.size() ? i.get(slot) : null;
         }
     }
@@ -681,9 +699,9 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             final String click = event.getClick().name();
 
             if(isAH || isC || isCB || isCV) {
-                final boolean n = r == nextPageSlot, p = r == previousPageSlot;
-                if(n || p) {
-                    if(n) nextPage(player);
+                final boolean next = r == nextPageSlot, previous = r == previousPageSlot;
+                if(next || previous) {
+                    if(next) nextPage(player);
                     else previousPage(player);
                     return;
                 } else if(c.equals(getPlayerCollectionBin(player))) {
@@ -705,12 +723,12 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             }
 
             if(isP) {
-                final AuctionedItem ai = purchasing.get(player);
-                final ItemStack z = ai != null ? ai.item() : null;
-                final UUID OPU = ai != null ? ai.auctioner : null;
-                final OfflinePlayer OP = ai != null ? Bukkit.getOfflinePlayer(OPU) : null;
+                final AuctionedItemObj ai = purchasing.get(player);
+                final ItemStack z = ai != null ? ai.getItem() : null;
+                final UUID auctioner = ai != null ? ai.getAuctioner() : null;
+                final OfflinePlayer OP = ai != null ? Bukkit.getOfflinePlayer(auctioner) : null;
                 final HashMap<String, String> replacements = new HashMap<>();
-                final BigDecimal price = ai != null ? ai.price : BigDecimal.ZERO;
+                final BigDecimal price = ai != null ? ai.getPrice() : BigDecimal.ZERO;
                 final double priceDouble = price.doubleValue();
                 final String p = formatBigDecimal(price);
                 replacements.put("{PRICE}", p);
@@ -721,7 +739,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                     purchasing.remove(player);
                     if(ai == null) {
                         sendStringListMessage(player, config.getStringList("messages.item no longer exists"), replacements);
-                    } else if(OPU.equals(u)) {
+                    } else if(auctioner.equals(u)) {
                         player.closeInventory();
                         sendStringListMessage(player, config.getStringList("messages.cannot purchase own item"), replacements);
                         view(player, 1);
@@ -729,8 +747,8 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                     } else if(eco.withdrawPlayer(player, priceDouble).transactionSuccess()) {
                         sendStringListMessage(player, config.getStringList("messages.purchased auction"), replacements);
                         giveItem(player, z);
-                        auctionHouse.remove(ai.auctionTime);
-                        auctions.get(OPU).remove(ai);
+                        auctionHouse.remove(ai.getAuctionedTime());
+                        auctions.get(auctioner).remove(ai);
                         if(OP.isOnline()) {
                             sendStringListMessage(OP.getPlayer(), config.getStringList("messages.sold auction"), replacements);
                         }
@@ -743,9 +761,9 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                 player.closeInventory();
             } else if(isAH) {
                 if(slots.contains(r)) {
-                    final AuctionedItem target = valueOf(player, r, "AUCTION_HOUSE");
+                    final AuctionedItemObj target = valueOf(player, r, "AUCTION_HOUSE");
                     if(target != null) {
-                        if(target.auctioner.equals(u) && click.equals("SHIFT_RIGHT")) {
+                        if(target.getAuctioner().equals(u) && click.equals("SHIFT_RIGHT")) {
                             cancelAuction(player, target);
                             updatePage(player);
                         } else {
@@ -774,7 +792,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             } else if(isCV) {
                 if(slots.contains(r)) {
                     final UMaterial um = UMaterial.match(c);
-                    final AuctionedItem a = valueOf(player, slots.indexOf(r), "CATEGORY_" + um.name() + (c.getItemMeta().hasDisplayName() ? "_" + c.getItemMeta().getDisplayName() : ""));
+                    final AuctionedItemObj a = valueOf(player, slots.indexOf(r), "CATEGORY_" + um.name() + (c.getItemMeta().hasDisplayName() ? "_" + c.getItemMeta().getDisplayName() : ""));
                     if(a != null) {
                         tryPurchasing(player, a);
                     }

@@ -1,5 +1,9 @@
 package me.randomhashtags.randomsky.attributesys;
 
+import me.randomhashtags.randomsky.RSPlayer;
+import me.randomhashtags.randomsky.addon.EventAttribute;
+import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
+import me.randomhashtags.randomsky.event.RSEvent;
 import me.randomhashtags.randomsky.util.RSFeature;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -15,7 +19,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.*;
 
-import static me.randomhashtags.randompackage.api.CustomEnchants.getCustomEnchants;
+import static me.randomhashtags.randomsky.api.CustomEnchants.getCustomEnchants;
 
 public abstract class EventExecutor extends RSFeature implements EventReplacements, EventReplacer {
     public boolean didPassConditions(Event event, HashMap<String, Entity> entities, List<String> conditions, HashMap<String, String> valueReplacements, boolean cancelled) {
@@ -120,13 +124,13 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
         return n;
     }
 
-    private HashMap<RPPlayer, String> getData(HashMap<String, Entity> entities, HashMap<String, String> entityValues) {
-        final HashMap<RPPlayer, String> a = new HashMap<>();
+    private HashMap<RSPlayer, String> getData(HashMap<String, Entity> entities, HashMap<String, String> entityValues) {
+        final HashMap<RSPlayer, String> a = new HashMap<>();
         for(String s : entities.keySet()) {
             if(entityValues.containsKey(s)) {
                 final Entity e = entities.get(s);
                 if(e instanceof Player) {
-                    a.put(RPPlayer.get(e.getUniqueId()), entityValues.get(s));
+                    a.put(RSPlayer.get(e.getUniqueId()), entityValues.get(s));
                 }
             }
         }
@@ -144,7 +148,7 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
         if(passed) {
             final Entity entity1 = entities.getOrDefault("Player", entities.getOrDefault("Killer", entities.getOrDefault("Damager", entities.getOrDefault("Owner", null))));
             final Entity entity2 = entities.getOrDefault("Victim", entities.getOrDefault("Entity", null));
-            final HashMap<RPPlayer, String> data = getData(entities, entityValues);
+            final HashMap<RSPlayer, String> data = getData(entities, entityValues);
             final boolean dadda = !data.isEmpty(), entity1NN = entity1 != null, entity2NN = entity2 != null;
             final String repeatid = Integer.toString(repeatID);
             final List<LinkedHashMap<EventAttribute, HashMap<Entity, String>>> previousHashMaps = new ArrayList<>();
@@ -162,7 +166,7 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
                                 List<LinkedHashMap<EventAttribute, HashMap<Entity, String>>> attributes = new ArrayList<>(values);
                                 attributes.removeAll(previousHashMaps);
                                 attributes.remove(hashmap);
-                                scheduler.scheduleSyncDelayedTask(randompackage, () -> executeAll(event, entities, conditions, cancelled, entityValues, attributes, valueReplacements), ticks);
+                                scheduler.scheduleSyncDelayedTask(randomsky, () -> executeAll(event, entities, conditions, cancelled, entityValues, attributes, valueReplacements), ticks);
                                 break attributeLooper;
                             case "REPEAT":
                                 attributes = new ArrayList<>(values);
@@ -346,7 +350,7 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
                 final ProjectileSource shooter = proj.getShooter();
                 return shooter instanceof Player ? (Player) shooter : null;
             // TODO: fix dis bruh
-            default: return event instanceof RPEvent ? ((RPEvent) event).getPlayer() : null;
+            default: return event instanceof RSEvent ? ((RSEvent) event).getPlayer() : null;
         }
     }
     public void triggerCustomEnchants(Event event, LinkedHashMap<ItemStack, LinkedHashMap<CustomEnchant, Integer>> enchants, List<String> globalattributes) {

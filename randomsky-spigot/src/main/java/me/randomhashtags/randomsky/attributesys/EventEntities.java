@@ -1,5 +1,7 @@
 package me.randomhashtags.randomsky.attributesys;
 
+import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
+import me.randomhashtags.randomsky.event.RSEvent;
 import me.randomhashtags.randomsky.util.universal.UVersionable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -178,5 +180,5 @@ public interface EventEntities extends EventConditions, UVersionable {
     default HashMap<String, Entity> getEntities(DamageEvent event) { return getEntities("Victim", event.getEntity(), "Damager", event.getDamager()); }
     default HashMap<String, Entity> getEntities(FallenHeroSlainEvent event) { return getEntities("Victim", event.hero.getEntity(), "Killer", event.killer); }
     default HashMap<String, Entity> getEntities(MobStackDepleteEvent event) { return getEntities("Killer", event.killer, "Victim", event.stack.entity); }
-    default HashMap<String, Entity> getEntities(RPEvent event) { return getEntities("Player", event.getPlayer()); }
+    default HashMap<String, Entity> getEntities(RSEvent event) { return getEntities("Player", event.getPlayer()); }
 }

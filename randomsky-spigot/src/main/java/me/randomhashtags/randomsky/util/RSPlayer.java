@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.addon.active.Home;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
+import me.randomhashtags.randomsky.addon.obj.AuctionedItemObj;
 import me.randomhashtags.randomsky.addon.obj.ChatChannelsObj;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
 import me.randomhashtags.randomsky.addon.obj.JackpotStats;
@@ -38,7 +39,7 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
     private int skillTokens = 0;
 
     private List<Home> homes;
-    public List<AuctionedItem> auctions;
+    public List<AuctionedItemObj> auctions;
     private Set<Adventure> allowedAdventures;
     private Set<UMaterial> filteredItems;
 
@@ -161,7 +162,9 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
     public boolean isLoaded() { return isLoaded; }
     public UUID getUUID() { return uuid; }
     public UUID getAllianceUUID() { return allianceUUID; }
+    public void setAllianceUUID(UUID uuid) { allianceUUID = uuid; }
     public UUID getIslandUUID() { return islandUUID; }
+    public void setIslandUUID(UUID uuid) { islandUUID = uuid; }
     public YamlConfiguration getYaml() { return yml; }
 
     public PlayerRank getRank() {

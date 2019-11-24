@@ -1,0 +1,38 @@
+# Made by RandomHashTags
+settings:
+  string: "+{VALUE}% Cap Rate"
+#
+gui:
+  slot: 3
+  item: "clock"
+  name: "Outpost Cap Speed"
+  lore:
+    - "&7Increased Outpost capture speed."
+#
+levels:
+  1:
+    cost:
+      - "$15000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

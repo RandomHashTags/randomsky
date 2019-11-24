@@ -1,0 +1,38 @@
+# Made by RandomHashTags
+settings:
+  string: "{VALUE}% Chance"
+#
+gui:
+  slot: 5
+  item: "emerald"
+  name: "Bonus Realm Points"
+  lore:
+    - "&7Chance to gain 2x Realm Points."
+#
+levels:
+  1:
+    cost:
+      - "$20000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

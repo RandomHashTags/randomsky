@@ -31,7 +31,9 @@ public interface RSPlayer {
     boolean isLoaded();
     UUID getUUID();
     UUID getAllianceUUID();
+    void setAllianceUUID(UUID uuid);
     UUID getIslandUUID();
+    void setIslandUUID(UUID uuid);
 
     default Alliance getAlliance() {
         return Alliance.CACHE.getOrDefault(getAllianceUUID(), null);

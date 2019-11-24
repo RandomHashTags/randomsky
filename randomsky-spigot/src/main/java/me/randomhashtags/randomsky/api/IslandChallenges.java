@@ -58,8 +58,9 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void load() {
         final long a = System.currentTimeMillis();
-        save(dataFolder + separator + "island" + separator + "challenges", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "challenges", "_settings.yml"));
+        final String folder = dataFolder + separator + "island" + separator + "challenges";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
         settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island settings", "_settings.yml"));
 
         claim = colorizeListString(config.getStringList("challenges.settings.completed.claim"));
@@ -73,7 +74,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
 
-        for(File f : new File(dataFolder + separator + "island" + separator + "challenges").listFiles()) {
+        for(File f : new File(folder).listFiles()) {
             final IslandChallenge c = new FileIslandChallenge(f);
             item = locked.clone(); itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", c.getName()));
@@ -289,8 +290,8 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void playerIslandBreakBlockEvent(PlayerIslandBreakBlockEvent event) {
-        final Player player = event.player;
-        final Island is = event.island;
+        final Player player = event.getPlayer();
+        final Island is = event.getIsland();
         final BlockBreakEvent e = event.breakEvent;
         final Block b = e.getBlock();
         final Location l = b.getLocation();
@@ -325,10 +326,10 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void harvestResourceNodeEvent(HarvestResourceNodeEvent event) {
-        final Island is = event.island;
+        final Island is = event.getIsland();
         final ActiveIslandChallenge a = is.challenge;
         if(a != null) {
-            final Player player = event.player;
+            final Player player = event.getPlayer();
             for(String s : a.type.attributes) {
                 final String eventAttribute = s.split(";")[0].toLowerCase(), attribute = s.substring(eventAttribute.length()+1);
                 if(eventAttribute.equals("harvestresourcenode")) {

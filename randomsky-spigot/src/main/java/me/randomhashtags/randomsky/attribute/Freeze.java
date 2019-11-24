@@ -1,6 +1,5 @@
 package me.randomhashtags.randomsky.attribute;
 
-import me.randomhashtags.randompackage.util.obj.TObject;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -44,7 +43,7 @@ public class Freeze extends AbstractEventAttribute {
             if(player != null) {
                 final float ws = player.getWalkSpeed();
                 player.setWalkSpeed(0);
-                final TObject t = new TObject(scheduler.scheduleSyncDelayedTask(randompackage, () -> {
+                final TObject t = new TObject(scheduler.scheduleSyncDelayedTask(randomsky, () -> {
                     player.setWalkSpeed(ws);
                     tasks.remove(player);
                 }, (int) evaluate(recipientValues.get(e))), ws, null);

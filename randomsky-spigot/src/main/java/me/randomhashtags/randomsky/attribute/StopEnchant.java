@@ -1,8 +1,6 @@
 package me.randomhashtags.randomsky.attribute;
 
-import me.randomhashtags.randompackage.addon.CustomEnchant;
-import me.randomhashtags.randompackage.event.enchant.CustomEnchantProcEvent;
-import me.randomhashtags.randompackage.util.obj.TObject;
+import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
@@ -61,7 +59,7 @@ public class StopEnchant extends AbstractEventAttribute {
         }
     }
     private int resumeEnchant(UUID player, CustomEnchant enchant, int ticks) {
-        return scheduler.scheduleSyncDelayedTask(randompackage, () -> {
+        return scheduler.scheduleSyncDelayedTask(randomsky, () -> {
             stoppedEnchants.get(player).remove(enchant);
         }, ticks);
     }

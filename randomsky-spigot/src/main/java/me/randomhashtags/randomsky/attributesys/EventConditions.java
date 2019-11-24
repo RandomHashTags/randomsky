@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.attributesys;
 import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.attribute.Combo;
 import me.randomhashtags.randomsky.util.Mathable;
+import me.randomhashtags.randomsky.util.RSItemStack;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import me.randomhashtags.randomsky.util.universal.UVersionable;
 import org.bukkit.Chunk;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public interface EventConditions extends Combo, RPItemStack, Mathable, UVersionable {
+public interface EventConditions extends Combo, RSItemStack, Mathable, UVersionable {
     List<UUID> SPAWNED_FROM_SPAWNER = new ArrayList<>();
     HashMap<UUID, EntityShootBowEvent> PROJECTILE_EVENTS = new HashMap<>();
 

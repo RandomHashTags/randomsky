@@ -15,6 +15,7 @@ import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.api.skill.IslandFarming;
 import me.randomhashtags.randomsky.api.skill.IslandMining;
+import me.randomhashtags.randomsky.api.skill.IslandSlayer;
 import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -138,27 +139,27 @@ public class Islands extends IslandAddon implements CommandExecutor {
                         tryDeletingWarp(player);
                     } else if(a.equals("farming")) {
                         final IslandFarming f = IslandFarming.getIslandFarming();
-                        if(f.isEnabled) {
+                        if(f.isEnabled()) {
                             f.viewFarming(player);
                         }
                     } else if(a.equals("level")) {
                         final IslandLevels levels = IslandLevels.getIslandLevels();
-                        if(levels.isEnabled) {
+                        if(levels.isEnabled()) {
                             levels.viewLevels(player);
                         }
                     } else if(a.equals("mining")) {
                         final IslandMining mining = IslandMining.getIslandMining();
-                        if(mining.isEnabled) {
+                        if(mining.isEnabled()) {
                             mining.viewMining(player);
                         }
                     } else if(a.equals("slayer")) {
                         final IslandSlayer slayer = IslandSlayer.getIslandSlayer();
-                        if(slayer.isEnabled) {
+                        if(slayer.isEnabled()) {
                             slayer.viewSlayer(player);
                         }
                     } else if(a.equals("challenge") || a.equals("challenges")) {
                         final IslandChallenges challenges = IslandChallenges.getIslandChallenges();
-                        if(challenges.isEnabled) {
+                        if(challenges.isEnabled()) {
                             challenges.viewChallenges(player);
                         }
                     } else if(!a.equals("help")) {

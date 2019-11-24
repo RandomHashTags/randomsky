@@ -1,5 +1,9 @@
 package me.randomhashtags.randomsky.attributesys;
 
+import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
+import me.randomhashtags.randomsky.event.FundDepositEvent;
+import me.randomhashtags.randomsky.event.JackpotPurchaseTicketsEvent;
+import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -72,11 +76,6 @@ public interface EventReplacements extends EventEntities {
 
             case "shoppurchase":
             case "shopsell": return getReplacements((ShopEvent) event);
-
-            case "mcmmoplayerxpgain":
-                if(MCMMOAPI.getMCMMOAPI().isEnabled()) {
-                    return new String[] {"xp", Float.toString(((com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent) event).getRawXpGained())};
-                }
 
             default: return new String[]{};
         }

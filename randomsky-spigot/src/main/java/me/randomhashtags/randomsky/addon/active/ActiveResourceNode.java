@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.addon.active;
 import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.util.universal.UVersionable;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -14,7 +15,7 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ActiveResourceNode {
+public class ActiveResourceNode implements UVersionable {
     private static final RandomSkyAPI api = RandomSkyAPI.getAPI();
 
     private UUID uuid;
@@ -62,7 +63,7 @@ public class ActiveResourceNode {
         hasPlaced = true;
     }
     private void doTask() {
-        respawnTask = Bukkit.getScheduler().scheduleSyncDelayedTask(api.randomsky, () -> {
+        respawnTask = scheduler.scheduleSyncDelayedTask(randomsky, () -> {
             final World w = getWorld();
             final Block b = w.getBlockAt(location);
             final UMaterial h = type.getHarvestBlock();
@@ -75,7 +76,7 @@ public class ActiveResourceNode {
         }, 20*type.getRespawnTime());
     }
     public void delete() {
-        Bukkit.getScheduler().cancelTask(respawnTask);
+        scheduler.cancelTask(respawnTask);
         getWorld().getBlockAt(location).setType(Material.AIR);
     }
     public void harvest(Player player) {
@@ -83,7 +84,7 @@ public class ActiveResourceNode {
         pluginmanager.callEvent(e);
         if(!e.isCancelled()) {
             final World world = getWorld();
-            final HashMap<ResourceNode, Integer> mined = island.minedResourceNodes;
+            final HashMap<ResourceNode, Integer> mined = e.getIsland().minedResourceNodes;
             if(!mined.containsKey(type)) mined.put(type, 0);
             mined.put(type, mined.get(type)+1);
             final Location l = location.clone().add(0.5, 1, 0.5);

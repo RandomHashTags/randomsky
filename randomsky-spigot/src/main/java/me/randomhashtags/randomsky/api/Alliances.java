@@ -1,9 +1,13 @@
 package me.randomhashtags.randomsky.api;
 
+import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.alliance.Alliance;
 import me.randomhashtags.randomsky.addon.alliance.AllianceMember;
 import me.randomhashtags.randomsky.addon.alliance.AllianceRelation;
 import me.randomhashtags.randomsky.addon.alliance.AllianceRelationship;
+import me.randomhashtags.randomsky.addon.file.FileAllianceRelation;
+import me.randomhashtags.randomsky.addon.file.FileAllianceRole;
+import me.randomhashtags.randomsky.addon.file.FileAllianceUpgrade;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -28,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import static java.io.File.separator;
 
 public class Alliances extends RSFeature implements CommandExecutor {
     private static Alliances instance;
@@ -100,25 +106,26 @@ public class Alliances extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "alliances.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "alliances.yml"));
-        int loaded = 0, relations = 0;
-        for(String s : config.getConfigurationSection("roles").getKeys(false)) {
-            final String p = "roles." + s + ".";
-            new AllianceRole(s, config.getString(p + "tag"), config.getString(p + "chat tag"), colorize(config.getString(p + "color")), config.getStringList(p + "granted permissions"));
-            loaded++;
+        final String folder = dataFolder + separator + "alliances";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
+
+        for(File f : new File(folder + separator + "roles").listFiles()) {
+            new FileAllianceRole(f);
         }
-        for(String s : config.getConfigurationSection("relations").getKeys(false)) {
-            final String p = "relations." + s + ".";
-            new AllianceRelation(s, colorize(config.getString(p + "color")), config.getBoolean(p + "damageable"));
-            relations++;
+        for(File f : new File(folder + separator + "relations").listFiles()) {
+            new FileAllianceRelation(f);
+        }
+        for(File f : new File(folder + separator + "upgrades").listFiles()) {
+            new FileAllianceUpgrade();
         }
 
         tagMin = config.getInt("settings.tag min");
         tagMax = config.getInt("settings.tag max");
-        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ALLIANCE_ROLE).size() + " Alliance Roles and " + RSStorage.getAll(Feature.ALLIANCE_RELATION).size() + " Alliance Relations &e(took " + (System.currentTimeMillis()-started) + "ms)");
+        sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ALLIANCE_RELATION).size() + " Alliance Relations, " + RSStorage.getAll(Feature.ALLIANCE_ROLE).size() + " Alliance Roles, and " + RSStorage.getAll(Feature.ALLIANCE_UPGRADE).size() + " Alliance Upgrades &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
+        RSStorage.unregisterAll(Feature.ALLIANCE_RELATION, Feature.ALLIANCE_ROLE, Feature.ALLIANCE_UPGRADE);
     }
 
     public void disabandAll(CommandSender sender, boolean async) {
@@ -173,7 +180,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 final UUID t = target.getUUID();
                 final HashMap<UUID, AllianceRelationship> r = a.getRelations();
                 final AllianceRelation re = r.containsKey(t) ? r.get(t).relation : AllianceRelation.paths.get("neutral");
-                replacements.put("{RELATION}", re.color + re.path);
+                replacements.put("{RELATION}", re.getColor() + re.getIdentifier());
                 if(a.equals(target)) {
                     sendStringListMessage(player, config.getStringList("messages.cannot use cmd on self"), replacements);
                 } else if(re.equals(relation)) {
@@ -184,8 +191,8 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     target.getRelations().put(a.getUUID(), ship);
                     sendStringListMessage(player, config.getStringList("messages.relation sent"), replacements);
                     final List<String> msg = config.getStringList("messages.relation received");
-                    for(Player p : target.getOnlineMembers()) {
-                        sendStringListMessage(p, msg, replacements);
+                    for(AllianceMember am : target.getOnlineMembers()) {
+                        sendStringListMessage(Bukkit.getPlayer(am.getUUID()), msg, replacements);
                     }
                 }
             }
@@ -242,7 +249,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
         }
         for(UUID u : relations.keySet()) {
             final Alliance a = Alliance.get(u);
-            final AllianceRelation ar = relations.get(u).relation;
+            final AllianceRelation ar = relations.get(u).getRelation();
             final String p = ar.path, t = a.getTag();
             if(!relation.containsKey(p)) {
                 relation.put(p, t + ", ");
@@ -381,7 +388,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public void tryKicking(Player player, String target) {
+    public void tryKicking(@NotNull Player player, String target) {
         if(hasPermission(player, "RandomSky.alliance.kick", true)) {
             final UUID U = player.getUniqueId();
             final RSPlayer pdata = RSPlayer.get(U);
@@ -390,10 +397,10 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 sendStringListMessage(player, config.getStringList("messages.must be in an alliance to use command"), null);
             } else {
                 final OfflinePlayer op = Bukkit.getOfflinePlayer(target);
-                final UUID u = op != null ? op.getUniqueId() : null;
+                final UUID u = op.isOnline() ? op.getUniqueId() : null;
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{INPUT}", target);
-                if(op == null) {
+                if(u == null) {
                     sendStringListMessage(player, config.getStringList("messages.unable to find online player"), replacements);
                 } else if(u.equals(U)) {
                     sendStringListMessage(player, config.getStringList("messages.cannot use cmd on self"), null);
@@ -416,7 +423,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public void tryLeaving(Player player) {
+    public void tryLeaving(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.alliance.leave", true)) {
             final UUID u = player.getUniqueId();
             final Alliance a = RSPlayer.get(u).getAlliance();
@@ -442,7 +449,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         final Entity d = event.getDamager(), v = event.getEntity();
         final Player damager = d instanceof Player ? (Player) d : null, victim = v instanceof Player ? (Player) v : null;
@@ -452,7 +459,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
             final Alliance a = players.getOrDefault(da, null), b = players.getOrDefault(vi, null);
             if(a != null && b != null) {
                 final AllianceRelation r = a.relationTo(b);
-                if(!r.damageable) {
+                if(!r.isDamageable()) {
                     event.setCancelled(true);
                     damager.updateInventory();
 

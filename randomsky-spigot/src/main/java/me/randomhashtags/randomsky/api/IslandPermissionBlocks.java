@@ -49,8 +49,9 @@ public class IslandPermissionBlocks extends IslandAddon {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "island" + separator + "permission blocks", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "permission blocks", "_settings.yml"));
+        final String folder = dataFolder + separator + "island" + separator + "permission blocks";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
         A = colorize(config.getString("permission blocks.gui.lores.allowed"));
         D = colorize(config.getString("permission blocks.gui.lores.denied"));

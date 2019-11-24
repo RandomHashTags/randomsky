@@ -1,6 +1,7 @@
 package me.randomhashtags.randomsky.attribute;
 
 import me.randomhashtags.randomsky.addon.EventAttribute;
+import me.randomhashtags.randomsky.attributesys.EventReplacer;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;

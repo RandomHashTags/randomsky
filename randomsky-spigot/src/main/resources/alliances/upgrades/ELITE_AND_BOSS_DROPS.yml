@@ -1,0 +1,40 @@
+# Made by RandomHashTags
+settings:
+  string: "+{VALUE}% Chance"
+#
+gui:
+  slot: 2
+  item: "gold_nugget"
+  name: "Elite & Boss Drops"
+  lore:
+    - "&7Increasing chance to obtain a"
+    - "&7bonus item when killing Elites and"
+    - "&7Bosses."
+#
+levels:
+  1:
+    cost:
+      - "$15000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

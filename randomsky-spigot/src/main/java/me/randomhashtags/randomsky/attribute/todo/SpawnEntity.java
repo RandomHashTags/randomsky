@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.attribute.todo;
 
-import me.randomhashtags.randompackage.attribute.AbstractEventAttribute;
+import me.randomhashtags.randomsky.attribute.AbstractEventAttribute;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;

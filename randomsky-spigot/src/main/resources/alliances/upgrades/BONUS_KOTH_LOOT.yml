@@ -1,0 +1,39 @@
+# Made by RandomHashTags
+settings:
+  string: "+{VALUE}% Chance"
+#
+gui:
+  slot: 1
+  item: "chest"
+  name: "Bonus KOTH Loot"
+  lore:
+    - "&7Have a chance to gain an extra item"
+    - "&7when opening a KOTH Lootbag!"
+#
+levels:
+  1:
+    cost:
+      - "$10000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

@@ -1,0 +1,111 @@
+# Made by RandomHashTags
+messages:
+  help: # This is centered
+    - "&b&lAlliance Help Commands"
+    - " "
+    - "&b/alliance info <alliance/player>"
+    - "&b/alliance create <tag>"
+    - "&b/alliance invite <player>"
+    - "&b/alliance join <tag/player>"
+    - "&b/alliance kick <player>"
+    - "&b/alliance leave"
+    - "&b/alliance admin/mod/member <player>"
+    - "&b/alliance enemy/ally/truce <alliance>"
+    - " "
+  guide:
+    - "&eAlliance Guide: &7Use &f/alliance &7for more information on Player Alliance Management!"
+  usage:
+    - "&cUsage: &7/alliance create <tag>"
+  #
+  pvp not enabled in world:
+    - "&c&l(!)&r &cPvP is not currently enabled in this world!"
+  info unable to find alliance:
+    - "&c&l(!)&r &cUnable to find alliance from '{INPUT}'"
+  info:
+    - "&b&l&m----------&r &b[ &n{TAG}&r &b] &l&m----------"
+    - "&aOnline Members: {ONLINE_MEMBERS}"
+    - "&bOffline Members: {OFFLINE_MEMBERS}"
+    - "&bEnemies: {ENEMY}"
+    - "&ePending Enemies: {PENDING_ENEMY}"
+    - "&bTruces: {TRUCE}"
+    - "&ePending Truces: {PENDING_TRUCE}"
+    - "&bAllies: {ALLY}"
+    - "&ePending Allies: {PENDING_ALLY}"
+  #
+  tag already taken:
+    - "&c&l(!)&r &cAlliance tag is already in use!"
+  tag needs to be shorter/longer:
+    - "&c&l(!)&r &cYou must enter a tag that is 3-32 characters long!"
+  must be in an alliance to use command:
+    - "&c&l(!)&r &cYou must be in an alliance to use this command!"
+    - "&7Use '/alliance create <tag>' to make an alliance!"
+  wait before sending another relation request:
+    - "&c&l(!)&r &cPlease wait {TIME} before sending {TAG} another relation request!"
+  cannot use cmd on self:
+    - "&c&l(!)&r &cYou cannot use this command on yourself!"
+  cannot damage due to relation:
+    - "&c&l(!)&r &cYou cannot damage {PLAYER} due to your alliance relation!"
+  youre already a member:
+    - "&c&l(!)&r &cYou are already a member of the '{TAG}' alliance!"
+  unable to find alliance:
+    - "&c&l(!)&r &cUnable to find alliance from '{TAG}'"
+  #
+  invite usage:
+    - "&cUsage: &7/alliance invite <player>"
+  kick usage:
+    - "&cUsage: &7/alliance kick <player>"
+  role usage:
+    - "&cUsage: &7/alliance {ROLE} <player>"
+  join usage:
+    - "&cUsage: &7/alliance join <alliance>"
+  relation usage:
+    - "&cUsage: &7/alliance {RELATION} <alliance>"
+  create usage:
+    - "&cUsage: &7/alliance create <tag>"
+  #
+  unable to find online player:
+    - "&c&l(!)&r &cUnable to find online player with the username '{INPUT}'!"
+  target already member:
+    - "&c&l(!)&r &c{PLAYER} is already a member of the {TAG} alliance!"
+  target already invited:
+    - "&c&l(!)&r &c{PLAYER} has already been invited to the alliance!"
+  join no pending invite:
+    - "&c&l(!)&r &cYou do not have a pending alliance invite from '{TAG}'!"
+  player belongs to no alliance:
+    - "&c&l(!)&r &c{PLAYER} is not a member of any alliance!"
+  kick not a member:
+    - "&c&l(!)&r &c{PLAYER} is not a member of your alliance!"
+  #
+  relation sent:
+    - "&e&l(!)&r &e{TAG} has been informed that you wish to be {RELATION}&e!"
+  is now relation:
+    - "&e&l(!)&r &eYour alliance is now {RELATION} to {TAG}!"
+  relation received:
+    - "&e&l(!)&r &e{TAG} has requested to be your {RELATION]!"
+  already have pending relation:
+    - "&c&l(!)&r &cYou already have this pending relation to {TAG}!"
+  disband:
+    - "&c&l(!)&r &cYour alliance has been disbanded!"
+  invite sent:
+    - "&a&l(!)&r &a{SENDER} &ninvited&r &a{PLAYER} to the alliance!"
+  invite received:
+    - "&a&l(!)&r &a{SENDER} has invited you to the {TAG} alliance!"
+    - "&7Use '/alliance join {TAG}' to accept!"
+  joined:
+    - "&a&l(!)&r &a{PLAYER} has joined the alliance!"
+  leave notify:
+    - "&c&l(!)&r &c{PLAYER} has left the alliance!"
+  kicked:
+    - "&c&l(!)&r &c{PLAYER} has been kicked from the alliance by {KICKER}!"
+  been kicked:
+    - "&c&l(!)&r &cYou have been kicked from your alliance by {KICKER}!"
+  updated rank:
+    - "&e&l(!)&r &e{PROMOTER} updated {TARGET}'s alliance rank to {RANK}!"
+  create:
+    - "&a&l(!)&r &aYou're now the leader of the new alliance '&l{TAG}&r&a'!"
+#
+settings:
+  max members: 25
+  tag min: 3
+  tag max: 32
+#

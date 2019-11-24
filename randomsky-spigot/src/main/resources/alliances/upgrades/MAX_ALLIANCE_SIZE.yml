@@ -1,0 +1,39 @@
+# Made by RandomHashTags
+settings:
+  string: "+{VALUE} Members"
+#
+gui:
+  slot: 0
+  item: "ladder"
+  name: "Max Alliance Size"
+  lore:
+    - "&7Increase the maximum number of"
+    - "&7alliance members allowed!"
+#
+levels:
+  1:
+    cost:
+      - "$5000000"
+    attributes:
+      - "AllianceUpgrade;identifier=MAX_ALLIANCE_SIZE;PlayerSetMaxAllianceSize=size+1"
+  2:
+    cost:
+      - ""
+    attributes:
+      - "AllianceUpgrade;identifier=MAX_ALLIANCE_SIZE;PlayerSetMaxAllianceSize=size+1"
+  3:
+    cost:
+      - ""
+    attributes:
+      - "AllianceUpgrade;identifier=MAX_ALLIANCE_SIZE;PlayerSetMaxAllianceSize=size+1"
+  4:
+    cost:
+      - ""
+    attributes:
+      - "AllianceUpgrade;identifier=MAX_ALLIANCE_SIZE;PlayerSetMaxAllianceSize=size+1"
+  5:
+    cost:
+      - ""
+    attributes:
+      - "AllianceUpgrade;identifier=MAX_ALLIANCE_SIZE;PlayerSetMaxAllianceSize=size+1"
+#

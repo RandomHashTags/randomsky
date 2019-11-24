@@ -254,7 +254,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
             }
         }
     }
-    UMaterial fromBlock(String s) {
+    public UMaterial fromBlock(String s) {
         if(s.startsWith("RIPE CROPS")) return UMaterial.WHEAT_SEEDS;
         else if(s.startsWith("RIPE BEETROOT_BLOCK")) return UMaterial.BEETROOT_SEEDS;
         else if(s.startsWith("RIPE CARROT")) return UMaterial.CARROT_ITEM;

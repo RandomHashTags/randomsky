@@ -1,0 +1,38 @@
+# Made by RandomHashTags
+settings:
+  string: "-{VALUE}% Combat Tag Time"
+#
+gui:
+  slot: 4
+  item: "diamond_sword"
+  name: "Reduced Combat Timer"
+  lore:
+    - "&7Reduced Combat Tag timer."
+#
+levels:
+  1:
+    cost:
+      - "$25000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

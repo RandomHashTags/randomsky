@@ -1,0 +1,39 @@
+# Made by RandomHashTags
+settings:
+  string: "+{VALUE}% Increase"
+#
+gui:
+  slot: 6
+  item: "paper"
+  name: "Increase Adventure Mob Money Drops"
+  lore:
+    - "&7Increase the amount of money dropped"
+    - "&7when killing adventure mobs!"
+#
+levels:
+  1:
+    cost:
+      - "$20000000"
+    attributes:
+      - ""
+  2:
+    cost:
+      - ""
+    attributes:
+      - ""
+  3:
+    cost:
+      - ""
+    attributes:
+      - ""
+  4:
+    cost:
+      - ""
+    attributes:
+      - ""
+  5:
+    cost:
+      - ""
+    attributes:
+      - ""
+#

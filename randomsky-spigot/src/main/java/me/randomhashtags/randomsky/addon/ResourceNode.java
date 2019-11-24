@@ -1,8 +1,13 @@
 package me.randomhashtags.randomsky.addon;
 
+import com.sun.istack.internal.NotNull;
+import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.addon.util.Itemable;
 import me.randomhashtags.randomsky.addon.util.RequiredIslandLevel;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.util.universal.UVersionable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -11,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public interface ResourceNode extends Itemable, RequiredIslandLevel {
+public interface ResourceNode extends Itemable, RequiredIslandLevel, UVersionable {
     String getNodeName();
     String getNodeType();
     HashMap<String, BigDecimal> getRequiredNodes();
@@ -29,7 +34,7 @@ public interface ResourceNode extends Itemable, RequiredIslandLevel {
         final ItemMeta itemMeta = i.getItemMeta();
         final List<String> l = new ArrayList<>();
         for(String s : itemMeta.getLore()) {
-            l.add(s.replace("{RESPAWN}", api.getRemainingTime(respawnTime*1000)));
+            l.add(s.replace("{RESPAWN}", getRemainingTime(respawnTime*1000)));
         }
         itemMeta.setLore(l);
         i.setItemMeta(itemMeta);
@@ -37,8 +42,8 @@ public interface ResourceNode extends Itemable, RequiredIslandLevel {
     }
 
 
-    static ResourceNode valueOf(ItemStack is) {
-        if(resourceNodes != null && is != null && is.hasItemMeta() && is.getItemMeta().hasLore()) {
+    static ResourceNode valueOf(@NotNull ItemStack is) {
+        if(resourceNodes != null && is.hasItemMeta() && is.getItemMeta().hasLore()) {
             final List<String> l = is.getItemMeta().getLore(), lore = new ArrayList<>();
             final int S = l.size();
             for(ResourceNode n : resourceNodes.values()) {
@@ -64,13 +69,18 @@ public interface ResourceNode extends Itemable, RequiredIslandLevel {
         }
         return null;
     }
-    static ResourceNode getNextLevel(ResourceNode current) {
-        if(resourceNodes != null) {
-            final String s = current.getIdentifier();
-            for(ResourceNode n : resourceNodes.values()) {
-                final String r = n.getRequiredNode();
-                if(r != null && r.contains(s)) {
-                    return n;
+    static ResourceNode getNextLevel(@NotNull ResourceNode current) {
+        final HashMap<String, BigDecimal> required = current.getRequiredNodes();
+        if(required != null && !required.isEmpty()) {
+            final String id = current.getIdentifier();
+            for(String s : required.keySet()) {
+                final Identifiable i = RSStorage.get(Feature.RESOURCE_NODE, s);
+                if(i != null) {
+                    final ResourceNode next = (ResourceNode) i;
+                    final HashMap<String, BigDecimal> requiredNodes = next.getRequiredNodes();
+                    if(requiredNodes != null && requiredNodes.containsKey(id)) {
+                        return next;
+                    }
                 }
             }
         }

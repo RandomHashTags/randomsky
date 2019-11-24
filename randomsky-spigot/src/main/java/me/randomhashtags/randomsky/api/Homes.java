@@ -65,16 +65,17 @@ public class Homes extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             if(home == null && homes != null && homes.size() > 0) {
-                home = homes.get(0).name;
+                home = homes.get(0).getName();
             } else if(home == null || homes == null || homes.size() == 0) {
                 sendStringListMessage(player, config.getStringList("messages.dont have one"), null);
                 return;
             }
             for(Home h : homes) {
-                if(h.name.equalsIgnoreCase(home)) {
-                    replacements.put("{NAME}", h.name);
+                final String n = h.getName();
+                if(n.equalsIgnoreCase(home)) {
+                    replacements.put("{NAME}", n);
                     sendStringListMessage(player, config.getStringList("messages.traveling to home"), replacements);
-                    player.teleport(h.location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    player.teleport(h.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
                     return;
                 }
             }
@@ -95,8 +96,8 @@ public class Homes extends RSFeature implements CommandExecutor {
                 final Location l = player.getLocation();
                 final List<String> msg = config.getStringList("messages.sethome");
                 for(Home h : homes) {
-                    if(h.name.equalsIgnoreCase(home)) {
-                        h.location = l;
+                    if(h.getName().equalsIgnoreCase(home)) {
+                        h.setLocation(l);
                         sendStringListMessage(player, msg, replacements);
                         return;
                     }
@@ -121,7 +122,7 @@ public class Homes extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             for(Home h : homes) {
-                if(h.name.equalsIgnoreCase(home)) {
+                if(h.getName().equalsIgnoreCase(home)) {
                     homes.remove(h);
                     sendStringListMessage(player, config.getStringList("messages.delhome"), replacements);
                     return;
@@ -139,8 +140,8 @@ public class Homes extends RSFeature implements CommandExecutor {
                 if(s.equals("{HOMES}")) {
                     final List<String> p = config.getStringList("messages.home in list");
                     for(Home h : homes) {
-                        final String n = h.name;
-                        final Location l = h.location;
+                        final String n = h.getName();
+                        final Location l = h.getLocation();
                         final String x = Integer.toString(l.getBlockX()), y = Integer.toString(l.getBlockY()), z = Integer.toString(l.getBlockZ());
                         for(String o : p) {
                             player.sendMessage(colorize(o.replace("{NAME}", n).replace("{X}", x).replace("{Y}", y).replace("{Z}", z)));

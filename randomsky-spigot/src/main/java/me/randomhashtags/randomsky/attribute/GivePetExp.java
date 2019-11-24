@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.attribute;
 
-import me.randomhashtags.randompackage.addon.InventoryPet;
-import me.randomhashtags.randompackage.util.RPItemStack;
+import me.randomhashtags.randomsky.addon.InventoryPet;
+import me.randomhashtags.randomsky.util.RSItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class GivePetExp extends AbstractEventAttribute implements RPItemStack {
+public class GivePetExp extends AbstractEventAttribute implements RSItemStack {
     @Override
     public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
         final ItemStack is = event instanceof PlayerInteractEvent ? ((PlayerInteractEvent) event).getItem() : null;
