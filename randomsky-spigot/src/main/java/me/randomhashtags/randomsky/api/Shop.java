@@ -51,8 +51,9 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "shop.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "shop.yml"));
+        final String folder = dataFolder + separator + "shops";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
         shopTitles = new HashMap<>();
 
@@ -76,7 +77,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         if(!otherdata.getBoolean("saved default shops")) {
             final String[] A = new String[] {"BLOCKS", "CLAY", "CONTAINERS", "FARMING", "FENCES", "FISHING", "FLOWERS", "FOOD", "GLASS", "MOB_DROPS", "PERMISSION_BLOCKS", "POTIONS", "REDSTONE", "RESOURCE_NODES", "SAPLINGS", "SCIENCE", "SLABS", "SPAWNERS", "UTILITY", "WOOL"};
             for(String s : A) {
-                save("shops", s + ".yml");
+                save(folder, s + ".yml");
             }
             otherdata.set("saved default shops", true);
             saveOtherData();

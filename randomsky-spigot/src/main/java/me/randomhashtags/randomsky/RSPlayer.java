@@ -45,6 +45,8 @@ public interface RSPlayer {
     PlayerRank getRank();
     void setRank(@Nullable PlayerRank rank);
     ChatChannels getChatChannels();
+    ColorCrystal getActiveColorCrystal();
+    Set<ColorCrystal> getColorCrystals();
     CoinFlipStats getCoinFlipStats();
     JackpotStats getJackpotStats();
 
@@ -56,7 +58,7 @@ public interface RSPlayer {
         final List<Home> homes = getHomes();
         if(homes != null) {
             for(Home h : homes) {
-                if(name.equals(h.name)) {
+                if(name.equals(h.getName())) {
                     homes.remove(h);
                     return true;
                 }
@@ -68,8 +70,8 @@ public interface RSPlayer {
         final List<Home> homes = getHomes();
         if(homes != null) {
             for(Home h : homes) {
-                if(name.equals(h.name)) {
-                    h.location = l;
+                if(name.equals(h.getName())) {
+                    h.setLocation(l);
                     return true;
                 }
             }
@@ -82,6 +84,11 @@ public interface RSPlayer {
 
     boolean hasActiveFilter();
     void setFilter(boolean active);
+    default boolean toggleFilter() {
+        final boolean active = !hasActiveFilter();
+        setFilter(active);
+        return active;
+    }
     Set<UMaterial> getFilteredItems();
 
     HashMap<CustomKit, Long> getKitExpirations();

@@ -1,0 +1,154 @@
+# Made by RandomHashTags
+messages:
+  not enough funds:
+    - "&c&l(!)&r &cYou do not have enough funds to purchase this item!"
+    - "&cCost: &n${TOTAL}"
+  purchased:
+    - "&c&l- $&r&c{TOTAL}"
+    - "&aSuccessfully purchased &a&l{AMOUNT}x&r &a{ITEM} for &a&l$&r&a{BUY}/ea"
+  not enough to sell:
+    - "&c&l(!)&r &cYou do not have any {ITEM} to sell!"
+  sold:
+    - "&a&l+ $&r&a{TOTAL}"
+    - "&aSuccessfully sold &l{AMOUNT}x&r &a{ITEM} for &l$&r&a{SELL}/ea {BONUS}"
+  #
+  origin bonus: "(&7+{PERCENT}% {ORIGIN} Origin&a)"
+#
+lores:
+  format:
+    - "{PRICES}"
+    - " "
+    - "&7&m--------------------"
+    - "{USAGES}"
+  buy:
+    - " "
+    - "&aBuy Price"
+    - " &a&l$&r&a{BUY}/ea"
+  buy usage:
+    - "&eLeft-Click &7to buy &e1x"
+    - "&eShift Left-Click &7to buy &e{STACK}x"
+  usage spacing:
+    - " "
+  sell:
+    - " "
+    - "&cSell Price"
+    - " &c&l$&r&c{SELL}/ea"
+  sell usage:
+    - "&eRight-Click &7to sell &e1x"
+    - "&eShift Right-Click &7to sell &e{STACK}x"
+#
+categories:
+  title: "Shop Categories"
+  size: 27
+  added lore:
+    - "&7Click to browse category items."
+  background:
+    item: "black_stained_glass_pane"
+    name: " "
+  back:
+    item: "barrier"
+    name: "&cBack"
+    lore:
+      - "&7Click to view categories menu."
+  #
+  blocks:
+    slot: 0
+    opens: BLOCKS
+    item: "grass"
+    name: "&f&lBlocks&r &7(59 items)"
+  slabs:
+    slot: 1
+    opens: SLABS
+    item: "stone_slab"
+    name: "&f&lSlabs / Stairs&r &7(27 items)"
+  fences:
+    slot: 2
+    opens: FENCES
+    item: "fence"
+    name: "&f&lFences&r &7(15 items)"
+  wool:
+    slot: 3
+    opens: WOOL
+    item: "wool"
+    name: "&f&lWool&r &7(32 items)"
+  glass:
+    slot: 4
+    opens: GLASS
+    item: "white_stained_glass"
+    name: "&f&lGlass&r &7(34 items)"
+  clay:
+    slot: 5
+    opens: CLAY
+    item: "clay"
+    name: "&f&lClay / Concrete&r &7(33 items)"
+  containers:
+    slot: 6
+    opens: CONTAINERS
+    item: "chest"
+    name: "&f&lContainers&r &7(11 items)"
+  utility:
+    slot: 7
+    opens: UTILITY
+    item: "bucket"
+    name: "&f&lUtility&r &7(22 items)"
+  redstone:
+    slot: 8
+    opens: REDSTONE
+    item: "redstone"
+    name: "&f&lRedstone&r &7(21 items)"
+  farming:
+    slot: 9
+    opens: FARMING
+    item: "wheat_seeds"
+    name: "&f&lFarming&r &7(15 items)"
+  mob drops:
+    slot: 10
+    opens: MOB_DROPS
+    item: "rabbit"
+    name: "&f&lMob Drops&r &7(12 items)"
+  food:
+    slot: 11
+    opens: FOOD
+    item: "apple"
+    name: "&f&lFood&r &7(8 items)"
+  potions:
+    slot: 12
+    opens: POTIONS
+    item: "potion"
+    name: "&f&lPotions&r &7(8 items)"
+  spawners:
+    slot: 13
+    opens: SPAWNERS
+    item: "mob_spawner"
+    name: "&f&lSpawners&r &7(4 items)"
+  resource nodes:
+    slot: 14
+    opens: RESOURCE_NODES
+    item: "gold_ore"
+    name: "&f&lResource Nodes&r &7(3 items)"
+  permission blocks:
+    slot: 15
+    opens: PERMISSION_BLOCKS
+    item: "yellow_glazed_terracotta"
+    name: "&f&lPermission Blocks&r &7(3 items)"
+  saplings:
+    slot: 16
+    opens: SAPLINGS
+    item: "sapling"
+    name: "&f&lSaplings&r &7(9 items)"
+  flowers:
+    slot: 17
+    opens: FLOWERS
+    item: "oxeye_daisy"
+    name: "&f&lFlowers&r &7(10 items)"
+  fishing:
+    slot: 18
+    opens: FISHING
+    item: "fishing_rod"
+    name: "&f&lFishing&r &7(7 items)"
+  science:
+    slot: 19
+    opens: SCIENCE
+    item: "gold_block"
+    name: "&6&lScience Shop&r &7(3 items)"
+#

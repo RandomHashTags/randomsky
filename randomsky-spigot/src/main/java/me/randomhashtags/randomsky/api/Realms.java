@@ -23,7 +23,6 @@ public class Realms extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.REALM).size() + " Realms &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {

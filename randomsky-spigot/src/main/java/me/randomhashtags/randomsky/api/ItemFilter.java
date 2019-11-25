@@ -2,9 +2,9 @@ package me.randomhashtags.randomsky.api;
 
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.FilterCategory;
+import me.randomhashtags.randomsky.addon.file.FileFilterCategory;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.addon.file.FileFilterCategory;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static java.io.File.separator;
 
@@ -118,7 +119,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
             player.updateInventory();
         }
     }
-    private ItemStack getStatus(List<UMaterial> filtered, ItemStack is) {
+    private ItemStack getStatus(Set<UMaterial> filtered, ItemStack is) {
         itemMeta = is.getItemMeta(); lore.clear();
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
         final UMaterial u = UMaterial.match(is);
@@ -132,15 +133,14 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
     public void toggleFilter(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.filter.toggle", true)) {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-            final boolean status = !pdata.filter;
-            pdata.filter = status;
-            sendStringListMessage(player, config.getStringList("messages." + (status ? "en" : "dis") + "able"), null);
+            final boolean active = pdata.toggleFilter();
+            sendStringListMessage(player, config.getStringList("messages." + (active ? "en" : "dis") + "able"), null);
         }
     }
     public void viewCategory(@NotNull Player player, @NotNull FilterCategory category) {
         if(category != null && player != null && hasPermission(player, "RandomSky.filter.view." + category.getIdentifier(), true)) {
             player.closeInventory();
-            final List<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
+            final Set<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
             final UInventory target = category.getInventory();
             final int size = target.getSize();
             player.openInventory(Bukkit.createInventory(player, size, target.getTitle()));
@@ -184,7 +184,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
 
             if(category != null) {
-                final List<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
+                final Set<UMaterial> filtered = RSPlayer.get(player.getUniqueId()).getFilteredItems();
                 final UMaterial target = UMaterial.match(c);
                 if(filtered.contains(target)) {
                     filtered.remove(target);
@@ -204,7 +204,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
     private void playerPickupItemEvent(PlayerPickupItemEvent event) {
         final Player player = event.getPlayer();
         final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-        if(pdata.filter) {
+        if(pdata.hasActiveFilter()) {
             final ItemStack i = event.getItem().getItemStack();
             final UMaterial u = UMaterial.match(i);
             if(!pdata.getFilteredItems().contains(u)) {

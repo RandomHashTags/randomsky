@@ -52,7 +52,7 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
         save(folder, "_settings.yml");
         if(!otherdata.getBoolean("saved default auto bot upgrades")) {
-            final String[] a = new String[]{""};
+            final String[] a = new String[]{"BLOCKS_TO_MINE", "CRAFT_SCAN_INTERVAL", "CRAFTED_PER_INTERVAL", "HOPPER_INPUT_AMOUNT", "HOPPER_SCAN_INTERVAL", "INVENTORY_SIZE", "RECIPE_POOL_LIMIT", "SCAN_DELAY"};
             for(String s : a) save("auto bot upgrades", s + ".yml");
             otherdata.set("saved default auto bot upgrades", true);
             saveOtherData();
@@ -74,7 +74,6 @@ public class AutoBots extends RSFeature implements CommandExecutor {
         }
 
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
-
         viewingbot = new HashMap<>();
         editingbotinventory = new HashMap<>();
         upgradingbot = new HashMap<>();

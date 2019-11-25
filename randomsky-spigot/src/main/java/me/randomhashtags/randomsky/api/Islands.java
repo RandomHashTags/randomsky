@@ -8,18 +8,19 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.file.FileIsland;
 import me.randomhashtags.randomsky.addon.file.FileIslandOrigin;
+import me.randomhashtags.randomsky.addon.file.FileIslandRole;
 import me.randomhashtags.randomsky.addon.island.*;
 import me.randomhashtags.randomsky.addon.PermissionBlock;
-import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
-import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.api.skill.IslandFarming;
 import me.randomhashtags.randomsky.api.skill.IslandMining;
 import me.randomhashtags.randomsky.api.skill.IslandSlayer;
 import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
+import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.ToggleType;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -204,8 +205,9 @@ public class Islands extends IslandAddon implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "island settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "island settings.yml"));
+        final String folder = dataFolder + separator + "island";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
         pickingOrigin = new ArrayList<>();
         managing = new ArrayList<>();
@@ -237,7 +239,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
         final Plugin worldEdit = pluginmanager.getPlugin("WorldEdit");
         worldeditF = worldEdit.getDataFolder() + separator + "schematics";
 
-        for(File f : new File(dataFolder + separator + "origins").listFiles()) {
+        for(File f : new File(folder + separator + "origins").listFiles()) {
             final FileIslandOrigin o = new FileIslandOrigin(f);
             oi.setItem(o.getSlot(), o.getItem());
         }
@@ -282,18 +284,12 @@ public class Islands extends IslandAddon implements CommandExecutor {
             }
         }
 
-        final String dm = config.getString("roles.settings.default member"), dc = config.getString("roles.settings.default creator");
-        for(String s : config.getConfigurationSection("roles").getKeys(false)) {
-            if(!s.equals("settings")) {
-                final String p = "roles." + s + ".";
-                final IslandRole role = new IslandRole(s, colorize(config.getString(p + "rank")), colorize(config.getString(p + "name")), colorizeListString(config.getStringList(p + "lore")), config.getStringList(p + "permissions"));
-                if(dm.equals(s)) {
-                    IslandRole.defaultMember = role;
-                } else if(dc.equals(s)) {
-                    IslandRole.defaultCreator = role;
-                }
-            }
+
+        for(File f : new File(folder + separator + "roles").listFiles()) {
+            new FileIslandRole(f);
         }
+        defaultMember = config.getString("roles.settings.default member");
+        defaultCreator = config.getString("roles.settings.default creator");
 
         members = new UInventory(null, 54, colorize(config.getString("members.title")));
         membersBack = d(config, "members.back");
@@ -330,11 +326,11 @@ public class Islands extends IslandAddon implements CommandExecutor {
         final Location center = newIslandCenter();
         final Island i = new FileIsland(origin, u, center);
         final RSPlayer pdata = RSPlayer.get(u);
-        pdata.setIsland(i);
+        pdata.setIslandUUID(i.getUUID());
         player.closeInventory();
         player.sendMessage(ChatColor.YELLOW + "Please wait as your island is being created...");
         try {
-            pasteSchematic(origin.schematic, center);
+            pasteSchematic(origin.getSchematic(), center);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -419,7 +415,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
                 if(s == r) {
                     sendStringListMessage(sender, config.getStringList("messages.cannot invite self"), null);
-                } else if(is.members.containsKey(r)) {
+                } else if(is.getMembers().containsKey(r)) {
                     sendStringListMessage(sender, config.getStringList("messages.invite already member"), replacements);
                 } else {
                     final List<RSInvite> invites = is.invites;
@@ -557,8 +553,9 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 replacements.put("{PLAYER}", player.getName());
                 replacements.put("{TARGET}", target.getName());
                 replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
-                if(is.getBannedPlayers().contains(u)) {
-                    is.banned.remove(u);
+                final List<UUID> banned = is.getBannedPlayers();
+                if(banned.contains(u)) {
+                    banned.remove(u);
                     for(Player p : is.getOnlineMembers()) {
                         sendStringListMessage(p, config.getStringList("messages.unban"), replacements);
                     }
@@ -744,7 +741,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
         island.delete();
         player.closeInventory();
         player.teleport(spawn);
-        pdata.setIsland(null);
+        pdata.setIslandUUID(null);
         pdata.canDeleteIslandTime = System.currentTimeMillis()+deletionDelay*1000;
         sendStringListMessage(player, config.getStringList("messages.delete"), null);
 
@@ -801,7 +798,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
                     replacements.put("{X}", Integer.toString(l.getBlockX()));
                     replacements.put("{Y}", Integer.toString(l.getBlockY()));
                     replacements.put("{Z}", Integer.toString(l.getBlockZ()));
-                    is.setLocation("home", l);
+                    is.setHome(l);
                     sendStringListMessage(player, config.getStringList("messages.sethome"), replacements);
                 }
             }
@@ -816,7 +813,7 @@ public class Islands extends IslandAddon implements CommandExecutor {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void blockPlaceEvent(BlockPlaceEvent event) {
         final Block b = event.getBlockPlaced();
         final World w = b.getWorld();
@@ -830,37 +827,16 @@ public class Islands extends IslandAddon implements CommandExecutor {
                 replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
                 if(!is.getMembers().containsKey(u)) {
                     event.setCancelled(true);
-                    player.updateInventory();
                     sendStringListMessage(player, config.getStringList("messages.cannot build or break on island"), replacements);
                 } else {
                     final ItemStack i = event.getItemInHand();
-                    final ResourceNode n = ResourceNode.valueOf(i);
-                    final PermissionBlock pb = n == null ? PermissionBlock.valueOf(i) : null;
-                    if(n != null) {
-                        final IslandLevel requiredLevel = n.getRequiredIslandLevel();
-                        final String nodeName = n.getNodeName();
-                        if(is.getAllowedNodes().contains(n) || requiredLevel == null || is.getIslandLevel().getLevel() >= requiredLevel.level) {
-                            new ActiveResourceNode(n, l);
-                            replacements.put("{TYPE}", nodeName);
-                            sendStringListMessage(player, mining.config.getStringList("messages.nodes.placed"), replacements);
-                            for(Player p : is.getOnlineMembers()) {
-                                if(p != player) {
-                                    sendStringListMessage(p, mining.config.getStringList("messages.nodes.placed notify"), replacements);
-                                }
-                            }
-                        } else {
-                            event.setCancelled(true);
-                            replacements.put("{TYPE}", nodeName);
-                            replacements.put("{REQUIRED_LEVEL}", Integer.toString(requiredLevel.level));
-                            sendStringListMessage(player, mining.config.getStringList("messages.nodes.level too low to place node"), replacements);
-                        }
-                    } else if(pb != null) {
+                    final PermissionBlock pb = PermissionBlock.valueOf(i);
+                    if(pb != null) {
                         is.getPermissionBlocks().add(new ActivePermissionBlock(l, pb));
                     } else {
                         final IslandPlaceBlockEvent e = new IslandPlaceBlockEvent(player, is, i, b);
                         pluginmanager.callEvent(e);
                         event.setCancelled(e.isCancelled());
-                        player.updateInventory();
                     }
                 }
             } else {
@@ -887,13 +863,16 @@ public class Islands extends IslandAddon implements CommandExecutor {
                     event.setCancelled(cancelled);
                     if(!cancelled) {
                         final RSPlayer pdata = RSPlayer.get(uuid);
-                        boolean did = false, instant = pdata.instantBreakPickup;
+                        boolean did = false, instant = pdata.getToggles().get(ToggleType.INSTANT_BLOCK_PICKUP);
                         final MaterialData md = b.getState().getData();
                         if(md instanceof Crops) {
                             final String cs = md.toString();
                             for(ItemStack its : b.getDrops()) {
-                                if(instant) giveItem(player, its);
-                                else w.dropItemNaturally(l, its);
+                                if(instant) {
+                                    giveItem(player, its);
+                                } else {
+                                    w.dropItemNaturally(l, its);
+                                }
                             }
                             final UMaterial u = farming.fromBlock(md.toString());
                             int amount = 1;
@@ -908,8 +887,11 @@ public class Islands extends IslandAddon implements CommandExecutor {
                                     amount = ripe ? 2+random.nextInt(3) : 1;
                                 }
                                 seed.setAmount(amount);
-                                if(instant) giveItem(player, seed);
-                                else w.dropItemNaturally(l ,seed);
+                                if(instant) {
+                                    giveItem(player, seed);
+                                } else {
+                                    w.dropItemNaturally(l, seed);
+                                }
                             }
                             did = true;
                         }

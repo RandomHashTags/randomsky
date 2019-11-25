@@ -3,6 +3,8 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.addon.PermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.addon.island.IslandRole;
+import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
@@ -28,6 +30,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.io.File.separator;
+import static me.randomhashtags.randomsky.api.Islands.mining;
+import static me.randomhashtags.randomsky.api.skill.IslandMining.cosmeticFormat;
 
 public class IslandPermissionBlocks extends IslandAddon {
     private static IslandPermissionBlocks instance;
@@ -260,7 +264,7 @@ public class IslandPermissionBlocks extends IslandAddon {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    private void playerIslandBreakBlockEvent(PlayerIslandBreakBlockEvent event) {
+    private void playerIslandBreakBlockEvent(IslandBreakBlockEvent event) {
         final Player player = event.getPlayer();
         final UUID uuid = player.getUniqueId();
         final Island is = event.getIsland();
@@ -299,7 +303,7 @@ public class IslandPermissionBlocks extends IslandAddon {
             dmgDurability(player.getItemInHand());
             is.getPermissionBlocks().remove(a);
             a.delete();
-            w.dropItemNaturally(l.clone().add(0.5, 0.5, 0.5), type.item());
+            w.dropItemNaturally(l.clone().add(0.5, 0.5, 0.5), type.getItem());
         }
     }
 
@@ -309,12 +313,12 @@ public class IslandPermissionBlocks extends IslandAddon {
         final Block b = e.getClickedBlock();
         if(!e.isCancelled() && b != null) {
             final ItemStack it = e.getItem();
-            if(it == null || it.getType().equals(Material.AIR) || mining.isEnabled && it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().contains(cosmeticFormat)) {
+            if(it == null || it.getType().equals(Material.AIR) || mining.isEnabled() && it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().contains(cosmeticFormat)) {
                 final String a = e.getAction().name();
                 final Location bl = b.getLocation();
-                final Player player = event.player;
+                final Player player = event.getPlayer();
                 final UUID u = player.getUniqueId();
-                final Island is = event.island;
+                final Island is = event.getIsland();
                 final HashMap<UUID, IslandRole> members = is.members;
                 final ActivePermissionBlock pb = is.valueOF(bl);
                 final List<ActivePermissionBlock> nearby = is.getNearbyPermissionBlocks(bl);
@@ -345,7 +349,6 @@ public class IslandPermissionBlocks extends IslandAddon {
                     } else if(pb != null) {
                         viewPermissionBlock(player, pb);
                     } else {
-
                     }
                 } else if(a.contains("LEFT")) {
                     if(pb != null) {
@@ -357,8 +360,9 @@ public class IslandPermissionBlocks extends IslandAddon {
                             final PermissionBlock type = pb.getType();
                             is.getPermissionBlocks().remove(pb);
                             pb.delete();
-                            w.dropItemNaturally(bl.clone().add(0.5, 0.5, 0.5), type.item());
-                            spawnParticle(RSPlayer.get(u), w, bl, type.item());
+                            final ItemStack item = type.getItem();
+                            w.dropItemNaturally(bl.clone().add(0.5, 0.5, 0.5), item);
+                            spawnParticle(RSPlayer.get(u), w, bl, item);
                         }
                     } else if(!isMember) {
                         if(!nearby.isEmpty()) {

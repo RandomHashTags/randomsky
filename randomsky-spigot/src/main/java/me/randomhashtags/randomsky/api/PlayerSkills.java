@@ -99,7 +99,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
             player.closeInventory();
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final int size = gui.getSize();
-            player.openInventory(Bukkit.createInventory(player, size, gui.getTitle().replace("{TOKENS}", Integer.toString(pdata.skillTokens))));
+            player.openInventory(Bukkit.createInventory(player, size, gui.getTitle().replace("{TOKENS}", Integer.toString(pdata.getSkillTokens()))));
             final Inventory top = player.getOpenInventory().getTopInventory();
             top.setContents(gui.getInventory().getContents());
             viewing.put(player, null);
@@ -177,7 +177,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
             event.setCancelled(true);
             final Player player = event.getPlayer();
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-            pdata.skillTokens++;
+            pdata.setSkillTokens(pdata.getSkillTokens()+1);
             removeItem(player, i, 1);
             player.updateInventory();
         }

@@ -35,13 +35,15 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
     private CoinFlipStats coinflipStats;
     private JackpotStats jackpotStats;
 
-    public BigDecimal canDeleteIslandTime;
+    public long canDeleteIslandTime;
     private int skillTokens = 0;
+    private ColorCrystal activeColorCrystal;
 
     private List<Home> homes;
     public List<AuctionedItemObj> auctions;
     private Set<Adventure> allowedAdventures;
     private Set<UMaterial> filteredItems;
+    private Set<ColorCrystal> colorCrystals;
 
     private HashMap<CustomKit, Long> kitExpirations;
     private HashMap<PlayerSkill, Integer> playerSkills;
@@ -84,6 +86,13 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
         yml.set("island", islandUUID != null ? islandUUID.toString() : "null");
         yml.set("alliance", allianceUUID != null ? allianceUUID.toString() : "null");
 
+        if(activeColorCrystal != null) {
+            yml.set("color crystals.active", activeColorCrystal.getIdentifier());
+        }
+        if(colorCrystals != null) {
+            yml.set("color crystals.owned", colorCrystals.toArray());
+        }
+
         if(chat != null) {
             yml.set("chat.current", chat.getCurrent().name());
             yml.set("chat.active", chat.getActive().toArray());
@@ -98,7 +107,7 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
 
         if(homes != null) {
             for(Home h : homes) {
-                yml.set("homes." + h.name, h.location.toString());
+                yml.set("homes." + h.getName(), h.getLocation().toString());
             }
         }
 
@@ -190,6 +199,27 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
             chat = new ChatChannelsObj(current, active);
         }
         return chat;
+    }
+    public ColorCrystal getActiveColorCrystal() {
+        if(activeColorCrystal == null) {
+            final Identifiable i = RSStorage.get(Feature.COLOR_CRYSTAL, yml.getString("color crystals.active"));
+            if(i != null) {
+                activeColorCrystal = (ColorCrystal) i;
+            }
+        }
+        return activeColorCrystal;
+    }
+    public Set<ColorCrystal> getColorCrystals() {
+        if(colorCrystals == null) {
+            colorCrystals = new HashSet<>();
+            for(String s : yml.getStringList("color crystals.owned")) {
+                final Identifiable i = RSStorage.get(Feature.COLOR_CRYSTAL, s);
+                if(i != null) {
+                    colorCrystals.add((ColorCrystal) i);
+                }
+            }
+        }
+        return colorCrystals;
     }
     public CoinFlipStats getCoinFlipStats() {
         if(coinflipStats == null) {

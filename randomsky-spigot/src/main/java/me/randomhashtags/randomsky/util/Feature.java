@@ -56,6 +56,8 @@ public enum Feature {
 
     SHOP_CATEGORY,
 
+    SKY_KIT,
+
     TEAM,
 
     TELEPORT_PAD,
@@ -68,6 +70,7 @@ public enum Feature {
     ISLAND_PROGRESSIVE_SKILL,
     ISLAND_RANK,
     ISLAND_REGION_PROTECTION,
+    ISLAND_ROLE,
     ISLAND_SKILL,
     ISLAND_UPGRADE,
 }

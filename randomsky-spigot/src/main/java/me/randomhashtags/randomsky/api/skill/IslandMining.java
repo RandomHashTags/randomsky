@@ -1,9 +1,14 @@
 package me.randomhashtags.randomsky.api.skill;
 
+import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.addon.island.skill.MiningSkill;
 import me.randomhashtags.randomsky.api.IslandAddon;
+import me.randomhashtags.randomsky.api.Islands;
+import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.ToggleType;
 import me.randomhashtags.randomsky.util.universal.UInventory;
 import me.randomhashtags.randomsky.util.universal.UMaterial;
 import org.bukkit.*;
@@ -17,7 +22,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -256,13 +260,13 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                         final boolean contains = s.contains("{PROGRESS}") || s.contains("{COMPLETION}") || s.contains("{COMPLETION%}");
                         if(s.equals("{RESPAWN_RATE}")) {
                             for(String r : respawnRate) {
-                                lore.add(r.replace("{PROGRESS}", progress).replace("{COMPLETION}", NC).replace("{TYPE}", target.nodeTYPE).replace("{RESPAWN%}", rr));
+                                lore.add(r.replace("{PROGRESS}", progress).replace("{COMPLETION}", NC).replace("{TYPE}", target.getNodeType()).replace("{RESPAWN%}", rr));
                             }
                         } else if(s.equals("{OR}")) {
                             if(rn != null && rn.contains("||")) {
                                 final ResourceNode or = paths.get(rn.split("\\|\\|")[1]);
                                 final int orP = island.getMinedResourceNodes(or);
-                                final String orT = or.nodeTYPE, orProgress = Integer.toString(orP);
+                                final String orT = or.getNodeType(), orProgress = Integer.toString(orP);
                                 for(String o : orFormat) {
                                     lore.add(o.replace("{PROGRESS}", orProgress).replace("{TYPE}", orT).replace("{COMPLETION}", completion));
                                 }
@@ -305,8 +309,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
             }
             w.getBlockAt(bl).setType(Material.AIR);
             spawnParticle(pdata, w, bl, drop);
-            if(instantPickup && pdata.instantBreakPickup) giveItem(player, drop);
-            else {
+            if(instantPickup && pdata.getToggles().get(ToggleType.INSTANT_BLOCK_PICKUP)) {
+                giveItem(player, drop);
+            } else {
                 w.dropItemNaturally(bl.clone().add(0.5, 1, 0.5), drop);
             }
             player.updateInventory();
@@ -351,21 +356,21 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     }
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void islandPlaceBlockEvent(IslandPlaceBlockEvent event) {
-        final ItemStack i = event.item;
+        final ItemStack i = event.getItem();
         if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
             final List<String> l = i.getItemMeta().getLore();
             if(l.containsAll(resourceItemFormat) || l.containsAll(resourceFormat)) {
                 event.setCancelled(true);
-                sendStringListMessage(event.player, config.getStringList("messages.cannot place resource items"), null);
+                sendStringListMessage(event.getPlayer(), config.getStringList("messages.cannot place resource items"), null);
             }
         }
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void blockFromToEvent(BlockFromToEvent event) {
         final Block block = event.getBlock(), generated = event.getToBlock();
         final Material b = generated.getType();
         if(block.getWorld().getName().equals(islandWorld) && b.name().contains("AIR") && generatesCobble(generated, block)) {
-            this.generated.add(generated.getLocation());
+            IslandMining.generated.add(generated.getLocation());
         }
     }
     private boolean generatesCobble(Block generated, Block b) {
@@ -378,13 +383,13 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         }
         return false;
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void structureGrowEvent(StructureGrowEvent event) {
         for(BlockState b : event.getBlocks()) {
             generated.add(b.getLocation());
         }
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void leavesDecayEvent(LeavesDecayEvent event) {
         final Block b = event.getBlock();
         final Location l = b.getLocation();
@@ -419,56 +424,15 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    private void playerIslandBreakBlockEvent(PlayerIslandBreakBlockEvent event) {
-        final Player player = event.player;
-        final Island is = event.island;
-        final BlockBreakEvent e = event.breakEvent;
-        final Location l = e.getBlock().getLocation();
-        final ActiveResourceNode a = is.valueof(l);
-        if(a != null) {
-            final HarvestResourceNodeEvent r = new HarvestResourceNodeEvent(player, is, a);
-            pluginmanager.callEvent(r);
-
-            final HashMap<String, String> replacements = new HashMap<>();
-            replacements.put("{TYPE}", a.type.nodeName);
-            replacements.put("{TIME}", getRemainingTime(a.cooldownExpiration-System.currentTimeMillis()));
-            event.setCancelled(true);
-            dmgDurability(player.getItemInHand());
-            if(player.isSneaking()) {
-                a.delete();
-                l.getWorld().dropItemNaturally(l, a.type.item());
-                sendStringListMessage(player, config.getStringList("messages.destroyed"), replacements);
-            } else if(System.currentTimeMillis() >= a.cooldownExpiration) {
-                a.harvest(player);
-            } else {
-                sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
-                sendStringListMessage(player, config.getStringList("messages.nodes.pickup"), replacements);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    private void playerIslandInteractEvent(PlayerIslandInteractEvent event) {
-        final PlayerInteractEvent e = event.interactEvent;
+    private void playerIslandInteractEvent(IslandInteractEvent event) {
+        final PlayerInteractEvent e = event.getEvent();
         final Block b = e.getClickedBlock();
         if(b != null) {
-            final Island is = event.island;
-            final Player player = event.player;
+            final Island is = event.getIsland();
+            final Player player = event.getPlayer();
             final String a = e.getAction().name();
             final Location bl = b.getLocation();
-            final ActiveResourceNode n = is.valueof(bl);
-            if(a.contains("RIGHT") && n != null) {
-                final HashMap<String, String> replacements = new HashMap<>();
-                replacements.put("{TYPE}", n.type.nodeName);
-                final long s = System.currentTimeMillis(), c = n.cooldownExpiration;
-                if(s >= c) {
-                    sendStringListMessage(player, config.getStringList("messages.nodes.ready to be harvested"), replacements);
-                } else {
-                    final String t = getRemainingTime(c-s);
-                    replacements.put("{TIME}", t.equals("") ? "0" : t);
-                    sendStringListMessage(player, config.getStringList("messages.nodes.respawn"), replacements);
-                }
-            } else if(a.contains("LEFT") && !player.getGameMode().equals(GameMode.CREATIVE) && n == null) {
+            if(a.contains("LEFT") && !player.getGameMode().equals(GameMode.CREATIVE)) {
                 final ItemStack it = e.getItem();
                 final Material type = it != null ? it.getType() : null;
                 if(type == null || type.equals(Material.AIR) || it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().containsAll(cosmeticFormat)) {
@@ -479,10 +443,8 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                         sendStringListMessage(player, config.getStringList("messages.insta break tutorial"), null);
                         pdata.instaBreakTutorial = false;
                     }
-                    if(on != null && on.equals(i) && pdata.instantBlockBreak) {
-                        if(!generated.contains(bl)) {
-                            breakBlock(player, pdata, b);
-                        }
+                    if(on != null && on.equals(i) && pdata.getToggles().get(ToggleType.INSTANT_BLOCK_BREAK) && !generated.contains(bl)) {
+                        breakBlock(player, pdata, b);
                     }
                 }
             }

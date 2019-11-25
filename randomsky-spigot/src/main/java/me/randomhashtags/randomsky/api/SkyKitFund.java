@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static java.io.File.separator;
+
 public class SkyKitFund extends RSFeature implements CommandExecutor {
     private static SkyKitFund instance;
     public static SkyKitFund getFund() {
@@ -49,8 +51,9 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(null, "sky kits/_fund.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "sky kits/_fund.yml"));
+        final String folder = dataFolder + separator + "sky kits";
+        save(folder, "_fund.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_fund.yml"));
 
         unlockstring = new HashMap<>();
         needed_unlocks = new HashMap<>();
@@ -62,7 +65,9 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
             final BigDecimal v = BigDecimal.valueOf(Double.parseDouble(a[1]));
             unlockstring.put(a[0], s);
             needed_unlocks.put(a[2], v);
-            if(v.doubleValue() > maxfund.doubleValue()) maxfund = v;
+            if(v.doubleValue() > maxfund.doubleValue()) {
+                maxfund = v;
+            }
         }
 
         total = BigDecimal.valueOf(otherdata.getDouble("fund.total"));
@@ -75,10 +80,9 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
         sendConsoleMessage("&6[RandomPackage] &aLoaded Server Fund &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
-        final YamlConfiguration a = otherdata;
-        a.set("fund.total", total);
+        otherdata.set("fund.total", total);
         for(UUID u : deposits.keySet()) {
-            a.set("fund.depositors." + u.toString(), deposits.get(u));
+            otherdata.set("fund.depositors." + u.toString(), deposits.get(u));
         }
         saveOtherData();
     }
@@ -154,7 +158,6 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
             replacements.put("{REQ}", req);
             replacements.put("{REQ$}", req$);
         }
-        replacements.put("{FACTION}", sender instanceof Player ? getFactionTag(((Player) sender).getUniqueId()) : "");
         replacements.put("{PLAYER}", sender.getName());
         replacements.put("{AMOUNT}", formatDouble(q).split("\\.")[0]);
 

@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.addon.file.FileIslandLevel;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandLevel;
+import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.util.universal.UInventory;
@@ -239,7 +240,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                 } else if(bal < cost) {
                     sendStringListMessage(player, config.getStringList("messages.cannot afford level up"), replacements);
                 } else {
-                    is.setLevel(level);
+                    is.setIslandLevel(level);
                     replacements.put("{SIZE}", Integer.toString(is.radius));
                     eco.withdrawPlayer(player, cost);
                     bal -= cost;

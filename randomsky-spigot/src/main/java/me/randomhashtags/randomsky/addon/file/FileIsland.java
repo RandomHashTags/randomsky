@@ -40,17 +40,17 @@ public class FileIsland extends RSAddon implements Island {
     private List<UUID> bannedPlayers;
 
     public FileIsland(IslandOrigin origin, UUID creator, Location center) {
+        uuid = UUID.randomUUID();
     }
     public FileIsland(File f) {
         load(f);
         uuid = UUID.fromString(getYamlName());
-        RSStorage.register(Feature.ISLAND, this);
+        CACHE.put(uuid, this);
         load();
     }
-    public static FileIsland get(@NotNull UUID uuid) {
-        final String u = uuid.toString();
-        final Identifiable target = RSStorage.get(Feature.ISLAND, u);
-        return target != null ? (FileIsland) target : new FileIsland(new File(dataFolder + separator + "_Data" + separator + "players", u + ".yml"));
+    public static Island get(@NotNull UUID uuid) {
+        if(CACHE.containsKey(uuid)) return CACHE.get(uuid);
+        return new FileIsland(new File(dataFolder + separator + "_Data" + separator + "players", uuid.toString() + ".yml"));
     }
 
     public String getIdentifier() { return getYamlName(); }
@@ -90,6 +90,9 @@ public class FileIsland extends RSAddon implements Island {
             level = (IslandLevel) RSStorage.get(Feature.ISLAND_LEVEL, getStringSettings()[0]);
         }
         return level;
+    }
+    public void setIslandLevel(IslandLevel level) {
+        this.level = level;
     }
     public IslandOrigin getOrigin() {
         if(origin == null) {

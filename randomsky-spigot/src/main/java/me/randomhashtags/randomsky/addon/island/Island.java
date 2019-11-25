@@ -33,6 +33,7 @@ public interface Island extends Identifiable, Attributable, Loadable {
     boolean isOpenToPublic();
     void setOpenToPublic(boolean isOpenToPublic);
     IslandLevel getIslandLevel();
+    void setIslandLevel(IslandLevel level);
     IslandOrigin getOrigin();
     PolyBoundary getCurrentBoundary();
     PolyBoundary getMaxBoundary();
@@ -73,7 +74,9 @@ public interface Island extends Identifiable, Attributable, Loadable {
     }
     default Location getCenter() { return getLocation("center"); }
     default Location getHome() { return getLocation("home"); }
+    default void setHome(Location l) { setLocation("home", l); }
     default Location getWarp() { return getLocation("warp"); }
+    default void setWarp(Location l) { setLocation("warp", l); }
 
     List<UUID> getBannedPlayers();
 

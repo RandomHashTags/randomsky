@@ -117,7 +117,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
             new FileAllianceRelation(f);
         }
         for(File f : new File(folder + separator + "upgrades").listFiles()) {
-            new FileAllianceUpgrade();
+            new FileAllianceUpgrade(f);
         }
 
         tagMin = config.getInt("settings.tag min");

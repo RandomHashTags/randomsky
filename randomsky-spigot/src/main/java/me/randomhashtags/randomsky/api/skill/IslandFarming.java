@@ -135,7 +135,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 final FarmingSkill is = FarmingSkill.slots.getOrDefault(i, null);
                 if(is != null) {
                     final FarmingSkill r = is.required;
-                    final FarmingRecipe req = is.getRequiredRecipe(), previousRecipe = r != null ? r.requiredRecipe : null;
+                    final FarmingRecipe req = is.getRequiredRecipe(), previousRecipe = r != null ? r.getRequiredRecipe() : null;
                     final boolean isDefault = defaults.contains(req), isUnlocked = r == null || allowedCrops.contains(req);
                     final double c = is.getCompletion().doubleValue(), p = previousRecipe != null ? cropsGrown.getOrDefault(previousRecipe, BigDecimal.ZERO).doubleValue() : 0;
                     double percent = (p/c)*100;
@@ -143,7 +143,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
 
                     itemMeta = item.getItemMeta(); lore.clear();
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    final String NAME = ChatColor.stripColor(itemMeta.getDisplayName()), completion = formatDouble(c), progress = formatDouble(p == -1 ? 0.00 : Math.min(p, c)), T = r != null ? r.type : is.type, P = percent > 0.00 ? formatDouble(round(percent, 2)) : "0";
+                    final String NAME = ChatColor.stripColor(itemMeta.getDisplayName()), completion = formatDouble(c), progress = formatDouble(p == -1 ? 0.00 : Math.min(p, c)), T = (r != null ? r : is).getType(), P = percent > 0.00 ? formatDouble(round(percent, 2)) : "0";
                     itemMeta.setDisplayName((r == null || percent >= 100.00 ? completedPrefix : isUnlocked && p != -1 ? inprogressPrefix : lockedPrefix) + NAME);
                     for(String s : itemMeta.getLore()) {
                         if(s.equals("{STATUS}")) {

@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.addon.CustomKit;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -49,7 +50,7 @@ public class Kits extends RSFeature implements Listener {
             if(a.equals("reset") && l == 2) {
                 tryResetting(sender, args[1]);
             } else if(player != null) {
-                final Kit k = Kit.kits.getOrDefault(a, null);
+                final CustomKit k = Kit.kits.getOrDefault(a, null);
                 if(k == null) {
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{INPUT}", a);
@@ -64,8 +65,9 @@ public class Kits extends RSFeature implements Listener {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "kits", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "kits", "_settings.yml"));
+        final String folder = dataFolder + separator + "kits";
+        save(folder, "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
         back = d(config, "back");
         format = colorizeListString(config.getStringList("lores.format"));
@@ -86,8 +88,8 @@ public class Kits extends RSFeature implements Listener {
             saveOtherData();
         }
 
-        for(File f : new File(dataFolder + separator + "kits").listFiles()) {
-            final Kit k = new Kit(f);
+        for(File f : new File(folder).listFiles()) {
+            final CustomKit k = new Kit(f);
             item = k.getItem();
             itemMeta = item.getItemMeta(); lore.clear();
             for(String e : format) {
@@ -118,7 +120,7 @@ public class Kits extends RSFeature implements Listener {
             final int r = event.getRawSlot();
             final Inventory top = player.getOpenInventory().getTopInventory();
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
-            final Kit kit = t.equals(gui.getTitle()) ? Kit.valueOf(r) : null;
+            final CustomKit kit = t.equals(gui.getTitle()) ? Kit.valueOf(r) : null;
             if(kit != null) {
                 final String click = event.getClick().name();
                 if(click.contains("LEFT")) {
@@ -142,7 +144,7 @@ public class Kits extends RSFeature implements Listener {
             top.setContents(gui.getInventory().getContents());
 
             for(int i = 0; i < size; i++) {
-                final Kit k = Kit.valueOf(i);
+                final CustomKit k = Kit.valueOf(i);
                 if(k != null) {
                     top.setItem(i, getStatus(player, top, i, pdata, k));
                 }
@@ -150,10 +152,10 @@ public class Kits extends RSFeature implements Listener {
             player.updateInventory();
         }
     }
-    private ItemStack getStatus(Player player, Inventory top, int slot, RSPlayer pdata, Kit kit) {
-        final String n = kit.getYamlName();
+    private ItemStack getStatus(Player player, Inventory top, int slot, RSPlayer pdata, CustomKit kit) {
+        final String n = kit.getIdentifier();
         final boolean canClaim = canClaim(pdata, kit);
-        final HashMap<Kit, Long> k = pdata.getKitExpirations();
+        final HashMap<CustomKit, Long> k = pdata.getKitExpirations();
         final String cooldown = getRemainingTime(kit.getCooldown()*1000), remainingTime = k.containsKey(kit) ? getRemainingTime(k.get(kit)-System.currentTimeMillis()) : "0s";
         item = top.getItem(slot);
         itemMeta = item.getItemMeta(); lore.clear();
@@ -181,15 +183,15 @@ public class Kits extends RSFeature implements Listener {
         if(canClaim) item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         return item;
     }
-    public boolean canClaim(RSPlayer pdata, Kit kit) {
-        final HashMap<Kit, Long> e = pdata.getKitExpirations();
+    public boolean canClaim(RSPlayer pdata, CustomKit kit) {
+        final HashMap<CustomKit, Long> e = pdata.getKitExpirations();
         return !e.containsKey(kit) || System.currentTimeMillis() >= e.get(kit);
     }
-    public void tryClaiming(Player player, RSPlayer pdata, Inventory top, int slot, Kit kit) {
-        if(hasPermission(player, "RandomSky.kits." + kit.getYamlName(), true)) {
+    public void tryClaiming(Player player, RSPlayer pdata, Inventory top, int slot, CustomKit kit) {
+        if(hasPermission(player, "RandomSky.kits." + kit.getIdentifier(), true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{KIT}", kit.getName());
-            final HashMap<Kit, Long> k = pdata.getKitExpirations();
+            final HashMap<CustomKit, Long> k = pdata.getKitExpirations();
 
             if(k.containsKey(kit)) {
                 final long timeLeft = k.get(kit)-System.currentTimeMillis();
@@ -208,7 +210,7 @@ public class Kits extends RSFeature implements Listener {
             player.updateInventory();
         }
     }
-    private void giveKit(Player player, RSPlayer pdata, Kit kit, boolean addCooldown, boolean sendMessage) {
+    private void giveKit(Player player, RSPlayer pdata, CustomKit kit, boolean addCooldown, boolean sendMessage) {
         final List<ItemStack> items = kit.items();
         for(ItemStack is : items) {
             giveItem(player, is);
@@ -222,7 +224,7 @@ public class Kits extends RSFeature implements Listener {
             pdata.getKitExpirations().put(kit, System.currentTimeMillis()+(kit.getCooldown()*1000));
         }
     }
-    public void tryPreviewing(Player player, Kit kit) {
+    public void tryPreviewing(Player player, CustomKit kit) {
         player.closeInventory();
         final List<ItemStack> items = kit.items();
         final int s = items.size(), size = s%9 == 0 ? s : ((s+9)/9)*9;

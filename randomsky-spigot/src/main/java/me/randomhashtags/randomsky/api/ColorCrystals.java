@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.addon.ColorCrystal;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
@@ -47,7 +48,10 @@ public class ColorCrystals extends RSFeature {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void playerChatEvent(AsyncPlayerChatEvent event) {
         final RSPlayer pdata = RSPlayer.get(event.getPlayer().getUniqueId());
-        event.setMessage(event.getMessage());
+        final ColorCrystal active = pdata.getActiveColorCrystal();
+        if(active != null) {
+            event.setMessage(active.getEffect() + event.getMessage());
+        }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void inventoryClickEvent(InventoryClickEvent event) {
