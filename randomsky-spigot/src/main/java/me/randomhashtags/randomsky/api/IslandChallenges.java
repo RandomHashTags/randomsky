@@ -10,8 +10,8 @@ import me.randomhashtags.randomsky.event.island.IslandChallengeProgressEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -58,13 +58,13 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void load() {
         final long a = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "island" + separator + "challenges";
+        final String folder = DATA_FOLDER + separator + "island" + separator + "challenges";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
-        settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island settings", "_settings.yml"));
+        settings = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "island settings", "_settings.yml"));
 
-        claim = colorizeListString(config.getStringList("challenges.settings.completed.claim"));
-        claimed = colorizeListString(config.getStringList("challenges.settings.completed.claimed"));
+        claim = getStringList(config, "challenges.settings.completed.claim");
+        claimed = getStringList(config, "challenges.settings.completed.claimed");
         completed = d(config, "challenges.settings.completed");
         progress = d(config, "challenges.settings.progress");
         locked = d(config, "challenges.settings.locked");
@@ -168,7 +168,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
 
     public void increaseChallenge(Event event, Player player, Island island, BigDecimal increment) {
         final IslandChallengeProgressEvent e = new IslandChallengeProgressEvent(event, player, island, increment);
-        pluginmanager.callEvent(e);
+        PLUGIN_MANAGER.callEvent(e);
         if(!e.isCancelled()) {
             final ActiveIslandChallenge a = island.challenge;
             final IslandChallenge t = a.getChallenge();
@@ -181,10 +181,10 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                 final List<Player> on = island.getOnlineMembers();
                 final String type = t.getName(), nt = next != null ? next.getName() : "";
                 final List<String> obj = next != null ? next.getObjective() : null;
-                for(String s : config.getStringList("messages.complete")) {
+                for(String s : getStringList(config, "messages.complete")) {
                     if(s.equals("{NEXT_CHALLENGE}")) {
                         if(next != null) {
-                            for(String o : config.getStringList("messages.next challenge")) {
+                            for(String o : getStringList(config, "messages.next challenge")) {
                                 if(o.contains("{OBJ}")) {
                                     o = colorize(o.replace("{OBJ}", nextChallengeObjectivePrefix+ChatColor.stripColor(obj.get(0))));
                                     for(Player p : on) {
@@ -379,7 +379,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                     final String id = i.getIdentifier();
                     final HashMap<String, Boolean> completed = island.getCompletedChallenges();
                     if(type == i) {
-                        sendStringListMessage(player, config.getStringList("messages.must complete before claiming rewards"), null);
+                        sendStringListMessage(player, getStringList(config, "messages.must complete before claiming rewards"), null);
                     } else if(completed.containsKey(id)) {
                         if(!completed.get(id)) {
                             giveRewards(player, i);
@@ -388,7 +388,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                             top.setItem(r, getStatus(top, r, type, i, completed, null, null));
 
                             final String N = i.getName();
-                            for(String s : config.getStringList("messages.claimed")) {
+                            for(String s : getStringList(config, "messages.claimed")) {
                                 if(s.equals("{REWARDS}")) {
                                     for(String p : i.getRewards()) {
                                         player.sendMessage(colorize(p.split(";")[1]));
@@ -398,10 +398,10 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
                                 }
                             }
                         } else {
-                            sendStringListMessage(player, config.getStringList("messages.already claimed"), null);
+                            sendStringListMessage(player, getStringList(config, "messages.already claimed"), null);
                         }
                     } else {
-                        sendStringListMessage(player, config.getStringList("messages.must complete challenge requirements"), null);
+                        sendStringListMessage(player, getStringList(config, "messages.must complete challenge requirements"), null);
                     }
                 }
             }

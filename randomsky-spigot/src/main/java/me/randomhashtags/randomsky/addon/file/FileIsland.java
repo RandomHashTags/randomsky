@@ -50,7 +50,7 @@ public class FileIsland extends RSAddon implements Island {
     }
     public static Island get(@NotNull UUID uuid) {
         if(CACHE.containsKey(uuid)) return CACHE.get(uuid);
-        return new FileIsland(new File(dataFolder + separator + "_Data" + separator + "players", uuid.toString() + ".yml"));
+        return new FileIsland(new File(DATA_FOLDER + separator + "_Data" + separator + "players", uuid.toString() + ".yml"));
     }
 
     public String getIdentifier() { return getYamlName(); }

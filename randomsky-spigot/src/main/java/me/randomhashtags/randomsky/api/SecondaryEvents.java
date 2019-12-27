@@ -41,13 +41,13 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
         final int l = args.length;
         if(c.equals("withdraw") && banknoteIsEnabled) {
             if(l == 0) {
-                sendStringListMessage(player, config.getStringList("banknote.messages.usage"), null);
+                sendStringListMessage(player, getStringList(config, "banknote.messages.usage"), null);
             } else {
                 tryWithdrawing(player, args[0]);
             }
         } else if(c.equals("xpbottle") && xpbottleIsEnabled) {
             if(l == 0) {
-                sendStringListMessage(player, config.getStringList("xpbottle.messages.usage"), null);
+                sendStringListMessage(player, getStringList(config, "xpbottle.messages.usage"), null);
             } else {
                 tryWithdrawXP(player, args[0]);
             }
@@ -74,7 +74,7 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
             }
         }
         bn = new banknoteevents();
-        pluginmanager.registerEvents(bn, randomsky);
+        PLUGIN_MANAGER.registerEvents(bn, RANDOM_SKY);
     }
     public void enableXpbottle() {
         if(xpbottleIsEnabled) return;
@@ -87,7 +87,7 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
             }
         }
         xp = new xpbottleevents();
-        pluginmanager.registerEvents(xp, randomsky);
+        PLUGIN_MANAGER.registerEvents(xp, RANDOM_SKY);
     }
 
     public void disableBanknote() {
@@ -106,23 +106,23 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
 
     public void tryWithdrawing(Player player, String value) {
         if(hasPermission(player, "RandomSky.withdraw", true)) {
-            final double v = getRemainingDouble(value), bal = eco.getBalance(player);
+            final double v = getRemainingDouble(value), bal = ECONOMY.getBalance(player);
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{INPUT}", value);
             replacements.put("{VALUE}", formatDouble(v));
             replacements.put("{BAL}", formatDouble(bal));
             replacements.put("{MIN}", formatDouble(minBanknote));
             if(v <= 0.00) {
-                sendStringListMessage(player, config.getStringList("banknote.messages.enter valid"), replacements);
+                sendStringListMessage(player, getStringList(config, "banknote.messages.enter valid"), replacements);
             } else if(v < minBanknote) {
-                sendStringListMessage(player, config.getStringList("banknote.messages.need min"), replacements);
+                sendStringListMessage(player, getStringList(config, "banknote.messages.need min"), replacements);
             } else if(bal < v) {
-                sendStringListMessage(player, config.getStringList("banknote.messages.not enough to withdraw"), replacements);
+                sendStringListMessage(player, getStringList(config, "banknote.messages.not enough to withdraw"), replacements);
             } else {
-                eco.withdrawPlayer(player, v);
+                ECONOMY.withdrawPlayer(player, v);
                 giveItem(player, givedp.getBanknote(v, player.getName()));
                 player.updateInventory();
-                sendStringListMessage(player, config.getStringList("banknote.messages.signed"), replacements);
+                sendStringListMessage(player, getStringList(config, "banknote.messages.signed"), replacements);
             }
         }
     }
@@ -133,14 +133,14 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
             replacements.put("{INPUT}", value);
             replacements.put("{XP}", Integer.toString(v));
             if(v < 1) {
-                sendStringListMessage(player, config.getStringList("xpbottle.messages.enter valid amount"), replacements);
+                sendStringListMessage(player, getStringList(config, "xpbottle.messages.enter valid amount"), replacements);
             } else if(v > max) {
-                sendStringListMessage(player, config.getStringList("xpbottle.messages.not enough"), replacements);
+                sendStringListMessage(player, getStringList(config, "xpbottle.messages.not enough"), replacements);
             } else {
                 setTotalExperience(player, getTotalExperience(player)-v);
                 giveItem(player, givedp.getXPBottle(v, player.getName()));
                 player.updateInventory();
-                sendStringListMessage(player, config.getStringList("xpbottle.messages.withdraw"), replacements);
+                sendStringListMessage(player, getStringList(config, "xpbottle.messages.withdraw"), replacements);
             }
         }
     }
@@ -162,10 +162,10 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
                         if(v >= minBanknote) {
                             event.setCancelled(true);
                             removeItem(player, i, 1);
-                            eco.depositPlayer(player, v);
+                            ECONOMY.depositPlayer(player, v);
                             final HashMap<String, String> replacements = new HashMap<>();
                             replacements.put("{VALUE}", formatDouble(v));
-                            sendStringListMessage(player, config.getStringList("banknote.messages.redeem"), replacements);
+                            sendStringListMessage(player, getStringList(config, "banknote.messages.redeem"), replacements);
                         }
                     }
                 }
@@ -192,7 +192,7 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
                             removeItem(player, i, 1);
                             final HashMap<String, String> replacements = new HashMap<>();
                             replacements.put("{XP}", formatInt(v));
-                            sendStringListMessage(player, config.getStringList("xpbottle.messages.redeem"), replacements);
+                            sendStringListMessage(player, getStringList(config, "xpbottle.messages.redeem"), replacements);
                         }
                     }
                 }

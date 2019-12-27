@@ -7,7 +7,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -62,8 +62,8 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "player skills", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "player skills", "_settings.yml"));
+        save(DATA_FOLDER + separator + "player skills", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "player skills", "_settings.yml"));
 
         skills = new HashMap<>();
         viewing = new HashMap<>();
@@ -75,7 +75,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         token = d(config, "items.token");
         shard = d(config, "items.shard");
 
-        for(File f : new File(dataFolder + separator + "player skills").listFiles()) {
+        for(File f : new File(DATA_FOLDER + separator + "player skills").listFiles()) {
             if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
                 final FilePlayerSkill skill = new FilePlayerSkill(f);
             }

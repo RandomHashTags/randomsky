@@ -2,8 +2,8 @@ package me.randomhashtags.randomsky.addon.active;
 
 import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.ResourceNode;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
-import me.randomhashtags.randomsky.util.universal.UVersionable;
+import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -63,7 +63,7 @@ public class ActiveResourceNode implements UVersionable {
         hasPlaced = true;
     }
     private void doTask() {
-        respawnTask = scheduler.scheduleSyncDelayedTask(randomsky, () -> {
+        respawnTask = SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> {
             final World w = getWorld();
             final Block b = w.getBlockAt(location);
             final UMaterial h = type.getHarvestBlock();
@@ -76,12 +76,12 @@ public class ActiveResourceNode implements UVersionable {
         }, 20*type.getRespawnTime());
     }
     public void delete() {
-        scheduler.cancelTask(respawnTask);
+        SCHEDULER.cancelTask(respawnTask);
         getWorld().getBlockAt(location).setType(Material.AIR);
     }
     public void harvest(Player player) {
         final HarvestResourceNodeEvent e = new HarvestResourceNodeEvent(player, this);
-        pluginmanager.callEvent(e);
+        PLUGIN_MANAGER.callEvent(e);
         if(!e.isCancelled()) {
             final World world = getWorld();
             final HashMap<ResourceNode, Integer> mined = e.getIsland().minedResourceNodes;

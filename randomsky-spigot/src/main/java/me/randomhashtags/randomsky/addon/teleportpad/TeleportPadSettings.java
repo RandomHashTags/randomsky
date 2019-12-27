@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addon.teleportpad;
 
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 
 import java.util.List;
 

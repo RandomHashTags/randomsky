@@ -10,7 +10,7 @@ import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
 import me.randomhashtags.randomsky.addon.obj.JackpotStats;
 import me.randomhashtags.randomsky.util.ToggleType;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.Location;
 
 import java.util.HashMap;

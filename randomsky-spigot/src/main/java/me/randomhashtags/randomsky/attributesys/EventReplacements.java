@@ -3,7 +3,7 @@ package me.randomhashtags.randomsky.attributesys;
 import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
 import me.randomhashtags.randomsky.event.FundDepositEvent;
 import me.randomhashtags.randomsky.event.JackpotPurchaseTicketsEvent;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;

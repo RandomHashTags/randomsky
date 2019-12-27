@@ -8,7 +8,7 @@ import me.randomhashtags.randomsky.addon.file.FileAutoBotUpgrade;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,7 +48,7 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "auto bots";
+        final String folder = DATA_FOLDER + separator + "auto bots";
 
         save(folder, "_settings.yml");
         if(!otherdata.getBoolean("saved default auto bot upgrades")) {

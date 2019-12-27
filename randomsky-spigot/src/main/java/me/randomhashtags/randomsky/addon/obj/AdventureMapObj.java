@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addon.obj;
 
 import me.randomhashtags.randomsky.addon.adventure.AdventureMap;
-import me.randomhashtags.randomsky.util.universal.UVersionable;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.inventory.ItemStack;
 
 public class AdventureMapObj implements AdventureMap, UVersionable {

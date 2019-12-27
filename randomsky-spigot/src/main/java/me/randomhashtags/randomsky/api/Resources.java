@@ -74,9 +74,9 @@ public class Resources extends RSFeature {
         }
     }
 
-    public void saveDefaultFragments() { saveDefault(dataFolder + separator + "resources" + separator + "fragments", new String[] { "COBBLESTONE", "GOLD", "LOG", "MOB_SPAWNER" }); }
-    public void saveDefaultNodes() { saveDefault(dataFolder + separator + "resources" + separator + "nodes", new String[] { "COAL", "COBBLESTONE", "DIAMOND", "GOLD", "IRON", "LOG" }); }
-    public void saveDefaultRefined() { saveDefault(dataFolder + separator + "resources" + separator + "refined", new String[] { "DIAMOND_BLOCK", "IRON_BLOCK" }); }
-    public void saveDefaultScraps() { saveDefault(dataFolder + separator + "resources" + separator + "scraps", new String[] { "DIAMOND", "GOLD", "IRON", "OAK", "SCIENCE_GOLD", "STONE" }); }
-    public void saveDefaultUnrefined() { saveDefault(dataFolder + separator + "resources" + separator + "unrefined", new String[] { "DIAMOND_BLOCK", "IRON_BLOCK" }); }
+    public void saveDefaultFragments() { saveDefault(DATA_FOLDER + separator + "resources" + separator + "fragments", new String[] { "COBBLESTONE", "GOLD", "LOG", "MOB_SPAWNER" }); }
+    public void saveDefaultNodes() { saveDefault(DATA_FOLDER + separator + "resources" + separator + "nodes", new String[] { "COAL", "COBBLESTONE", "DIAMOND", "GOLD", "IRON", "LOG" }); }
+    public void saveDefaultRefined() { saveDefault(DATA_FOLDER + separator + "resources" + separator + "refined", new String[] { "DIAMOND_BLOCK", "IRON_BLOCK" }); }
+    public void saveDefaultScraps() { saveDefault(DATA_FOLDER + separator + "resources" + separator + "scraps", new String[] { "DIAMOND", "GOLD", "IRON", "OAK", "SCIENCE_GOLD", "STONE" }); }
+    public void saveDefaultUnrefined() { saveDefault(DATA_FOLDER + separator + "resources" + separator + "unrefined", new String[] { "DIAMOND_BLOCK", "IRON_BLOCK" }); }
 }

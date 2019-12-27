@@ -12,8 +12,8 @@ import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -62,10 +62,10 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
 
-        final String farmingFolder = dataFolder + separator + "island" + separator + "skills" + separator + "farming";
+        final String farmingFolder = DATA_FOLDER + separator + "island" + separator + "skills" + separator + "farming";
         save(farmingFolder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(farmingFolder, "_settings.yml"));
-        settings = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island", "_settings.yml"));
+        settings = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "island", "_settings.yml"));
 
         plantGrownSentWhenEndsIn = new ArrayList<>();
         viewing = new ArrayList<>();
@@ -74,11 +74,11 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
             plantGrownSentWhenEndsIn.add(Integer.parseInt(s));
         }
 
-        final List<String> settingsFormat = colorizeListString(config.getStringList("info.settings.format"));
-        completedStatus = colorizeListString(config.getStringList("info.settings.completed.status"));
-        lockedStatus = colorizeListString(config.getStringList("info.settings.locked.status"));
-        inprogressStatus = colorizeListString(config.getStringList("info.settings.in progress.status"));
-        farmingRecipe = colorizeListString(config.getStringList("info.settings.farming recipe"));
+        final List<String> settingsFormat = getStringList(config, "info.settings.format");
+        completedStatus = getStringList(config, "info.settings.completed.status");
+        lockedStatus = getStringList(config, "info.settings.locked.status");
+        inprogressStatus = getStringList(config, "info.settings.in progress.status");
+        farmingRecipe = getStringList(config, "info.settings.farming recipe");
         needsRecipe = colorize(config.getString("info.settings.needs recipe"));
         hasRecipe = colorize(config.getString("info.settings.has recipe"));
 
@@ -90,7 +90,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
             new FileFarmingRecipe(f);
         }
 
-        final List<String> defaultRecipes = config.getStringList("default recipes");
+        final List<String> defaultRecipes = getStringList(config, "default recipes");
         for(String s : defaultRecipes) {
             final Identifiable i = RSStorage.get(Feature.FARMING_RECIPE, s);
             if(i != null) {
@@ -236,7 +236,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 replacements.put("{TYPE}", n.getType());
                 island.farmingSkill = new ActiveIslandSkill(n, n.level, 0);
                 cropsGrown.put(ne, BigDecimal.ZERO);
-                final List<String> ad = config.getStringList("messages.skill advanced");
+                final List<String> ad = getStringList(config, "messages.skill advanced");
                 for(Player player : online) {
                     sendStringListMessage(player, ad, replacements);
                 }
@@ -244,7 +244,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                 final String o = Integer.toString((int) p);
                 for(int i : plantGrownSentWhenEndsIn) {
                     if(o.endsWith(Integer.toString(i))) {
-                        final List<String> m = config.getStringList("messages.plant grown");
+                        final List<String> m = getStringList(config, "messages.plant grown");
                         for(Player player : online) {
                             sendStringListMessage(player, m, replacements);
                         }
@@ -297,7 +297,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                         removeItem(player, i, 1);
                         allowedCrops.add(f);
                         is.getCropsGrown().put(f, null);
-                        sendStringListMessage(player, config.getStringList("messages.unlocked recipe"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.unlocked recipe"), replacements);
                         player.updateInventory();
                     }
                 }

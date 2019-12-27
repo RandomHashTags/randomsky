@@ -7,7 +7,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,7 +71,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
             otherdata.set("saved default adventures", true);
             saveOtherData();
         }
-        config = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "adventures.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(RANDOM_SKY.getDataFolder(), "adventures.yml"));
 
         worlds = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         final ItemStack b = d(config, "gui.background");
-        for(File f : new File(dataFolder + separator + "adventures").listFiles()) {
+        for(File f : new File(DATA_FOLDER + separator + "adventures").listFiles()) {
             final Adventure a = new FileAdventure(f);
             gi.setItem(a.getSlot(), a.getItem());
             worlds.add(toLocation(a.getTeleportLocations().get(0)).getWorld());
@@ -98,7 +98,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
 
     public void viewHelp(CommandSender sender) {
         if(hasPermission(sender, "RandomSky.adventure.help", true)) {
-            sendStringListMessage(sender, config.getStringList("messages.help"), null);
+            sendStringListMessage(sender, getStringList(config, "messages.help"), null);
         }
     }
 
@@ -152,7 +152,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
         if(worlds.contains(player.getWorld())) {
             event.setCancelled(true);
             player.updateInventory();
-            sendStringListMessage(player, config.getStringList("messages.cannot break blocks"), null);
+            sendStringListMessage(player, getStringList(config, "messages.cannot break blocks"), null);
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -161,7 +161,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
         if(worlds.contains(player.getWorld())) {
             event.setCancelled(true);
             player.updateInventory();
-            sendStringListMessage(player, config.getStringList("messages.cannot place blocks"), null);
+            sendStringListMessage(player, getStringList(config, "messages.cannot place blocks"), null);
         }
     }
 
@@ -182,7 +182,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
                     removeItem(player, i, 1);
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{ADVENTURE}", a.getName());
-                    sendStringListMessage(player, config.getStringList("messages.unlocked access"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.unlocked access"), replacements);
                 }
             }
         }
@@ -204,7 +204,7 @@ public class Adventures extends RSFeature implements CommandExecutor {
                 if(a.getRequiredMap() != null && !pdata.getAllowedAdventures().contains(a)) {
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{ADVENTURE}", a.getName());
-                    sendStringListMessage(player, config.getStringList("messages.need map to travel"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.need map to travel"), replacements);
                 } else {
                     final ItemStack[] inv = player.getInventory().getContents();
                     a.join(player);

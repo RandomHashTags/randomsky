@@ -83,7 +83,7 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
                     passed = cancelled == Boolean.parseBoolean(value);
                     hasCancelled = true;
                 } else if(condition.startsWith("chance=")) {
-                    final boolean check = random.nextInt(100) < evaluate(value);
+                    final boolean check = RANDOM.nextInt(100) < evaluate(value);
                     passed = check;
                     didProc = check;
                 } else if(condition.startsWith("didproc")) {
@@ -166,7 +166,7 @@ public abstract class EventExecutor extends RSFeature implements EventReplacemen
                                 List<LinkedHashMap<EventAttribute, HashMap<Entity, String>>> attributes = new ArrayList<>(values);
                                 attributes.removeAll(previousHashMaps);
                                 attributes.remove(hashmap);
-                                scheduler.scheduleSyncDelayedTask(randomsky, () -> executeAll(event, entities, conditions, cancelled, entityValues, attributes, valueReplacements), ticks);
+                                SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> executeAll(event, entities, conditions, cancelled, entityValues, attributes, valueReplacements), ticks);
                                 break attributeLooper;
                             case "REPEAT":
                                 attributes = new ArrayList<>(values);

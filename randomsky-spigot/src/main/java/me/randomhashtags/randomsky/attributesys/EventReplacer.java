@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.attributesys;
 
 import me.randomhashtags.randomsky.attribute.Combo;
-import me.randomhashtags.randomsky.util.universal.UVersionable;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

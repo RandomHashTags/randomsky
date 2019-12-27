@@ -1,4 +1,4 @@
-package me.randomhashtags.randomsky.util.universal;
+package me.randomhashtags.randomsky.universal;
 
 import me.randomhashtags.randomsky.RandomSky;
 import me.randomhashtags.randomsky.supported.mechanics.SpawnerAPI;
@@ -39,14 +39,14 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
 
     public final void save(String folder, String file) {
         File f;
-        final File d = randomsky.getDataFolder();
+        final File d = RANDOM_SKY.getDataFolder();
         if(folder != null && !folder.equals(""))
             f = new File(d + separator + folder + separator, file);
         else
             f = new File(d + separator, file);
         if(!f.exists()) {
             f.getParentFile().mkdirs();
-            randomsky.saveResource(folder != null && !folder.equals("") ? folder + separator + file : file, false);
+            RANDOM_SKY.saveResource(folder != null && !folder.equals("") ? folder + separator + file : file, false);
         }
         if(folder == null || !folder.equals("_Data")) {
             updateYaml(f);
@@ -264,7 +264,7 @@ public class UVersion extends YamlUpdater implements Versionable, UVersionable {
                 if(is != null) {
                     return is;
                 } else {
-                    console.sendMessage("[RandomPackage] SilkSpawners or EpicSpawners is required to use this feature!");
+                    CONSOLE.sendMessage("[RandomPackage] SilkSpawners or EpicSpawners is required to use this feature!");
                 }
             }
         }

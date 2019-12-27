@@ -9,7 +9,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -51,7 +51,7 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "shops";
+        final String folder = DATA_FOLDER + separator + "shops";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
@@ -63,14 +63,14 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
         back = d(config, "categories.back");
         originBonus = colorize(config.getString("messages.origin bonus"));
 
-        format = colorizeListString(config.getStringList("lores.format"));
-        buy = colorizeListString(config.getStringList("lores.buy"));
-        buyusage = colorizeListString(config.getStringList("lores.buy usage"));
-        sell = colorizeListString(config.getStringList("lores.sell"));
-        sellusage = colorizeListString(config.getStringList("lores.sell usage"));
-        usagespacing = colorizeListString(config.getStringList("lores.usage spacing"));
+        format = getStringList(config, "lores.format");
+        buy = getStringList(config, "lores.buy");
+        buyusage = getStringList(config, "lores.buy usage");
+        sell = getStringList(config, "lores.sell");
+        sellusage = getStringList(config, "lores.sell usage");
+        usagespacing = getStringList(config, "lores.usage spacing");
 
-        final List<String> addedlore = colorizeListString(config.getStringList("categories.added lore"));
+        final List<String> addedlore = getStringList(config, "categories.added lore");
         inv = new UInventory(null, config.getInt("categories.size"), colorize(config.getString("categories.title")));
         final Inventory ii = inv.getInventory();
 
@@ -82,11 +82,11 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             otherdata.set("saved default shops", true);
             saveOtherData();
         }
-        scheduler.runTaskAsynchronously(randomsky, () -> {
+        SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> {
             for(String s : config.getConfigurationSection("categories").getKeys(false)) {
                 if(!s.equals("title") && !s.equals("size") && !s.equals("added lore") && !s.equals("background") && !s.equals("back")) {
                     final String p = "categories." + s + ".", opens = config.getString(p + "opens");
-                    final File f = new File(dataFolder + separator + "shops", opens + ".yml");
+                    final File f = new File(DATA_FOLDER + separator + "shops", opens + ".yml");
                     if(f.exists()) {
                         final int slot = config.getInt(p + "slot");
                         invCategories.put(slot, opens);
@@ -239,11 +239,11 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             replacements.put("{BUY}", formatDouble(price));
             replacements.put("{ITEM}", toMaterial(purchased.getType().name(), false));
             replacements.put("{TOTAL}", formatDouble(total));
-            if(eco.withdrawPlayer(player, total).transactionSuccess()) {
+            if(ECONOMY.withdrawPlayer(player, total).transactionSuccess()) {
                 for(int i = 1; i <= amount; i++) giveItem(player, purchased);
-                sendStringListMessage(player, config.getStringList("messages.purchased"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.purchased"), replacements);
             } else {
-                sendStringListMessage(player, config.getStringList("messages.not enough funds"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.not enough funds"), replacements);
             }
         }
     }
@@ -261,11 +261,11 @@ public class Shop extends RSFeature implements Listener, CommandExecutor {
             replacements.put("{AMOUNT}", Integer.toString(amount));
             replacements.put("{BONUS}", m != 1.00 ? originBonus.replace("{ORIGIN}", is.getOrigin().getName()).replace("{PERCENT}", formatDouble(round((m-1)*100, 2))) : "");
             if(inva == 0) {
-                sendStringListMessage(player, config.getStringList("messages.not enough to sell"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.not enough to sell"), replacements);
             } else {
-                eco.depositPlayer(player, total);
+                ECONOMY.depositPlayer(player, total);
                 removeItem(player, selling, amount);
-                sendStringListMessage(player, config.getStringList("messages.sold"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.sold"), replacements);
             }
         }
     }

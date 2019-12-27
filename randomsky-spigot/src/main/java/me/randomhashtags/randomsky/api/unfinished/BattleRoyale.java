@@ -27,7 +27,7 @@ public class BattleRoyale extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "battle royale.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "battle royale.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "battle royale.yml"));
         sendConsoleMessage("&6[RandomSky] &aLoaded Battle Royale &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {

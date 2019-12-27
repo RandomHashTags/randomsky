@@ -20,7 +20,7 @@ public class CustomBosses extends RSFeature {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "custom bosses";
+        final String folder = DATA_FOLDER + separator + "custom bosses";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 

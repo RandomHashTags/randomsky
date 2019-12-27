@@ -9,7 +9,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,10 +49,10 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
     }
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "player ranks", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "player ranks", "_settings.yml"));
+        save(DATA_FOLDER + separator + "player ranks", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "player ranks", "_settings.yml"));
 
-        for(File f : new File(dataFolder + separator + "player ranks").listFiles()) {
+        for(File f : new File(DATA_FOLDER + separator + "player ranks").listFiles()) {
             if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
                 final PlayerSkill skill = new FilePlayerSkill(f);
             }

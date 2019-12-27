@@ -4,7 +4,7 @@ import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,11 +40,11 @@ public class EnchantmentTables extends RSFeature {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "enchantment tables.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "enchantment tables.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "enchantment tables.yml"));
 
-        dontHaveRequiredIslandLevel = colorizeListString(config.getStringList("messages.dont have required island level"));
-        help = colorizeListString(config.getStringList("messages.help"));
-        notEnoughExp = colorizeListString(config.getStringList("messages.not enough exp"));
+        dontHaveRequiredIslandLevel = getStringList(config, "messages.dont have required island level");
+        help = getStringList(config, "messages.help");
+        notEnoughExp = getStringList(config, "messages.not enough exp");
 
         background = d(config, "items.background");
         locked = d(config, "items.locked");

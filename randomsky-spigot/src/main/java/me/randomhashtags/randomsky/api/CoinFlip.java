@@ -7,8 +7,8 @@ import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
 import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -81,7 +81,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                     final long m = a.endsWith("k") ? 1000 : a.endsWith("m") ? 1000000 : a.endsWith("b") ? 1000000000 : 1;
                     final BigDecimal w = BigDecimal.valueOf(getRemainingDouble(a)*m);
                     if(w.doubleValue() <= 0) {
-                        sendStringListMessage(player, config.getStringList("messages.must enter valid amount"), null);
+                        sendStringListMessage(player, getStringList(config, "messages.must enter valid amount"), null);
                     } else {
                         tryCreating(player, w);
                     }
@@ -94,28 +94,28 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "coinflip.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "coinflip.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "coinflip.yml"));
 
         isLegacy = EIGHT || NINE || TEN || ELEVEN;
 
         minWager = config.getLong("min wager");
         tax = config.getDouble("wager.tax");
-        wagerAvailable = colorizeListString(config.getStringList("wager.status.can afford"));
-        wagerUnavailable = colorizeListString(config.getStringList("wager.status.cannot afford"));
+        wagerAvailable = colorizeListString(getStringList(config, "wager.status.can afford"));
+        wagerUnavailable = colorizeListString(getStringList(config, "wager.status.cannot afford"));
         wagerName = colorize(config.getString("wager.name"));
-        wagerLore = colorizeListString(config.getStringList("wager.lore"));
+        wagerLore = colorizeListString(getStringList(config, "wager.lore"));
 
         yourSelection = colorize(config.getString("challenge.your selection"));
         opponentSelection = colorize(config.getString("challenge.opponent selection"));
-        winnerLore = colorizeListString(config.getStringList("challenge.winner.lore"));
+        winnerLore = colorizeListString(getStringList(config, "challenge.winner.lore"));
         countdown = d(config, "challenge.countdown");
-        rollingLore = colorizeListString(config.getStringList("challenge.rolling.lore"));
+        rollingLore = colorizeListString(getStringList(config, "challenge.rolling.lore"));
 
         gui = new UInventory(null, 54, colorize(config.getString("gui.title")));
         options = new UInventory(null, config.getInt("gui.options.size"), colorize(config.getString("gui.options.title")));
         challenge = new UInventory(null, config.getInt("challenge.size"), colorize(config.getString("challenge.title")));
         countdownStart = config.getInt("gui.options.countdown");
-        addedlore = colorizeListString(config.getStringList("gui.options.added lore"));
+        addedlore = colorizeListString(getStringList(config, "gui.options.added lore"));
         optionz = new LinkedHashMap<>();
 
         final Inventory oi = options.getInventory();
@@ -164,7 +164,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         }
         for(CoinFlipMatch m : tasks.keySet()) {
             for(int i : tasks.get(m)) {
-                scheduler.cancelTask(i);
+                SCHEDULER.cancelTask(i);
             }
         }
         final YamlConfiguration a = otherdata;
@@ -188,7 +188,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             final int size = ((available.size()+9)/9)*9;
             player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
             final Inventory top = player.getOpenInventory().getTopInventory();
-            final double bal = eco.getBalance(player);
+            final double bal = ECONOMY.getBalance(player);
             for(CoinFlipMatch m : available) {
                 item = UMaterial.PLAYER_HEAD_ITEM.getItemStack();
                 final SkullMeta s = (SkullMeta) item.getItemMeta();
@@ -224,7 +224,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             replacements.put("{WON$}", formatBigDecimal(s.wonCash));
             replacements.put("{LOST$}", formatBigDecimal(s.lostCash));
             replacements.put("{TAXES}", formatBigDecimal(s.taxesPaid));
-            sendStringListMessage(player, config.getStringList("messages.stats"), replacements);
+            sendStringListMessage(player, getStringList(config, "messages.stats"), replacements);
         }
     }
     public void tryToggleNotifications(@NotNull Player player) {
@@ -232,28 +232,28 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final boolean status = !pdata.doesReceiveCoinFlipNotifications();
             pdata.setReceivesCoinFlipNotifications(status);
-            sendStringListMessage(player, config.getStringList("messages.toggle notifications." + (status ? "on" : "off")), null);
+            sendStringListMessage(player, getStringList(config, "messages.toggle notifications." + (status ? "on" : "off")), null);
         }
     }
     public void viewHelp(@NotNull CommandSender sender) {
         if(hasPermission(sender, "RandomSky.coinflip.help", true)) {
-            sendStringListMessage(sender, config.getStringList("messages.help"), null);
+            sendStringListMessage(sender, getStringList(config, "messages.help"), null);
         }
     }
     public void tryCreating(@NotNull Player player, @NotNull  BigDecimal w) {
         if(hasPermission(player, "RandomSky.coinflip.create", true)) {
             final CoinFlipMatch m = CoinFlipMatch.valueOf(player);
             if(m != null) {
-                sendStringListMessage(player, config.getStringList("messages.already in a match"), null);
+                sendStringListMessage(player, getStringList(config, "messages.already in a match"), null);
             } else {
-                final double b = eco.getBalance(player), wager = w.doubleValue();
+                final double b = ECONOMY.getBalance(player), wager = w.doubleValue();
                 final HashMap<String, String> replacements = new HashMap<>();
                 if(b < wager) {
                     replacements.put("{BAL}", formatDouble(b));
-                    sendStringListMessage(player, config.getStringList("messages.cannot afford"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot afford"), replacements);
                 } else if(wager < minWager) {
                     replacements.put("{MIN}", formatLong(minWager));
-                    sendStringListMessage(player, config.getStringList("messages.wager needs to be more"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.wager needs to be more"), replacements);
                 } else {
                     final String ww = formatBigDecimal(w);
                     player.closeInventory();
@@ -285,12 +285,12 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         if(hasPermission(player, "RandomSky.coinflip.cancel", true)) {
             final CoinFlipMatch m = CoinFlipMatch.valueOf(player);
             if(m == null) {
-                sendStringListMessage(player, config.getStringList("messages.cancel dont have one"), null);
+                sendStringListMessage(player, getStringList(config, "messages.cancel dont have one"), null);
             } else {
                 final BigDecimal a = m.wager();
-                eco.depositPlayer(player, a.doubleValue());
+                ECONOMY.depositPlayer(player, a.doubleValue());
                 delete(m);
-                sendStringListMessage(player, config.getStringList("messages.cancelled"), null);
+                sendStringListMessage(player, getStringList(config, "messages.cancelled"), null);
             }
         }
     }
@@ -299,11 +299,11 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             player.closeInventory();
             final CoinFlipMatch f = CoinFlipMatch.valueOf(player);
             if(f != null) {
-                sendStringListMessage(player, config.getStringList("messages.already in a match"), null);
+                sendStringListMessage(player, getStringList(config, "messages.already in a match"), null);
             } else if(match != null) {
                 if(match.isActive) {
                     player.closeInventory();
-                    sendStringListMessage(player, config.getStringList("messages.no longer available"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.no longer available"), null);
                     viewCoinFlips(player);
                 } else {
                     final String w = formatBigDecimal(match.wager());
@@ -403,7 +403,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         final List<Integer> t = tasks.get(m);
         for(int i = 1; i <= countdownStart; i++) {
             final int I = i;
-            t.add(scheduler.scheduleSyncDelayedTask(randomsky, () -> {
+            t.add(SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> {
                 final String CD = Integer.toString(countdownStart-I);
                 item = countdown.clone(); itemMeta = item.getItemMeta(); lore.clear();
                 item.setAmount(countdownStart-I);
@@ -432,13 +432,13 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                     for(int o = 0; o <= 60; o++) {
                         final int d = o*2;
                         if(o == 60) {
-                            t.add(scheduler.scheduleSyncDelayedTask(randomsky, () -> chooseWinner(m), d));
+                            t.add(SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> chooseWinner(m), d));
                         } else {
                             item = option.clone(); itemMeta = item.getItemMeta();
                             itemMeta.setDisplayName(rollingName.replace("{SELECTION_COLOR}", selectionColor));
                             itemMeta.setLore(rollingLore);
                             item.setItemMeta(itemMeta);
-                            t.add(scheduler.scheduleSyncDelayedTask(randomsky, () -> {
+                            t.add(SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> {
                                 if(a.isOnline() && active.containsKey(A)) {
                                     A.getOpenInventory().getTopInventory().setItem(q, item);
                                 }
@@ -462,7 +462,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         final OfflinePlayer a = m.creator(), b = m.challenger;
         final CoinFlipOption l = m.option(), r = m.challengerOption;
         final BigDecimal wager = m.wager(), t = BigDecimal.valueOf(wager.doubleValue()*tax), total = BigDecimal.valueOf(wager.doubleValue()*2), taxed = BigDecimal.valueOf(total.doubleValue()*(tax*2));
-        final boolean zero = random.nextInt(2) == 0;
+        final boolean zero = RANDOM.nextInt(2) == 0;
         final CoinFlipOption winningOption = zero ? l : r, losingOption = zero ? r : l;
         final OfflinePlayer winner = zero ? a : b, loser = winner == a ? b : a;
         final RSPlayer W = RSPlayer.get(winner.getUniqueId()), L = RSPlayer.get(loser.getUniqueId());
@@ -489,7 +489,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             active.put(bp, null);
         }
         final String winnerName = winner.getName(), color = winningOption.selectionColor, Lcolor = losingOption.selectionColor;
-        eco.depositPlayer(winner, total.doubleValue()-taxed.doubleValue());
+        ECONOMY.depositPlayer(winner, total.doubleValue()-taxed.doubleValue());
         item = winningOption.appear(); itemMeta = item.getItemMeta(); lore.clear();
         itemMeta.setDisplayName(colorize(config.getString("challenge.winner.name")).replace("{COLOR}", color).replace("{PLAYER}", winnerName));
         for(String s : winnerLore) {
@@ -511,7 +511,7 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
         stopTasks(m);
         m.delete();
 
-        final List<String> w = colorizeListString(config.getStringList("messages.winner"));
+        final List<String> w = colorizeListString(getStringList(config, "messages.winner"));
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put("{WINNING_COLOR}", color);
         replacements.put("{LOSING_COLOR}", Lcolor);
@@ -528,11 +528,11 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
             }
         }
         final CoinFlipEndEvent e = new CoinFlipEndEvent(winner.getUniqueId(), loser.getUniqueId(), wager, BigDecimal.valueOf(tax));
-        pluginmanager.callEvent(e);
+        PLUGIN_MANAGER.callEvent(e);
     }
     private void stopTasks(CoinFlipMatch m) {
         if(tasks.containsKey(m)) {
-            for(int i : tasks.get(m)) scheduler.cancelTask(i);
+            for(int i : tasks.get(m)) SCHEDULER.cancelTask(i);
             tasks.remove(m);
         }
     }
@@ -544,8 +544,8 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
     public void create(OfflinePlayer player, CoinFlipOption picked, boolean withdraw, boolean sendMsg) {
         final BigDecimal wager = picking.get(player);
         picking.remove(player);
-        if(withdraw) eco.withdrawPlayer(player, wager.doubleValue());
-        if(sendMsg && player.isOnline()) sendStringListMessage(player.getPlayer(), config.getStringList("messages.created"), null);
+        if(withdraw) ECONOMY.withdrawPlayer(player, wager.doubleValue());
+        if(sendMsg && player.isOnline()) sendStringListMessage(player.getPlayer(), getStringList(config, "messages.created"), null);
         final CoinFlipMatch m = new CoinFlipMatch(System.currentTimeMillis(), player, picked, wager);
         available.add(m);
     }
@@ -583,19 +583,19 @@ public class CoinFlip extends RSFeature implements CommandExecutor {
                 tryChallenging(player, f);
             } else if(ch) {
                 final CoinFlipMatch f = goingToChallenge.get(player);
-                final double b = eco.getBalance(player);
+                final double b = ECONOMY.getBalance(player);
                 final BigDecimal w = f.wager();
                 if(b < w.doubleValue()) {
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{BAL}", formatDouble(b));
-                    sendStringListMessage(player, config.getStringList("messages.cannot afford"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot afford"), replacements);
                 } else {
                     player.closeInventory();
                     if(!available.contains(f) || f.isActive) {
-                        sendStringListMessage(player, config.getStringList("messages.no longer available"), null);
+                        sendStringListMessage(player, getStringList(config, "messages.no longer available"), null);
                         viewCoinFlips(player);
                     } else if(optionz.containsKey(r)) {
-                        eco.withdrawPlayer(player, w.doubleValue());
+                        ECONOMY.withdrawPlayer(player, w.doubleValue());
                         f.challenger = player;
                         f.challengerOption = optionz.get(r);
                         start(f);

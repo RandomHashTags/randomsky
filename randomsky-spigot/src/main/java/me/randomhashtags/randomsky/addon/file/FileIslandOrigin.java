@@ -34,7 +34,7 @@ public class FileIslandOrigin extends RSAddon implements IslandOrigin {
         return name;
     }
     public File getSchematic() {
-        if(schematic == null) schematic = new File(dataFolder + separator + "origins", yml.getString("settings.schematic") + ".schematic");
+        if(schematic == null) schematic = new File(DATA_FOLDER + separator + "origins", yml.getString("settings.schematic") + ".schematic");
         return schematic;
     }
     public int getSlot() { return yml.getInt("settings.slot"); }

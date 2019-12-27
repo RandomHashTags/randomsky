@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.api;
 
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +35,7 @@ public class Toggles extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "toggles.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "toggles.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "toggles.yml"));
 
         inventory = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
 

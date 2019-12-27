@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.addon.data;
 
 import me.randomhashtags.randomsky.addon.realm.Realm;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

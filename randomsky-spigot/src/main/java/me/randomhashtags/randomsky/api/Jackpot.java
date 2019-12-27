@@ -4,7 +4,7 @@ import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.event.JackpotPurchaseTicketsEvent;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -94,7 +94,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "jackpot.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "jackpot.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "jackpot.yml"));
 
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
@@ -149,9 +149,9 @@ public class Jackpot extends RSFeature implements CommandExecutor {
             otherdata.set("jackpot." + u.toString(), ticketsSold.get(u).intValue());
         }
         saveOtherData();
-        scheduler.cancelTask(task);
+        SCHEDULER.cancelTask(task);
         for(int i : countdownTasks) {
-            scheduler.cancelTask(i);
+            SCHEDULER.cancelTask(i);
         }
     }
 
@@ -159,12 +159,12 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         final List<UUID> tic = getTickets();
         final int size = tic.size();
         if(size > 0) {
-            final UUID w = tic.get(random.nextInt(size));
+            final UUID w = tic.get(RANDOM.nextInt(size));
             final OfflinePlayer op = Bukkit.getOfflinePlayer(w);
             final HashMap<String, String> replacements = new HashMap<>();
             final BigDecimal t = ticketsSold.get(w);
             final BigDecimal taxed = value.multiply(tax), total = value.subtract(taxed);
-            eco.depositPlayer(op, total.doubleValue());
+            ECONOMY.depositPlayer(op, total.doubleValue());
 
             final RSPlayer pdata = RSPlayer.get(w);
             pdata.jackpotWins += 1;
@@ -223,14 +223,14 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         final long pick = ((pickNextWinner-time)/1000)*20;
         if(countdownTasks != null) {
             for(int i : countdownTasks) {
-                scheduler.cancelTask(i);
+                SCHEDULER.cancelTask(i);
             }
         }
-        task = scheduler.scheduleSyncDelayedTask(randomsky, this::pickWinner, pick);
+        task = SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, this::pickWinner, pick);
         countdownTasks = new ArrayList<>();
         for(String s : config.getStringList("messages.countdowns")) {
             final long delay = (getDelay(s)/1000)*20;
-            countdownTasks.add(scheduler.scheduleSyncDelayedTask(randomsky, () -> {
+            countdownTasks.add(SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> {
                 broadcastCountdown((delay/20)*1000);
             }, pick-delay));
         }
@@ -265,9 +265,9 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put("{AMOUNT}", formatBigDecimal(tickets));
         replacements.put("{$}", formatBigDecimal(cost));
-        if(eco.withdrawPlayer(player, cost.doubleValue()).transactionSuccess()) {
+        if(ECONOMY.withdrawPlayer(player, cost.doubleValue()).transactionSuccess()) {
             final JackpotPurchaseTicketsEvent e = new JackpotPurchaseTicketsEvent(player, tickets, cost);
-            pluginmanager.callEvent(e);
+            PLUGIN_MANAGER.callEvent(e);
             if(!e.isCancelled()) {
                 final UUID u = player.getUniqueId();
                 final RSPlayer pdata = RSPlayer.get(u);

@@ -8,8 +8,8 @@ import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,13 +53,13 @@ public class IslandPermissionBlocks extends IslandAddon {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "island" + separator + "permission blocks";
+        final String folder = DATA_FOLDER + separator + "island" + separator + "permission blocks";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
         A = colorize(config.getString("permission blocks.gui.lores.allowed"));
         D = colorize(config.getString("permission blocks.gui.lores.denied"));
-        addedLore = colorizeListString(config.getStringList("permission blocks.gui.lores.added lore"));
+        addedLore = colorizeListString(getStringList(config, "permission blocks.gui.lores.added lore"));
         regionMembers = d(config, "permission blocks.gui.region members");
         regionInfo = d(config, "permission blocks.gui.region info");
 
@@ -72,7 +72,7 @@ public class IslandPermissionBlocks extends IslandAddon {
         final int pbsize = config.getInt("permission blocks.gui.size");
         gui = new UInventory(null, pbsize, colorize(config.getString("permission blocks.gui.title")));
         final Inventory gi = gui.getInventory();
-        final List<String> prelore = config.getStringList("permission blocks.pre lore");
+        final List<String> prelore = getStringList(config, "permission blocks.pre lore");
         for(String s : config.getConfigurationSection("permission blocks").getKeys(false)) {
             if(!s.equals("pre lore") && !s.equals("gui")) {
                 final String p = "permission blocks." + s;
@@ -100,7 +100,7 @@ public class IslandPermissionBlocks extends IslandAddon {
         for(String s : config.getConfigurationSection("permission blocks.gui.settings").getKeys(false)) {
             if(!s.equals("enabled") && !s.equals("disabled")) {
                 final String p = "permission blocks.gui.settings." + s + ".", n = config.getString(p + "name");
-                final List<String> l = colorizeListString(config.getStringList(p + "lore"));
+                final List<String> l = colorizeListString(getStringList(config, p + "lore"));
                 final int slot = config.getInt(p + "slot");
                 settings.put(slot, s);
                 settingsName.put(slot, n != null ? colorize(n) : null);
@@ -186,7 +186,7 @@ public class IslandPermissionBlocks extends IslandAddon {
         }
     }
     private void updateRegionMembers(Player player, Inventory top, ActivePermissionBlock block) {
-        final List<String> r = colorizeListString(config.getStringList("permission blocks.gui.lores." + (block.publicRegion ? "public region" : block.getMembers().isEmpty() ? "no members" : "members")));
+        final List<String> r = colorizeListString(getStringList(config, "permission blocks.gui.lores." + (block.publicRegion ? "public region" : block.getMembers().isEmpty() ? "no members" : "members")));
         final List<String> m = new ArrayList<>();
         for(UUID u : block.getMembers()) {
             m.add(Bukkit.getOfflinePlayer(u).getName());
@@ -251,7 +251,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                 final boolean n = isAllowed(a, settings.get(r));
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{SETTING}", ChatColor.stripColor(c.getItemMeta().getDisplayName()));
-                sendStringListMessage(player, config.getStringList("messages.setting " + (n ? "enable" : "disable")), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.setting " + (n ? "enable" : "disable")), replacements);
             }
             player.updateInventory();
         }
@@ -288,14 +288,14 @@ public class IslandPermissionBlocks extends IslandAddon {
                             return;
                         } else {
                             event.setCancelled(true);
-                            sendStringListMessage(player, config.getStringList("messages.no permission to break blocks in protected region"), null);
+                            sendStringListMessage(player, getStringList(config, "messages.no permission to break blocks in protected region"), null);
                         }
                         return;
                     }
                 }
             } else {
                 event.setCancelled(true);
-                sendStringListMessage(player, config.getStringList("messages.no permission to break blocks in protected region"), null);
+                sendStringListMessage(player, getStringList(config, "messages.no permission to break blocks in protected region"), null);
             }
         } else if(a != null) {
             final PermissionBlock type = a.getType();
@@ -337,14 +337,14 @@ public class IslandPermissionBlocks extends IslandAddon {
                                         return;
                                     } else {
                                         event.setCancelled(true);
-                                        sendStringListMessage(player, config.getStringList("messages.no permission to interact in protected region"), null);
+                                        sendStringListMessage(player, getStringList(config, "messages.no permission to interact in protected region"), null);
                                     }
                                     return;
                                 }
                             }
                         } else {
                             event.setCancelled(true);
-                            sendStringListMessage(player, config.getStringList("messages.no permission to interact in protected region"), null);
+                            sendStringListMessage(player, getStringList(config, "messages.no permission to interact in protected region"), null);
                         }
                     } else if(pb != null) {
                         viewPermissionBlock(player, pb);
@@ -354,7 +354,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                     if(pb != null) {
                         event.setCancelled(true);
                         if(!isMember) {
-                            sendStringListMessage(player, config.getStringList("messages.no permission to interact in protected region"), null);
+                            sendStringListMessage(player, getStringList(config, "messages.no permission to interact in protected region"), null);
                         } else {
                             final World w = bl.getWorld();
                             final PermissionBlock type = pb.getType();
@@ -373,14 +373,14 @@ public class IslandPermissionBlocks extends IslandAddon {
                                         return;
                                     } else {
                                         event.setCancelled(true);
-                                        sendStringListMessage(player, config.getStringList("messages.no permission to " + (!i ? "interact" : "break blocks") + " in protected region"), null);
+                                        sendStringListMessage(player, getStringList(config, "messages.no permission to " + (!i ? "interact" : "break blocks") + " in protected region"), null);
                                     }
                                     return;
                                 }
                             }
                         } else {
                             event.setCancelled(true);
-                            sendStringListMessage(player, config.getStringList("messages.no permission to interact in protected region"), null);
+                            sendStringListMessage(player, getStringList(config, "messages.no permission to interact in protected region"), null);
                         }
                     }
                 }

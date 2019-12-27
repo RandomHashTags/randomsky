@@ -51,7 +51,7 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "sky kits";
+        final String folder = DATA_FOLDER + separator + "sky kits";
         save(folder, "_fund.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_fund.yml"));
 
@@ -90,26 +90,26 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
     public void deposit(Player player, String arg) {
         if(hasPermission(player, "RandomSky.fund.deposit", true)) {
             if(total.doubleValue() >= maxfund.doubleValue()) {
-                sendStringListMessage(player, config.getStringList("messages.already complete"), null);
+                sendStringListMessage(player, getStringList(config, "messages.already complete"), null);
             } else if(arg.contains(".") && !config.getBoolean("allows decimals")) {
-                sendStringListMessage(player, config.getStringList("messages.cannot include decimals"), null);
+                sendStringListMessage(player, getStringList(config, "messages.cannot include decimals"), null);
             } else {
                 final double q = getRemainingDouble(arg), min = config.getDouble("min deposit");
                 if(q == -1) return;
                 BigDecimal Q = BigDecimal.valueOf(q);
                 final double d = Q.doubleValue();
-                final String a = d < config.getDouble("min deposit") ? "less than min" : d > eco.getBalance(player) ? "need more money" : null;
+                final String a = d < config.getDouble("min deposit") ? "less than min" : d > ECONOMY.getBalance(player) ? "need more money" : null;
                 if(a != null) {
                     sendMessage(player, a, null, a.equals("less than min") ? min : d, false);
                     return;
                 }
                 final FundDepositEvent e = new FundDepositEvent(player, Q);
-                pluginmanager.callEvent(e);
+                PLUGIN_MANAGER.callEvent(e);
                 if(!e.isCancelled()) {
                     Q = e.amount;
                     final UUID u = player.getUniqueId();
                     deposits.put(u, deposits.getOrDefault(u, BigDecimal.ZERO).add(Q));
-                    eco.withdrawPlayer(player, d);
+                    ECONOMY.withdrawPlayer(player, d);
                     total = total.add(Q);
                     sendMessage(player, "deposited", null, d, true);
                 }
@@ -161,7 +161,7 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
         replacements.put("{PLAYER}", sender.getName());
         replacements.put("{AMOUNT}", formatDouble(q).split("\\.")[0]);
 
-        for(String ss : config.getStringList("messages." + path)) {
+        for(String ss : getStringList(config, "messages." + path)) {
             for(String r : replacements.keySet()) {
                 final String R = replacements.get(r);
                 if(r != null && R != null) {
@@ -187,10 +187,10 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
             final String symbol = config.getString("messages.progress bar.symbol"), achieved = colorize(config.getString("messages.progress bar.achieved")), notachieved = colorize(config.getString("messages.progress bar.not achieved"));
             final String bal = formatBigDecimal(this.total).split("\\.")[0];
             final double total = this.total.doubleValue();
-            for(String s : config.getStringList("messages.view")) {
+            for(String s : getStringList(config, "messages.view")) {
                 if(s.contains("{BALANCE}")) s = s.replace("{BALANCE}", bal);
                 if(s.equals("{CONTENT}")) {
-                    for(String i : config.getStringList("unlock")) {
+                    for(String i : getStringList(config, "unlock")) {
                         final String[] values = i.split(";");
                         final BigDecimal req = needed_unlocks.get(values[2]);
                         final double d = req.doubleValue();
@@ -209,7 +209,7 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
                         replacements.put("{PROGRESS_BAR}", u.toString());
                         replacements.put("{REQ}", abb);
                         replacements.put("{REQ$}", qq);
-                        sendStringListMessage(sender, config.getStringList("messages.content"), replacements);
+                        sendStringListMessage(sender, getStringList(config, "messages.content"), replacements);
                     }
                 }
                 if(!s.equals("{CONTENT}")) sender.sendMessage(colorize(s));
@@ -218,7 +218,7 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
     }
     public void viewHelp(CommandSender sender) {
         if(hasPermission(sender, "RandomSky.fund.help", true)) {
-            sendStringListMessage(sender, config.getStringList("messages.help"), null);
+            sendStringListMessage(sender, getStringList(config, "messages.help"), null);
         }
     }
     private String getAbbreviation(double input) {

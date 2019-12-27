@@ -5,7 +5,7 @@ import me.randomhashtags.randomsky.attributesys.EventReplacer;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UVersion;
+import me.randomhashtags.randomsky.universal.UVersion;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;

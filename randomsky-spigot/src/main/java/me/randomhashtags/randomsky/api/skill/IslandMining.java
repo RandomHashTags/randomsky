@@ -9,8 +9,8 @@ import me.randomhashtags.randomsky.api.Islands;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.ToggleType;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -63,7 +63,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "island mining.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "island mining.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "island mining.yml"));
 
         generated = new ArrayList<>();
         final List<String> S = otherdata.getStringList("generated");
@@ -83,31 +83,31 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         unrefined = new HashMap<>();
         cannotBeInstaBroke = new ArrayList<>();
 
-        for(String s : config.getStringList("cannot be insta broke")) {
+        for(String s : getStringList(config, "cannot be insta broke")) {
             cannotBeInstaBroke.add(UMaterial.match(s.toUpperCase()));
         }
 
-        orFormat = colorizeListString(config.getStringList("gui.settings.or format"));
-        respawnRate = colorizeListString(config.getStringList("gui.settings.respawn rate"));
-        lockedAddedLore = colorizeListString(config.getStringList("gui.settings.locked.added lore"));
-        unlockedAddedLore = colorizeListString(config.getStringList("gui.settings.unlocked.added lore"));
+        orFormat = getStringList(config, "gui.settings.or format");
+        respawnRate = getStringList(config, "gui.settings.respawn rate");
+        lockedAddedLore = getStringList(config, "gui.settings.locked.added lore");
+        unlockedAddedLore = getStringList(config, "gui.settings.unlocked.added lore");
 
-        resourceFormat = colorizeListString(config.getStringList("resources.pre lore"));
-        cosmeticFormat = colorizeListString(config.getStringList("cosmetic.pre lore"));
-        drops = config.getStringList("drops");
+        resourceFormat = getStringList(config, "resources.pre lore");
+        cosmeticFormat = getStringList(config, "cosmetic.pre lore");
+        drops = getStringList(config, "drops");
 
         int bots = 0, resources = 0, resourceItems = 0, fragments = 0, scraps = 0, nodetypes = 0, nodes = 0;
         for(String s : config.getConfigurationSection("bots").getKeys(false)) {
             bots++;
         }
-        for(String s : config.getStringList("resources.items")) {
+        for(String s : getStringList(config, "resources.items")) {
             final UMaterial u = UMaterial.match(s.toUpperCase());
             this.resources.add(u);
             new Resource(ResourceType.RESOURCE, s.toLowerCase(), u.getItemStack());
             resources++;
         }
 
-        resourceItemFormat = colorizeListString(config.getStringList("resource item.pre lore"));
+        resourceItemFormat = getStringList(config, "resource item.pre lore");
         for(String s : config.getConfigurationSection("resource item").getKeys(false)) {
             if(!s.equals("pre lore")) {
                 item = d(config, "resource item." + s); itemMeta = item.getItemMeta(); lore.clear();
@@ -126,7 +126,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
             new Resource(ResourceType.FRAGMENT, s, d(config, "resource fragments." + s));
             fragments++;
         }
-        final List<String> prelore = config.getStringList("scraps.pre lore");
+        final List<String> prelore = getStringList(config, "scraps.pre lore");
         for(String s : config.getConfigurationSection("scraps").getKeys(false)) {
             if(!s.equals("pre lore")) {
                 item = d(config, "scraps." + s);
@@ -142,14 +142,14 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
             }
         }
         for(String s : config.getConfigurationSection("nodes.types").getKeys(false)) {
-            new ResourceNodeType(s, config.getStringList("nodes.types." + s + ".lore"));
+            new ResourceNodeType(s, getStringList(config, "nodes.types." + s + ".lore"));
             nodetypes++;
         }
         for(String s : config.getConfigurationSection("nodes").getKeys(false)) {
             if(!s.equals("default") && !s.equals("types")) {
                 final String p = "nodes." + s + ".";
                 final ResourceNodeType type = ResourceNodeType.types.getOrDefault(config.getString(p + "type"), null);
-                final List<String> loot = config.getStringList(p + "loot");
+                final List<String> loot = getStringList(config, p + "loot");
                 final UMaterial harvest = UMaterial.valueOf(config.getString(p + "harvest block")), node = UMaterial.valueOf(config.getString(p + "node block"));
                 item = d(config, "nodes." + s); itemMeta = item.getItemMeta(); lore.clear();
                 for(String l : type.lore) {
@@ -169,7 +169,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         ResourceNode.paths.put("default", ResourceNode.paths.get(config.getString("nodes.default")));
 
         final int size = config.getInt("gui.size");
-        final List<String> format = colorizeListString(config.getStringList("gui.settings.format"));
+        final List<String> format = getStringList(config, "gui.settings.format");
         lockedName = colorize(config.getString("gui.settings.locked.name"));
         unlockedName = colorize(config.getString("gui.settings.unlocked.name"));
         gui = new UInventory(null, size, colorize(config.getString("gui.title")));
@@ -234,7 +234,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         if(hasPermission(player, "RandomSky.island.mining", true)) {
             final Island island = Island.players.getOrDefault(player.getUniqueId(), null);
             if(island == null) {
-                sendStringListMessage(player, Islands.config.getStringList("messages.need island"), null);
+                sendStringListMessage(player, Islands.getStringList(config, "messages.need island"), null);
             } else {
                 final List<ResourceNode> allowed = island.allowedNodes;
                 player.closeInventory();
@@ -361,7 +361,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
             final List<String> l = i.getItemMeta().getLore();
             if(l.containsAll(resourceItemFormat) || l.containsAll(resourceFormat)) {
                 event.setCancelled(true);
-                sendStringListMessage(event.getPlayer(), config.getStringList("messages.cannot place resource items"), null);
+                sendStringListMessage(event.getPlayer(), getStringList(config, "messages.cannot place resource items"), null);
             }
         }
     }
@@ -440,7 +440,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                     final Island i = Island.players.getOrDefault(u, null), on = Island.valueOf(bl);
                     final RSPlayer pdata = RSPlayer.get(u);
                     if(pdata.instaBreakTutorial) {
-                        sendStringListMessage(player, config.getStringList("messages.insta break tutorial"), null);
+                        sendStringListMessage(player, getStringList(config, "messages.insta break tutorial"), null);
                         pdata.instaBreakTutorial = false;
                     }
                     if(on != null && on.equals(i) && pdata.getToggles().get(ToggleType.INSTANT_BLOCK_BREAK) && !generated.contains(bl)) {

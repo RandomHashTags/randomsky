@@ -60,11 +60,11 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 disabandAll(sender, true);
             } else if(player != null) {
                 if(a.equals("kick")) {
-                    sendStringListMessage(player, config.getStringList("messages.kick usage"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.kick usage"), null);
                 } else if(a.equals("join")) {
-                    sendStringListMessage(player, config.getStringList("messages.join usage"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.join usage"), null);
                 } else if(a.equals("create")) {
-                    sendStringListMessage(player, config.getStringList("messages.create usage"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.create usage"), null);
                 } else if(a.equals("info")) {
                     viewInfo(player, null);
                 } else if(!a.equals("member")) {
@@ -73,7 +73,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                         if(a.equals(p)) {
                             final HashMap<String, String> replacements = new HashMap<>();
                             replacements.put("{RELATION}", p);
-                            sendStringListMessage(player, config.getStringList("messages.relation usage"), replacements);
+                            sendStringListMessage(player, getStringList(config, "messages.relation usage"), replacements);
                             return true;
                         }
                     }
@@ -106,7 +106,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "alliances";
+        final String folder = DATA_FOLDER + separator + "alliances";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
@@ -131,7 +131,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     public void disabandAll(CommandSender sender, boolean async) {
         sendStringListMessage(sender, Arrays.asList("&6[RandomSky] &aDisbanding all alliances, please wait..."), null);
         if(async) {
-            scheduler.runTaskAsynchronously(randomsky, () -> disbandall(sender, true));
+            SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> disbandall(sender, true));
         } else {
             disbandall(sender, false);
         }
@@ -148,7 +148,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
 
     public void viewHelp(CommandSender sender) {
         if(hasPermission(sender, "RandomSky.alliance.help", true)) {
-            for(String s : config.getStringList("messages.help"))
+            for(String s : getStringList(config, "messages.help"))
                 sender.sendMessage(center(colorize(s), 60));
         }
     }
@@ -164,7 +164,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     replacements.put("{PLAYER}", op.getName());
                     final Alliance i = Alliance.players.getOrDefault(op.getUniqueId(), null);
                     if(i == null) {
-                        sendStringListMessage(player, config.getStringList("messages.player belongs to no alliance"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.player belongs to no alliance"), replacements);
                         return;
                     } else {
                         target = i;
@@ -173,24 +173,24 @@ public class Alliances extends RSFeature implements CommandExecutor {
             }
 
             if(a == null) {
-                sendStringListMessage(player, config.getStringList("messages.must be in an alliance to use command"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.must be in an alliance to use command"), replacements);
             } else if(target == null) {
-                sendStringListMessage(player, config.getStringList("messages.unable to find alliance"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.unable to find alliance"), replacements);
             } else {
                 final UUID t = target.getUUID();
                 final HashMap<UUID, AllianceRelationship> r = a.getRelations();
                 final AllianceRelation re = r.containsKey(t) ? r.get(t).relation : AllianceRelation.paths.get("neutral");
                 replacements.put("{RELATION}", re.getColor() + re.getIdentifier());
                 if(a.equals(target)) {
-                    sendStringListMessage(player, config.getStringList("messages.cannot use cmd on self"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot use cmd on self"), replacements);
                 } else if(re.equals(relation)) {
-                    sendStringListMessage(player, config.getStringList("messages.already have pending relation"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.already have pending relation"), replacements);
                 } else {
                     final AllianceRelationship ship = new AllianceRelationship(System.currentTimeMillis(), relation, true);
                     r.put(t, ship);
                     target.getRelations().put(a.getUUID(), ship);
-                    sendStringListMessage(player, config.getStringList("messages.relation sent"), replacements);
-                    final List<String> msg = config.getStringList("messages.relation received");
+                    sendStringListMessage(player, getStringList(config, "messages.relation sent"), replacements);
+                    final List<String> msg = getStringList(config, "messages.relation received");
                     for(AllianceMember am : target.getOnlineMembers()) {
                         sendStringListMessage(Bukkit.getPlayer(am.getUUID()), msg, replacements);
                     }
@@ -201,13 +201,13 @@ public class Alliances extends RSFeature implements CommandExecutor {
     public void viewInfo(CommandSender sender, String tag) {
         if(hasPermission(sender, "RandomSky.alliance.view", true)) {
             final boolean isPlayer = sender instanceof Player;
-            final List<String> info = config.getStringList("messages.info");
+            final List<String> info = getStringList(config, "messages.info");
             final OfflinePlayer op = tag != null ? Bukkit.getOfflinePlayer(tag) : isPlayer ? (Player) sender : null;
             final UUID opu = op != null ? op.getUniqueId() : null;
             final Alliance a = op != null ? Alliance.players.getOrDefault(opu, null) : null;
             if(tag == null) {
                 if(a == null) {
-                    sendStringListMessage(sender, config.getStringList("messages.must be in an alliance to use command"), null);
+                    sendStringListMessage(sender, getStringList(config, "messages.must be in an alliance to use command"), null);
                 } else {
                     sendInfo(sender, a, info);
                 }
@@ -216,14 +216,14 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 replacements.put("{TAG}", tag);
                 final Alliance al = Alliance.tags.getOrDefault(tag.toLowerCase(), null);
                 if(al == null && op == null) {
-                    sendStringListMessage(sender, config.getStringList("messages.unable to find alliance"), replacements);
+                    sendStringListMessage(sender, getStringList(config, "messages.unable to find alliance"), replacements);
                 } else if(opu != null) {
                     final Alliance t = Alliance.players.getOrDefault(opu, null);
                     if(t != null) {
                         sendInfo(sender, t, info);
                     } else {
                         replacements.put("{INPUT}", tag);
-                        sendStringListMessage(sender, config.getStringList("messages.unable to find online player"), replacements);
+                        sendStringListMessage(sender, getStringList(config, "messages.unable to find online player"), replacements);
                     }
                 } else {
                     sendInfo(sender, al, info);
@@ -287,17 +287,17 @@ public class Alliances extends RSFeature implements CommandExecutor {
             replacements.put("{TAG}", tag);
             if(a != null) {
                 replacements.put("{TAG}", a.getTag());
-                sendStringListMessage(player, config.getStringList("messages.youre already a member"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.youre already a member"), replacements);
             } else if(l < tagMin || l > tagMax) {
-                sendStringListMessage(player, config.getStringList("messages.tag needs to be shorter/longer"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.tag needs to be shorter/longer"), replacements);
             } else {
                 final Alliance al = Alliance.tags.getOrDefault(tag.toLowerCase(), null);
                 if(al != null) {
-                    sendStringListMessage(player, config.getStringList("messages.tag already taken"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.tag already taken"), replacements);
                 } else {
                     final Alliance ali = new Alliance(u, tag);
                     p.setAlliance(ali);
-                    sendStringListMessage(player, config.getStringList("messages.create"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.create"), replacements);
                 }
             }
         }
@@ -307,15 +307,15 @@ public class Alliances extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final Alliance a = pdata.getAlliance();
             if(a == null) {
-                sendStringListMessage(player, config.getStringList("messages.must be in alliance to use command"), null);
+                sendStringListMessage(player, getStringList(config, "messages.must be in alliance to use command"), null);
             } else {
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{INPUT}", target);
                 final OfflinePlayer op = Bukkit.getOfflinePlayer(target);
                 if(op == null || !op.isOnline()) {
-                    sendStringListMessage(player, config.getStringList("messages.unable to find online player"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.unable to find online player"), replacements);
                 } else if(op.getPlayer() == player) {
-                    sendStringListMessage(player, config.getStringList("messages.cannot use cmd on self"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot use cmd on self"), null);
                 } else {
                     replacements.put("{SENDER}", player.getName());
                     replacements.put("{PLAYER}", op.getName());
@@ -325,9 +325,9 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     final Alliance al = r.getAlliance();
                     if(al != null) {
                         replacements.put("{TAG}", al.getTag());
-                        sendStringListMessage(player, config.getStringList("messages.target already member"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.target already member"), replacements);
                     } else {
-                        final List<String> msg1 = config.getStringList("messages.target already invited"), msg2 = config.getStringList("messages.invite sent");
+                        final List<String> msg1 = getStringList(config, "messages.target already invited"), msg2 = getStringList(config, "messages.invite sent");
                         final List<RSInvite> invites = a.getInvites();
                         for(RSInvite rsi : invites) {
                             if(rsi.receiver.equals(u)) {
@@ -340,7 +340,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                         for(Player p : a.getOnlineMembers()) {
                             sendStringListMessage(p, msg2, replacements);
                         }
-                        sendStringListMessage(op.getPlayer(), config.getStringList("messages.invite received"), replacements);
+                        sendStringListMessage(op.getPlayer(), getStringList(config, "messages.invite received"), replacements);
                     }
                 }
             }
@@ -354,24 +354,24 @@ public class Alliances extends RSFeature implements CommandExecutor {
             final HashMap<String, String> replacements = new HashMap<>();
             if(a != null) {
                 replacements.put("{TAG}", a.getTag());
-                sendStringListMessage(player, config.getStringList("messages.youre already a member"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.youre already a member"), replacements);
             } else {
                 replacements.put("{TAG}", target);
                 final OfflinePlayer op = Bukkit.getOfflinePlayer(target);
                 if(op == null) {
                     final Alliance al = Alliance.tags.getOrDefault(target.toLowerCase(), null);
                     if(al == null) {
-                        sendStringListMessage(player, config.getStringList("messages.join no pending invite"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.join no pending invite"), replacements);
                     }
                 } else {
                     replacements.put("{TAG}", op.getName());
                     final Alliance al = Alliance.players.getOrDefault(op.getUniqueId(), null);
                     if(al == null) {
-                        sendStringListMessage(player, config.getStringList("messages.player belongs to no alliance"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.player belongs to no alliance"), replacements);
                     } else {
                         replacements.put("{PLAYER}", player.getName());
                         final List<RSInvite> invites = al.getInvites();
-                        final List<String> msg = config.getStringList("messages.joined");
+                        final List<String> msg = getStringList(config, "messages.joined");
                         for(RSInvite r : invites) {
                             if(r.receiver.equals(U)) {
                                 for(Player p : al.getOnlineMembers()) {
@@ -382,7 +382,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                                 return;
                             }
                         }
-                        sendStringListMessage(player, config.getStringList("messages.join no pending invite"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.join no pending invite"), replacements);
                     }
                 }
             }
@@ -394,16 +394,16 @@ public class Alliances extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(U);
             final Alliance a = pdata.getAlliance();
             if(a == null) {
-                sendStringListMessage(player, config.getStringList("messages.must be in an alliance to use command"), null);
+                sendStringListMessage(player, getStringList(config, "messages.must be in an alliance to use command"), null);
             } else {
                 final OfflinePlayer op = Bukkit.getOfflinePlayer(target);
                 final UUID u = op.isOnline() ? op.getUniqueId() : null;
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{INPUT}", target);
                 if(u == null) {
-                    sendStringListMessage(player, config.getStringList("messages.unable to find online player"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.unable to find online player"), replacements);
                 } else if(u.equals(U)) {
-                    sendStringListMessage(player, config.getStringList("messages.cannot use cmd on self"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot use cmd on self"), null);
                 } else {
                     replacements.put("{PLAYER}", op.getName());
                     replacements.put("{KICKER}", player.getName());
@@ -412,11 +412,11 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     if(!online) t.load();
                     final Alliance A = t.getAlliance();
                     if(A == null || !A.equals(a)) {
-                        sendStringListMessage(player, config.getStringList("messages.kick not a member"), replacements);
+                        sendStringListMessage(player, getStringList(config, "messages.kick not a member"), replacements);
                     } else {
                         a.kick(op);
-                        if(online) sendStringListMessage(op.getPlayer(), config.getStringList("messages.been kicked"), replacements);
-                        sendMsgToMembers(a, config.getStringList("messages.kicked"), replacements);
+                        if(online) sendStringListMessage(op.getPlayer(), getStringList(config, "messages.been kicked"), replacements);
+                        sendMsgToMembers(a, getStringList(config, "messages.kicked"), replacements);
                     }
                     if(!online) t.unload();
                 }
@@ -428,16 +428,16 @@ public class Alliances extends RSFeature implements CommandExecutor {
             final UUID u = player.getUniqueId();
             final Alliance a = RSPlayer.get(u).getAlliance();
             if(a == null) {
-                sendStringListMessage(player, config.getStringList("messages.must be in an alliance to use command"), null);
+                sendStringListMessage(player, getStringList(config, "messages.must be in an alliance to use command"), null);
             } else {
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{PLAYER}", player.getName());
                 a.leave(player);
                 if(a.getMembers().size() == 0) {
                     a.disband();
-                    sendStringListMessage(player, config.getStringList("messages.disband"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.disband"), null);
                 } else {
-                    sendMsgToMembers(a, config.getStringList("messages.leave notify"), replacements);
+                    sendMsgToMembers(a, getStringList(config, "messages.leave notify"), replacements);
                 }
             }
         }
@@ -465,7 +465,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
 
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{PLAYER}", victim.getName());
-                    sendStringListMessage(damager, config.getStringList("messages.cannot damage due to relation"), replacements);
+                    sendStringListMessage(damager, getStringList(config, "messages.cannot damage due to relation"), replacements);
                 }
             }
         }

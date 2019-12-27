@@ -27,7 +27,7 @@ public class InventoryPets extends RSFeature implements Listener {
             saveOtherData();
         }
 
-        for(File f : new File(dataFolder + separator + "inventory pets").listFiles()) {
+        for(File f : new File(DATA_FOLDER + separator + "inventory pets").listFiles()) {
             new FileInventoryPet(f);
         }
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.INVENTORY_PET).size() + " Inventory Pets &e(took " + (System.currentTimeMillis()-started) + "ms)");

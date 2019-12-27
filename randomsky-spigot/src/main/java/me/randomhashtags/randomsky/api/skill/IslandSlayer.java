@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.api.skill;
 
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,17 +39,17 @@ public class IslandSlayer extends IslandAddon {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "island slayer.yml");
-        slayerConfig = YamlConfiguration.loadConfiguration(new File(randomsky.getDataFolder(), "island slayer.yml"));
+        slayerConfig = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "island slayer.yml"));
 
         final int size = slayerConfig.getInt("gui.size");
-        final List<String> format = colorizeListString(slayerConfig.getStringList("gui.settings.format"));
-        progression = colorizeListString(slayerConfig.getStringList("gui.settings.progression"));
-        unlockedLore = colorizeListString(slayerConfig.getStringList("gui.settings.unlocked.lore"));
-        lockedLore = colorizeListString(slayerConfig.getStringList("gui.settings.locked.lore"));
-        respawnRate = colorizeListString(slayerConfig.getStringList("gui.settings.respawn rate"));
-        unlockedName = ChatColor.translateAlternateColorCodes('&', slayerConfig.getString("gui.settings.unlocked.name"));
-        lockedName = ChatColor.translateAlternateColorCodes('&', slayerConfig.getString("gui.settings.locked.name"));
-        gui = new UInventory(null, size, ChatColor.translateAlternateColorCodes('&', slayerConfig.getString("gui.title")));
+        final List<String> format = getStringList(slayerConfig, "gui.settings.format");
+        progression = getStringList(slayerConfig, "gui.settings.progression");
+        unlockedLore = getStringList(slayerConfig, "gui.settings.unlocked.lore");
+        lockedLore = getStringList(slayerConfig, "gui.settings.locked.lore");
+        respawnRate = getStringList(slayerConfig, "gui.settings.respawn rate");
+        unlockedName = colorize(slayerConfig.getString("gui.settings.unlocked.name"));
+        lockedName = colorize(slayerConfig.getString("gui.settings.locked.name"));
+        gui = new UInventory(null, size, colorize(slayerConfig.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(slayerConfig, "gui.background");
         int level = 1;

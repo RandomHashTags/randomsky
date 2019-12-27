@@ -36,13 +36,13 @@ public class Homes extends RSFeature implements CommandExecutor {
             viewHomelist(player);
         } else if(c.equals("sethome")) {
             if(l == 0) {
-                sendStringListMessage(player, config.getStringList("messages.sethome usage"), null);
+                sendStringListMessage(player, getStringList(config, "messages.sethome usage"), null);
             } else {
                 trySetting(player, args[0]);
             }
         } else if(c.equals("delhome")) {
             if(l == 0) {
-                sendStringListMessage(player, config.getStringList("messages.delhome usage"), null);
+                sendStringListMessage(player, getStringList(config, "messages.delhome usage"), null);
             } else {
                 tryDeleting(player, args[0]);
             }
@@ -53,7 +53,7 @@ public class Homes extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "homes.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "homes.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "homes.yml"));
         sendConsoleMessage("&6[RandomSky] &aLoaded Homes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
     public void unload() {
@@ -67,19 +67,19 @@ public class Homes extends RSFeature implements CommandExecutor {
             if(home == null && homes != null && homes.size() > 0) {
                 home = homes.get(0).getName();
             } else if(home == null || homes == null || homes.size() == 0) {
-                sendStringListMessage(player, config.getStringList("messages.dont have one"), null);
+                sendStringListMessage(player, getStringList(config, "messages.dont have one"), null);
                 return;
             }
             for(Home h : homes) {
                 final String n = h.getName();
                 if(n.equalsIgnoreCase(home)) {
                     replacements.put("{NAME}", n);
-                    sendStringListMessage(player, config.getStringList("messages.traveling to home"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.traveling to home"), replacements);
                     player.teleport(h.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
                     return;
                 }
             }
-            sendStringListMessage(player, config.getStringList("messages.no home of that name"), replacements);
+            sendStringListMessage(player, getStringList(config, "messages.no home of that name"), replacements);
         }
     }
     public void trySetting(@NotNull Player player, @NotNull String home) {
@@ -91,10 +91,10 @@ public class Homes extends RSFeature implements CommandExecutor {
             replacements.put("{NAME}", home);
             replacements.put("{MAX_HOMES}", Integer.toString(maxhomes));
             if(homes.size()+1 > maxhomes) {
-                sendStringListMessage(player, config.getStringList("messages.have max"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.have max"), replacements);
             } else {
                 final Location l = player.getLocation();
-                final List<String> msg = config.getStringList("messages.sethome");
+                final List<String> msg = getStringList(config, "messages.sethome");
                 for(Home h : homes) {
                     if(h.getName().equalsIgnoreCase(home)) {
                         h.setLocation(l);
@@ -124,11 +124,11 @@ public class Homes extends RSFeature implements CommandExecutor {
             for(Home h : homes) {
                 if(h.getName().equalsIgnoreCase(home)) {
                     homes.remove(h);
-                    sendStringListMessage(player, config.getStringList("messages.delhome"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.delhome"), replacements);
                     return;
                 }
             }
-            sendStringListMessage(player, config.getStringList("messages.delhome not found"), replacements);
+            sendStringListMessage(player, getStringList(config, "messages.delhome not found"), replacements);
         }
     }
     public void viewHomelist(@NotNull Player player) {
@@ -136,9 +136,9 @@ public class Homes extends RSFeature implements CommandExecutor {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             final String homesize = Integer.toString(homes.size());
-            for(String s : config.getStringList("messages.homelist")) {
+            for(String s : getStringList(config, "messages.homelist")) {
                 if(s.equals("{HOMES}")) {
-                    final List<String> p = config.getStringList("messages.home in list");
+                    final List<String> p = getStringList(config, "messages.home in list");
                     for(Home h : homes) {
                         final String n = h.getName();
                         final Location l = h.getLocation();

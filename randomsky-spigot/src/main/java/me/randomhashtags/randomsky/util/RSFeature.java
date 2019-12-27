@@ -3,9 +3,9 @@ package me.randomhashtags.randomsky.util;
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import me.randomhashtags.randomsky.addon.util.Loadable;
 import me.randomhashtags.randomsky.api.unfinished.CustomEnchants;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
-import me.randomhashtags.randomsky.util.universal.UVersion;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,7 +46,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
     public void enable() {
         if(otherdataF == null) {
             save("_Data", "other.yml");
-            otherdataF = new File(dataFolder + separator + "_Data", "other.yml");
+            otherdataF = new File(DATA_FOLDER + separator + "_Data", "other.yml");
             otherdata = YamlConfiguration.loadConfiguration(otherdataF);
 
             treemap.put(1000, "M"); treemap.put(900, "CM"); treemap.put(500, "D"); treemap.put(400, "CD"); treemap.put(100, "C"); treemap.put(90, "XC");
@@ -55,13 +55,13 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
             givedp = new UInventory(null, 27, "Givedp Categories");
             givedpCategories = new ArrayList<>();
 
-            mcmmoIsEnabled = pluginmanager.isPluginEnabled("mcMMO");
+            mcmmoIsEnabled = PLUGIN_MANAGER.isPluginEnabled("mcMMO");
         }
         if(isEnabled) return;
         try {
             isEnabled = true;
             load();
-            pluginmanager.registerEvents(this, randomsky);
+            PLUGIN_MANAGER.registerEvents(this, RANDOM_SKY);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +80,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
     public void saveOtherData() {
         try {
             otherdata.save(otherdataF);
-            otherdataF = new File(dataFolder + separator + "_Data", "other.yml");;
+            otherdataF = new File(DATA_FOLDER + separator + "_Data", "other.yml");;
             otherdata = YamlConfiguration.loadConfiguration(otherdataF);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
     public boolean hasPermission(CommandSender sender, String permission, boolean sendNoPermMessage) {
         if(!(sender instanceof Player) || sender.hasPermission(permission)) return true;
         else if(sendNoPermMessage) {
-            sendStringListMessage(sender, randomsky.getConfig().getStringList("no permission"), null);
+            sendStringListMessage(sender, RANDOM_SKY.getConfig().getStringList("no permission"), null);
         }
         return false;
     }
@@ -131,7 +131,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
                 final String A = P.split("=")[1];
                 final boolean B = P.contains("-");
                 final int min = B ? Integer.parseInt(A.split("-")[0]) : 0;
-                amount = B ? min+random.nextInt(Integer.parseInt(A.split("-")[1])-min+1) : Integer.parseInt(A);
+                amount = B ? min+ RANDOM.nextInt(Integer.parseInt(A.split("-")[1])-min+1) : Integer.parseInt(A);
                 path = path.split(";amount=")[0];
                 P = P.split(";")[0];
             }
@@ -142,7 +142,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
                 if(e != null) {
                     int level = 1;
                     if(P.split(":").length == 3)
-                        level = P.split(":")[2].equals("random") ? 1 + random.nextInt(e.getMaxLevel()) : P.split(":")[2].contains("-") ? Integer.parseInt(P.split(":")[2].split("\\-")[0]) + random.nextInt(Integer.parseInt(P.split(":")[2].split("\\-")[1])) : Integer.parseInt(P.split(":")[2]);
+                        level = P.split(":")[2].equals("random") ? 1 + RANDOM.nextInt(e.getMaxLevel()) : P.split(":")[2].contains("-") ? Integer.parseInt(P.split(":")[2].split("\\-")[0]) + RANDOM.nextInt(Integer.parseInt(P.split(":")[2].split("\\-")[1])) : Integer.parseInt(P.split(":")[2]);
                     item = new ItemStack(Material.ENCHANTED_BOOK, amount);
                     final EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
                     meta.addStoredEnchant(e, level, true);
@@ -202,7 +202,7 @@ public abstract class RSFeature extends UVersion implements Listener, Loadable, 
                                     final EnchantRarity r = EnchantRarity.valueOf(e);
                                     if(r != null) {
                                         int l = getRemainingInt(s), x = (int) (e.getMaxLevel()*enchantMultiplier);
-                                        l = l != -1 ? l : x+random.nextInt(e.getMaxLevel()-x+1);
+                                        l = l != -1 ? l : x+ RANDOM.nextInt(e.getMaxLevel()-x+1);
                                         if(l != 0 || !levelzeroremoval)
                                             lore.add(r.getApplyColors() + e.getName() + " " + toRoman(l != 0 ? l : 1));
                                     } else {

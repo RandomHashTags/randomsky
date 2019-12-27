@@ -31,9 +31,9 @@ public class RepairScrolls extends RSFeature implements Listener {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "repair scrolls", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "repair scrolls", "_settings.yml"));
-        final File folder = new File(dataFolder + separator + "repair scrolls");
+        save(DATA_FOLDER + separator + "repair scrolls", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "repair scrolls", "_settings.yml"));
+        final File folder = new File(DATA_FOLDER + separator + "repair scrolls");
         if(folder.exists()) {
             for(File f : folder.listFiles()) {
                 new FileRepairScroll(f);
@@ -64,7 +64,7 @@ public class RepairScrolls extends RSFeature implements Listener {
                     event.setCursor(cursor);
                     event.setCurrentItem(current);
                 } else {
-                    sendStringListMessage(player, config.getStringList("messages.cannot repair item with scroll"), null);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot repair item with scroll"), null);
                 }
                 player.updateInventory();
             }

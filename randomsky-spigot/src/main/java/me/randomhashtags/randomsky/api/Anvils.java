@@ -2,7 +2,7 @@ package me.randomhashtags.randomsky.api;
 
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,10 +36,10 @@ public class Anvils extends RSFeature {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "anvils.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "anvils.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "anvils.yml"));
 
-        cannotPutItemIn = colorizeListString(config.getStringList("messages.cannot put item in"));
-        nothingToCombine = colorizeListString(config.getStringList("messages.nothing to combine"));
+        cannotPutItemIn = getStringList(config, "messages.cannot put item in");
+        nothingToCombine = getStringList(config, "messages.nothing to combine");
 
         background = d(config, "items.background");
         confirm = d(config, "items.confirm");

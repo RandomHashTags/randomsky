@@ -37,7 +37,7 @@ public class ResourceNodes extends RSFeature {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        final String folder = dataFolder + separator + "resources" + separator + "nodes";
+        final String folder = DATA_FOLDER + separator + "resources" + separator + "nodes";
         save(folder, "_settings.yml");
         config = YamlConfiguration.loadConfiguration(new File(folder, "_settings.yml"));
 
@@ -69,17 +69,17 @@ public class ResourceNodes extends RSFeature {
             if(is.getAllowedNodes().contains(n) || requiredLevel == null || is.getIslandLevel().getLevel() >= requiredLvl) {
                 new ActiveResourceNode(n, event.getEvent().getBlockPlaced().getLocation());
                 replacements.put("{TYPE}", nodeName);
-                sendStringListMessage(player, config.getStringList("messages.placed"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.placed"), replacements);
                 for(Player p : is.getOnlineMembers()) {
                     if(p != player) {
-                        sendStringListMessage(p, config.getStringList("messages.placed notify"), replacements);
+                        sendStringListMessage(p, getStringList(config, "messages.placed notify"), replacements);
                     }
                 }
             } else {
                 event.setCancelled(true);
                 replacements.put("{TYPE}", nodeName);
                 replacements.put("{REQUIRED_LEVEL}", Integer.toString(requiredLvl));
-                sendStringListMessage(player, config.getStringList("messages.level too low to place node"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.level too low to place node"), replacements);
             }
             player.updateInventory();
         }
@@ -93,7 +93,7 @@ public class ResourceNodes extends RSFeature {
         if(a != null) {
             final Player player = event.getPlayer();
             final HarvestResourceNodeEvent r = new HarvestResourceNodeEvent(player, is, a);
-            pluginmanager.callEvent(r);
+            PLUGIN_MANAGER.callEvent(r);
 
             final ResourceNode type = a.getType();
             final long cooldown = a.getCooldownExpiration(), time = System.currentTimeMillis();
@@ -105,12 +105,12 @@ public class ResourceNodes extends RSFeature {
             if(player.isSneaking()) {
                 a.delete();
                 l.getWorld().dropItemNaturally(l, type.getItem());
-                sendStringListMessage(player, config.getStringList("messages.destroyed"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.destroyed"), replacements);
             } else if(time >= cooldown) {
                 a.harvest(player);
             } else {
-                sendStringListMessage(player, config.getStringList("messages.respawn"), replacements);
-                sendStringListMessage(player, config.getStringList("messages.pickup"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.respawn"), replacements);
+                sendStringListMessage(player, getStringList(config, "messages.pickup"), replacements);
             }
         }
     }
@@ -129,11 +129,11 @@ public class ResourceNodes extends RSFeature {
                 replacements.put("{TYPE}", n.getType().getNodeName());
                 final long time = System.currentTimeMillis(), cooldown = n.getCooldownExpiration();
                 if(time >= cooldown) {
-                    sendStringListMessage(player, config.getStringList("messages.ready to be harvested"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.ready to be harvested"), replacements);
                 } else {
                     final String t = getRemainingTime(cooldown-time);
                     replacements.put("{TIME}", t.equals("") ? "0" : t);
-                    sendStringListMessage(player, config.getStringList("messages.respawn"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.respawn"), replacements);
                 }
             }
         }

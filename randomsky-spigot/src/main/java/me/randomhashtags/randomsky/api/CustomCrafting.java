@@ -1,8 +1,8 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,11 +44,11 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "custom crafting/_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "custom crafting/_settings.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "custom crafting/_settings.yml"));
         removeRecipes = config.getStringList("remove recipes");
         recipes = new HashMap<>();
 
-        final Iterator<Recipe> a = server.recipeIterator();
+        final Iterator<Recipe> a = SERVER.recipeIterator();
         final List<Recipe> b = new ArrayList<>();
         while(a.hasNext()) {
             final Recipe r = a.next();
@@ -61,9 +61,9 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
                 }
             }
         }
-        server.clearRecipes();
+        SERVER.clearRecipes();
         for(Recipe r : b) {
-            server.addRecipe(r);
+            SERVER.addRecipe(r);
         }
 
         final int size = config.getInt("gui.size");
@@ -126,7 +126,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         final ItemStack[] a = new ItemStack[10];
         final List<String> format = config.getStringList(p + "recipe.format");
         final HashMap<String, ItemStack> h = new HashMap<>();
-        final ShapedRecipe r = new ShapedRecipe(new NamespacedKey(randomsky, P + "_shaped"), result);
+        final ShapedRecipe r = new ShapedRecipe(new NamespacedKey(RANDOM_SKY, P + "_shaped"), result);
         for(int i = 0; i < format.size(); i++) {
             final String f = format.get(i);
             for(int o = 0; o < f.length(); o++) {
@@ -151,7 +151,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         Bukkit.addRecipe(r);
     }
     protected void createShapelessRecipe(String path, String p, String P, ItemStack result) {
-        final ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(randomsky, P + "_shapeless"), result);
+        final ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(RANDOM_SKY, P + "_shapeless"), result);
         final ItemStack recipe = d(null, config.getString(p + "recipe"));
         final int amount = config.getInt(p + "amount");
         r.addIngredient(1, recipe.getType());
@@ -193,7 +193,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
             this.required = null;
             this.recipe = recipe;
             this.amount = 0;
-            pluginmanager.registerEvents(this, randomsky);
+            PLUGIN_MANAGER.registerEvents(this, RANDOM_SKY);
         }
         public CustomRecipe(String path, ItemStack result, ItemStack required, int amount) {
             this.path = path;
@@ -201,7 +201,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
             this.required = required;
             this.recipe = null;
             this.amount = amount;
-            pluginmanager.registerEvents(this, randomsky);
+            PLUGIN_MANAGER.registerEvents(this, RANDOM_SKY);
         }
 
         @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

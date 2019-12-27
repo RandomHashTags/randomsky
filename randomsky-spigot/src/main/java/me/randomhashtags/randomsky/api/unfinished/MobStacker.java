@@ -40,7 +40,7 @@ public class MobStacker extends RSFeature implements Listener {
     }
     public void unload() {
         for(World w : tasks.keySet()) {
-            scheduler.cancelTask(tasks.get(w));
+            SCHEDULER.cancelTask(tasks.get(w));
         }
         tasks = null;
         StackedEntity.stacked.clear();

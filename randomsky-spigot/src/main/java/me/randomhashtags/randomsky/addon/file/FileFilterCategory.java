@@ -4,7 +4,7 @@ import me.randomhashtags.randomsky.addon.FilterCategory;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;

@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.util;
 
 import me.randomhashtags.randomsky.RandomSkyAPI;
-import me.randomhashtags.randomsky.util.universal.UVersion;
+import me.randomhashtags.randomsky.universal.UVersion;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

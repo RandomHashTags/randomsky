@@ -6,8 +6,8 @@ import me.randomhashtags.randomsky.addon.util.Itemable;
 import me.randomhashtags.randomsky.addon.util.RequiredIslandLevel;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
-import me.randomhashtags.randomsky.util.universal.UVersionable;
+import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

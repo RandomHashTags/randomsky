@@ -5,7 +5,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,10 +32,10 @@ public class ColorCrystals extends RSFeature {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "color crystals.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "color crystals.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "color crystals.yml"));
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.COLOR_CRYSTAL).size() + " Color Crystals &e(took " + (System.currentTimeMillis()-started) + "ms)");
 
-        dontHaveUnlockedMsg = colorizeListString(config.getStringList("messages.dont have unlocked"));
+        dontHaveUnlockedMsg = getStringList(config, "messages.dont have unlocked");
 
         inventory = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         background = d(config, "gui.background");

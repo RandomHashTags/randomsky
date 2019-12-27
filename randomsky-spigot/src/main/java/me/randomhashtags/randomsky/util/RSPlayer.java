@@ -9,8 +9,8 @@ import me.randomhashtags.randomsky.addon.obj.ChatChannelsObj;
 import me.randomhashtags.randomsky.addon.obj.CoinFlipStats;
 import me.randomhashtags.randomsky.addon.obj.JackpotStats;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
-import me.randomhashtags.randomsky.util.universal.UVersionable;
+import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,7 +23,7 @@ import java.util.*;
 import static java.io.File.separator;
 
 public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPlayer {
-    private static final String folder = dataFolder + separator + "_Data" + separator + "players";
+    private static final String folder = DATA_FOLDER + separator + "_Data" + separator + "players";
     public static final HashMap<UUID, RSPlayer> players = new HashMap<>();
 
     private boolean isLoaded = false, filter = false;

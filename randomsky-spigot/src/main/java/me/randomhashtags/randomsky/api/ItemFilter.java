@@ -8,8 +8,8 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -72,20 +72,20 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "filter categories", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "filter categories", "_settings.yml"));
+        save(DATA_FOLDER + separator + "filter categories", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "filter categories", "_settings.yml"));
 
         categorySlots = new HashMap<>();
 
-        addedLore = colorizeListString(config.getStringList("settings.categories added lore"));
+        addedLore = getStringList(config, "settings.categories added lore");
         enablePrefix = colorize(config.getString("settings.enabled prefix"));
-        enable = colorizeListString(config.getStringList("settings.enabled lore"));
+        enable = getStringList(config, "settings.enabled lore");
         disabledPrefix = colorize(config.getString("settings.disabled prefix"));
-        disable = colorizeListString(config.getStringList("settings.disabled lore"));
+        disable = getStringList(config, "settings.disabled lore");
 
         gui = new UInventory(null, config.getInt("categories.size"), colorize(config.getString("categories.title")));
         final Inventory gi = gui.getInventory();
-        final String folder = dataFolder + separator + "filter categories";
+        final String folder = DATA_FOLDER + separator + "filter categories";
         for(String s : config.getConfigurationSection("categories").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size")) {
                 final String p = "categories." + s + ".", opens = config.getString(p + "opens");
@@ -106,7 +106,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
 
     public void viewHelp(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.filter.help", true)) {
-            sendStringListMessage(player, config.getStringList("messages.help"), null);
+            sendStringListMessage(player, getStringList(config, "messages.help"), null);
         }
     }
 
@@ -134,7 +134,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         if(hasPermission(player, "RandomSky.filter.toggle", true)) {
             final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
             final boolean active = pdata.toggleFilter();
-            sendStringListMessage(player, config.getStringList("messages." + (active ? "en" : "dis") + "able"), null);
+            sendStringListMessage(player, getStringList(config, "messages." + (active ? "en" : "dis") + "able"), null);
         }
     }
     public void viewCategory(@NotNull Player player, @NotNull FilterCategory category) {
@@ -217,7 +217,7 @@ public class ItemFilter extends RSFeature implements CommandExecutor {
         final Player player = (Player) event.getPlayer();
         final FilterCategory c = valueOf(event.getView().getTitle());
         if(c != null) {
-            scheduler.scheduleSyncDelayedTask(randomsky, () -> viewCategories(player), 0);
+            SCHEDULER.scheduleSyncDelayedTask(RANDOM_SKY, () -> viewCategories(player), 0);
         }
     }
 }

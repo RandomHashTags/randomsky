@@ -23,7 +23,7 @@ public class CollectionChests extends RSFeature {
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "collection chests.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder, "collection chests.yml"));
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "collection chests.yml"));
 
         collectionchest = d(config, "settings");
         sendConsoleMessage("&6[RandomSky] &aLoaded Collection Chests &e(took " + (System.currentTimeMillis()-started) + "ms)");

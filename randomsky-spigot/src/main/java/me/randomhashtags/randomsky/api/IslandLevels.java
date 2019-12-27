@@ -6,8 +6,8 @@ import me.randomhashtags.randomsky.addon.island.IslandLevel;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UInventory;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -49,20 +49,20 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
 
     public void load() {
         final long started = System.currentTimeMillis();
-        save(dataFolder + separator + "island" + separator + "levels", "_settings.yml");
-        config = YamlConfiguration.loadConfiguration(new File(dataFolder + separator + "island" + separator + "levels", "_setings.yml"));
+        save(DATA_FOLDER + separator + "island" + separator + "levels", "_settings.yml");
+        config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER + separator + "island" + separator + "levels", "_setings.yml"));
 
         lockedBlocks = new ArrayList<>();
 
         gui = new UInventory(null, config.getInt("gui.size"), colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(config, "items.background");
-        format = colorizeListString(config.getStringList("items.format"));
-        currentLevel = colorizeListString(config.getStringList("items.current level"));
-        clickToLevelUp = colorizeListString(config.getStringList("items.click to level up"));
-        cannotAffordToLevelUp = colorizeListString(config.getStringList("items.cannot afford level up"));
-        requiresLevel = colorizeListString(config.getStringList("items.requires level"));
-        for(String s : config.getStringList("locked blocks")) {
+        format = getStringList(config, "items.format");
+        currentLevel = getStringList(config, "items.current level");
+        clickToLevelUp = getStringList(config, "items.click to level up");
+        cannotAffordToLevelUp = getStringList(config, "items.cannot afford level up");
+        requiresLevel = getStringList(config, "items.requires level");
+        for(String s : getStringList(config, "locked blocks")) {
             lockedBlocks.add(UMaterial.match(s));
         }
 
@@ -74,7 +74,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
         locked = d(config, "settings.locked");
         unlocked = d(config, "settings.unlocked");
 
-        for(File f : new File(dataFolder + separator + "island" + separator + "levels").listFiles()) {
+        for(File f : new File(DATA_FOLDER + separator + "island" + separator + "levels").listFiles()) {
             if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
                 final IslandLevel lvl = new FileIslandLevel(f);
                 final int level = lvl.getLevel();
@@ -106,7 +106,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
             if(is != null) {
                 final IslandLevel L = is.getIslandLevel();
                 final int size = gui.getSize(), isLevel = L.getLevel();
-                final double bal = eco.getBalance(player);
+                final double bal = ECONOMY.getBalance(player);
                 player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
                 final Inventory top = player.getOpenInventory().getTopInventory();
                 top.setContents(gui.getInventory().getContents());
@@ -119,7 +119,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                 }
                 player.updateInventory();
             } else {
-                sendStringListMessage(player, config.getStringList("messages.need island"), null);
+                sendStringListMessage(player, getStringList(config, "messages.need island"), null);
             }
         }
     }
@@ -205,7 +205,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                     replacements.put("{REQ_LEVEL}", Integer.toString(reql));
                     replacements.put("{BLOCK}", b.toUpperCase());
                     replacements.put("{LEVEL}", Integer.toString(l));
-                    sendStringListMessage(event.getPlayer(), config.getStringList("messages.level too low to place block"), replacements);
+                    sendStringListMessage(event.getPlayer(), getStringList(config, "messages.level too low to place block"), replacements);
                 }
             }
         }
@@ -225,7 +225,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
             final Island is = Island.players.get(player.getUniqueId());
             final IslandLevel level = IslandLevel.slots.getOrDefault(r, null), current = is.getIslandLevel();
             if(level != null) {
-                double bal = eco.getBalance(player);
+                double bal = ECONOMY.getBalance(player);
                 final long cost = get$Cost(level);
                 final int currentLevel = current.getLevel(), targetLevel = level.getLevel();
 
@@ -234,17 +234,17 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                 replacements.put("{TARGET_LEVEL}", Integer.toString(targetLevel));
                 replacements.put("{COST}", formatDouble(cost));
                 if(currentLevel >= targetLevel) {
-                    sendStringListMessage(player, config.getStringList("messages.already unlocked level"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.already unlocked level"), replacements);
                 } else if(targetLevel != currentLevel+1) {
-                    sendStringListMessage(player, config.getStringList("messages.must unlock previous island levels"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.must unlock previous island levels"), replacements);
                 } else if(bal < cost) {
-                    sendStringListMessage(player, config.getStringList("messages.cannot afford level up"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.cannot afford level up"), replacements);
                 } else {
                     is.setIslandLevel(level);
                     replacements.put("{SIZE}", Integer.toString(is.radius));
-                    eco.withdrawPlayer(player, cost);
+                    ECONOMY.withdrawPlayer(player, cost);
                     bal -= cost;
-                    sendStringListMessage(player, config.getStringList("messages.level up"), replacements);
+                    sendStringListMessage(player, getStringList(config, "messages.level up"), replacements);
                     final int cu = current.getSlot();
                     final IslandLevel next = IslandLevel.levels.getOrDefault(targetLevel+1, null);
                     top.setItem(cu, getStatus(bal, cu, current, targetLevel));

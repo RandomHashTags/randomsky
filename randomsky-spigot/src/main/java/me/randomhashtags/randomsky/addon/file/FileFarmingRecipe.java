@@ -4,7 +4,7 @@ import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UMaterial;
+import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;

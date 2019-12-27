@@ -3,7 +3,7 @@ package me.randomhashtags.randomsky.attribute;
 import me.randomhashtags.randomsky.addon.EventCondition;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.universal.UVersion;
+import me.randomhashtags.randomsky.universal.UVersion;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
