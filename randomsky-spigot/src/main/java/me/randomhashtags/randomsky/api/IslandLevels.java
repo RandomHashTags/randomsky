@@ -4,10 +4,10 @@ import me.randomhashtags.randomsky.addon.file.FileIslandLevel;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandLevel;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -192,18 +192,18 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void islandPlaceBlockEvent(IslandPlaceBlockEvent event) {
         final ItemStack i = event.getItem();
-        final String b = UMaterial.match(i).name().toLowerCase();
+        final UMaterial umaterial = UMaterial.match(i);
         final Island island = event.getIsland();
         final IslandLevel level = island.getIslandLevel();
-        if(lockedBlocks.containsKey(b)) {
-            final IslandLevel req = IslandLevel.paths.getOrDefault(lockedBlocks.get(b), null);
+        if(lockedBlocks.contains(umaterial)) {
+            final IslandLevel req = IslandLevel.paths.getOrDefault(lockedBlocks.get(umaterial), null);
             if(req != null) {
                 final int reql = req.getLevel(), l = level.getLevel();
                 if(l < reql) {
                     event.setCancelled(true);
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{REQ_LEVEL}", Integer.toString(reql));
-                    replacements.put("{BLOCK}", b.toUpperCase());
+                    replacements.put("{BLOCK}", umaterial.name());
                     replacements.put("{LEVEL}", Integer.toString(l));
                     sendStringListMessage(event.getPlayer(), getStringList(config, "messages.level too low to place block"), replacements);
                 }

@@ -26,6 +26,7 @@ public interface Island extends Identifiable, Attributable, Loadable {
         return null;
     }
 
+    void delete();
     boolean isLoaded();
     UUID getUUID();
     long getCreatedTime();

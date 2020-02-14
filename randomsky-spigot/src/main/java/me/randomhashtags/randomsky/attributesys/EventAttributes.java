@@ -5,7 +5,6 @@ import me.randomhashtags.randomsky.addon.EventCondition;
 import me.randomhashtags.randomsky.attribute.*;
 import me.randomhashtags.randomsky.attribute.condition.*;
 import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSStorage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,6 +80,7 @@ public abstract class EventAttributes extends EventExecutor {
             e.load();
         }
         final List<EventCondition> conditions = Arrays.asList(
+                new DepleteRarityGem(),
                 new DoesDieFromDamage(),
                 new HasCombo(),
                 new HasCustomEnchantEquipped(),
@@ -93,12 +93,12 @@ public abstract class EventAttributes extends EventExecutor {
         for(EventCondition c : conditions) {
             c.load();
         }
-        EACoreListener.getEventAttributeListener().enable();
+        EACoreListener.getEACoreListener().enable();
     }
     public static void unloadEventAttributes() {
-        RSStorage.unregisterAll(Feature.EVENT_ATTRIBUTE, Feature.EVENT_CONDITION);
+        RPStorage.unregisterAll(Feature.EVENT_ATTRIBUTE, Feature.EVENT_CONDITION);
         Combo.combos.clear();
         Listable.list.clear();
-        EACoreListener.getEventAttributeListener().disable();
+        EACoreListener.getEACoreListener().disable();
     }
 }

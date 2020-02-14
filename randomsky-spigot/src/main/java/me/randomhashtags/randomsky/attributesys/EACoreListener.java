@@ -1,15 +1,5 @@
 package me.randomhashtags.randomsky.attributesys;
 
-import me.randomhashtags.randomsky.addon.EventAttributeListener;
-import me.randomhashtags.randomsky.event.*;
-import me.randomhashtags.randomsky.event.armor.ArmorEquipEvent;
-import me.randomhashtags.randomsky.event.armor.ArmorPieceBreakEvent;
-import me.randomhashtags.randomsky.event.armor.ArmorSwapEvent;
-import me.randomhashtags.randomsky.event.armor.ArmorUnequipEvent;
-import me.randomhashtags.randomsky.event.async.ItemNameTagUseEvent;
-import me.randomhashtags.randomsky.event.enchant.CustomEnchantApplyEvent;
-import me.randomhashtags.randomsky.event.enchant.CustomEnchantProcEvent;
-import me.randomhashtags.randomsky.event.enchant.PlayerRevealCustomEnchantEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,7 +17,7 @@ import java.util.UUID;
 
 public class EACoreListener extends EventExecutor implements Listener {
     private static EACoreListener instance;
-    public static EACoreListener getEventAttributeListener() {
+    public static EACoreListener getEACoreListener() {
         if(instance == null) instance = new EACoreListener();
         return instance;
     }
@@ -116,9 +106,17 @@ public class EACoreListener extends EventExecutor implements Listener {
     private void playerQuitEvent(PlayerQuitEvent event) {
         callEventAttributeListeners(event);
     }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void playerExpChangeEvent(PlayerExpGainEvent event) {
+        callEventAttributeListeners(event);
+    }
     /*
-     * RandomSky Events
+     * RandomPackage Events
      */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void alchemistExchangeEvent(AlchemistExchangeEvent event) {
+        callEventAttributeListeners(event);
+    }
     @EventHandler(priority = EventPriority.HIGHEST)
     private void playerRevealCustomEnchantEvent(PlayerRevealCustomEnchantEvent event) {
         callEventAttributeListeners(event);
@@ -140,7 +138,35 @@ public class EACoreListener extends EventExecutor implements Listener {
         callEventAttributeListeners(event);
     }
     @EventHandler(priority = EventPriority.HIGHEST)
+    private void enchanterPurchaseEvent(EnchanterPurchaseEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void equipmentLootboxOpenEvent(EquipmentLootboxOpenEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void itemNameTagUseEvent(ItemNameTagUseEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
     private void jackpotPurchaseTicketsEvent(JackpotPurchaseTicketsEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void mysteryMobSpawnerOpenEvent(MysteryMobSpawnerOpenEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void randomizationScrollUseEvent(RandomizationScrollUseEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void playerClaimEnvoyCrateEvent(PlayerClaimEnvoyCrateEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void serverCrateOpenEvent(ServerCrateOpenEvent event) {
         callEventAttributeListeners(event);
     }
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -149,6 +175,10 @@ public class EACoreListener extends EventExecutor implements Listener {
     }
     @EventHandler(priority = EventPriority.HIGHEST)
     private void shopSellEvent(ShopSellEvent event) {
+        callEventAttributeListeners(event);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void tinkererTradeEvent(TinkererTradeEvent event) {
         callEventAttributeListeners(event);
     }
 

@@ -1,10 +1,5 @@
 package me.randomhashtags.randomsky.api;
 
-import com.boydti.fawe.object.schematic.Schematic;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.world.registry.WorldData;
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.file.FileIsland;
 import me.randomhashtags.randomsky.addon.file.FileIslandOrigin;
@@ -17,10 +12,7 @@ import me.randomhashtags.randomsky.api.skill.IslandMining;
 import me.randomhashtags.randomsky.api.skill.IslandSlayer;
 import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.ToggleType;
+import me.randomhashtags.randomsky.util.*;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.*;
@@ -55,13 +47,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
 import static java.io.File.separator;
 
-public class Islands extends IslandAddon implements CommandExecutor {
+public class Islands extends IslandAddon implements CommandExecutor, Schematicable {
     private static Islands instance;
     public static Islands getIslands() {
         if(instance == null) instance = new Islands();
@@ -336,24 +327,6 @@ public class Islands extends IslandAddon implements CommandExecutor {
         }
         player.teleport(center.clone().add(0.5, 1, 0.5));
         sendStringListMessage(player, getStringList(config, "messages.create"), null);
-    }
-    private void cleanChunk(Chunk chunk) throws IOException {
-        final File schematic = new File(worldeditF, "AIR_CHUNK.schematic");
-        final Location b = chunk.getBlock(0, 0, 0).getLocation();
-        final com.sk89q.worldedit.Vector to = new com.sk89q.worldedit.Vector(b.getBlockX(), b.getBlockY(), b.getBlockZ());
-        com.sk89q.worldedit.world.World W = new BukkitWorld(Bukkit.getWorld(islandWorld));
-        final WorldData worldData = W.getWorldData();
-        final Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(schematic)).read(worldData);
-        final Schematic s = new Schematic(clipboard);
-        s.paste(W, to, false, true, null);
-    }
-    private void pasteSchematic(File schematic, Location l) throws IOException {
-        final com.sk89q.worldedit.Vector to = new com.sk89q.worldedit.Vector(l.getBlockX(), l.getBlockY(), l.getBlockZ());
-        final com.sk89q.worldedit.world.World W = new BukkitWorld(Bukkit.getWorld(islandWorld));
-        final WorldData worldData = W.getWorldData();
-        final Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(schematic)).read(worldData);
-        final Schematic s = new Schematic(clipboard);
-        s.paste(W, to, false, true, null);
     }
 
     public void viewHelp(CommandSender sender) {

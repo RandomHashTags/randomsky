@@ -59,7 +59,7 @@ public class IslandPermissionBlocks extends IslandAddon {
 
         A = colorize(config.getString("permission blocks.gui.lores.allowed"));
         D = colorize(config.getString("permission blocks.gui.lores.denied"));
-        addedLore = colorizeListString(getStringList(config, "permission blocks.gui.lores.added lore"));
+        addedLore = getStringList(config, "permission blocks.gui.lores.added lore");
         regionMembers = d(config, "permission blocks.gui.region members");
         regionInfo = d(config, "permission blocks.gui.region info");
 

@@ -1,9 +1,14 @@
 package me.randomhashtags.randomsky.attributesys;
 
-import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
-import me.randomhashtags.randomsky.event.FundDepositEvent;
-import me.randomhashtags.randomsky.event.JackpotPurchaseTicketsEvent;
-import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randompackage.addon.living.ActiveBooster;
+import me.randomhashtags.randompackage.event.*;
+import me.randomhashtags.randompackage.event.booster.BoosterTriggerEvent;
+import me.randomhashtags.randompackage.event.enchant.CustomEnchantProcEvent;
+import me.randomhashtags.randompackage.event.kit.KitClaimEvent;
+import me.randomhashtags.randompackage.event.kit.KitPreClaimEvent;
+import me.randomhashtags.randompackage.event.lootbag.LootbagClaimEvent;
+import me.randomhashtags.randompackage.supported.mechanics.MCMMOAPI;
+import me.randomhashtags.randompackage.universal.UMaterial;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -17,11 +22,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public interface EventReplacements extends EventEntities {
-    default LinkedHashMap<String, String> getReplacements(String...replacements) { return getReplacements((List<String>) null, replacements); }
-    default LinkedHashMap<String, String> getReplacements(List<String> addedReplacements, String...replacements) {
+    default LinkedHashMap<String, String> getReplacements(String... replacements) { return getReplacements((List<String>) null, replacements); }
+    default LinkedHashMap<String, String> getReplacements(List<String> addedReplacements, String... replacements) {
         final LinkedHashMap<String, String> r = new LinkedHashMap<>();
         if(replacements != null) {
             for(int i = 0; i < replacements.length; i++) {
@@ -77,6 +85,11 @@ public interface EventReplacements extends EventEntities {
             case "shoppurchase":
             case "shopsell": return getReplacements((ShopEvent) event);
 
+            case "mcmmoplayerxpgain":
+                if(MCMMOAPI.getMCMMOAPI().isEnabled()) {
+                    return new String[] {"xp", Float.toString(((com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent) event).getRawXpGained())};
+                }
+
             default: return new String[]{};
         }
     }
@@ -97,7 +110,18 @@ public interface EventReplacements extends EventEntities {
     default String[] getReplacements(BlockBreakEvent event) { return getReplacements(getLocationReplacements(event.getPlayer(), "Player"), new String[] {"xp", Integer.toString(event.getExpToDrop()), "@Block", toString(event.getBlock().getLocation())}); }
     default String[] getReplacements(BlockGrowEvent event) { return new String[] {"@Block", toString(event.getBlock().getLocation())}; }
     default String[] getReplacements(BlockPlaceEvent event) { return getReplacements(getLocationReplacements(event.getPlayer(), "Player"), (String[]) null); }
-    default String[] getReplacements(PlayerFishEvent event) { return getReplacements(getLocationReplacements(event.getPlayer(), "Player"), new String[] {"xp", Integer.toString(event.getExpToDrop()), "@Caught", toString(event.getCaught().getLocation())}); }
+    default String[] getReplacements(PlayerFishEvent event) {
+        final Entity entity = event.getCaught();
+        final String[] replacements = getLocationReplacements(event.getPlayer(), "Player");
+        final List<String> added = new ArrayList<>();
+        added.add("xp");
+        added.add(Integer.toString(event.getExpToDrop()));
+        if(entity != null) {
+            added.add("@Caught");
+            added.add(toString(entity.getLocation()));
+        }
+        return getReplacements(replacements, added);
+    }
     default String[] getReplacements(EntityDamageEvent event) { return getReplacements(getLocationReplacements(event.getEntity(), "Victim"), new String[] {"dmg", Double.toString(event.getDamage())}); }
     default String[] getReplacements(EntityDamageByEntityEvent event) { return new String[] {"dmg", Double.toString(event.getDamage()), "@Damager", toString(event.getDamager().getLocation()), "@Victim", toString(event.getEntity().getLocation())}; }
     default String[] getReplacements(EntityShootBowEvent event) { return new String[] {"@Shooter", toString(event.getEntity().getLocation()), "@Projectile", toString(event.getProjectile().getLocation())}; }
@@ -121,8 +145,7 @@ public interface EventReplacements extends EventEntities {
         return new String[] {"woncash", total.toPlainString(), "wager", wager.toPlainString()};
     }
     default String[] getReplacements(CustomEnchantProcEvent event) {
-        final HashMap<String, Entity> e = event.getEntities();
-        final String[] a = getReplacements(event.getEvent()), b = new String[] {"@Player", toString(e.get("Player").getLocation()), "level", Integer.toString(event.getEnchantLevel()), "{ENCHANT}", event.getEnchant().getName()};
+        final String[] a = getReplacements(event.getEvent()), b = new String[] {"@Player", toString(event.getHolder().getLocation()), "level", Integer.toString(event.getEnchantLevel()), "{ENCHANT}", event.getEnchant().getName()};
         return getReplacements(a, b);
     }
     default String[] getReplacements(DamageEvent event) {

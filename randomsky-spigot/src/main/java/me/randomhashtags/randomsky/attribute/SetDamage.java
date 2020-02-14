@@ -1,6 +1,5 @@
 package me.randomhashtags.randomsky.attribute;
 
-import me.randomhashtags.randomsky.attributesys.EventEntities;
 import me.randomhashtags.randomsky.event.DamageEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;

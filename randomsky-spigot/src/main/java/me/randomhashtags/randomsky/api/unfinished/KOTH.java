@@ -1,7 +1,9 @@
 package me.randomhashtags.randomsky.api.unfinished;
 
 import me.randomhashtags.randomsky.util.RSFeature;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class KOTH extends RSFeature implements CommandExecutor {
@@ -12,6 +14,10 @@ public class KOTH extends RSFeature implements CommandExecutor {
     }
 
     public YamlConfiguration config;
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        return true;
+    }
 
     public void load() {
     }

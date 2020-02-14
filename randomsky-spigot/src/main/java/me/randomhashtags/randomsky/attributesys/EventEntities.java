@@ -1,8 +1,7 @@
 package me.randomhashtags.randomsky.attributesys;
 
-import me.randomhashtags.randomsky.event.CoinFlipEndEvent;
-import me.randomhashtags.randomsky.event.RSEvent;
 import me.randomhashtags.randomsky.universal.UVersionable;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -16,7 +15,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import java.util.HashMap;
 
 public interface EventEntities extends EventConditions, UVersionable {
-    default HashMap<String, Entity> getEntities(Object...values) {
+    default HashMap<String, Entity> getEntities(Object... values) {
         final HashMap<String, Entity> e = new HashMap<>();
         for(int i = 0; i < values.length; i++) {
             if(i%2 == 1) {
@@ -39,6 +38,7 @@ public interface EventEntities extends EventConditions, UVersionable {
             case "playerfish": return getEntities((PlayerFishEvent) event);
 
             case "blockbreak": return getEntities("Player", ((BlockBreakEvent) event).getPlayer());
+            case "blockmultiplace":
             case "blockplace": return getEntities("Player", ((BlockPlaceEvent) event).getPlayer());
             case "foodlevelchange": return getEntities("Player", ((FoodLevelChangeEvent) event).getEntity());
 
@@ -87,6 +87,7 @@ public interface EventEntities extends EventConditions, UVersionable {
 
             case "isdamaged": return getEntities((isDamagedEvent) event);
             case "pvany": return getEntities((PvAnyEvent) event);
+            case "custombossdamagebyentityevent": return getEntities((CustomBossDamageByEntityEvent) event);
 
             case "armorequip":
             case "armorpiecebreak":
@@ -149,8 +150,10 @@ public interface EventEntities extends EventConditions, UVersionable {
             case "itemnametaguse": return getEntities("Player", ((ItemNameTagUseEvent) event).getPlayer());
             case "itemlorecrystaluse": return getEntities("Player", ((ItemLoreCrystalUseEvent) event).getPlayer());
 
+            case "mcmmoplayerxpgain": return getEntities("Player", ((com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent) event).getPlayer());
+
             default:
-                sendConsoleMessage("&6[RandomSky] &cMissing Event Entities for event &f" + name);
+                sendConsoleMessage("&6[RandomPackage] &cMissing Event Entities for event &f" + name);
                 return new HashMap<>();
         }
     }
@@ -158,7 +161,9 @@ public interface EventEntities extends EventConditions, UVersionable {
     default HashMap<String, Entity> getEntities(EntityDeathEvent event) {
         final LivingEntity v = event.getEntity(), k = v.getKiller();
         final HashMap<String, Entity> e = getEntities("Victim", v);
-        if(k != null) e.put("Killer", k);
+        if(k != null) {
+            e.put("Killer", k);
+        }
         return e;
     }
     default HashMap<String, Entity> getEntities(EntityDamageEvent event) { return getEntities("Victim", event.getEntity()); }
@@ -175,10 +180,20 @@ public interface EventEntities extends EventConditions, UVersionable {
         final Projectile p = event.getEntity();
         return getEntities("Projectile", p, "Shooter", p.getShooter());
     }
-    // randomsky event entities
-    default HashMap<String, Entity> getEntities(CoinFlipEndEvent event) { return getEntities("Winner", event.winner, "Loser", event.loser); }
+    // RandomPackage event entities
+    default HashMap<String, Entity> getEntities(CoinFlipEndEvent event) {
+        final HashMap<String, Entity> entities = new HashMap<>();
+        final OfflinePlayer winner = event.winner, loser = event.loser;
+        if(winner.isOnline()) {
+            entities.put("Winner", winner.getPlayer());
+        }
+        if(loser.isOnline()) {
+            entities.put("Loser", loser.getPlayer());
+        }
+        return entities;
+    }
     default HashMap<String, Entity> getEntities(DamageEvent event) { return getEntities("Victim", event.getEntity(), "Damager", event.getDamager()); }
     default HashMap<String, Entity> getEntities(FallenHeroSlainEvent event) { return getEntities("Victim", event.hero.getEntity(), "Killer", event.killer); }
     default HashMap<String, Entity> getEntities(MobStackDepleteEvent event) { return getEntities("Killer", event.killer, "Victim", event.stack.entity); }
-    default HashMap<String, Entity> getEntities(RSEvent event) { return getEntities("Player", event.getPlayer()); }
+    default HashMap<String, Entity> getEntities(RPEvent event) { return getEntities("Player", event.getPlayer()); }
 }

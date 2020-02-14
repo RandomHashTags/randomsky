@@ -3,8 +3,10 @@ package me.randomhashtags.randomsky.universal;
 import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.RandomSky;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
+import me.randomhashtags.randomsky.supported.economy.Vault;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.Versionable;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -27,6 +29,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static me.randomhashtags.randomsky.RandomSky.getPlugin;
 
@@ -45,6 +48,8 @@ public interface UVersionable extends Versionable {
     BukkitScheduler SCHEDULER = Bukkit.getScheduler();
     ScoreboardManager SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
     ConsoleCommandSender CONSOLE = Bukkit.getConsoleSender();
+
+    Economy ECONOMY = Vault.getVault().getEconomy();
 
     BlockFace[] BLOCK_FACES = new BlockFace[] { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
     EquipmentSlot[] EQUIPMENT_SLOTS = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.HAND, EIGHT ? null : EquipmentSlot.OFF_HAND };
@@ -115,6 +120,17 @@ public interface UVersionable extends Versionable {
         return level <= 16 ? (level * level) + (level * 6) : level <= 31 ? (2.5 * level * level) - (40.5 * level) + 360 : (4.5 * level * level) - (162.5 * level) + 2220;
     }
 
+    default String getRemainingTime(long time) {
+        int sec = (int) TimeUnit.MILLISECONDS.toSeconds(time), min = sec/60, hr = min/60, d = hr/24;
+        hr -= d*24;
+        min -= (hr*60)+(d*60*24);
+        sec -= (min*60)+(hr*60*60)+(d*60*60*24);
+        final String dys = d > 0 ? d + "d" + (hr != 0 ? " " : "") : "";
+        final String hrs = hr > 0 ? hr + "h" + (min != 0 ? " " : "") : "";
+        final String mins = min != 0 ? min + "m" + (sec != 0 ? " " : "") : "";
+        final String secs = sec != 0 ? sec + "s" : "";
+        return dys + hrs + mins + secs;
+    }
     default void sendConsoleMessage(String msg) {
         CONSOLE.sendMessage(colorize(msg));
     }

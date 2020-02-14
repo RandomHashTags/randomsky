@@ -173,7 +173,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
             final ActiveIslandChallenge a = island.challenge;
             final IslandChallenge t = a.getChallenge();
             a.setProgress(a.getProgress().add(increment));
-            if(a.getProgress()/t.getCompletion() >= 1.00) {
+            if(a.getProgress().divide(t.getCompletion()).doubleValue() >= 1.00) {
                 island.getCompletedChallenges().put(t.getIdentifier(), false);
                 final IslandChallenge next = IslandChallenge.getNextLevel(t);
                 island.challenge = next == null ? null : new ActiveIslandChallenge(next, 0.00);
@@ -321,7 +321,9 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
         }
     }
     private void doBlockBreak(BlockBreakEvent event, String attribute, UMaterial block, Block b, Player player, Island is) {
-        for(String at : attribute.split(";")) doAttribute(event, at, block, b, player, is);
+        for(String at : attribute.split(";")) {
+            doAttribute(event, at, block, b, player, is);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
