@@ -49,7 +49,7 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
     private HashMap<PlayerSkill, Integer> playerSkills;
     private HashMap<ToggleType, Boolean> toggles;
 
-    public RSPlayer(UUID uuid) {
+    public RSPlayer(UUID uuid) {// test
         this.uuid = uuid;
         final File f = new File(folder, uuid.toString() + ".yml");
         boolean backup = false;
