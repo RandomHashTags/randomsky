@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
+import me.randomhashtags.randomsky.addon.InviteType;
 import me.randomhashtags.randomsky.addon.alliance.Alliance;
 import me.randomhashtags.randomsky.addon.alliance.AllianceMember;
 import me.randomhashtags.randomsky.addon.alliance.AllianceRelation;
@@ -8,12 +8,8 @@ import me.randomhashtags.randomsky.addon.alliance.AllianceRelationship;
 import me.randomhashtags.randomsky.addon.file.FileAllianceRelation;
 import me.randomhashtags.randomsky.addon.file.FileAllianceRole;
 import me.randomhashtags.randomsky.addon.file.FileAllianceUpgrade;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.util.enums.InviteType;
-import me.randomhashtags.randomsky.util.classes.RSInvite;
+import me.randomhashtags.randomsky.addon.obj.RSInvite;
+import me.randomhashtags.randomsky.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -26,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,11 +33,12 @@ import java.util.UUID;
 
 import static java.io.File.separator;
 
-public class Alliances extends RSFeature implements CommandExecutor {
-    private static Alliances instance;
-    public static Alliances getAlliances() {
-        if(instance == null) instance = new Alliances();
-        return instance;
+public enum Alliances implements RSFeature, CommandExecutor {
+    INSTANCE;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ALLIANCES;
     }
 
     public YamlConfiguration config;
@@ -104,6 +103,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
         return true;
     }
 
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         final String folder = DATA_FOLDER + separator + "alliances";
@@ -124,11 +124,12 @@ public class Alliances extends RSFeature implements CommandExecutor {
         tagMax = config.getInt("settings.tag max");
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ALLIANCE_RELATION).size() + " Alliance Relations, " + RSStorage.getAll(Feature.ALLIANCE_ROLE).size() + " Alliance Roles, and " + RSStorage.getAll(Feature.ALLIANCE_UPGRADE).size() + " Alliance Upgrades &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
         RSStorage.unregisterAll(Feature.ALLIANCE_RELATION, Feature.ALLIANCE_ROLE, Feature.ALLIANCE_UPGRADE);
     }
 
-    public void disabandAll(CommandSender sender, boolean async) {
+    public void disabandAll(@NotNull CommandSender sender, boolean async) {
         sendStringListMessage(sender, Arrays.asList("&6[RandomSky] &aDisbanding all alliances, please wait..."), null);
         if(async) {
             SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> disbandall(sender, true));
@@ -154,7 +155,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     }
     public void tryChangingRelation(Player player, String tag, AllianceRelation relation) {
         if(hasPermission(player, "RandomSky.alliance.relation.change", true)) {
-            final Alliance a = RSPlayer.get(player.getUniqueId()).getAlliance();
+            final Alliance a = FileRSPlayer.get(player.getUniqueId()).getAlliance();
             Alliance target = Alliance.tags.getOrDefault(tag, null);
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{TAG}", target != null ? target.getTag() : tag);
@@ -281,12 +282,12 @@ public class Alliances extends RSFeature implements CommandExecutor {
         if(hasPermission(player, "RandomSky.alliance.create", true)) {
             final int l = tag.length();
             final UUID u = player.getUniqueId();
-            final RSPlayer p = RSPlayer.get(u);
-            final Alliance a = p.getAlliance();
+            final FileRSPlayer pdata = FileRSPlayer.get(u);
+            final Alliance player_alliance = pdata.getAlliance();
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{TAG}", tag);
-            if(a != null) {
-                replacements.put("{TAG}", a.getTag());
+            if(player_alliance != null) {
+                replacements.put("{TAG}", player_alliance.getTag());
                 sendStringListMessage(player, getStringList(config, "messages.youre already a member"), replacements);
             } else if(l < tagMin || l > tagMax) {
                 sendStringListMessage(player, getStringList(config, "messages.tag needs to be shorter/longer"), replacements);
@@ -295,8 +296,8 @@ public class Alliances extends RSFeature implements CommandExecutor {
                 if(al != null) {
                     sendStringListMessage(player, getStringList(config, "messages.tag already taken"), replacements);
                 } else {
-                    final Alliance ali = new Alliance(u, tag);
-                    p.setAlliance(ali);
+                    final Alliance new_alliance = new Alliance(u, tag);
+                    pdata.setAlliance(new_alliance);
                     sendStringListMessage(player, getStringList(config, "messages.create"), replacements);
                 }
             }
@@ -304,7 +305,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
     }
     public void tryInviting(Player player, String target) {
         if(hasPermission(player, "RandomSky.alliance.invite", true)) {
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final Alliance a = pdata.getAlliance();
             if(a == null) {
                 sendStringListMessage(player, getStringList(config, "messages.must be in alliance to use command"), null);
@@ -321,7 +322,7 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     replacements.put("{PLAYER}", op.getName());
                     replacements.put("{TAG}", a.getTag());
                     final UUID u = op.getUniqueId();
-                    final RSPlayer r = RSPlayer.get(u);
+                    final FileRSPlayer r = FileRSPlayer.get(u);
                     final Alliance al = r.getAlliance();
                     if(al != null) {
                         replacements.put("{TAG}", al.getTag());
@@ -346,14 +347,14 @@ public class Alliances extends RSFeature implements CommandExecutor {
             }
         }
     }
-    public void tryJoining(Player player, String target) {
+    public void tryJoining(@NotNull Player player, @NotNull String target) {
         if(hasPermission(player, "RandomSky.alliance.join", true)) {
-            final UUID U = player.getUniqueId();
-            final RSPlayer pdata = RSPlayer.get(U);
-            final Alliance a = pdata.getAlliance();
+            final UUID player_uuid = player.getUniqueId();
+            final FileRSPlayer pdata = FileRSPlayer.get(player_uuid);
+            final Alliance player_alliance = pdata.getAlliance();
             final HashMap<String, String> replacements = new HashMap<>();
-            if(a != null) {
-                replacements.put("{TAG}", a.getTag());
+            if(player_alliance != null) {
+                replacements.put("{TAG}", player_alliance.getTag());
                 sendStringListMessage(player, getStringList(config, "messages.youre already a member"), replacements);
             } else {
                 replacements.put("{TAG}", target);
@@ -365,19 +366,19 @@ public class Alliances extends RSFeature implements CommandExecutor {
                     }
                 } else {
                     replacements.put("{TAG}", op.getName());
-                    final Alliance al = Alliance.players.getOrDefault(op.getUniqueId(), null);
-                    if(al == null) {
+                    final Alliance alliance = Alliance.players.getOrDefault(op.getUniqueId(), null);
+                    if(alliance == null) {
                         sendStringListMessage(player, getStringList(config, "messages.player belongs to no alliance"), replacements);
                     } else {
                         replacements.put("{PLAYER}", player.getName());
-                        final List<RSInvite> invites = al.getInvites();
+                        final List<RSInvite> invites = alliance.getInvites();
                         final List<String> msg = getStringList(config, "messages.joined");
                         for(RSInvite r : invites) {
-                            if(r.receiver.equals(U)) {
-                                for(Player p : al.getOnlineMembers()) {
-                                    sendStringListMessage(p, msg, replacements);
+                            if(r.receiver.equals(player_uuid)) {
+                                for(AllianceMember member : alliance.getOnlineMembers()) {
+                                    sendStringListMessage(member.getPlayer().getPlayer(), msg, replacements);
                                 }
-                                al.join(player);
+                                alliance.join(player_uuid);
                                 r.delete();
                                 return;
                             }
@@ -391,61 +392,67 @@ public class Alliances extends RSFeature implements CommandExecutor {
     public void tryKicking(@NotNull Player player, String target) {
         if(hasPermission(player, "RandomSky.alliance.kick", true)) {
             final UUID U = player.getUniqueId();
-            final RSPlayer pdata = RSPlayer.get(U);
-            final Alliance a = pdata.getAlliance();
-            if(a == null) {
+            final FileRSPlayer pdata = FileRSPlayer.get(U);
+            final Alliance alliance = pdata.getAlliance();
+            if(alliance == null) {
                 sendStringListMessage(player, getStringList(config, "messages.must be in an alliance to use command"), null);
             } else {
-                final OfflinePlayer op = Bukkit.getOfflinePlayer(target);
-                final UUID u = op.isOnline() ? op.getUniqueId() : null;
+                final OfflinePlayer target_player = Bukkit.getOfflinePlayer(target);
+                final UUID target_player_uuid = target_player.isOnline() ? target_player.getUniqueId() : null;
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{INPUT}", target);
-                if(u == null) {
+                if(target_player_uuid == null) {
                     sendStringListMessage(player, getStringList(config, "messages.unable to find online player"), replacements);
-                } else if(u.equals(U)) {
+                } else if(target_player_uuid.equals(U)) {
                     sendStringListMessage(player, getStringList(config, "messages.cannot use cmd on self"), null);
                 } else {
-                    replacements.put("{PLAYER}", op.getName());
+                    replacements.put("{PLAYER}", target_player.getName());
                     replacements.put("{KICKER}", player.getName());
-                    final boolean online = op.isOnline();
-                    final RSPlayer t = RSPlayer.get(u);
-                    if(!online) t.load();
-                    final Alliance A = t.getAlliance();
-                    if(A == null || !A.equals(a)) {
+                    final boolean online = target_player.isOnline();
+                    final FileRSPlayer target_player_data = FileRSPlayer.get(target_player_uuid);
+                    if(!online) {
+                        target_player_data.load();
+                    }
+                    final Alliance target_player_alliance = target_player_data.getAlliance();
+                    if(target_player_alliance == null || !target_player_alliance.equals(alliance)) {
                         sendStringListMessage(player, getStringList(config, "messages.kick not a member"), replacements);
                     } else {
-                        a.kick(op);
-                        if(online) sendStringListMessage(op.getPlayer(), getStringList(config, "messages.been kicked"), replacements);
-                        sendMsgToMembers(a, getStringList(config, "messages.kicked"), replacements);
+                        alliance.kick(target_player_uuid);
+                        if(online) {
+                            sendStringListMessage(target_player.getPlayer(), getStringList(config, "messages.been kicked"), replacements);
+                        }
+                        sendMsgToMembers(alliance, getStringList(config, "messages.kicked"), replacements);
                     }
-                    if(!online) t.unload();
+                    if(!online) {
+                        target_player_data.unload();
+                    }
                 }
             }
         }
     }
     public void tryLeaving(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.alliance.leave", true)) {
-            final UUID u = player.getUniqueId();
-            final Alliance a = RSPlayer.get(u).getAlliance();
-            if(a == null) {
+            final UUID player_uuid = player.getUniqueId();
+            final Alliance alliance = FileRSPlayer.get(player_uuid).getAlliance();
+            if(alliance == null) {
                 sendStringListMessage(player, getStringList(config, "messages.must be in an alliance to use command"), null);
             } else {
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{PLAYER}", player.getName());
-                a.leave(player);
-                if(a.getMembers().size() == 0) {
-                    a.disband();
+                alliance.leave(player);
+                if(alliance.getMembers().size() == 0) {
+                    alliance.disband();
                     sendStringListMessage(player, getStringList(config, "messages.disband"), null);
                 } else {
-                    sendMsgToMembers(a, getStringList(config, "messages.leave notify"), replacements);
+                    sendMsgToMembers(alliance, getStringList(config, "messages.leave notify"), replacements);
                 }
             }
         }
     }
 
-    private void sendMsgToMembers(Alliance a, List<String> msg, HashMap<String, String> replacements) {
-        for(AllianceMember m : a.getOnlineMembers()) {
-            sendStringListMessage(m.getPlayer().getPlayer(), msg, replacements);
+    private void sendMsgToMembers(@NotNull Alliance a, @Nullable List<String> msg, @Nullable HashMap<String, String> replacements) {
+        for(AllianceMember alliance_member : a.getOnlineMembers()) {
+            sendStringListMessage(alliance_member.getPlayer().getPlayer(), msg, replacements);
         }
     }
 
@@ -454,12 +461,12 @@ public class Alliances extends RSFeature implements CommandExecutor {
         final Entity d = event.getDamager(), v = event.getEntity();
         final Player damager = d instanceof Player ? (Player) d : null, victim = v instanceof Player ? (Player) v : null;
         if(damager != null && victim != null) {
-            final UUID da = damager.getUniqueId(), vi = victim.getUniqueId();
+            final UUID damager_uuid = damager.getUniqueId(), victim_uuid = victim.getUniqueId();
             final HashMap<UUID, Alliance> players = Alliance.players;
-            final Alliance a = players.getOrDefault(da, null), b = players.getOrDefault(vi, null);
-            if(a != null && b != null) {
-                final AllianceRelation r = a.relationTo(b);
-                if(!r.isDamageable()) {
+            final Alliance damager_alliance = players.getOrDefault(damager_uuid, null), victim_alliance = players.getOrDefault(victim_uuid, null);
+            if(damager_alliance != null && victim_alliance != null) {
+                final AllianceRelation alliance_relation = damager_alliance.relation_to(victim_alliance);
+                if(!alliance_relation.isDamageable()) {
                     event.setCancelled(true);
                     damager.updateInventory();
 

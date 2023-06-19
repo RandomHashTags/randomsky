@@ -3,12 +3,13 @@ package me.randomhashtags.randomsky.attribute;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class SendMessage extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             final String v = recipientValues.get(e);
             if(v != null) {

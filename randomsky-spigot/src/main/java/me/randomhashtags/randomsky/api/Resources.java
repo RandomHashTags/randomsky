@@ -4,18 +4,21 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import static java.io.File.separator;
 
-public class Resources extends RSFeature {
-    private static Resources instance;
-    public static Resources getIslandResourceNodes() {
-        if(instance == null) instance = new Resources();
-        return instance;
-    }
+public enum Resources implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
 
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.RESOURCES;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
 

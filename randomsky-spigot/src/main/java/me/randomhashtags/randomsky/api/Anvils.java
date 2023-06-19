@@ -1,8 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
-import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.util.Feature;
+import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,17 +14,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Anvils extends RSFeature {
-    private static Anvils instance;
-    public static Anvils getAnvils() {
-        if(instance == null) instance = new Anvils();
-        return instance;
-    }
+public enum Anvils implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
 
@@ -32,6 +30,11 @@ public class Anvils extends RSFeature {
     private UInventory inventory;
 
     private List<Player> viewing;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ANVILS;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();
@@ -59,6 +62,7 @@ public class Anvils extends RSFeature {
 
         sendConsoleMessage("&6[RandomSky] &aLoaded Anvils &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
         for(Player player : new ArrayList<>(viewing)) {
             player.closeInventory();

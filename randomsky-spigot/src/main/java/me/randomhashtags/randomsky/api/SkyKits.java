@@ -3,14 +3,18 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
-public class SkyKits extends RSFeature implements Listener {
-    private static SkyKits instance;
-    public static SkyKits getSkyKits() {
-        if(instance == null) instance = new SkyKits();
-        return instance;
+public enum SkyKits implements RSFeature, Listener {
+    INSTANCE;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.SKY_KITS;
     }
+
     public void load() {
         final long started = System.currentTimeMillis();
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.SKY_KIT).size() + " Sky Kits &e(took " + (System.currentTimeMillis()-started) + "ms)");

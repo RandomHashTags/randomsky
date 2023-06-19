@@ -1,9 +1,9 @@
 package me.randomhashtags.randomsky.universal;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.RandomSky;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.supported.economy.Vault;
+import me.randomhashtags.randomsky.supported.mechanics.SpawnerAPI;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.Versionable;
 import net.milkbowl.vault.economy.Economy;
@@ -12,16 +12,19 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static java.io.File.separator;
 import static me.randomhashtags.randomsky.RandomSky.getPlugin;
 
 public interface UVersionable extends Versionable {
@@ -49,7 +53,7 @@ public interface UVersionable extends Versionable {
     ScoreboardManager SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
     ConsoleCommandSender CONSOLE = Bukkit.getConsoleSender();
 
-    Economy ECONOMY = Vault.getVault().getEconomy();
+    Economy ECONOMY = Vault.INSTANCE.getEconomy();
 
     BlockFace[] BLOCK_FACES = new BlockFace[] { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
     EquipmentSlot[] EQUIPMENT_SLOTS = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.HAND, EIGHT ? null : EquipmentSlot.OFF_HAND };
@@ -98,19 +102,38 @@ public interface UVersionable extends Versionable {
         return messages.get(identifier);
     }
 
-    default ItemStack getClone(ItemStack is) {
+    default void save(@Nullable String folder, @NotNull String file) {
+        File f;
+        final File d = RANDOM_SKY.getDataFolder();
+        if(folder != null && !folder.equals("")) {
+            f = new File(d + separator + folder + separator, file);
+        } else {
+            f = new File(d + separator, file);
+        }
+        if(!f.exists()) {
+            f.getParentFile().mkdirs();
+            RANDOM_SKY.saveResource(folder != null && !folder.equals("") ? folder + separator + file : file, false);
+        }
+        if(folder == null || !folder.equals("_Data")) {
+            //updateYaml(f); // TODO: fix?
+        }
+    }
+
+    @Nullable
+    default ItemStack getClone(@Nullable ItemStack is) {
         return getClone(is, null);
     }
-    default ItemStack getClone(ItemStack is, ItemStack def) {
+    @Nullable
+    default ItemStack getClone(@Nullable ItemStack is, @Nullable ItemStack def) {
         return is != null ? is.clone() : def;
     }
 
-    default int getTotalExperience(Player player) {
+    default int getTotalExperience(@NotNull Player player) {
         final double levelxp = LevelToExp(player.getLevel()), nextlevelxp = LevelToExp(player.getLevel() + 1), difference = nextlevelxp - levelxp;
         final double p = (levelxp + (difference * player.getExp()));
         return (int) Math.round(p);
     }
-    default void setTotalExperience(Player player, int total) {
+    default void setTotalExperience(@NotNull Player player, int total) {
         player.setTotalExperience(0);
         player.setExp(0f);
         player.setLevel(0);
@@ -119,7 +142,7 @@ public interface UVersionable extends Versionable {
     default double LevelToExp(int level) {
         return level <= 16 ? (level * level) + (level * 6) : level <= 31 ? (2.5 * level * level) - (40.5 * level) + 360 : (4.5 * level * level) - (162.5 * level) + 2220;
     }
-
+    @NotNull
     default String getRemainingTime(long time) {
         int sec = (int) TimeUnit.MILLISECONDS.toSeconds(time), min = sec/60, hr = min/60, d = hr/24;
         hr -= d*24;
@@ -131,31 +154,38 @@ public interface UVersionable extends Versionable {
         final String secs = sec != 0 ? sec + "s" : "";
         return dys + hrs + mins + secs;
     }
-    default void sendConsoleMessage(String msg) {
+    default void sendConsoleMessage(@NotNull String msg) {
         CONSOLE.sendMessage(colorize(msg));
     }
-    default String formatBigDecimal(BigDecimal b) {
+    @NotNull
+    default String formatBigDecimal(@NotNull BigDecimal b) {
         return formatBigDecimal(b, false);
     }
-    default String formatBigDecimal(BigDecimal b, boolean currency) {
+    @NotNull
+    default String formatBigDecimal(@NotNull BigDecimal b, boolean currency) {
         return (currency ? NumberFormat.getCurrencyInstance() : NumberFormat.getInstance()).format(b);
     }
+    @NotNull
     default BigDecimal valueOfBigDecimal(@NotNull String input) {
         final long m = input.endsWith("k") ? 1000 : input.endsWith("m") ? 1000000 : input.endsWith("b") ? 1000000000 : 1;
         return BigDecimal.valueOf(getRemainingDouble(input)*m);
     }
-    default BigDecimal getBigDecimal(String value) {
+    @NotNull
+    default BigDecimal getBigDecimal(@NotNull String value) {
         return BigDecimal.valueOf(Double.parseDouble(value));
     }
-    default BigDecimal getRandomBigDecimal(BigDecimal min, BigDecimal max) {
+    @NotNull
+    default BigDecimal getRandomBigDecimal(@NotNull BigDecimal min, @NotNull BigDecimal max) {
         final BigDecimal range = max.subtract(min);
         return min.add(range.multiply(new BigDecimal(Math.random())));
     }
+    @NotNull
     default String formatDouble(double d) {
         String decimals = Double.toString(d).split("\\.")[1];
         if(decimals.equals("0")) { decimals = ""; } else { decimals = "." + decimals; }
         return formatInt((int) d) + decimals;
     }
+    @NotNull
     default String formatLong(long l) {
         final String f = Long.toString(l);
         final boolean c = f.contains(".");
@@ -163,16 +193,19 @@ public interface UVersionable extends Versionable {
         decimals = c ? decimals.equals("0") ? "" : "." + decimals : "";
         return formatInt((int) l) + decimals;
     }
-    default String formatInt(int integer) { return String.format("%,d", integer); }
-    default int getRemainingInt(String string) {
+    @NotNull
+    default String formatInt(int integer) {
+        return String.format("%,d", integer);
+    }
+    default int getRemainingInt(@NotNull String string) {
         string = ChatColor.stripColor(colorize(string)).replaceAll("\\p{L}", "").replaceAll("\\s", "").replaceAll("\\p{P}", "").replaceAll("\\p{S}", "");
         return string.isEmpty() ? -1 : Integer.parseInt(string);
     }
-    default Double getRemainingDouble(String string) {
+    default Double getRemainingDouble(@NotNull String string) {
         string = ChatColor.stripColor(colorize(string).replaceAll("\\p{L}", "").replaceAll("\\p{Z}", "").replaceAll("\\.", "d").replaceAll("\\p{P}", "").replaceAll("\\p{S}", "").replace("d", "."));
         return string.isEmpty() ? -1.00 : Double.parseDouble(string.contains(".") && string.split("\\.").length > 1 && string.split("\\.")[1].length() > 2 ? string.substring(0, string.split("\\.")[0].length() + 3) : string);
     }
-    default long getDelay(String input) {
+    default long getDelay(@NotNull String input) {
         input = input.toLowerCase();
         long l = 0;
         if(input.contains("d")) {
@@ -196,7 +229,8 @@ public interface UVersionable extends Versionable {
         return l;
     }
 
-    default EquipmentSlot getRespectiveSlot(String material) {
+    @Nullable
+    default EquipmentSlot getRespectiveSlot(@NotNull String material) {
         return material.contains("HELMET") || material.contains("SKULL") || material.contains("HEAD") ? EquipmentSlot.HEAD
                 : material.contains("CHESTPLATE") || material.contains("ELYTRA") ? EquipmentSlot.CHEST
                 : material.contains("LEGGINGS") ? EquipmentSlot.LEGS
@@ -210,15 +244,18 @@ public interface UVersionable extends Versionable {
         bd = bd.setScale(decimals, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+    @NotNull
     default String roundDoubleString(double input, int decimals) {
         final double d = round(input, decimals);
         return Double.toString(d);
     }
 
+    @Nullable
     default String center(String s, int size) {
         // Credit to "Sahil Mathoo" from StackOverFlow at https://stackoverflow.com/questions/8154366
         return center(s, size, ' ');
     }
+    @Nullable
     default String center(String s, int size, char pad) {
         if(s == null || size <= s.length()) {
             return s;
@@ -233,8 +270,8 @@ public interface UVersionable extends Versionable {
         }
         return sb.toString();
     }
-
-    default List<String> colorizeListString(List<String> input) {
+    @NotNull
+    default List<String> colorizeListString(@Nullable List<String> input) {
         final List<String> i = new ArrayList<>();
         if(input != null) {
             for(String s : input) {
@@ -243,12 +280,13 @@ public interface UVersionable extends Versionable {
         }
         return i;
     }
-    default String colorize(String input) {
+    @NotNull
+    default String colorize(@Nullable String input) {
         return input != null ? ChatColor.translateAlternateColorCodes('&', input) : "NULL";
     }
-    default void sendStringListMessage(CommandSender sender, List<String> message, HashMap<String, String> replacements) {
+    default void sendStringListMessage(@NotNull CommandSender sender, @Nullable List<String> message, @Nullable HashMap<String, String> replacements) {
         if(message != null && message.size() > 0 && !message.get(0).equals("")) {
-            final boolean papi = RANDOM_SKY.placeholderapi, isPlayer = sender instanceof Player;
+            final boolean papi = RANDOM_SKY.placeholder_api_is_enabled, isPlayer = sender instanceof Player;
             final Player player = isPlayer ? (Player) sender : null;
             for(String s : message) {
                 if(replacements != null) {
@@ -267,16 +305,9 @@ public interface UVersionable extends Versionable {
         }
     }
 
-    default Entity getHitEntity(ProjectileHitEvent event) {
-        if(EIGHT || NINE || TEN) {
-            final List<Entity> n = event.getEntity().getNearbyEntities(0.1, 0.1, 0.1);
-            return n.size() > 0 ? n.get(0) : null;
-        } else {
-            return event.getHitEntity();
-        }
-    }
 
-    default boolean isPassive(EntityType type) {
+
+    default boolean isPassive(@NotNull EntityType type) {
         if(type.isSpawnable()) {
             switch (type.name().toLowerCase()) {
                 case "bat":
@@ -305,17 +336,19 @@ public interface UVersionable extends Versionable {
                 case "turtle":
                 case "villager":
                 case "wandering_trader":
-                case "zombie_horse": return true;
-                default: return false;
+                case "zombie_horse":
+                    return true;
+                default:
+                    return false;
             }
         } else {
             return false;
         }
     }
-    default boolean isAggressive(EntityType type) {
+    default boolean isAggressive(@NotNull EntityType type) {
         return !isPassive(type);
     }
-    default boolean isNeutral(EntityType type) {
+    default boolean isNeutral(@NotNull EntityType type) {
         if(type.isSpawnable() && !isPassive(type)) {
             switch (type.name()) {
                 case "enderman":
@@ -326,8 +359,8 @@ public interface UVersionable extends Versionable {
         }
         return false;
     }
-
-    default PotionEffectType getPotionEffectType(String input) {
+    @Nullable
+    default PotionEffectType getPotionEffectType(@Nullable String input) {
         if(input != null && !input.isEmpty()) {
             switch (input.toUpperCase()) {
                 case "STRENGTH": return PotionEffectType.INCREASE_DAMAGE;
@@ -350,10 +383,12 @@ public interface UVersionable extends Versionable {
         } else return null;
     }
 
-    default String toString(Location loc) {
+    @NotNull
+    default String toString(@NotNull Location loc) {
         return loc.getWorld().getName() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
     }
-    default Location toLocation(String string) {
+    @Nullable
+    default Location toLocation(@Nullable String string) {
         if(string != null && string.contains(";")) {
             final String[] a = string.split(";");
             return new Location(Bukkit.getWorld(a[0]), Double.parseDouble(a[1]), Double.parseDouble(a[2]), Double.parseDouble(a[3]), Float.parseFloat(a[4]), Float.parseFloat(a[5]));
@@ -394,13 +429,15 @@ public interface UVersionable extends Versionable {
         }
     }
 
+    @NotNull
     default BlockFace getFacing(Entity entity) {
         return LEGACY || THIRTEEN ? BLOCK_FACES[Math.round(entity.getLocation().getYaw() / 45f) & 0x7] : entity.getFacing();
     }
     default String toReadableDate(Date d, String format) {
         return new SimpleDateFormat(format).format(d);
     }
-    default Entity getEntity(UUID uuid) {
+    @Nullable
+    default Entity getEntity(@Nullable UUID uuid) {
         if(uuid != null) {
             if(EIGHT || NINE) {
                 for(World w : Bukkit.getWorlds()) {
@@ -433,7 +470,8 @@ public interface UVersionable extends Versionable {
         return mob;
     }
 
-    default Color getColor(String path) {
+    @Nullable
+    default Color getColor(@Nullable String path) {
         if(path == null) {
             return null;
         }
@@ -458,7 +496,246 @@ public interface UVersionable extends Versionable {
             default: return null;
         }
     }
-    default LivingEntity getEntity(String type, Location l) {
+    default boolean isInteractable(@NotNull Material material) {
+        final String m = material.name();
+        if(!LEGACY) {
+            return material.isInteractable();
+        } else {
+            return INTERACTABLE_MATERIALS.contains(m) || m.contains("ANVIL") || m.endsWith("_BED")
+                    || m.endsWith("DOOR") && !m.equals("IRON_DOOR")
+                    ;
+        }
+    }
+
+    default void didApply(@NotNull InventoryClickEvent event, @NotNull Player player, ItemStack current, @NotNull ItemStack cursor) {
+        event.setCancelled(true);
+        final int a = cursor.getAmount();
+        if(a == 1) {
+            event.setCursor(new ItemStack(Material.AIR));
+        } else {
+            cursor.setAmount(a-1);
+            event.setCursor(cursor);
+        }
+        player.updateInventory();
+    }
+
+    default void spawnFirework(Firework firework, Location loc) {
+        if(firework != null) {
+            final Firework fw = loc.getWorld().spawn(new Location(loc.getWorld(), loc.getX()+0.5, loc.getY(), loc.getZ()+0.5), Firework.class);
+            fw.setFireworkMeta(firework.getFireworkMeta());
+        }
+    }
+    default Firework createFirework(FireworkEffect.Type explosionType, Color trailColor, Color explodeColor, int power) {
+        final World w = Bukkit.getWorlds().get(0);
+        final Firework fw = w.spawn(w.getSpawnLocation(), Firework.class);
+        final FireworkMeta fwm = fw.getFireworkMeta();
+        fwm.setPower(power);
+        fwm.addEffect(FireworkEffect.builder().trail(true).flicker(true).with(explosionType).withColor(trailColor).withFade(explodeColor).withFlicker().withTrail().build());
+        fw.setFireworkMeta(fwm);
+        return fw;
+    }
+
+    default String toMaterial(String input, boolean realitem) {
+        if(input.contains(":")) {
+            input = input.split(":")[0];
+        }
+        if(input.contains(" ")) {
+            input = input.replace(" ", "");
+        }
+        if(input.contains("_")) {
+            input = input.replace("_", " ");
+        }
+        String e = "";
+        if(input.contains(" ")) {
+            final String[] spaces = input.split(" ");
+            final int l = spaces.length;
+            for(int i = 0; i < l; i++) {
+                e = e + spaces[i].substring(0, 1).toUpperCase() + spaces[i].substring(1).toLowerCase() + (i != l-1 ? (realitem ? "_" : " ") : "");
+            }
+        } else e = input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+        return e;
+    }
+
+    default Enchantment getEnchantment(String string) {
+        if(string != null) {
+            for(Enchantment enchant : Enchantment.values()) {
+                final String name = enchant != null ? enchant.getName() : null;
+                if(name != null && string.toLowerCase().replace("_", "").startsWith(name.toLowerCase().replace("_", ""))) {
+                    return enchant;
+                }
+            }
+            string = string.toLowerCase().replace("_", "");
+            if(string.startsWith("po")) { return Enchantment.ARROW_DAMAGE; // Power
+            } else if(string.startsWith("fl")) { return Enchantment.ARROW_FIRE; // Flame
+            } else if(string.startsWith("i")) { return Enchantment.ARROW_INFINITE; // Infinity
+            } else if(string.startsWith("pu")) { return Enchantment.ARROW_KNOCKBACK; // Punch
+            } else if(string.startsWith("bi") && !EIGHT && !NINE && !TEN) { return Enchantment.getByName("BINDING_CURSE"); // Binding Curse
+            } else if(string.startsWith("sh")) { return Enchantment.DAMAGE_ALL; // Sharpness
+            } else if(string.startsWith("ba")) { return Enchantment.DAMAGE_ARTHROPODS; // Bane of Arthropods
+            } else if(string.startsWith("sm")) { return Enchantment.DAMAGE_UNDEAD; // Smite
+            } else if(string.startsWith("de")) { return Enchantment.DEPTH_STRIDER; // Depth Strider
+            } else if(string.startsWith("e")) { return Enchantment.DIG_SPEED; // Efficiency
+            } else if(string.startsWith("u")) { return Enchantment.DURABILITY; // Unbreaking
+            } else if(string.startsWith("firea")) { return Enchantment.FIRE_ASPECT; // Fire Aspect
+            } else if(string.startsWith("fr") && !EIGHT) { return Enchantment.getByName("FROST_WALKER"); // Frost Walker
+            } else if(string.startsWith("k")) { return Enchantment.KNOCKBACK; // Knockback
+            } else if(string.startsWith("fo")) { return Enchantment.LOOT_BONUS_BLOCKS; // Fortune
+            } else if(string.startsWith("lo")) { return Enchantment.LOOT_BONUS_MOBS; // Looting
+            } else if(string.startsWith("luc")) { return Enchantment.LUCK; // Luck
+            } else if(string.startsWith("lur")) { return Enchantment.LURE; // Lure
+            } else if(string.startsWith("m") && !EIGHT) { return Enchantment.getByName("MENDING"); // Mending
+            } else if(string.startsWith("r")) { return Enchantment.OXYGEN; // Respiration
+            } else if(string.startsWith("prot")) { return Enchantment.PROTECTION_ENVIRONMENTAL; // Protection
+            } else if(string.startsWith("bl") || string.startsWith("bp")) { return Enchantment.PROTECTION_EXPLOSIONS; // Blast Protection
+            } else if(string.startsWith("ff") || string.startsWith("fe")) { return Enchantment.PROTECTION_FALL; // Feather Falling
+            } else if(string.startsWith("fp") || string.startsWith("firep")) { return Enchantment.PROTECTION_FIRE; // Fire Protection
+            } else if(string.startsWith("pp") || string.startsWith("proj")) { return Enchantment.PROTECTION_PROJECTILE; // Projectile Protection
+            } else if(string.startsWith("si")) { return Enchantment.SILK_TOUCH; // Silk Touch
+            } else if(string.startsWith("th")) { return Enchantment.THORNS; // Thorns
+            } else if(string.startsWith("v") && !EIGHT && !NINE && !TEN) { return Enchantment.getByName("VANISHING_CURSE"); // Vanishing Curse
+            } else if(string.startsWith("aa") || string.startsWith("aq")) { return Enchantment.WATER_WORKER; // Aqua Affinity
+            } else { return null; }
+        }
+        return null;
+    }
+
+    default int indexOf(Set<? extends Object> collection, Object value) {
+        int i = 0;
+        for(Object o : collection) {
+            if(value.equals(o)) return i;
+            i++;
+        }
+        return -1;
+    }
+
+    default void removeItem(Player player, ItemStack itemstack, int amount) {
+        final PlayerInventory inv = player.getInventory();
+        int nextslot = getNextSlot(player, itemstack);
+        for(int i = 1; i <= amount; i++) {
+            if(nextslot >= 0) {
+                final ItemStack is = inv.getItem(nextslot);
+                if(is.getAmount() == 1) {
+                    inv.setItem(nextslot, new ItemStack(Material.AIR));
+                    nextslot = getNextSlot(player, itemstack);
+                } else {
+                    is.setAmount(is.getAmount() - 1);
+                }
+            }
+        }
+        player.updateInventory();
+    }
+    private int getNextSlot(Player player, ItemStack itemstack) {
+        final PlayerInventory inv = player.getInventory();
+        for(int i = 0; i < inv.getSize(); i++) {
+            final ItemStack item = inv.getItem(i);
+            if(item != null && item.isSimilar(itemstack)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    default int getTotalAmount(Inventory inventory, UMaterial umat) {
+        final ItemStack i = umat.getItemStack();
+        int amount = 0;
+        for(ItemStack is : inventory.getContents()) {
+            if(is != null && is.isSimilar(i)) {
+                amount += is.getAmount();
+            }
+        }
+        return amount;
+    }
+
+    @Nullable
+    default ItemStack getSpawner(@NotNull String input) {
+        String pi = input.toLowerCase(), type = null;
+        if(pi.equals("mysterymobspawner")) {
+            return givedpitem.valueOf("mysterymobspawner").clone();
+        } else {
+            if(RandomSky.spawnerPlugin != null) {
+                for(EntityType entitytype : EntityType.values()) {
+                    final String s = entitytype.name().toLowerCase().replace("_", "");
+                    if(pi.startsWith(s + "spawner")) {
+                        type = s;
+                    }
+                }
+                if(type == null) {
+                    if(pi.contains("pig") && pi.contains("zombie")) type = "pigzombie";
+                }
+                if(type == null) return null;
+                final ItemStack is = SpawnerAPI.getSpawnerAPI().getItem(type);
+                if(is != null) {
+                    return is;
+                } else {
+                    CONSOLE.sendMessage("[RandomPackage] SilkSpawners or EpicSpawners is required to use this feature!");
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    default Entity getHitEntity(@NotNull ProjectileHitEvent event) {
+        if(EIGHT || NINE || TEN) {
+            final List<Entity> n = event.getEntity().getNearbyEntities(0.1, 0.1, 0.1);
+            return n.size() > 0 ? n.get(0) : null;
+        } else {
+            return event.getHitEntity();
+        }
+    }
+    default void playParticle(@NotNull FileConfiguration config, @NotNull String path, @NotNull Location location, int count) {
+        final String target = config.getString(path);
+        if(target != null) {
+            final UParticle up = UParticle.matchParticle(target.toUpperCase());
+            if(up != null) {
+                up.play(location, count);
+            }
+        }
+    }
+    default void playSound(FileConfiguration config, String path, Player player, Location location, boolean globalsound) {
+        if(config.get(path) != null) {
+            final String[] p = config.getString(path).split(":");
+            final String s = p[0].toUpperCase();
+            final int v = Integer.parseInt(p[1]), pp = Integer.parseInt(p[2]);
+            try {
+                final Sound sound = Sound.valueOf(s);
+                if(player != null) {
+                    if(!globalsound) {
+                        player.playSound(location, sound, v, pp);
+                    } else {
+                        player.getWorld().playSound(location, sound, v, pp);
+                    }
+                } else {
+                    location.getWorld().playSound(location, sound, v, pp);
+                }
+            } catch (Exception e) {
+                sendConsoleMessage("&6[RandomPackage] &cERROR! Invalid sound name: &f" + s + "&c!");
+            }
+        }
+    }
+
+    @NotNull
+    default List<Location> getChunkLocations(@NotNull Chunk chunk) {
+        final List<Location> l = new ArrayList<>();
+        final int x = chunk.getX()*16, z = chunk.getZ()*16;
+        final World world = chunk.getWorld();
+        for(int xx = x; xx < x+16; xx++) {
+            for(int zz = z; zz < z+16; zz++) {
+                l.add(new Location(world, xx, 0, zz));
+            }
+        }
+        return l;
+    }
+    @Nullable
+    default ItemStack getItemInHand(@Nullable LivingEntity entity) {
+        if(entity == null) {
+            return null;
+        } else {
+            final EntityEquipment e = entity.getEquipment();
+            return EIGHT ? e.getItemInHand() : e.getItemInMainHand();
+        }
+    }
+    @Nullable
+    default LivingEntity getEntity(@NotNull String type, @NotNull Location l) {
         final World w = l.getWorld();
         final LivingEntity le;
         switch (type.toUpperCase()) {
@@ -507,16 +784,6 @@ public interface UVersionable extends Versionable {
             case "ZOMBIE_HORSE": return EIGHT ? null : w.spawn(l, ZombieHorse.class);
             case "ZOMBIE_VILLAGER": return EIGHT ? null : w.spawn(l, ZombieVillager.class);
             default: return null;
-        }
-    }
-    default boolean isInteractable(Material material) {
-        final String m = material.name();
-        if(!LEGACY) {
-            return material.isInteractable();
-        } else {
-            return INTERACTABLE_MATERIALS.contains(m) || m.contains("ANVIL") || m.endsWith("_BED")
-                    || m.endsWith("DOOR") && !m.equals("IRON_DOOR")
-                    ;
         }
     }
 }

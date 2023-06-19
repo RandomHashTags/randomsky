@@ -7,18 +7,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
-public class Realms extends RSFeature implements CommandExecutor {
-    private static Realms instance;
-    public static Realms getRealms() {
-        if(instance == null) instance = new Realms();
-        return instance;
-    }
+public enum Realms implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return true;
+    }
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.REALM;
     }
 
     public void load() {

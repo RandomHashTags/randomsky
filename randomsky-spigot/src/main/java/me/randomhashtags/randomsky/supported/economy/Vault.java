@@ -5,16 +5,15 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.Nullable;
 
-public final class Vault implements UVersionable {
-    private static Vault instance;
-    public static Vault getVault() {
-        if(instance == null) instance = new Vault();
-        return instance;
-    }
+public enum Vault implements UVersionable {
+    INSTANCE;
     private Economy economy;
     private Chat chat;
     private Permission permissions;
+
+    @Nullable
     public Economy getEconomy() {
         if(economy == null) {
             final RegisteredServiceProvider<Economy> economyProvider = SERVICES_MANAGER.getRegistration(Economy.class);
@@ -22,6 +21,7 @@ public final class Vault implements UVersionable {
         }
         return economy;
     }
+    @Nullable
     public Chat getChat() {
         if(chat == null) {
             final RegisteredServiceProvider<Chat> rsp = SERVICES_MANAGER.getRegistration(Chat.class);
@@ -29,6 +29,7 @@ public final class Vault implements UVersionable {
         }
         return chat;
     }
+    @Nullable
     public Permission getPermission() {
         if(permissions == null) {
             final RegisteredServiceProvider<Permission> rsp = SERVICES_MANAGER.getRegistration(Permission.class);

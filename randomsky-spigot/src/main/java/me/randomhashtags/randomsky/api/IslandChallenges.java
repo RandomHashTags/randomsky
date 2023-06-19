@@ -8,7 +8,7 @@ import me.randomhashtags.randomsky.addon.island.IslandChallenge;
 import me.randomhashtags.randomsky.api.skill.IslandFarming;
 import me.randomhashtags.randomsky.event.island.IslandChallengeProgressEvent;
 import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
@@ -346,7 +346,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
     private void entityDeathEvent(EntityDeathEvent event) {
         final Player player = event.getEntity().getKiller();
         if(player != null) {
-            final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island is = FileRSPlayer.get(player.getUniqueId()).getIsland();
             if(is != null) {
                 final ActiveIslandChallenge a = is.challenge;
                 if(a != null) {
@@ -373,7 +373,7 @@ public class IslandChallenges extends IslandAddon implements Listener, CommandEx
             final Inventory top = player.getOpenInventory().getTopInventory();
             if(r < 0 || r >= top.getSize() || c == null || c.getType().equals(Material.AIR)) return;
 
-            final Island island = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island island = FileRSPlayer.get(player.getUniqueId()).getIsland();
             final ActiveIslandChallenge a = island.challenge;
             if(a != null) {
                 final IslandChallenge i = IslandChallenge.slots.getOrDefault(r, null), type = a.getChallenge();

@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
@@ -13,18 +13,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class Toggles extends RSFeature implements CommandExecutor {
-    private static Toggles instance;
-    public static Toggles getToggles() {
-        if(instance == null) instance = new Toggles();
-        return instance;
-    }
+public enum Toggles implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
     private UInventory inventory;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.TOGGLES;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -32,6 +34,7 @@ public class Toggles extends RSFeature implements CommandExecutor {
         return true;
     }
 
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "toggles.yml");

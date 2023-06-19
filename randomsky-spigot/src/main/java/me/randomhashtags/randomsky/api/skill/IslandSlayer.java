@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.api.skill;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,18 +17,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class IslandSlayer extends IslandAddon {
-    private static IslandSlayer instance;
-    public static IslandSlayer getIslandSlayer() {
-        if(instance == null) instance = new IslandSlayer();
-        return instance;
-    }
+public enum IslandSlayer implements IslandAddon {
+    INSTANCE;
 
     public YamlConfiguration slayerConfig;
 
@@ -35,6 +35,11 @@ public class IslandSlayer extends IslandAddon {
     private ItemStack background;
     private String unlockedName, lockedName;
     private List<String> progression, unlockedLore, lockedLore, respawnRate;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ISLAND_SLAYER;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();
@@ -58,10 +63,14 @@ public class IslandSlayer extends IslandAddon {
             final int slot = slayerConfig.getInt(p + "slot");
             final ItemStack display = d(slayerConfig, "mobs." + s);
             new SlayerSkill(s, level, slot, slayerConfig.getString(p + "entity").toUpperCase(), slayerConfig.getInt(p + "completion"), ChatColor.translateAlternateColorCodes('&', slayerConfig.getString(p + "slayer {TYPE}")), display, SlayerSkill.valueOf(required));
-            item = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
-            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
+            final ItemStack item = display.clone();
+            final ItemMeta itemMeta = item.getItemMeta();
+            final List<String> lore = new ArrayList<>();
+            if(itemMeta.hasLore()) {
+                lore.addAll(itemMeta.getLore());
+            }
             lore.addAll(format);
-            itemMeta.setLore(lore); lore.clear();
+            itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
             gi.setItem(slot, item);
             level++;
@@ -99,10 +108,11 @@ public class IslandSlayer extends IslandAddon {
                         final List<String> status = isUnlocked ? unlockedLore : lockedLore;
                         final double slainR = r != null ? slainMobs.getOrDefault(r.entity, 0) : 0.00, c = sk.completion, cpR = c != 0.00 ? (slainR/c)*100 : 0;
                         final String rr = formatDouble(island.mobRespawnRate.getOrDefault(sk.entity, 1.00)*100), rTYPE = r != null ? r.type : null, progress = formatDouble(slainMobs.getOrDefault(sk.entity, 0)), progressR = formatDouble(slainR), completion = Integer.toString((int) c), completionP = Integer.toString((int) cpR), TYPE = sk.type;
-                        item = top.getItem(i).clone();
-                        itemMeta = item.getItemMeta(); lore.clear();
+                        final ItemStack item = top.getItem(i).clone();
+                        final ItemMeta itemMeta = item.getItemMeta();
                         itemMeta.setDisplayName((isUnlocked ? unlockedName : lockedName).replace("{NAME}", itemMeta.getDisplayName()));
                         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                        final List<String> lore = new ArrayList<>();
                         for(String s : itemMeta.getLore()) {
                             if(s.equals("{PROGRESS}")) {
                                 if(r != null) {
@@ -120,7 +130,7 @@ public class IslandSlayer extends IslandAddon {
                                 lore.add(s);
                             }
                         }
-                        itemMeta.setLore(lore); lore.clear();
+                        itemMeta.setLore(lore);
                         item.setItemMeta(itemMeta);
                         if(isUnlocked) item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
                         top.setItem(i, item);

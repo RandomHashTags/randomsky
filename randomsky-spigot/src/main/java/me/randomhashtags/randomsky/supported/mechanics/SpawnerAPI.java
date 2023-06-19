@@ -4,21 +4,19 @@ import me.randomhashtags.randomsky.RandomSky;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-public final class SpawnerAPI {
-    private static SpawnerAPI instance;
-    public static SpawnerAPI getSpawnerAPI() {
-        if(instance == null) {
-            instance = new SpawnerAPI();
-            final String plugin = RandomSky.spawner;
-            instance.plugin = plugin;
-            if(plugin != null && plugin.equals("SilkSpawners")) {
-                instance.util = de.dustplanet.util.SilkUtil.hookIntoSilkSpanwers();
-            }
-        }
-        return instance;
-    }
+public enum SpawnerAPI {
+    INSTANCE;
+
     private String plugin;
     private Object util;
+
+    public void reload() {
+        final String plugin = RandomSky.spawner;
+        instance.plugin = plugin;
+        if(plugin != null && plugin.equals("SilkSpawners")) {
+            instance.util = de.dustplanet.util.SilkUtil.hookIntoSilkSpanwers();
+        }
+    }
 
     public ItemStack getItem(String entitytype) {
         if(plugin != null) {

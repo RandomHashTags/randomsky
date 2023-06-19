@@ -3,7 +3,7 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.addon.CustomKit;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
@@ -56,7 +56,7 @@ public class Kits extends RSFeature implements Listener {
                     replacements.put("{INPUT}", a);
                     sendStringListMessage(player, config.getStringList("messages.unknown kit"), replacements);
                 } else {
-                    giveKit(player, RSPlayer.get(player.getUniqueId()), k, true, true);
+                    giveKit(player, FileRSPlayer.get(player.getUniqueId()), k, true, true);
                 }
             }
         }
@@ -124,7 +124,7 @@ public class Kits extends RSFeature implements Listener {
             if(kit != null) {
                 final String click = event.getClick().name();
                 if(click.contains("LEFT")) {
-                    tryClaiming(player, RSPlayer.get(player.getUniqueId()), top, r, kit);
+                    tryClaiming(player, FileRSPlayer.get(player.getUniqueId()), top, r, kit);
                 } else if(click.contains("RIGHT")) {
                     tryPreviewing(player, kit);
                 }
@@ -136,7 +136,7 @@ public class Kits extends RSFeature implements Listener {
 
     public void viewKits(Player player) {
         if(hasPermission(player, "RandomSky.kits.view", true)) {
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             player.closeInventory();
             final int size = gui.getSize();
             player.openInventory(Bukkit.createInventory(player, size, gui.getTitle()));
@@ -152,7 +152,7 @@ public class Kits extends RSFeature implements Listener {
             player.updateInventory();
         }
     }
-    private ItemStack getStatus(Player player, Inventory top, int slot, RSPlayer pdata, CustomKit kit) {
+    private ItemStack getStatus(Player player, Inventory top, int slot, FileRSPlayer pdata, CustomKit kit) {
         final String n = kit.getIdentifier();
         final boolean canClaim = canClaim(pdata, kit);
         final HashMap<CustomKit, Long> k = pdata.getKitExpirations();
@@ -183,11 +183,11 @@ public class Kits extends RSFeature implements Listener {
         if(canClaim) item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         return item;
     }
-    public boolean canClaim(RSPlayer pdata, CustomKit kit) {
+    public boolean canClaim(FileRSPlayer pdata, CustomKit kit) {
         final HashMap<CustomKit, Long> e = pdata.getKitExpirations();
         return !e.containsKey(kit) || System.currentTimeMillis() >= e.get(kit);
     }
-    public void tryClaiming(Player player, RSPlayer pdata, Inventory top, int slot, CustomKit kit) {
+    public void tryClaiming(Player player, FileRSPlayer pdata, Inventory top, int slot, CustomKit kit) {
         if(hasPermission(player, "RandomSky.kits." + kit.getIdentifier(), true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{KIT}", kit.getName());
@@ -210,7 +210,7 @@ public class Kits extends RSFeature implements Listener {
             player.updateInventory();
         }
     }
-    private void giveKit(Player player, RSPlayer pdata, CustomKit kit, boolean addCooldown, boolean sendMessage) {
+    private void giveKit(Player player, FileRSPlayer pdata, CustomKit kit, boolean addCooldown, boolean sendMessage) {
         final List<ItemStack> items = kit.items();
         for(ItemStack is : items) {
             giveItem(player, is);
@@ -241,7 +241,7 @@ public class Kits extends RSFeature implements Listener {
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{PLAYER}", op.getName());
                 sendStringListMessage(sender, config.getStringList("messages.reset"), replacements);
-                RSPlayer.get(op.getUniqueId()).getKitExpirations().clear();
+                FileRSPlayer.get(op.getUniqueId()).getKitExpirations().clear();
             }
         }
     }

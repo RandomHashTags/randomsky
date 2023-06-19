@@ -5,10 +5,7 @@ import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.file.FilePlayerSkill;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.supported.economy.Vault;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.*;
 import me.randomhashtags.randomsky.universal.UInventory;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -24,22 +21,24 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 import static java.io.File.separator;
 
-public class PlayerRanks extends RSFeature implements CommandExecutor {
-    private static PlayerRanks instance;
-    public static PlayerRanks getPlayerRanks() {
-        if(instance == null) instance = new PlayerRanks();
-        return instance;
-    }
+public enum PlayerRanks implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
     private UInventory gui;
     private ItemStack background;
     private Permission perm;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.PLAYER_RANKS;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -58,7 +57,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
             }
         }
 
-        perm = Vault.getVault().getPermission();
+        perm = Vault.INSTANCE.getPermission();
 
         background = d(config, "gui.background");
         final int size = config.getInt("gui.size");
@@ -103,7 +102,7 @@ public class PlayerRanks extends RSFeature implements CommandExecutor {
         final PlayerRank p = PlayerRank.valueOf(is);
         if(p != null) {
             final Player player = event.getPlayer();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final PlayerRank pr = pdata.getRank();
             event.setCancelled(true);
             player.updateInventory();

@@ -1,8 +1,10 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,16 +18,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
 
-public class CustomCrafting extends RSFeature implements CommandExecutor {
-    private static CustomCrafting instance;
-    public static CustomCrafting getCustomCrafting() {
-        if(instance == null) instance = new CustomCrafting();
-        return instance;
-    }
+public enum CustomCrafting implements RSFeature, CommandExecutor {
+    INSTANCE;
+
     public YamlConfiguration config;
 
     private UInventory gui;
@@ -41,6 +41,12 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.CUSTOM_CRAFTING;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "custom crafting/_settings.yml");
@@ -99,6 +105,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
         }
         sendConsoleMessage("&6[RandomSky] &aLoaded " + loaded + " Custom Crafting Recipes, " + CustomShield.paths.size() + " shields, and " + CustomBow.paths.size() + " bows &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
         for(CustomRecipe c : recipes.keySet()) {
             HandlerList.unregisterAll(c);
@@ -251,7 +258,7 @@ public class CustomCrafting extends RSFeature implements CommandExecutor {
                     if(event.isShiftClick()) {
                         event.setCancelled(true);
                         final int am = amount/this.amount;
-                        item = r.clone();
+                        final ItemStack item = r.clone();
                         item.setAmount(am);
                         giveItem(player, item);
                         A = am*this.amount+1;

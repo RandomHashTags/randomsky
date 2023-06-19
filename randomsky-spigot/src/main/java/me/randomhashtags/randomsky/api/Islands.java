@@ -1,15 +1,18 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
+import me.randomhashtags.randomsky.RSPlayer;
+import me.randomhashtags.randomsky.addon.InviteType;
 import me.randomhashtags.randomsky.addon.file.FileIsland;
 import me.randomhashtags.randomsky.addon.file.FileIslandOrigin;
 import me.randomhashtags.randomsky.addon.file.FileIslandRole;
 import me.randomhashtags.randomsky.addon.island.*;
 import me.randomhashtags.randomsky.addon.PermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
+import me.randomhashtags.randomsky.addon.obj.RSInvite;
 import me.randomhashtags.randomsky.api.skill.IslandFarming;
 import me.randomhashtags.randomsky.api.skill.IslandMining;
 import me.randomhashtags.randomsky.api.skill.IslandSlayer;
+import me.randomhashtags.randomsky.event.InviteExpireEvent;
 import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
 import me.randomhashtags.randomsky.util.*;
@@ -39,12 +42,14 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,16 +57,10 @@ import java.util.*;
 
 import static java.io.File.separator;
 
-public class Islands extends IslandAddon implements CommandExecutor, Schematicable {
-    private static Islands instance;
-    public static Islands getIslands() {
-        if(instance == null) instance = new Islands();
-        return instance;
-    }
+public enum Islands implements IslandAddon, CommandExecutor, Schematicable {
+    INSTANCE;
 
     public static YamlConfiguration config;
-    public static IslandMining mining;
-    private IslandFarming farming;
     private Location spawn;
 
     public static String islandWorld;
@@ -76,6 +75,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     private List<Player> pickingOrigin, managing;
     private List<Location> recentlyDeleted;
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final Player player = sender instanceof Player ? (Player) sender : null;
         final String c = cmd.getName();
@@ -130,28 +130,28 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                     } else if(a.equals("delwarp")) {
                         tryDeletingWarp(player);
                     } else if(a.equals("farming")) {
-                        final IslandFarming f = IslandFarming.getIslandFarming();
-                        if(f.isEnabled()) {
+                        final IslandFarming f = IslandFarming.INSTANCE;
+                        if(f.is_enabled()) {
                             f.viewFarming(player);
                         }
                     } else if(a.equals("level")) {
-                        final IslandLevels levels = IslandLevels.getIslandLevels();
-                        if(levels.isEnabled()) {
+                        final IslandLevels levels = IslandLevels.INSTANCE;
+                        if(levels.is_enabled()) {
                             levels.viewLevels(player);
                         }
                     } else if(a.equals("mining")) {
-                        final IslandMining mining = IslandMining.getIslandMining();
-                        if(mining.isEnabled()) {
+                        final IslandMining mining = IslandMining.INSTANCE;
+                        if(mining.is_enabled()) {
                             mining.viewMining(player);
                         }
                     } else if(a.equals("slayer")) {
                         final IslandSlayer slayer = IslandSlayer.getIslandSlayer();
-                        if(slayer.isEnabled()) {
+                        if(slayer.is_enabled()) {
                             slayer.viewSlayer(player);
                         }
                     } else if(a.equals("challenge") || a.equals("challenges")) {
                         final IslandChallenges challenges = IslandChallenges.getIslandChallenges();
-                        if(challenges.isEnabled()) {
+                        if(challenges.is_enabled()) {
                             challenges.viewChallenges(player);
                         }
                     } else if(!a.equals("help")) {
@@ -194,6 +194,12 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         return true;
     }
 
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.ISLAND_ORIGIN;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         final String folder = DATA_FOLDER + separator + "island";
@@ -204,8 +210,6 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         managing = new ArrayList<>();
         recentlyDeleted = new ArrayList<>();
 
-        mining = IslandMining.getIslandMining();
-        farming = IslandFarming.getIslandFarming();
         SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> {
             final String s = otherdata.getString("spawn");
             if(s != null && !s.equals("null")) {
@@ -251,6 +255,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                 final int slot = config.getInt(p + "slot");
                 final String it = config.getString(p + "item");
                 if(it != null) {
+                    final ItemStack item;
                     if(it.toLowerCase().equals("confirm")) {
                         item = deleteConfirm.clone();
                     } else if(it.toLowerCase().equals("cancel")) {
@@ -291,9 +296,10 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         }
         sendConsoleMessage("&6[RandomSky] &aLoaded Islands and " + origins + " origins &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
-    public void setSpawnLocation(Location location) {
+    public void setSpawnLocation(@NotNull Location location) {
         this.spawn = location;
     }
+    @Override
     public void unload() {
         otherdata.set("spawn", spawn != null ? toString(spawn) : "null");
         final List<String> rd = new ArrayList<>();
@@ -304,7 +310,6 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         saveOtherData();
 
         config = null;
-        mining = null;
         islandWorld = null;
 
         RSStorage.unregisterAll(Feature.ISLAND_CHALLENGE, Feature.ISLAND_LEVEL, Feature.ISLAND_ORIGIN, Feature.ISLAND_PROGRESSIVE_SKILL, Feature.ISLAND_RANK, Feature.ISLAND_REGION_PROTECTION, Feature.ISLAND_SKILL, Feature.ISLAND_UPGRADE);
@@ -312,11 +317,11 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     private void createIslandWorld() {
         Bukkit.createWorld(WorldCreator.name(islandWorld).type(WorldType.FLAT).generatorSettings("3;minecraft:air;127;decoration"));
     }
-    private void createIsland(Player player, IslandOrigin origin) {
+    private void createIsland(@NotNull Player player, @NotNull IslandOrigin origin) {
         final UUID u = player.getUniqueId();
         final Location center = newIslandCenter();
         final Island i = new FileIsland(origin, u, center);
-        final RSPlayer pdata = RSPlayer.get(u);
+        final FileRSPlayer pdata = FileRSPlayer.get(u);
         pdata.setIslandUUID(i.getUUID());
         player.closeInventory();
         player.sendMessage(ChatColor.YELLOW + "Please wait as your island is being created...");
@@ -329,14 +334,14 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         sendStringListMessage(player, getStringList(config, "messages.create"), null);
     }
 
-    public void viewHelp(CommandSender sender) {
+    public void viewHelp(@NotNull CommandSender sender) {
         if(hasPermission(sender, "RandomSky.island.help", true)) {
             sendStringListMessage(sender, getStringList(config, "messages.help"), null);
         }
     }
-    public void viewMembers(Player player) {
+    public void viewMembers(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.island.members", true)) {
-            final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island is = FileRSPlayer.get(player.getUniqueId()).getIsland();
             if(is == null) {
                 sendStringListMessage(player, getStringList(config, "messages.need island"), null);
             } else {
@@ -349,14 +354,15 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                     final OfflinePlayer OP = Bukkit.getOfflinePlayer(uuid);
                     final IslandRank r = m.get(uuid);
                     final String R = r.getString();
-                    item = UMaterial.PLAYER_HEAD_ITEM.getItemStack();
-                    final SkullMeta sm = (SkullMeta) item.getItemMeta(); lore.clear();
+                    final ItemStack item = UMaterial.PLAYER_HEAD_ITEM.getItemStack();
+                    final SkullMeta sm = (SkullMeta) item.getItemMeta();
                     sm.setOwningPlayer(OP);
                     sm.setDisplayName(ChatColor.GREEN + OP.getName());
+                    final List<String> lore = new ArrayList<>();
                     for(String s : viewingMembers) {
                         lore.add(s.replace("{RANK}", R));
                     }
-                    sm.setLore(lore); lore.clear();
+                    sm.setLore(lore);
                     item.setItemMeta(sm);
                     top.setItem(top.firstEmpty(), item);
                 }
@@ -364,20 +370,18 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
             }
         }
     }
-    public void tryCreating(Player creator) {
-        if(creator != null) {
-            final Island is = Island.players.getOrDefault(creator.getUniqueId(), null);
-            if(is == null) {
-                viewOrigins(creator, true);
-            } else {
-                sendStringListMessage(creator, getStringList(config, "messages.already have an island"), null);
-            }
+    public void tryCreating(@NotNull Player creator) {
+        final Island is = Island.players.getOrDefault(creator.getUniqueId(), null);
+        if(is == null) {
+            viewOrigins(creator, true);
+        } else {
+            sendStringListMessage(creator, getStringList(config, "messages.already have an island"), null);
         }
     }
-    public void tryInviting(Player sender, OfflinePlayer target) {
+    public void tryInviting(@NotNull Player sender, OfflinePlayer target) {
         if(hasPermission(sender, "RandomSky.island.invite", true)) {
             final UUID s = sender.getUniqueId();
-            final RSPlayer rs = RSPlayer.get(s);
+            final FileRSPlayer rs = FileRSPlayer.get(s);
             final Island is = rs.getIsland();
             if(is == null) {
                 sendStringListMessage(sender, getStringList(config, "messages.need island"), null);
@@ -391,7 +395,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                 } else if(is.getMembers().containsKey(r)) {
                     sendStringListMessage(sender, getStringList(config, "messages.invite already member"), replacements);
                 } else {
-                    final List<RSInvite> invites = is.invites;
+                    final List<RSInvite> invites = is.getInvites();
                     for(RSInvite i : invites) {
                         if(i.receiver == r) {
                             sendStringListMessage(sender, getStringList(config, "messages.invite pending"), replacements);
@@ -408,11 +412,11 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
             }
         }
     }
-    public void tryJoining(Player player, String target) {
+    public void tryJoining(@NotNull Player player, String target) {
         if(hasPermission(player, "RandomSky.island.join", true) && target != null) {
             final OfflinePlayer creator = Bukkit.getOfflinePlayer(target);
             if(creator != null) {
-                final RSPlayer rsp = RSPlayer.get(creator.getUniqueId());
+                final FileRSPlayer rsp = FileRSPlayer.get(creator.getUniqueId());
                 final Island island = rsp.getIsland();
                 final List<String> noinvitefound = getStringList(config, "messages.no invite to join");
                 final HashMap<String, String> replacements = new HashMap<>();
@@ -421,7 +425,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                     sendStringListMessage(player, noinvitefound, replacements);
                 } else {
                     final UUID u = player.getUniqueId();
-                    final List<RSInvite> invites = island.invites;
+                    final List<RSInvite> invites = island.getInvites();
                     for(RSInvite i : invites) {
                         if(i.receiver == u) {
                             SCHEDULER.cancelTask(i.expireTask);
@@ -468,7 +472,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     }
     public void trySettingWarp(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.island.setwarp", true)) {
-            final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island is = FileRSPlayer.get(player.getUniqueId()).getIsland();
             if(is == null) {
                 sendStringListMessage(player, getStringList(config, "messages.need island"), null);
             } else {
@@ -481,7 +485,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     }
     public void tryDeletingWarp(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.island.delwarp", true)) {
-            final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island is = FileRSPlayer.get(player.getUniqueId()).getIsland();
             if(is == null) {
                 sendStringListMessage(player, getStringList(config, "messages.need island"), null);
             } else {
@@ -502,13 +506,13 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                 if(player.equals(target.getPlayer())) {
                     sendStringListMessage(player, getStringList(config, "messages.cannot ban self"), null);
                 } else {
-                    final UUID u = target.getUniqueId();
+                    final UUID target_player_uuid = target.getUniqueId();
                     final HashMap<String, String> replacements = new HashMap<>();
                     replacements.put("{PLAYER}", player.getName());
                     replacements.put("{TARGET}", target.getName());
                     replacements.put("{IS_CREATOR}", Bukkit.getOfflinePlayer(is.getCreator()).getName());
-                    if(!is.getBannedPlayers().contains(u)) {
-                        is.ban(target);
+                    if(!is.getBannedPlayers().contains(target_player_uuid)) {
+                        is.ban(target_player_uuid);
                         sendStringListMessage(player, getStringList(config, "messages.ban"), replacements);
                     } else {
                         sendStringListMessage(player, getStringList(config, "messages.already banned"), replacements);
@@ -599,7 +603,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         }
     }
     private void viewOrigins(Player player, boolean pick) {
-        final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+        final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
         player.closeInventory();
         final int size = origin.getSize();
         player.openInventory(Bukkit.createInventory(player, size, origin.getTitle()));
@@ -611,10 +615,11 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
             for(int i = 0; i < size; i++) {
                 final IslandOrigin o = IslandOrigin.valueOf(i);
                 if(o != null && o.equals(O)) {
-                    item = top.getItem(i); itemMeta = item.getItemMeta(); lore.clear();
-                    lore.addAll(itemMeta.getLore());
+                    final ItemStack item = top.getItem(i);
+                    final ItemMeta itemMeta = item.getItemMeta();
+                    final List<String> lore = new ArrayList<>(itemMeta.getLore());
                     lore.addAll(originSelected);
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                 }
             }
@@ -642,15 +647,17 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                 managing.add(player);
                 final String islandLevel = Integer.toString(is.getIslandLevel().getLevel()), origin = is.getOrigin().getName(), radius = Integer.toString(is.radius), farmingLevel = Integer.toString(is.farmingSkill.level), slayerLevel = Integer.toString(is.slayerSkill.level), miningLevel = Integer.toString(is.allowedNodes.size()), rnValue = formatDouble(is.getResourceNodeValue());
                 for(int i = 0; i < size; i++) {
-                    item = top.getItem(i);
+                    ItemStack item = top.getItem(i);
                     if(item != null) {
-                        item = item.clone(); itemMeta = item.getItemMeta(); lore.clear();
+                        item = item.clone();
+                        ItemMeta itemMeta = item.getItemMeta();
+                        final List<String> lore = new ArrayList<>();
                         if(itemMeta.hasLore()) {
                             for(String s : itemMeta.getLore()) {
                                 lore.add(s.replace("{LEVEL}", islandLevel).replace("{ORIGIN}", origin).replace("{RADIUS}", radius).replace("{FARMING_LEVEL}", farmingLevel).replace("{SLAYER_LEVEL}", slayerLevel).replace("{MINING_LEVEL}", miningLevel).replace("{RESOURCE_NODE_VALUE}", rnValue));
                             }
                         }
-                        itemMeta.setLore(lore); lore.clear();
+                        itemMeta.setLore(lore);
                         item.setItemMeta(itemMeta);
                         top.setItem(i, item);
                     }
@@ -691,9 +698,11 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     public void tryDeleting(@NotNull Player player) {
         if(player != null && hasPermission(player, "RandomSky.island.delete", true)) {
             final UUID u = player.getUniqueId();
-            final RSPlayer pdata = RSPlayer.get(u);
+            final FileRSPlayer pdata = FileRSPlayer.get(u);
             final Island is = hasIsland(player);
-            if(is == null) return;
+            if(is == null) {
+                return;
+            }
             final long l = System.currentTimeMillis(), last = pdata.canDeleteIslandTime;
             if(l < last && !hasPermission(player, "RandomSky.island.delete.bypasstimer", false)) {
                 final HashMap<String, String> replacements = new HashMap<>();
@@ -707,7 +716,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
             }
         }
     }
-    private void delete(Player player, RSPlayer pdata, Island island) {
+    private void delete(Player player, FileRSPlayer pdata, Island island) {
         final Location C = island.getCenter();
         final World w = C.getWorld();
         final int r = island.radius, x = C.getBlockX(), z = C.getBlockZ();
@@ -835,7 +844,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                     final boolean cancelled = e.isCancelled();
                     event.setCancelled(cancelled);
                     if(!cancelled) {
-                        final RSPlayer pdata = RSPlayer.get(uuid);
+                        final FileRSPlayer pdata = FileRSPlayer.get(uuid);
                         boolean did = false, instant = pdata.getToggles().get(ToggleType.INSTANT_BLOCK_PICKUP);
                         final MaterialData md = b.getState().getData();
                         if(md instanceof Crops) {
@@ -870,7 +879,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                         }
                         event.setDropItems(false);
                         if(!did) {
-                            mining.breakBlock(player, pdata, b);
+                            IslandMining.INSTANCE.breakBlock(player, pdata, b);
                         }
                         dmgDurability(player.getItemInHand());
                         player.updateInventory();
@@ -891,18 +900,24 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                 final PlayerIslandInteractEvent e = new PlayerIslandInteractEvent(player, is, event);
                 PLUGIN_MANAGER.callEvent(e);
                 event.setCancelled(e.isCancelled());
-                if(e.isCancelled()) return;
+                if(e.isCancelled()) {
+                    return;
+                }
             } else if(action.equals("PHYSICAL") && is != null) {
                 event.setCancelled(true);
-            } else return;
-        } else return;
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
         player.updateInventory();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void playerBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         final Player player = event.getPlayer();
-        final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+        final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
         final Block b = event.getBlockClicked();
         final Location L = b.getLocation();
         final BlockFace bf = event.getBlockFace();
@@ -922,7 +937,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void playerBucketFillEvent(PlayerBucketFillEvent event) {
         final Player player = event.getPlayer();
-        final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+        final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
         final Location l = event.getBlockClicked().getLocation();
         final Island is = Island.valueOf(l);
         if(is == null) {
@@ -941,7 +956,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     private void playerChatEvent(AsyncPlayerChatEvent event) {
         if(!event.isCancelled()) {
             final Player player = event.getPlayer();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
         }
     }
 
@@ -955,7 +970,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         for(int p = 0; p < a.size(); p++) {
             final LivingEntity l = (LivingEntity) a.toArray()[p];
             if(l instanceof Player) {
-                final RSPlayer pdata = RSPlayer.get(l.getUniqueId());
+                final FileRSPlayer pdata = FileRSPlayer.get(l.getUniqueId());
                 final Island is = pdata.getIsland();
                 if(is != null) {
                     for(PotionEffectType t : is.getImmuneTo()) {
@@ -972,9 +987,9 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
     private void entityDeathEvent(EntityDeathEvent event) {
         final Player player = event.getEntity().getKiller();
         if(player != null) {
-            final Island is = RSPlayer.get(player.getUniqueId()).getIsland();
+            final Island is = FileRSPlayer.get(player.getUniqueId()).getIsland();
             if(is != null) {
-                event.setDroppedExp((int) (event.getDroppedExp()*is.XPGainMultiplier));
+                event.setDroppedExp((int) (event.getDroppedExp() * is.XPGainMultiplier));
             }
         }
     }
@@ -1015,7 +1030,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
             final Player victim = e instanceof Player ? (Player) e : null;
             final String c = event.getCause().name();
             if(victim != null) {
-                final Island island = RSPlayer.get(victim.getUniqueId()).getIsland();
+                final Island island = FileRSPlayer.get(victim.getUniqueId()).getIsland();
                 if(c.contains("FIRE") && !firedmg || c.equals("DROWNING") && !drowningdmg || c.equals("LAVA") && !lavadmg || c.equals("FALL") && !falldmg || c.equals("HOT_FLOOR") && !magmaBlockdmg) {
                     event.setCancelled(true);
                 } else if(c.equals("VOID")) {
@@ -1063,7 +1078,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
                     }
                 } else if(confirmDelete) {
                     if(current.equals(deleteConfirm)) {
-                        final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+                        final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
                         delete(player, pdata, pdata.getIsland());
                     } else if(current.equals(deleteCancel)) {
                         player.closeInventory();
@@ -1101,7 +1116,7 @@ public class Islands extends IslandAddon implements CommandExecutor, Schematicab
         final Island is = rs.getIsland();
         final OfflinePlayer op = Bukkit.getOfflinePlayer(rs.getUUID());
         if(is != null) {
-            is.invites.remove(i);
+            is.getInvites().remove(i);
             if(op.isOnline()) {
                 final HashMap<String, String> replacements = new HashMap<>();
                 replacements.put("{PLAYER}", Bukkit.getOfflinePlayer(i.receiver).getName());

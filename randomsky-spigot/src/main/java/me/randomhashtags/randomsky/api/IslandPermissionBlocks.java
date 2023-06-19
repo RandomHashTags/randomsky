@@ -6,10 +6,11 @@ import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.IslandRole;
 import me.randomhashtags.randomsky.event.island.IslandBreakBlockEvent;
 import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,12 +36,8 @@ import static java.io.File.separator;
 import static me.randomhashtags.randomsky.api.Islands.mining;
 import static me.randomhashtags.randomsky.api.skill.IslandMining.cosmeticFormat;
 
-public class IslandPermissionBlocks extends IslandAddon {
-    private static IslandPermissionBlocks instance;
-    public static IslandPermissionBlocks getIslandPermissionBlocks() {
-        if(instance == null) instance = new IslandPermissionBlocks();
-        return instance;
-    }
+public enum IslandPermissionBlocks implements IslandAddon {
+    INSTANCE;
 
     public YamlConfiguration config;
 
@@ -51,6 +50,12 @@ public class IslandPermissionBlocks extends IslandAddon {
     private HashMap<Integer, List<String>> settingsLore;
     private HashMap<Player, ActivePermissionBlock> editing;
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ISLAND_PERMISSION_BLOCKS;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         final String folder = DATA_FOLDER + separator + "island" + separator + "permission blocks";
@@ -77,11 +82,16 @@ public class IslandPermissionBlocks extends IslandAddon {
             if(!s.equals("pre lore") && !s.equals("gui")) {
                 final String p = "permission blocks." + s;
                 final int radius = config.getInt(p + ".radius");
-                item = d(config, p);
-                itemMeta = item.getItemMeta(); lore.clear();
-                for(String l : prelore) lore.add(colorize(l.replace("{RADIUS}", Integer.toString(radius))));
-                if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-                itemMeta.setLore(lore); lore.clear();
+                final ItemStack item = d(config, p);
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
+                for(String l : prelore) {
+                    lore.add(colorize(l.replace("{RADIUS}", Integer.toString(radius))));
+                }
+                if(itemMeta.hasLore()) {
+                    lore.addAll(itemMeta.getLore());
+                }
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 new PermissionBlock(s, item, radius);
             }
@@ -106,7 +116,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                 settingsName.put(slot, n != null ? colorize(n) : null);
                 settingsLore.put(slot, l);
 
-                item = disabled.clone();
+                final ItemStack item = disabled.clone();
                 gi.setItem(slot, item);
             }
         }
@@ -131,12 +141,13 @@ public class IslandPermissionBlocks extends IslandAddon {
             for(int i = 0; i < size; i++) {
                 if(settings.containsKey(i)) {
                     final boolean allowed = isAllowed(block, settings.get(i));
-                    item = (allowed ? enabled : disabled).clone(); itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemStack item = (allowed ? enabled : disabled).clone();
+                    final ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", settingsName.get(i)));
-                    lore.addAll(settingsLore.get(i));
+                    final List<String> lore = new ArrayList<>(settingsLore.get(i));
                     lore.add(allowed ? A : D);
                     lore.addAll(addedLore);
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                     top.setItem(i, item);
                 }
@@ -148,12 +159,13 @@ public class IslandPermissionBlocks extends IslandAddon {
     private void updateSetting(Player player, Inventory top, int slot, ActivePermissionBlock block) {
         if(settings.containsKey(slot)) {
             final boolean allowed = isAllowed(block, settings.get(slot));
-            item = (allowed ? enabled : disabled).clone(); itemMeta = item.getItemMeta(); lore.clear();
+            final ItemStack item = (allowed ? enabled : disabled).clone();
+            final ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NAME}", settingsName.get(slot)));
-            lore.addAll(settingsLore.get(slot));
+            final List<String> lore = new ArrayList<>(settingsLore.get(slot));
             lore.add(allowed ? A : D);
             lore.addAll(addedLore);
-            itemMeta.setLore(lore); lore.clear();
+            itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
             top.setItem(slot, item);
             updateRegionInfo(player, top, block);
@@ -170,14 +182,18 @@ public class IslandPermissionBlocks extends IslandAddon {
         for(int i : editations.keySet()) {
             final String s = editations.get(i);
             if(s.equals("region info")) {
-                item = regionInfo.clone(); itemMeta = item.getItemMeta(); lore.clear();
+                final ItemStack item = regionInfo.clone();
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
                 if(itemMeta.hasLore()) {
                     for(String p : itemMeta.getLore()) {
-                        for(String o : e.keySet()) p = p.replace(o, e.get(o));
+                        for(String o : e.keySet()) {
+                            p = p.replace(o, e.get(o));
+                        }
                         lore.add(p.replace("{RADIUS}", r));
                     }
                 }
-                itemMeta.setLore(lore); lore.clear();
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 top.setItem(i, item);
                 updateRegionMembers(player, top, block);
@@ -195,7 +211,9 @@ public class IslandPermissionBlocks extends IslandAddon {
         for(int i : editations.keySet()) {
             final String s = editations.get(i);
             if(s.equals("region members")) {
-                item = regionMembers.clone(); itemMeta = item.getItemMeta(); lore.clear();
+                final ItemStack item = regionMembers.clone();
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
                 if(itemMeta.hasLore()) {
                     for(String w : itemMeta.getLore()) {
                         if(w.equals("{MEMBERS}")) {
@@ -213,7 +231,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                         }
                     }
                 }
-                itemMeta.setLore(lore); lore.clear();
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 top.setItem(i, item);
                 player.updateInventory();
@@ -362,7 +380,7 @@ public class IslandPermissionBlocks extends IslandAddon {
                             pb.delete();
                             final ItemStack item = type.getItem();
                             w.dropItemNaturally(bl.clone().add(0.5, 0.5, 0.5), item);
-                            spawnParticle(RSPlayer.get(u), w, bl, item);
+                            spawnParticle(FileRSPlayer.get(u), w, bl, item);
                         }
                     } else if(!isMember) {
                         if(!nearby.isEmpty()) {

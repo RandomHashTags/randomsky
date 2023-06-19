@@ -1,9 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.island.Island;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -16,18 +16,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EnchantmentTables extends RSFeature {
-    private static EnchantmentTables instance;
-    public static EnchantmentTables getEnchantmentTables() {
-        if(instance == null) instance = new EnchantmentTables();
-        return instance;
-    }
+public enum EnchantmentTables implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
     private List<String> dontHaveRequiredIslandLevel, help, notEnoughExp;
@@ -36,6 +33,11 @@ public class EnchantmentTables extends RSFeature {
 
     private List<Player> viewing;
     private HashMap<Integer, Integer> requiredIslandLevels;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.ENCHANTMENT_TABLES;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();
@@ -97,7 +99,7 @@ public class EnchantmentTables extends RSFeature {
             player.updateInventory();
 
             final int r = event.getRawSlot();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final Island is = pdata.getIsland();
             if(requiredIslandLevels.containsKey(r)) {
                 final HashMap<String, String> replacements = new HashMap<>();

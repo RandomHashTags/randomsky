@@ -1,6 +1,5 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandBot;
 import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
 import me.randomhashtags.randomsky.addon.file.FileAutoBot;
@@ -9,6 +8,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Arrays;
@@ -26,14 +27,11 @@ import java.util.List;
 
 import static java.io.File.separator;
 
-public class AutoBots extends RSFeature implements CommandExecutor {
+public enum AutoBots implements RSFeature, CommandExecutor {
     // TODO: finish this feature
-    private static AutoBots instance;
-    public static AutoBots getAutoBots() {
-        if(instance == null) instance = new AutoBots();
-        return instance;
-    }
+    INSTANCE;
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(sender instanceof Player) {
             viewBots((Player) sender);
@@ -46,6 +44,12 @@ public class AutoBots extends RSFeature implements CommandExecutor {
     private HashMap<Player, ActiveIslandBot> viewingbot;
     private HashMap<ActiveIslandBot, List<Player>> editingbotinventory, upgradingbot;
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.AUTO_BOTS;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         final String folder = DATA_FOLDER + separator + "auto bots";
@@ -80,6 +84,8 @@ public class AutoBots extends RSFeature implements CommandExecutor {
 
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.AUTO_BOT).size() + " Auto Bots and " + RSStorage.getAll(Feature.AUTO_BOT_UPGRADE).size() + " Auto Bot Upgrades &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+
+    @Override
     public void unload() {
         RSStorage.unregisterAll(Feature.AUTO_BOT, Feature.AUTO_BOT_UPGRADE);
     }

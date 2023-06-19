@@ -4,19 +4,21 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 import static java.io.File.separator;
 
-public class CustomBosses extends RSFeature {
-    private static CustomBosses instance;
-    public static CustomBosses getCustomBosses() {
-        if(instance == null) instance = new CustomBosses();
-        return instance;
-    }
+public enum CustomBosses implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.CUSTOM_BOSS;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();

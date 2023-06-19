@@ -4,12 +4,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class RemovePotionEffect extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
         for(Entity e : recipientValues.keySet()) {
             removePotionEffect(entities, e, recipientValues.get(e), valueReplacements);
         }

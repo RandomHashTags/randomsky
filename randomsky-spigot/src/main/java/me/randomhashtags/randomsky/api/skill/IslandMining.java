@@ -7,7 +7,8 @@ import me.randomhashtags.randomsky.addon.island.skill.MiningSkill;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.api.Islands;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import me.randomhashtags.randomsky.util.ToggleType;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
@@ -32,6 +33,8 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,12 +42,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class IslandMining extends IslandAddon implements CommandExecutor {
-    private static IslandMining instance;
-    public static IslandMining getIslandMining() {
-        if(instance == null) instance = new IslandMining();
-        return instance;
-    }
+public enum IslandMining implements IslandAddon, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
 
@@ -59,6 +58,11 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     private List<String> resourceItemFormat, resourceFormat;
     private List<UMaterial> resources, resourceItems, scraps, cannotBeInstaBroke;
     public HashMap<String, ItemStack> refined, unrefined;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ISLAND_MINING;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();
@@ -110,10 +114,13 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         resourceItemFormat = getStringList(config, "resource item.pre lore");
         for(String s : config.getConfigurationSection("resource item").getKeys(false)) {
             if(!s.equals("pre lore")) {
-                item = d(config, "resource item." + s); itemMeta = item.getItemMeta(); lore.clear();
-                lore.addAll(resourceItemFormat);
-                if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-                itemMeta.setLore(lore); lore.clear();
+                final ItemStack item = d(config, "resource item." + s);
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>(resourceItemFormat);
+                if(itemMeta.hasLore()) {
+                    lore.addAll(itemMeta.getLore());
+                }
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 final UMaterial u = UMaterial.match(item);
                 this.resourceItems.add(u);
@@ -129,13 +136,18 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         final List<String> prelore = getStringList(config, "scraps.pre lore");
         for(String s : config.getConfigurationSection("scraps").getKeys(false)) {
             if(!s.equals("pre lore")) {
-                item = d(config, "scraps." + s);
+                final ItemStack item = d(config, "scraps." + s);
                 final UMaterial u = UMaterial.match(item);
                 this.scraps.add(u);
-                itemMeta = item.getItemMeta(); lore.clear();
-                for(String l : prelore) lore.add(colorize(l));
-                if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-                itemMeta.setLore(lore); lore.clear();
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
+                for(String l : prelore) {
+                    lore.add(colorize(l));
+                }
+                if(itemMeta.hasLore()) {
+                    lore.addAll(itemMeta.getLore());
+                }
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 new Resource(ResourceType.SCRAP, s, item);
                 scraps++;
@@ -151,7 +163,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 final ResourceNodeType type = ResourceNodeType.types.getOrDefault(config.getString(p + "type"), null);
                 final List<String> loot = getStringList(config, p + "loot");
                 final UMaterial harvest = UMaterial.valueOf(config.getString(p + "harvest block")), node = UMaterial.valueOf(config.getString(p + "node block"));
-                item = d(config, "nodes." + s); itemMeta = item.getItemMeta(); lore.clear();
+                final ItemStack item = d(config, "nodes." + s);
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
                 for(String l : type.lore) {
                     if(l.equals("{LOOT}")) {
                         for(String L : loot)
@@ -160,7 +174,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                         lore.add(l);
                     }
                 }
-                itemMeta.setLore(lore); lore.clear();
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 new ResourceNode(s, type, IslandLevel.levels.get(config.getInt("nodes." + s + ".required island level")), config.getLong(p + "respawn time"), config.getDouble(p + "value"), harvest, node, colorize(config.getString(p + "node name")), config.getString(p + "node {TYPE}"), config.getString(p + "required node"), config.getInt(p + "completion"), item, loot);
                 nodes++;
@@ -181,12 +195,14 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 final String p = "gui." + s + ".";
                 final int slot = config.getInt(p + "slot");
                 final ItemStack display = d(config, "gui." + s);
-                item = display.clone(); itemMeta = item.getItemMeta(); lore.clear();
+                final ItemStack item = display.clone();
+                final ItemMeta itemMeta = item.getItemMeta();
+                final List<String> lore = new ArrayList<>();
                 if(itemMeta.hasLore()) {
                     lore.addAll(itemMeta.getLore());
                 }
                 lore.addAll(format);
-                itemMeta.setLore(lore); lore.clear();
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 gi.setItem(slot, item);
                 new MiningSkill(s, slot, paths.getOrDefault(config.getString(p + "tracks node"), null), display);
@@ -252,7 +268,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                     final int P = island.getMinedResourceNodes(required), p = island.getMinedResourceNodes(target), nc = next != null ? next.completion : 0, c = target.completion, mined = island.getMinedResourceNodes(required);
                     final String NC = formatInt(nc), rr = formatDouble(island.resourceRespawnRate.getOrDefault(target, 1.00)*100), requiredPER = formatDouble(c != 0 ? round(((((double) P)/(double) c))*100, 2) : 0.00);
                     final String PRO = Integer.toString(mined), progress = Integer.toString(p), completion = Integer.toString(c), type = required != null ? required.nodeTYPE : target.nodeTYPE, completionP = Integer.toString((int) (((double) p)/((double) c)*100));
-                    item = g.getItem(i).clone(); itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemStack item = g.getItem(i).clone();
+                    final ItemMeta itemMeta = item.getItemMeta();
+                    final List<String> lore = new ArrayList<>();
                     final boolean isUnlocked = allowed.contains(target) || rn == null;
                     itemMeta.setDisplayName((isUnlocked ? unlockedName : lockedName).replace("{NAME}", ChatColor.stripColor(itemMeta.getDisplayName())));
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -275,7 +293,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                             lore.add(s.replace("{PROGRESS}", PRO).replace("{COMPLETION}", completion).replace("{TYPE}", type).replace("{COMPLETION%}", requiredPER));
                         }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                     if(isUnlocked) item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
                     top.setItem(i, item);
@@ -285,7 +303,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         }
     }
 
-    public void breakBlock(Player player, RSPlayer pdata, Block block) {
+    public void breakBlock(Player player, FileRSPlayer pdata, Block block) {
         final UMaterial u = UMaterial.getItem(block);
         if(cannotBeInstaBroke.contains(u)) return;
         try {
@@ -301,9 +319,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 instantPickup = true;
                 drop = m.contains("_DOOR") ? UMaterial.match(m + "_ITEM").getItemStack() : u.getItemStack();
                 if(drop != null) {
-                    itemMeta = drop.getItemMeta(); lore.clear();
-                    lore.addAll(cosmeticFormat);
-                    itemMeta.setLore(lore); lore.clear();
+                    final ItemMeta itemMeta = drop.getItemMeta();
+                    final List<String> lore = new ArrayList<>(cosmeticFormat);
+                    itemMeta.setLore(lore);
                     drop.setItemMeta(itemMeta);
                 } else return;
             }
@@ -321,7 +339,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
             player.sendMessage(s);
         }
     }
-    public ItemStack getDrop(UMaterial u) {
+    public ItemStack getDrop(@NotNull UMaterial u) {
         for(String s : drops) {
             final String one = s.split(":")[0].toUpperCase();
             final UMaterial um = UMaterial.valueOf(one);
@@ -397,10 +415,10 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
         generated.remove(l);
         final List<ItemStack> drops = new ArrayList<>();
         for(ItemStack d : b.getDrops()) {
-            item = d.clone();
-            itemMeta = d.getItemMeta(); lore.clear();
-            lore.addAll(cosmeticFormat);
-            itemMeta.setLore(lore); lore.clear();
+            final ItemStack item = d.clone();
+            final ItemMeta itemMeta = d.getItemMeta();
+            final List<String> lore = new ArrayList<>(cosmeticFormat);
+            itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
             drops.add(item);
         }
@@ -414,9 +432,9 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
     private void entityDeathEvent(EntityDeathEvent event) {
         final LivingEntity e = event.getEntity();
         if(!(e instanceof Player)) {
-            lore.clear(); lore.addAll(cosmeticFormat);
+            final List<String> lore = new ArrayList<>(cosmeticFormat);
             for(ItemStack is : event.getDrops()) {
-                itemMeta = is.getItemMeta();
+                final ItemMeta itemMeta = is.getItemMeta();
                 itemMeta.setLore(lore);
                 is.setItemMeta(itemMeta);
             }
@@ -438,7 +456,7 @@ public class IslandMining extends IslandAddon implements CommandExecutor {
                 if(type == null || type.equals(Material.AIR) || it.hasItemMeta() && it.getItemMeta().hasLore() && it.getItemMeta().getLore().containsAll(cosmeticFormat)) {
                     final UUID u = player.getUniqueId();
                     final Island i = Island.players.getOrDefault(u, null), on = Island.valueOf(bl);
-                    final RSPlayer pdata = RSPlayer.get(u);
+                    final FileRSPlayer pdata = FileRSPlayer.get(u);
                     if(pdata.instaBreakTutorial) {
                         sendStringListMessage(player, getStringList(config, "messages.insta break tutorial"), null);
                         pdata.instaBreakTutorial = false;

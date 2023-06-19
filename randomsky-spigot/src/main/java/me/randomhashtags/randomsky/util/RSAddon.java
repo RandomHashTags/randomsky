@@ -1,13 +1,11 @@
 package me.randomhashtags.randomsky.util;
 
-import me.randomhashtags.randomsky.RandomSkyAPI;
-import me.randomhashtags.randomsky.universal.UVersion;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public abstract class RSAddon extends UVersion {
-    protected RandomSkyAPI api = RandomSkyAPI.getAPI();
+public abstract class RSAddon implements UVersionable {
     protected File file;
     protected YamlConfiguration yml;
     private String ymlName;

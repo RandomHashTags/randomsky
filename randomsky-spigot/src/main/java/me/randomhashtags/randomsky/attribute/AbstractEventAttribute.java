@@ -1,17 +1,19 @@
 package me.randomhashtags.randomsky.attribute;
 
 import me.randomhashtags.randomsky.addon.EventAttribute;
+import me.randomhashtags.randomsky.attributesys.EventReplacer;
+import me.randomhashtags.randomsky.universal.UVersionable;
 import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.util.RSStorage;
-import me.randomhashtags.randomsky.universal.UVersion;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public abstract class AbstractEventAttribute extends UVersion implements EventAttribute, EventReplacer {
+public abstract class AbstractEventAttribute implements UVersionable, EventAttribute, EventReplacer {
     private boolean cancelled;
     public String getIdentifier() {
         final String[] n = getClass().getName().split("\\.");
@@ -27,16 +29,16 @@ public abstract class AbstractEventAttribute extends UVersion implements EventAt
     public boolean isCancelled() { return cancelled; }
     public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
 
-    public void execute(Event event) {}
-    public void execute(Event event, String value) {}
-    public void execute(Event event, String value, HashMap<String, String> valueReplacements) {}
-    public void execute(Event event, HashMap<String, Entity> entities, String value, HashMap<String, String> valueReplacements) {}
+    public void execute(@NotNull Event event) {}
+    public void execute(@NotNull Event event, String value) {}
+    public void execute(@NotNull Event event, String value, HashMap<String, String> valueReplacements) {}
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, String value, HashMap<String, String> valueReplacements) {}
     public void execute(String value) {}
-    public void execute(Entity entity1, Entity entity2, String value) {}
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {}
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues) {}
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {}
+    public void execute(@NotNull Entity entity1, Entity entity2, String value) {}
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {}
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues) {}
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {}
     public void executeAt(HashMap<Location, String> locations) {}
-    public void executeData(HashMap<RSPlayer, String> recipientValues, HashMap<String, String> valueReplacements) {}
-    public void executeData(HashMap<String, Entity> entities, HashMap<RSPlayer, String> recipientValues, HashMap<String, String> valueReplacements) {}
+    public void executeData(HashMap<FileRSPlayer, String> recipientValues, HashMap<String, String> valueReplacements) {}
+    public void executeData(HashMap<String, Entity> entities, HashMap<FileRSPlayer, String> recipientValues, HashMap<String, String> valueReplacements) {}
 }

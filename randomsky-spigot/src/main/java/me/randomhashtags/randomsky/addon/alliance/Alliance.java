@@ -1,8 +1,11 @@
 package me.randomhashtags.randomsky.addon.alliance;
 
+import me.randomhashtags.randomsky.addon.obj.RSInvite;
 import me.randomhashtags.randomsky.addon.util.Loadable;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,5 +55,13 @@ public interface Alliance extends Loadable {
         }
     }
 
+    List<RSInvite> getInvites();
+
     void disband();
+
+    void join(@NotNull UUID player);
+    void leave(@NotNull Player player);
+    void kick(@NotNull UUID player);
+
+    @NotNull AllianceRelation relation_to(@NotNull Alliance alliance);
 }

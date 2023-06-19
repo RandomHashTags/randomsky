@@ -7,12 +7,13 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class LaunchProj extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
         Vector v = null;
         if(event instanceof ProjectileLaunchEvent) {
             v = ((ProjectileLaunchEvent) event).getEntity().getVelocity();

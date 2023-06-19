@@ -6,13 +6,14 @@ import me.randomhashtags.randompackage.event.GlobalChallengeParticipateEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class IncreaseGlobalChallenge extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
         final HashMap<GlobalChallenge, ActiveGlobalChallenge> active = ActiveGlobalChallenge.active;
         for(Entity e : recipientValues.keySet()) {
             if(e instanceof Player) {

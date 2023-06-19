@@ -1,9 +1,9 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.active.Home;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,19 +11,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-public class Homes extends RSFeature implements CommandExecutor {
-    private static Homes instance;
-    public static Homes getHomes() {
-        if(instance == null) instance = new Homes();
-        return instance;
-    }
+public enum Homes implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.HOMES;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -50,19 +52,21 @@ public class Homes extends RSFeature implements CommandExecutor {
         return true;
     }
 
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "homes.yml");
         config = YamlConfiguration.loadConfiguration(new File(DATA_FOLDER, "homes.yml"));
         sendConsoleMessage("&6[RandomSky] &aLoaded Homes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
     }
     public void tryGoing(@NotNull Player player, @NotNull String home) {
         if(hasPermission(player, "RandomSky.home", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{NAME}", home);
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             if(home == null && homes != null && homes.size() > 0) {
                 home = homes.get(0).getName();
@@ -85,7 +89,7 @@ public class Homes extends RSFeature implements CommandExecutor {
     public void trySetting(@NotNull Player player, @NotNull String home) {
         if(hasPermission(player, "RandomSky.sethome", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             final int maxhomes = getMaxHomes(player);
             replacements.put("{NAME}", home);
@@ -119,7 +123,7 @@ public class Homes extends RSFeature implements CommandExecutor {
         if(hasPermission(player, "RandomSky.delhome", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
             replacements.put("{NAME}", home);
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             for(Home h : homes) {
                 if(h.getName().equalsIgnoreCase(home)) {
@@ -133,7 +137,7 @@ public class Homes extends RSFeature implements CommandExecutor {
     }
     public void viewHomelist(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.homelist", true)) {
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final List<Home> homes = pdata.getHomes();
             final String homesize = Integer.toString(homes.size());
             for(String s : getStringList(config, "messages.homelist")) {

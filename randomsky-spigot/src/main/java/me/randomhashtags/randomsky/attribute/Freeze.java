@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -24,7 +25,7 @@ public class Freeze extends AbstractEventAttribute {
         tasks = null;
     }
     @Override
-    public void execute(Event event, String value) {
+    public void execute(@NotNull Event event, String value) {
         final PlayerQuitEvent q = event instanceof PlayerQuitEvent ? (PlayerQuitEvent) event : null;
         if(q != null) {
             final Player player = q.getPlayer();
@@ -37,7 +38,7 @@ public class Freeze extends AbstractEventAttribute {
         }
     }
     @Override
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             final Player player = e instanceof Player ? (Player) e : null;
             if(player != null) {

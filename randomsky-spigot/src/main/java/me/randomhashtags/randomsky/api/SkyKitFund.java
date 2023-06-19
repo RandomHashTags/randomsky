@@ -1,6 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.event.FundDepositEvent;
+import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -22,12 +24,9 @@ import java.util.UUID;
 
 import static java.io.File.separator;
 
-public class SkyKitFund extends RSFeature implements CommandExecutor {
-    private static SkyKitFund instance;
-    public static SkyKitFund getFund() {
-        if(instance == null) instance = new SkyKitFund();
-        return instance;
-    }
+public enum SkyKitFund implements RSFeature, CommandExecutor {
+    INSTANCE;
+
     public YamlConfiguration config;
 
     private HashMap<String, String> unlockstring;
@@ -36,15 +35,26 @@ public class SkyKitFund extends RSFeature implements CommandExecutor {
 
     public BigDecimal maxfund, total;
 
-    public String getIdentifier() { return "FUND"; }
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.FUND;
+    }
+
+    public String getIdentifier() {
+        return "FUND";
+    }
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(args.length == 0) {
             view(sender);
         } else {
             final String a = args[0];
-            if(a.equals("help")) viewHelp(sender);
-            else if(a.equals("reset")) reset(sender);
-            else if(sender instanceof Player && args.length >= 2 && a.equals("deposit")) deposit((Player) sender, args[1]);
+            if(a.equals("help")) {
+                viewHelp(sender);
+            } else if(a.equals("reset")) {
+                reset(sender);
+            } else if(sender instanceof Player && args.length >= 2 && a.equals("deposit")) {
+                deposit((Player) sender, args[1]);
+            }
         }
         return true;
     }

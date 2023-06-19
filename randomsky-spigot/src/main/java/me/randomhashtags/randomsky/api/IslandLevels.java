@@ -8,6 +8,7 @@ import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,6 +21,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,12 +31,8 @@ import java.util.List;
 
 import static java.io.File.separator;
 
-public class IslandLevels extends IslandAddon implements CommandExecutor {
-    private static IslandLevels instance;
-    public static IslandLevels getIslandLevels() {
-        if(instance == null) instance = new IslandLevels();
-        return instance;
-    }
+public enum IslandLevels implements IslandAddon, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
 
@@ -43,10 +42,17 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
     private List<UMaterial> lockedBlocks;
     private String spawnerLimit, islandRadius, allowPlacement, maxMembers;
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return true;
     }
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ISLAND_LEVELS;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         save(DATA_FOLDER + separator + "island" + separator + "levels", "_settings.yml");
@@ -78,10 +84,11 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
             if(!f.getAbsoluteFile().getName().equals("_settings.yml")) {
                 final IslandLevel lvl = new FileIslandLevel(f);
                 final int level = lvl.getLevel();
-                item = locked.clone(); itemMeta = item.getItemMeta(); lore.clear();
+                final ItemStack item = locked.clone();
+                final ItemMeta itemMeta = item.getItemMeta();
                 itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{LEVEL}", Integer.toString(level)));
-                lore.addAll(format);
-                itemMeta.setLore(lore); lore.clear();
+                final List<String> lore = new ArrayList<>(format);
+                itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 gi.setItem(lvl.getSlot(), item);
             }
@@ -95,6 +102,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ISLAND_LEVEL).size() + " Island Levels &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
 
+    @Override
     public void unload() {
         RSStorage.unregisterAll(Feature.ISLAND_LEVEL);
     }
@@ -133,8 +141,8 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
     }
     private ItemStack getStatus(double bal, int slot, IslandLevel level, int isLevel) {
         final int lvl = level.getLevel();
-        item = gui.getInventory().getItem(slot).clone();
-        itemMeta = item.getItemMeta(); lore.clear();
+        ItemStack item = gui.getInventory().getItem(slot).clone();
+        ItemMeta itemMeta = item.getItemMeta();
         final List<String> L = itemMeta.getLore(), status, rewards = level.getAttributes();
         List<String> lockedStatus = null;
         if(lvl == isLevel) {
@@ -150,6 +158,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
             lockedStatus = lvl == isLevel+1 ? bal >= get$Cost(level) ? clickToLevelUp : cannotAffordToLevelUp : requiresLevel;
         }
         itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{LEVEL}", Integer.toString(lvl)));
+        final List<String> lore = new ArrayList<>();
         for(String s : L) {
             if(s.equals("{REWARDS}")) {
                 for(String r : rewards) {
@@ -184,7 +193,7 @@ public class IslandLevels extends IslandAddon implements CommandExecutor {
                 lore.add(s);
             }
         }
-        itemMeta.setLore(lore); lore.clear();
+        itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         return item;
     }

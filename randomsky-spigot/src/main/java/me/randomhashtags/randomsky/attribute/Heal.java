@@ -3,12 +3,13 @@ package me.randomhashtags.randomsky.attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class Heal extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
+    public void execute(@NotNull Event event, HashMap<String, Entity> entities, HashMap<Entity, String> recipientValues, HashMap<String, String> valueReplacements) {
         for(Entity e : recipientValues.keySet()) {
             if(e instanceof LivingEntity) {
                 final LivingEntity l = (LivingEntity) e;

@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class ActiveResourceNode implements UVersionable {
-    private static final RandomSkyAPI api = RandomSkyAPI.getAPI();
-
     private UUID uuid;
     private ResourceNode type;
     private Location location;
@@ -89,7 +87,7 @@ public class ActiveResourceNode implements UVersionable {
             mined.put(type, mined.get(type)+1);
             final Location l = location.clone().add(0.5, 1, 0.5);
             for(String s : type.getLoot()) {
-                final ItemStack is = api.d(null, s.split(";")[0]);
+                final ItemStack is = RandomSkyAPI.INSTANCE.d(null, s.split(";")[0]);
                 final Item item = world.dropItem(l, is);
                 item.setPickupDelay(10);
                 item.setVelocity(new Vector(0, 0, 0));

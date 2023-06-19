@@ -1,10 +1,11 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
+import me.randomhashtags.randomsky.addon.obj.JackpotStats;
 import me.randomhashtags.randomsky.event.JackpotPurchaseTicketsEvent;
 import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
+import me.randomhashtags.randomsky.util.FileRSPlayer;
 import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -20,17 +21,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Jackpot extends RSFeature implements CommandExecutor {
-    private static Jackpot instance;
-    public static Jackpot getJackpot() {
-        if(instance == null) instance = new Jackpot();
-        return instance;
-    }
+public enum Jackpot implements RSFeature, CommandExecutor {
+    INSTANCE;
+
     public YamlConfiguration config;
     public int task;
     public List<Integer> countdownTasks;
@@ -42,6 +42,12 @@ public class Jackpot extends RSFeature implements CommandExecutor {
     public HashMap<UUID, BigDecimal> ticketsSold, top, purchasing;
 
     public String getIdentifier() { return "JACKPOT"; }
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.JACKPOT;
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final Player player = sender instanceof Player ? (Player) sender : null;
         final int l = args.length;
@@ -106,9 +112,12 @@ public class Jackpot extends RSFeature implements CommandExecutor {
                 final int slot = config.getInt("gui." + s + ".slot");
                 final String i = config.getString("gui." + s + ".item").toLowerCase();
                 final boolean co = i.equals("confirm"), ca = i.equals("cancel");
-                if(co) confirmSlots.add(slot);
-                else if(ca) cancelSlots.add(slot);
-                item = co ? confirm : ca ? cancel : d(config, "gui." + s);
+                if(co) {
+                    confirmSlots.add(slot);
+                } else if(ca) {
+                    cancelSlots.add(slot);
+                }
+                final ItemStack item = co ? confirm : ca ? cancel : d(config, "gui." + s);
                 gi.setItem(slot, item);
             }
         }
@@ -166,7 +175,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
             final BigDecimal taxed = value.multiply(tax), total = value.subtract(taxed);
             ECONOMY.depositPlayer(op, total.doubleValue());
 
-            final RSPlayer pdata = RSPlayer.get(w);
+            final FileRSPlayer pdata = FileRSPlayer.get(w);
             pdata.jackpotWins += 1;
             pdata.jackpotWonCash = pdata.jackpotWonCash.add(total);
             if(!pdata.isOnline()) {
@@ -214,7 +223,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
         replacements.put("{TIME}", getRemainingTime(timeleft));
         replacements.put("{$}", formatBigDecimal(value));
         for(Player p : Bukkit.getOnlinePlayers()) {
-            if(RSPlayer.get(p.getUniqueId()).doesReceiveJackpotNotifications()) {
+            if(FileRSPlayer.get(p.getUniqueId()).getJackpotStats().receivesNotifications()) {
                 sendStringListMessage(p, c, replacements);
             }
         }
@@ -245,15 +254,16 @@ public class Jackpot extends RSFeature implements CommandExecutor {
             final Inventory top = player.getOpenInventory().getTopInventory();
             top.setContents(gui.getInventory().getContents());
             for(int i = 0; i < s; i++) {
-                item = top.getItem(i);
+                final ItemStack item = top.getItem(i);
                 if(item != null) {
-                    itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemMeta itemMeta = item.getItemMeta();
+                    final List<String> lore = new ArrayList<>();
                     if(itemMeta.hasLore()) {
                         for(String l : itemMeta.getLore()) {
                             lore.add(l.replace("{AMOUNT}", a).replace("{$}", p));
                         }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                 }
             }
@@ -270,7 +280,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
             PLUGIN_MANAGER.callEvent(e);
             if(!e.isCancelled()) {
                 final UUID u = player.getUniqueId();
-                final RSPlayer pdata = RSPlayer.get(u);
+                final FileRSPlayer pdata = FileRSPlayer.get(u);
                 pdata.jackpotTickets = pdata.jackpotTickets.add(tickets);
                 ticketsSold.put(u, ticketsSold.getOrDefault(u, BigDecimal.ZERO).add(tickets));
                 value = value.add(cost);
@@ -298,7 +308,7 @@ public class Jackpot extends RSFeature implements CommandExecutor {
     public void viewStats(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.jackpot.stats", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             replacements.put("{$}", formatBigDecimal(pdata.jackpotWonCash));
             replacements.put("{TICKETS}", formatBigDecimal(pdata.jackpotTickets));
             replacements.put("{WINS}", formatInt(pdata.jackpotWins));
@@ -327,9 +337,9 @@ public class Jackpot extends RSFeature implements CommandExecutor {
     }
     public void tryToggleNotifications(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.jackpot.toggle", true)) {
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
-            final boolean status = !pdata.doesReceiveJackpotNotifications();
-            pdata.setReceivesJackpotNotifications(status);
+            final JackpotStats stats = FileRSPlayer.get(player.getUniqueId()).getJackpotStats();
+            final boolean status = !stats.receivesNotifications();
+            stats.setReceivesNotifications(status)
             sendStringListMessage(player, config.getStringList("messages.toggle notifications." + (status ? "on" : "off")), null);
         }
     }

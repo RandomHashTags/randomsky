@@ -1,6 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,16 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SecondaryEvents extends RSFeature implements Listener, CommandExecutor {
-    private static SecondaryEvents instance;
-    public static SecondaryEvents getSecondaryEvents() {
-        if(instance == null) instance = new SecondaryEvents();
-        return instance;
-    }
+public enum SecondaryEvents implements RSFeature, Listener, CommandExecutor {
+    INSTANCE;
 
     public boolean banknoteIsEnabled = false, xpbottleIsEnabled = false;
 
@@ -33,6 +31,11 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
     private ItemStack banknote, xpbottle;
     private double minBanknote = 0.00;
     private int banknoteValueSlot, xpbottleValueSlot;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.SECONDARY_EVENTS;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -153,7 +156,7 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
             final ItemStack i = event.getItem();
             if(i != null && event.getAction().name().contains("RIGHT") && i.hasItemMeta() && i.getItemMeta().hasDisplayName() && i.getItemMeta().hasLore()) {
                 final ItemMeta b = banknote.getItemMeta();
-                itemMeta = i.getItemMeta();
+                final ItemMeta itemMeta = i.getItemMeta();
                 final String d = itemMeta.getDisplayName();
                 if(d.equals(b.getDisplayName())) {
                     final List<String> L = itemMeta.getLore();
@@ -180,7 +183,7 @@ public class SecondaryEvents extends RSFeature implements Listener, CommandExecu
             final ItemStack i = event.getItem();
             if(i != null && i.hasItemMeta() && i.getItemMeta().hasDisplayName() && i.getItemMeta().hasLore()) {
                 final ItemMeta x = xpbottle.getItemMeta();
-                itemMeta = i.getItemMeta();
+                final ItemMeta itemMeta = i.getItemMeta();
                 final String d = itemMeta.getDisplayName();
                 if(d.equals(x.getDisplayName())) {
                     final List<String> L = itemMeta.getLore();

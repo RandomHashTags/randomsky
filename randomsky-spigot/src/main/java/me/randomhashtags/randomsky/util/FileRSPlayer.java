@@ -1,6 +1,6 @@
 package me.randomhashtags.randomsky.util;
 
-import com.sun.istack.internal.Nullable;
+import me.randomhashtags.randomsky.RSPlayer;
 import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.addon.active.Home;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
@@ -14,6 +14,7 @@ import me.randomhashtags.randomsky.universal.UVersionable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +23,9 @@ import java.util.*;
 
 import static java.io.File.separator;
 
-public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPlayer {
+public class FileRSPlayer implements UVersionable, RSPlayer {
     private static final String folder = DATA_FOLDER + separator + "_Data" + separator + "players";
-    public static final HashMap<UUID, RSPlayer> players = new HashMap<>();
+    public static final HashMap<UUID, FileRSPlayer> players = new HashMap<>();
 
     private boolean isLoaded = false, filter = false;
     private UUID uuid, allianceUUID, islandUUID;
@@ -49,14 +50,14 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
     private HashMap<PlayerSkill, Integer> playerSkills;
     private HashMap<ToggleType, Boolean> toggles;
 
-    public RSPlayer(UUID uuid) {// test
+    public FileRSPlayer(UUID uuid) {// test
         this.uuid = uuid;
         final File f = new File(folder, uuid.toString() + ".yml");
         boolean backup = false;
         if(!players.containsKey(uuid)) {
             if(!f.exists()) {
                 try {
-                    final File folder = new File(RSPlayer.folder);
+                    final File folder = new File(FileRSPlayer.folder);
                     if(!folder.exists()) {
                         folder.mkdirs();
                     }
@@ -73,7 +74,7 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
         }
         if(backup) backup();
     }
-    public static RSPlayer get(UUID player) { return players.getOrDefault(player, new RSPlayer(player)).load(); }
+    public static FileRSPlayer get(UUID player) { return players.getOrDefault(player, new FileRSPlayer(player)).load(); }
 
     public boolean isOnline() {
         return Bukkit.getOfflinePlayer(uuid).isOnline();
@@ -143,7 +144,7 @@ public class RSPlayer implements UVersionable, me.randomhashtags.randomsky.RSPla
 
         save();
     }
-    public RSPlayer load() {
+    public FileRSPlayer load() {
         if(!isLoaded) {
             isLoaded = true;
 

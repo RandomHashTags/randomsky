@@ -1,7 +1,5 @@
 package me.randomhashtags.randomsky;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.*;
 import me.randomhashtags.randomsky.addon.active.Home;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
@@ -12,6 +10,8 @@ import me.randomhashtags.randomsky.addon.obj.JackpotStats;
 import me.randomhashtags.randomsky.util.ToggleType;
 import me.randomhashtags.randomsky.universal.UMaterial;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +99,9 @@ public interface RSPlayer {
         }
     }
 
+    @Nullable
     HashMap<PlayerSkill, Integer> getPlayerSkills();
+    @Nullable
     default PlayerSkillLevel getPlayerSkillLevel(@NotNull PlayerSkill skill) {
         final HashMap<PlayerSkill, Integer> a = getPlayerSkills();
         final Integer target = a != null ? a.get(skill) : null;
@@ -110,6 +112,7 @@ public interface RSPlayer {
         return null;
     }
 
+    @Nullable
     HashMap<ToggleType, Boolean> getToggles();
     default boolean isToggleEnabled(@NotNull ToggleType type) {
         final HashMap<ToggleType, Boolean> values = getToggles();

@@ -20,20 +20,22 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
 
 import static java.io.File.separator;
 
-public class ResourceNodes extends RSFeature {
-    private static ResourceNodes instance;
-    public static ResourceNodes getResourceNodes() {
-        if(instance == null) instance = new ResourceNodes();
-        return instance;
-    }
+public enum ResourceNodes implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.RESOURCE_NODE;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();

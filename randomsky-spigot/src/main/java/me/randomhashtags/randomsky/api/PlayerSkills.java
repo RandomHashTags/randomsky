@@ -3,10 +3,7 @@ package me.randomhashtags.randomsky.api;
 import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.PlayerSkillLevel;
 import me.randomhashtags.randomsky.addon.file.FilePlayerSkill;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.*;
 import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,18 +19,18 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static java.io.File.separator;
 
-public class PlayerSkills extends RSFeature implements CommandExecutor {
-    private static PlayerSkills instance;
-    public static PlayerSkills getPlayerSkills() {
-        if(instance == null) instance = new PlayerSkills();
-        return instance;
-    }
+public enum PlayerSkills implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config;
 
@@ -43,6 +40,11 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
 
     private HashMap<PlayerSkill, UInventory> skills;
     private HashMap<Player, PlayerSkill> viewing;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.PLAYER_SKILLS;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final Player player = sender instanceof Player ? (Player) sender : null;
@@ -82,8 +84,10 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         }
 
         for(int i = 0; i < gui.getSize(); i++) {
-            item = gi.getItem(i);
-            if(item == null) gi.setItem(i, background);
+            final ItemStack item = gi.getItem(i);
+            if(item == null) {
+                gi.setItem(i, background);
+            }
         }
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.PLAYER_SKILL).size() + " Player Skills &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
@@ -97,7 +101,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
     public void viewSkills(Player player) {
         if(hasPermission(player, "RandomSky.skills.view", true)) {
             player.closeInventory();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             final int size = gui.getSize();
             player.openInventory(Bukkit.createInventory(player, size, gui.getTitle().replace("{TOKENS}", Integer.toString(pdata.getSkillTokens()))));
             final Inventory top = player.getOpenInventory().getTopInventory();
@@ -108,13 +112,17 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
                 if(s != null) {
                     final int L = pdata.getPlayerSkillLevel(s);
                     final String level = Integer.toString(L);
-                    item = top.getItem(i); itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemStack item = top.getItem(i);
+                    final ItemMeta itemMeta = item.getItemMeta();
+                    final List<String> lore = new ArrayList<>();
                     int lvl = 1;
                     for(String l : itemMeta.getLore()) {
                         lore.add(l.replace("{LEVEL}", level).replace("{STATUS}", L >= lvl ? "" : ""));
-                        if(l.contains("{LEVEL}")) lvl++;
+                        if(l.contains("{LEVEL}")) {
+                            lvl++;
+                        }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                 }
             }
@@ -147,18 +155,20 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         if(viewing.containsKey(player)) {
             event.setCancelled(true);
             player.updateInventory();
-            final ItemStack c = event.getCurrentItem();
-            final int r = event.getRawSlot();
-            if(r < 0 || r >= player.getOpenInventory().getTopInventory().getSize() || c == null || c.getType().equals(Material.AIR)) return;
+            final ItemStack current_item = event.getCurrentItem();
+            final int raw_slot = event.getRawSlot();
+            if(raw_slot < 0 || raw_slot >= player.getOpenInventory().getTopInventory().getSize() || current_item == null || current_item.getType().equals(Material.AIR)) {
+                return;
+            }
 
             final PlayerSkill v = viewing.get(player);
             if(v == null) {
-                viewSkillLevels(player, PlayerSkill.slots.get(r));
-            } else if(c.equals(back)) {
+                viewSkillLevels(player, PlayerSkill.slots.get(raw_slot));
+            } else if(current_item.equals(back)) {
                 player.closeInventory();
                 viewSkills(player);
             } else {
-                final PlayerSkillLevel level = PlayerSkillLevel.valueOf(v, r);
+                final PlayerSkillLevel level = PlayerSkillLevel.valueOf(v, raw_slot);
                 if(level != null) {
                     Bukkit.broadcastMessage("PlayerSkills;level != null");
                 }
@@ -176,7 +186,7 @@ public class PlayerSkills extends RSFeature implements CommandExecutor {
         if(i != null && i.isSimilar(token)) {
             event.setCancelled(true);
             final Player player = event.getPlayer();
-            final RSPlayer pdata = RSPlayer.get(player.getUniqueId());
+            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
             pdata.setSkillTokens(pdata.getSkillTokens()+1);
             removeItem(player, i, 1);
             player.updateInventory();

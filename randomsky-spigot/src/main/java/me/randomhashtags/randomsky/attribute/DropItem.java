@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ import static me.randomhashtags.randompackage.RandomPackageAPI.api;
 
 public class DropItem extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             dropitem(e, recipientValues.get(e).replace("entity", e.getName()));
         }

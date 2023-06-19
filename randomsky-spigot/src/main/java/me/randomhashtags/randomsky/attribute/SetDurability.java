@@ -8,12 +8,13 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class SetDurability extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, String value) {
+    public void execute(@NotNull Event event, String value) {
         if(event instanceof PlayerItemDamageEvent) {
             final PlayerItemDamageEvent e = (PlayerItemDamageEvent) event;
             setDurability(e.getPlayer(), value, e.getItem());
@@ -23,7 +24,7 @@ public class SetDurability extends AbstractEventAttribute {
         }
     }
     @Override
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             setDurability(e, recipientValues.get(e));
         }

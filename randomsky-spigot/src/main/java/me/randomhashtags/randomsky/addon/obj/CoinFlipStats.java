@@ -3,26 +3,14 @@ package me.randomhashtags.randomsky.addon.obj;
 import java.math.BigDecimal;
 
 public class CoinFlipStats {
-    private boolean notifications;
-    private BigDecimal wins, losses, wonCash, lostCash, taxesPaid;
-    public CoinFlipStats(boolean notifications, BigDecimal wins, BigDecimal losses, BigDecimal wonCash, BigDecimal lostCash, BigDecimal taxesPaid) {
-        this.notifications = notifications;
+    public boolean receives_notifications;
+    public BigDecimal wins, losses, cash_won, cash_lost, taxes_paid;
+    public CoinFlipStats(boolean receives_notifications, BigDecimal wins, BigDecimal losses, BigDecimal cash_won, BigDecimal cash_lost, BigDecimal taxes_paid) {
+        this.receives_notifications = receives_notifications;
         this.wins = wins;
         this.losses = losses;
-        this.wonCash = wonCash;
-        this.lostCash = lostCash;
-        this.taxesPaid = taxesPaid;
+        this.cash_won = cash_won;
+        this.cash_lost = cash_lost;
+        this.taxes_paid = taxes_paid;
     }
-    public boolean receivesNotifications() { return notifications; }
-    public void setReceivesNotifications(boolean receives) { notifications = receives; }
-    public BigDecimal getWins() { return wins; }
-    public void setWins(BigDecimal wins) { this.wins = wins; }
-    public BigDecimal getLosses() { return losses; }
-    public void setLosses(BigDecimal losses) { this.losses = losses; }
-    public BigDecimal getWonCash() { return wonCash; }
-    public void setWonCash(BigDecimal wonCash) { this.wonCash = wonCash; }
-    public BigDecimal getLostCash() { return lostCash; }
-    public void setLostCash(BigDecimal lostCash) { this.lostCash = lostCash; }
-    public BigDecimal getTaxesPaid() { return taxesPaid; }
-    public void setTaxesPaid(BigDecimal taxesPaid) { this.taxesPaid = taxesPaid; }
 }

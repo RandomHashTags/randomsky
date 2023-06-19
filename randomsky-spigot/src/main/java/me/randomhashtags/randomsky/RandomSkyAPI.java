@@ -1,12 +1,15 @@
 package me.randomhashtags.randomsky;
 
 import me.randomhashtags.randomsky.util.RSFeature;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
+import org.jetbrains.annotations.NotNull;
 
-public class RandomSkyAPI extends RSFeature {
-    private static RandomSkyAPI instance;
-    public static RandomSkyAPI getAPI() {
-        if(instance == null) instance = new RandomSkyAPI();
-        return instance;
+public enum RandomSkyAPI implements RSFeature {
+    INSTANCE;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.API;
     }
 
     public void load() {

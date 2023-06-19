@@ -1,7 +1,7 @@
 package me.randomhashtags.randomsky.util;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;

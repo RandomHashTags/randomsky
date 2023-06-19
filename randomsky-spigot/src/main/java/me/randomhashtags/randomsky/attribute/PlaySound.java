@@ -6,12 +6,13 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class PlaySound extends AbstractEventAttribute {
     @Override
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             playsound(e, recipientValues.get(e));
         }

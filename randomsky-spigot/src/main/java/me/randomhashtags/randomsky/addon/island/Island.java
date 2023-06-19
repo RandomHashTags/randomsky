@@ -1,13 +1,12 @@
 package me.randomhashtags.randomsky.addon.island;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandChallenge;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
 import me.randomhashtags.randomsky.addon.active.ActivePermissionBlock;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
+import me.randomhashtags.randomsky.addon.obj.RSInvite;
 import me.randomhashtags.randomsky.addon.util.Attributable;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
 import me.randomhashtags.randomsky.addon.util.Loadable;
@@ -16,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -41,6 +42,11 @@ public interface Island extends Identifiable, Attributable, Loadable {
     String getTag();
     String getDescription();
     List<String> getTags();
+
+    List<RSInvite> getInvites();
+    void join(@NotNull Player player);
+
+    void ban(@NotNull UUID player);
 
     List<FarmingRecipe> getAllowedCrops();
     List<ResourceNode> getAllowedNodes();

@@ -29,16 +29,24 @@ public class FileAdventure extends RSAddon implements Adventure {
 
     public Location getCenter() { return toLocation(yml.getString("center")); }
     public String getName() {
-        if(name == null) name = ChatColor.translateAlternateColorCodes('&', yml.getString("name"));
+        if(name == null) {
+            name = ChatColor.translateAlternateColorCodes('&', yml.getString("name"));
+        }
         return name;
     }
-    public int getMaxPlayers() { return yml.getInt("max players"); }
+    public int getMaxPlayers() {
+        return yml.getInt("max players");
+    }
     public float getTeleportDelay() {
-        if(teleportDelay == -999) teleportDelay = (float) yml.getDouble("teleport delay");
+        if(teleportDelay == -999) {
+            teleportDelay = (float) yml.getDouble("teleport delay");
+        }
         return teleportDelay;
     }
     public List<String> getTeleportLocations() {
-        if(teleportLocations == null) teleportLocations = yml.getStringList("teleport locations");
+        if(teleportLocations == null) {
+            teleportLocations = yml.getStringList("teleport locations");
+        }
         return teleportLocations;
     }
     public AdventureMap getRequiredMap() {
@@ -50,7 +58,9 @@ public class FileAdventure extends RSAddon implements Adventure {
         return map;
     }
 
-    public int getSlot() { return yml.getInt("gui.slot"); }
+    public int getSlot() {
+        return yml.getInt("gui.slot");
+    }
     public ItemStack getItem() {
         if(is == null) is = api.d(yml, "gui");
         return getClone(is);

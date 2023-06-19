@@ -1,6 +1,5 @@
 package me.randomhashtags.randomsky.api.skill;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.active.ActiveIslandSkill;
 import me.randomhashtags.randomsky.addon.file.FileFarmingLimitIncreaser;
@@ -14,6 +13,7 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -40,12 +42,8 @@ import java.util.List;
 
 import static java.io.File.separator;
 
-public class IslandFarming extends IslandAddon implements CommandExecutor {
-    private static IslandFarming instance;
-    public static IslandFarming getIslandFarming() {
-        if(instance == null) instance = new IslandFarming();
-        return instance;
-    }
+public enum IslandFarming implements IslandAddon, CommandExecutor {
+    INSTANCE;
 
     public YamlConfiguration config, settings;
 
@@ -55,10 +53,17 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
     private List<Player> viewing;
     private String completedPrefix, lockedPrefix, inprogressPrefix, hasRecipe, needsRecipe;
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.ISLAND_FARMING;
+    }
+
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return true;
     }
 
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
 
@@ -113,6 +118,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
 
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.FARMING_RECIPE).size() + " Farming Recipes and " + RSStorage.getAll(Feature.FARMING_LIMIT_INCREASE) + " Farming Limit Increasers &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
         RSStorage.unregisterAll(Feature.FARMING_RECIPE, Feature.FARMING_LIMIT_INCREASE);
     }
@@ -131,7 +137,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
             final List<FarmingRecipe> allowedCrops = island.getAllowedCrops(), defaults = FarmingRecipe.defaults;
             top.setContents(info.getInventory().getContents());
             for(int i = 0; i < size; i++) {
-                item = top.getItem(i);
+                final ItemStack item = top.getItem(i);
                 final FarmingSkill is = FarmingSkill.slots.getOrDefault(i, null);
                 if(is != null) {
                     final FarmingSkill r = is.required;
@@ -141,10 +147,11 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                     double percent = (p/c)*100;
                     if(percent > 100) percent = 100;
 
-                    itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     final String NAME = ChatColor.stripColor(itemMeta.getDisplayName()), completion = formatDouble(c), progress = formatDouble(p == -1 ? 0.00 : Math.min(p, c)), T = (r != null ? r : is).getType(), P = percent > 0.00 ? formatDouble(round(percent, 2)) : "0";
                     itemMeta.setDisplayName((r == null || percent >= 100.00 ? completedPrefix : isUnlocked && p != -1 ? inprogressPrefix : lockedPrefix) + NAME);
+                    final List<String> lore = new ArrayList<>();
                     for(String s : itemMeta.getLore()) {
                         if(s.equals("{STATUS}")) {
                             if(r != null) {
@@ -161,7 +168,7 @@ public class IslandFarming extends IslandAddon implements CommandExecutor {
                             lore.add(s.replace("{COMPLETION}", completion).replace("{PROGRESS}", progress).replace("{TYPE}", T).replace("{COMPLETION%}", P));
                         }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                     if(r == null || p >= 100) {
                         item.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);

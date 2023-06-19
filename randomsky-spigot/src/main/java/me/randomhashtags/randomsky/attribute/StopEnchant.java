@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.attribute;
 import me.randomhashtags.randomsky.addon.enchant.CustomEnchant;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class StopEnchant extends AbstractEventAttribute {
         stoppedEnchants = null;
     }
     @Override
-    public void execute(Event event) {
+    public void execute(@NotNull Event event) {
         if(event instanceof CustomEnchantProcEvent) {
             final CustomEnchantProcEvent c = (CustomEnchantProcEvent) event;
             final UUID u = c.getEntities().get("Player").getUniqueId();
@@ -39,7 +40,7 @@ public class StopEnchant extends AbstractEventAttribute {
         }
     }
     @Override
-    public void execute(Event event, HashMap<Entity, String> recipientValues) {
+    public void execute(@NotNull Event event, HashMap<Entity, String> recipientValues) {
         for(Entity e : recipientValues.keySet()) {
             final CustomEnchant enchant = valueOfCustomEnchant(recipientValues.get(e));
             if(enchant != null && enchant.isEnabled()) {

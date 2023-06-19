@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class FileAlliance extends RSAddon implements Alliance {
+public final class FileAlliance extends RSAddon implements Alliance {
     private String[] info, ints;
 
     private long creation;

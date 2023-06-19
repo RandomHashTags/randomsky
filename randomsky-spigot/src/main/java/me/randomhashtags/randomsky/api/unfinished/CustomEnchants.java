@@ -4,19 +4,22 @@ import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.util.RSStorage;
 import me.randomhashtags.randomsky.universal.UInventory;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class CustomEnchants extends RSFeature {
-    private static CustomEnchants instance;
-    public static CustomEnchants getCustomEnchants() {
-        if(instance == null) instance = new CustomEnchants();
-        return instance;
-    }
+public enum CustomEnchants implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
     private UInventory gemForgeExamine, gemForgeApply, gemForgeRemove;
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.CUSTOM_ENCHANTS;
+    }
 
     public void load() {
         final long started = System.currentTimeMillis();

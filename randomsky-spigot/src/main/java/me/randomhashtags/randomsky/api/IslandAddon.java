@@ -2,6 +2,6 @@ package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.util.RSFeature;
 
-public abstract class IslandAddon extends RSFeature {
-    protected static String islandWorld;
+public interface IslandAddon extends RSFeature {
+    //String islandWorld;
 }

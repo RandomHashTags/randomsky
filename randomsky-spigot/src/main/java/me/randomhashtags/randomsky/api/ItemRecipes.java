@@ -1,6 +1,5 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
 import me.randomhashtags.randomsky.addon.ItemRecipe;
 import me.randomhashtags.randomsky.addon.file.FileItemRecipe;
 import me.randomhashtags.randomsky.util.Feature;
@@ -19,22 +18,27 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
 
 import static java.io.File.separator;
 
-public class ItemRecipes extends RSFeature implements CommandExecutor {
-    private static ItemRecipes instance;
-    public static ItemRecipes getItemRecipes() {
-        if(instance == null) instance = new ItemRecipes();
-        return instance;
-    }
+public enum ItemRecipes implements RSFeature, CommandExecutor {
+    INSTANCE;
 
     private UInventory inventory;
     private ItemStack background, locked;
     private List<String> recipesCanBeObtainedMsg;
+
+    public YamlConfiguration config;
+
+    @Override
+    public @NotNull Feature get_feature() {
+        return Feature.ITEM_RECIPE;
+    }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -42,8 +46,7 @@ public class ItemRecipes extends RSFeature implements CommandExecutor {
         return true;
     }
 
-    public YamlConfiguration config;
-
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         final String folder = DATA_FOLDER + separator + "item recipes";
@@ -64,16 +67,17 @@ public class ItemRecipes extends RSFeature implements CommandExecutor {
         }
 
         for(int i = 0; i < inv.getSize(); i++) {
-            item = inv.getItem(i);
+            final ItemStack item = inv.getItem(i);
             if(item == null) {
                 inv.setItem(i, background);
             } else {
-                itemMeta = item.getItemMeta(); lore.clear();
+                final ItemMeta itemMeta = item.getItemMeta();
             }
         }
 
         sendConsoleMessage("&6[RandomSky] &aLoaded " + RSStorage.getAll(Feature.ITEM_RECIPE).size() + " Item Recipes &e(took " + (System.currentTimeMillis()-started) + "ms)");
     }
+    @Override
     public void unload() {
         RSStorage.unregisterAll(Feature.ITEM_RECIPE);
     }

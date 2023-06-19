@@ -1,10 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
 import me.randomhashtags.randomsky.addon.ColorCrystal;
-import me.randomhashtags.randomsky.util.Feature;
-import me.randomhashtags.randomsky.util.RSFeature;
-import me.randomhashtags.randomsky.util.RSPlayer;
-import me.randomhashtags.randomsky.util.RSStorage;
+import me.randomhashtags.randomsky.util.*;
 import me.randomhashtags.randomsky.universal.UInventory;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -13,22 +10,25 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
 
-public class ColorCrystals extends RSFeature {
-    private static ColorCrystals instance;
-    public static ColorCrystals getColorCrystals() {
-        if(instance == null) instance = new ColorCrystals();
-        return instance;
-    }
+public enum ColorCrystals implements RSFeature {
+    INSTANCE;
 
     public YamlConfiguration config;
     private UInventory inventory;
     private ItemStack background, locked;
     private List<String> dontHaveUnlockedMsg;
 
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.COLOR_CRYSTALS;
+    }
+
+    @Override
     public void load() {
         final long started = System.currentTimeMillis();
         save(null, "color crystals.yml");
@@ -41,13 +41,13 @@ public class ColorCrystals extends RSFeature {
         background = d(config, "gui.background");
         locked = d(config, "gui.locked");
     }
+    @Override
     public void unload() {
-        RSStorage.unregisterAll(Feature.COLOR_CRYSTAL);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void playerChatEvent(AsyncPlayerChatEvent event) {
-        final RSPlayer pdata = RSPlayer.get(event.getPlayer().getUniqueId());
+        final FileRSPlayer pdata = FileRSPlayer.get(event.getPlayer().getUniqueId());
         final ColorCrystal active = pdata.getActiveColorCrystal();
         if(active != null) {
             event.setMessage(active.getEffect() + event.getMessage());

@@ -1,12 +1,11 @@
 package me.randomhashtags.randomsky.api;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import me.randomhashtags.randomsky.addon.AuctionViewType;
 import me.randomhashtags.randomsky.addon.obj.AuctionedItemObj;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.universal.UInventory;
 import me.randomhashtags.randomsky.universal.UMaterial;
+import me.randomhashtags.randomsky.util.RandomSkyFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -22,6 +21,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,12 +33,10 @@ import static java.io.File.separator;
 import static java.util.Map.Entry.comparingByKey;
 import static java.util.stream.Collectors.toMap;
 
-public class AuctionHouse extends RSFeature implements CommandExecutor {
-    private static AuctionHouse instance;
-    public static AuctionHouse getAuctionHouse() {
-        if(instance == null) instance = new AuctionHouse();
-        return instance;
-    }
+public enum AuctionHouse implements RSFeature, CommandExecutor {
+    INSTANCE;
+
+
     public YamlConfiguration config;
 
     private File dataF;
@@ -64,6 +64,12 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
     private HashMap<AuctionedItemObj, Integer> task;
 
     public String getIdentifier() { return "AUCTION_HOUSE"; }
+
+    @Override
+    public @NotNull RandomSkyFeature get_feature() {
+        return RandomSkyFeature.AUCTION_HOUSE;
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final Player player = sender instanceof Player ? (Player) sender : null;
         final boolean i = player != null;
@@ -153,7 +159,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         for(String s : config.getConfigurationSection("auction house").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size") && !s.equals("item slots") && !s.equals("organization") && !s.equals("auction expiration") && !s.equals("collection bin expiration") && !s.equals("format") && !s.equals("status") && !s.equals("previous page") && !s.equals("next page")) {
                 final String i = config.getString("auction house." + s + ".item");
-                item = i.equals("{REFRESH}") ? refresh : i.equals("{COLLECTION_BIN}") ? collectionBin : d(config, "auction house." + s);
+                final ItemStack item = i.equals("{REFRESH}") ? refresh : i.equals("{COLLECTION_BIN}") ? collectionBin : d(config, "auction house." + s);
                 ahi.setItem(config.getInt("auction house." + s + ".slot"), item);
             }
         }
@@ -168,7 +174,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             if(!s.equals("title") && !s.equals("size") && !s.equals("confirm") && !s.equals("cancel")) {
                 final String i = config.getString("purchase item." + s + ".item").toLowerCase();
                 final boolean isC = i.equals("confirm"), isCa = i.equals("cancel"), isI = i.equals("{item}");
-                item = isC ? confirmPurchase : isCa ? cancelPurchase : isI ? air : d(config, "purchase item." + s);
+                final ItemStack item = isC ? confirmPurchase : isCa ? cancelPurchase : isI ? air : d(config, "purchase item." + s);
                 final int slot = config.getInt("purchase item." + s + ".slot");
                 if(isC) confirmPurchaseSlots.add(slot);
                 else if(isCa) cancelPurchaseSlots.add(slot);
@@ -184,7 +190,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                 final String i = config.getString("confirm auction." + s + ".item");
                 final int slot = config.getInt("confirm auction." + s + ".slot");
                 final boolean accept = i.equals("accept"), decline = i.equals("decline"), isI = i.equals("{ITEM}");
-                item = isI ? air : accept ? confirmAuctionAccept : decline ? confirmAuctionDecline : d(config, "confirm auction." + s);
+                final ItemStack item = isI ? air : accept ? confirmAuctionAccept : decline ? confirmAuctionDecline : d(config, "confirm auction." + s);
                 if(accept) confirmAuctionSlots.add(slot);
                 else if(decline) cancelAuctionSlots.add(slot);
                 cai.setItem(slot, item);
@@ -197,7 +203,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             if(!s.equals("title") && !s.equals("size") && !s.equals("format") && !s.equals("groups")) {
                 final int slot = config.getInt("categories." + s + ".slot");
                 final String t = config.getString("categories." + s + ".item").toLowerCase();
-                item = t.equals("{refresh}") ? refresh : t.equals("{collection_bin}") ? collectionBin : t.equals("{return_to_ah}") ? returnToAH : d(config, "categories." + s);
+                final ItemStack item = t.equals("{refresh}") ? refresh : t.equals("{collection_bin}") ? collectionBin : t.equals("{return_to_ah}") ? returnToAH : d(config, "categories." + s);
                 ci.setItem(slot, item);
             }
         }
@@ -208,7 +214,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             if(!s.equals("title") && !s.equals("size")) {
                 final int slot = config.getInt("category items." + s + ".slot");
                 final String i = config.getString("category items." + s + ".item").toLowerCase();
-                item = i.equals("{collection_bin}") ? collectionBin : d(config, "category items." + s);
+                final ItemStack item = i.equals("{collection_bin}") ? collectionBin : d(config, "category items." + s);
                 cii.setItem(slot, item);
             }
         }
@@ -219,7 +225,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             if(!s.equals("title") && !s.equals("size") && !s.equals("not enough inventory space") && !s.equals("in auction") && !s.equals("claim")) {
                 final int slot = config.getInt("collection bin." + s + ".slot");
                 final String i = config.getString("collection bin." + s + ".item").toLowerCase();
-                item = i.equals("{refresh}") ? refresh : i.equals("{return_to_ah}") ? returnToAH : d(config, "collection bin." + s);
+                final ItemStack item = i.equals("{refresh}") ? refresh : i.equals("{return_to_ah}") ? returnToAH : d(config, "collection bin." + s);
                 cbi.setItem(slot, item);
             }
         }
@@ -227,11 +233,16 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
     }
 
     private void loadAuctions(boolean async) {
-        if(async) SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> loadAH(true));
-        else loadAH(false);
+        if(async) {
+            SCHEDULER.runTaskAsynchronously(RANDOM_SKY, () -> loadAH(true));
+        } else {
+            loadAH(false);
+        }
     }
     private void loadAH(boolean async) {
-        if(!isEnabled()) return;
+        if(!is_enabled()) {
+            return;
+        }
         final ConfigurationSection au = data.getConfigurationSection("auctions");
         int ah = 0, cb = 0, d = 0;
         if(au != null) {
@@ -357,12 +368,14 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                                 }
                             }
                             final String lowest = formatBigDecimal(lowestPrice);
-                            item = u.getItemStack(); itemMeta = item.getItemMeta(); lore.clear();
+                            final ItemStack item = u.getItemStack();
+                            final ItemMeta itemMeta = item.getItemMeta();
                             itemMeta.setDisplayName(s);
+                            final List<String> lore = new ArrayList<>();
                             for(String x : categoryFormat) {
                                 lore.add(x.replace("{LISTINGS}", listings).replace("{LOWEST_PRICE}", lowest));
                             }
-                            itemMeta.setLore(lore); lore.clear();
+                            itemMeta.setLore(lore);
                             item.setItemMeta(itemMeta);
                             top.setItem(slot, item);
                             if(slot+1 < slots.size()) slot = (int) slots.toArray()[slot+1];
@@ -380,8 +393,12 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                             final AuctionedItemObj a = auctionHouse.get(l);
                             final UUID auctioner = a.getAuctioner();
                             final String pr = formatBigDecimal(a.getPrice()), seller = Bukkit.getOfflinePlayer(auctioner).getName();
-                            item = a.getItem(); itemMeta = item.getItemMeta();
-                            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
+                            final ItemStack item = a.getItem();
+                            final ItemMeta itemMeta = item.getItemMeta();
+                            final List<String> lore = new ArrayList<>();
+                            if(itemMeta.hasLore()) {
+                                lore.addAll(itemMeta.getLore());
+                            }
                             for(String s : format) {
                                 if(s.equals("{STATUS}")) {
                                     lore.addAll(auctioner.equals(u) ? cancelStatus : clickToBuyStatus);
@@ -389,7 +406,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                                     lore.add(s.replace("{PRICE}", pr).replace("{SELLER}", seller));
                                 }
                             }
-                            itemMeta.setLore(lore); lore.clear();
+                            itemMeta.setLore(lore);
                             item.setItemMeta(itemMeta);
                             top.setItem(i, item);
                             ahitem++;
@@ -402,7 +419,9 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                     for(AuctionedItemObj a : cb) {
                         if(slots.contains(slot)) {
                             final String price = formatBigDecimal(a.getPrice());
-                            item = a.getItem(); itemMeta = item.getItemMeta(); lore.clear();
+                            final ItemStack item = a.getItem();
+                            final ItemMeta itemMeta = item.getItemMeta();
+                            final List<String> lore = new ArrayList<>();
                             if(itemMeta.hasLore()) {
                                 lore.addAll(itemMeta.getLore());
                             }
@@ -412,7 +431,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                             for(String s : type) {
                                 lore.add(s.replace("{PRICE}", price).replace("{TIME}", t));
                             }
-                            itemMeta.setLore(lore); lore.clear();
+                            itemMeta.setLore(lore);
                             item.setItemMeta(itemMeta);
                             top.setItem(slot, item);
                             if(slot+1 < slots.size()) {
@@ -429,7 +448,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             }
             for(int i = 0; i < top.getSize(); i++) {
                 if(!slots.contains(i)) {
-                    item = top.getItem(i);
+                    final ItemStack item = top.getItem(i);
                     if(item != null && item.equals(collectionBin)) {
                         top.setItem(i, getPlayerCollectionBin(player));
                     }
@@ -445,7 +464,9 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         for(AuctionedItemObj a : category.get(material).get(name)) {
             final UUID auctioner = a.getAuctioner();
             final String price = formatBigDecimal(a.getPrice()), seller = Bukkit.getOfflinePlayer(auctioner).getName();
-            item = a.getItem(); itemMeta = item.getItemMeta(); lore.clear();
+            final ItemStack item = a.getItem();
+            final ItemMeta itemMeta = item.getItemMeta();
+            final List<String> lore = new ArrayList<>();
             if(itemMeta.hasLore()) {
                 lore.addAll(itemMeta.getLore());
             }
@@ -456,7 +477,7 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
                     lore.add(s.replace("{PRICE}", price).replace("{SELLER}", seller));
                 }
             }
-            itemMeta.setLore(lore); lore.clear();
+            itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
             top.setItem(slot, item);
             if(slot+1 < slots.size()) {
@@ -471,18 +492,24 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         final String max = Integer.toString(maxpage);
         final ItemStack prev = p <= 1 ? air : previousPage.clone(), next = p < maxpage ? nextPage.clone() : air;
         if(prev != air) {
-            itemMeta = prev.getItemMeta(); lore.clear();
+            final ItemMeta itemMeta = prev.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{PREV_PAGE}", Integer.toString(p-1)).replace("{MAX_PAGE}", max));
-            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-            itemMeta.setLore(lore); lore.clear();
+            final List<String> lore = new ArrayList<>();
+            if(itemMeta.hasLore()) {
+                lore.addAll(itemMeta.getLore());
+            }
+            itemMeta.setLore(lore);
             prev.setItemMeta(itemMeta);
             prev.setAmount(p-1);
         }
         if(next != air) {
-            itemMeta = next.getItemMeta(); lore.clear();
+            final ItemMeta itemMeta = next.getItemMeta();
             itemMeta.setDisplayName(itemMeta.getDisplayName().replace("{NEXT_PAGE}", Integer.toString(p+1)).replace("{MAX_PAGE}", max));
-            if(itemMeta.hasLore()) lore.addAll(itemMeta.getLore());
-            itemMeta.setLore(lore); lore.clear();
+            final List<String> lore = new ArrayList<>();
+            if(itemMeta.hasLore()) {
+                lore.addAll(itemMeta.getLore());
+            }
+            itemMeta.setLore(lore);
             next.setItemMeta(itemMeta);
             next.setAmount(p+1);
         }
@@ -490,10 +517,10 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
         top.setItem(nextPageSlot, next);
     }
 
-    private void viewType(Player player, AuctionViewType type, int page, UInventory gui) {
+    private void viewType(@NotNull Player player, @Nullable AuctionViewType type, int page, @NotNull UInventory gui) {
         viewType(player, type, page, gui, null, null);
     }
-    private void viewType(Player player, AuctionViewType type, int page, UInventory gui, UMaterial material, String name) {
+    private void viewType(@NotNull Player player, @Nullable AuctionViewType type, int page, @NotNull UInventory gui, @Nullable UMaterial material, String name) {
         player.closeInventory();
         if(page > 0) {
             this.page.put(player, page);
@@ -570,14 +597,15 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
 
             for(ItemStack is : top.getContents()) {
                 if(is != null) {
-                    itemMeta = is.getItemMeta(); lore.clear();
+                    final ItemMeta itemMeta = is.getItemMeta();
+                    final List<String> lore = new ArrayList<>();
                     if(itemMeta.hasLore()) {
                         for(String s : itemMeta.getLore()) {
                             s = s.replace("{PRICE}", p).replace("{ITEM}", i);
                             lore.add(s);
                         }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     is.setItemMeta(itemMeta);
                 }
             }
@@ -630,15 +658,16 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
             final Inventory top = player.getOpenInventory().getTopInventory();
             top.setContents(purchaseItem.getInventory().getContents());
             for(int i = 0; i < size; i++) {
-                item = top.getItem(i);
+                final ItemStack item = top.getItem(i);
                 if(item != null) {
-                    itemMeta = item.getItemMeta(); lore.clear();
+                    final ItemMeta itemMeta = item.getItemMeta();
+                    final List<String> lore = new ArrayList<>();
                     if(itemMeta.hasLore()) {
                         for(String s : itemMeta.getLore()) {
                             lore.add(s.replace("{PRICE}", p).replace("{ITEM}", it));
                         }
                     }
-                    itemMeta.setLore(lore); lore.clear();
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                 }
             }
@@ -653,11 +682,13 @@ public class AuctionHouse extends RSFeature implements CommandExecutor {
     }
     public ItemStack getPlayerCollectionBin(@NotNull Player player) {
         final String size = Integer.toString(getCollectionBin(player).size());
-        item = collectionBin.clone(); itemMeta = item.getItemMeta();
+        final ItemStack item = collectionBin.clone();
+        final ItemMeta itemMeta = item.getItemMeta();
+        final List<String> lore = new ArrayList<>();
         for(String s : itemMeta.getLore()) {
             lore.add(s.replace("{ITEMS}", size));
         }
-        itemMeta.setLore(lore); lore.clear();
+        itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         return item;
     }
