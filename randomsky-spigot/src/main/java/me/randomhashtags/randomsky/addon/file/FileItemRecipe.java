@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.ItemRecipe;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
@@ -37,7 +38,7 @@ public class FileItemRecipe extends RSAddon implements ItemRecipe {
 
     public ItemStack getItem() {
         if(is == null) {
-            is = api.d(yml, "item");
+            is = RandomSkyAPI.INSTANCE.d(yml, "item");
         }
         return getClone(is);
     }

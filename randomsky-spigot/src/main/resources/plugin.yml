@@ -1,9 +1,76 @@
 name: RandomSky
 version: @version@
 main: me.randomhashtags.randomsky.RandomSky
+load: POSTWORLD
 api-version: 1.13
-load: STARTUP
+depend: [WorldEdit, Multiverse-Core, FastAsyncWorldEdit]
+softdepend: [Vault, EpicSpawners, SilkSpawners, PlaceholderAPI]
 commands:
+  adventure:
+    description: Default adventure command.
+  alignment:
+    description: Choose your island alignment!
+  alliance:
+    description: Player Alliance Management.
+  auctionhouse:
+    description: RandomSky Auction House!
+  balance:
+    description: Check your or someone else's balance!
+  balancetop:
+    description: View the top players with the most balance!
+  challenge:
+    description: Island challenges!
+  chat:
+    description: Change your chat type.
+  clear:
+    description: Clear your inventory!
+  coinflip:
+    description: RandomSky CoinFlip!
+  crafting:
+    description: Custom crafting command.
+  delhome:
+    description: Delete your set homes!
+  enchanter:
+    description: Enchanter!
   filter:
+    description: RandomSky Item Filter!
   home:
+    description: Teleport to your first home.
   homelist:
+    description: View your homes!
+  island:
+    description: RandomSky islands!
+  jackpot:
+    description: RandomSky jackpot!
+  kit:
+    description: RandomSky kits!
+  lootbox:
+    description: RandomSky lootboxes!
+  origin:
+    description: View the Island Origins and their perks!
+  pay:
+    description: Send your funds to another player.
+  randomsky:
+    description: Administrator commands for RandomSky.
+  rank:
+    description: RandomSky Player Ranks!
+  recipe:
+    description: Item Recipe command.
+  sell:
+    description: Sell items to the server for $$.
+  sethome:
+    description: Set homes to teleport to later!
+  shop:
+    description: Purchase and sell items!
+  skill:
+    description: Player Skills!
+  skykit:
+    description: Best Sky Kits.
+  tinkerer:
+    description: Tinkerer!
+  toggle:
+    description: Toggle features!
+  withdraw:
+    description: Withdraw money into a bank note!
+  xpbottle:
+    description: Withdraw experience into a EXP Bottle!:

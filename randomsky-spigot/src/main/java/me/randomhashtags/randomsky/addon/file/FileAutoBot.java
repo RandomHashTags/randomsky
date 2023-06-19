@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.bot.AutoBot;
 import me.randomhashtags.randomsky.addon.bot.AutoBotUpgrade;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
@@ -39,7 +40,7 @@ public class FileAutoBot extends RSAddon implements AutoBot {
 
     public ItemStack getItem() {
         if(is == null) {
-            is = api.d(yml, "item");
+            is = RandomSkyAPI.INSTANCE.d(yml, "item");
         }
         return getClone(is);
     }

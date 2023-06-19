@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.adventure.Adventure;
 import me.randomhashtags.randomsky.addon.adventure.AdventureMap;
 import me.randomhashtags.randomsky.addon.obj.AdventureMapObj;
@@ -51,7 +52,7 @@ public class FileAdventure extends RSAddon implements Adventure {
     }
     public AdventureMap getRequiredMap() {
         if(map == null && yml.get("map") != null) {
-            final AdventureMap map = new AdventureMapObj(getIdentifier(), api.d(yml, "map"), yml.getString("map.found in"));
+            final AdventureMap map = new AdventureMapObj(getIdentifier(), RandomSkyAPI.INSTANCE.d(yml, "map"), yml.getString("map.found in"));
             RSStorage.register(Feature.ADVENTURE_MAP, map);
             this.map = map;
         }
@@ -62,7 +63,7 @@ public class FileAdventure extends RSAddon implements Adventure {
         return yml.getInt("gui.slot");
     }
     public ItemStack getItem() {
-        if(is == null) is = api.d(yml, "gui");
+        if(is == null) is = RandomSkyAPI.INSTANCE.d(yml, "gui");
         return getClone(is);
     }
 

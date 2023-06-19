@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.alliance.AllianceUpgrade;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
@@ -30,7 +31,7 @@ public class FileAllianceUpgrade extends RSAddon implements AllianceUpgrade {
     }
     public ItemStack getItem() {
         if(is == null) {
-            is = api.d(yml, "gui");
+            is = RandomSkyAPI.INSTANCE.d(yml, "gui");
         }
         return getClone(is);
     }

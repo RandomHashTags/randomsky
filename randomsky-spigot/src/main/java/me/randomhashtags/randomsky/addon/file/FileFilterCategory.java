@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.FilterCategory;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
@@ -23,7 +24,7 @@ public class FileFilterCategory extends RSAddon implements FilterCategory {
             gui = new UInventory(null, yml.getInt("size"), getTitle());
             final Inventory i = gui.getInventory();
             for(String s : yml.getConfigurationSection("gui").getKeys(false)) {
-                i.setItem(yml.getInt("gui." + s + ".slot"), api.d(yml, "gui." + s));
+                i.setItem(yml.getInt("gui." + s + ".slot"), RandomSkyAPI.INSTANCE.d(yml, "gui." + s));
             }
         }
         return gui;

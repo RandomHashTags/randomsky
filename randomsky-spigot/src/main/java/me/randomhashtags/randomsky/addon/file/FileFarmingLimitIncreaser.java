@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.FarmingLimitIncrease;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
@@ -41,7 +42,7 @@ public class FileFarmingLimitIncreaser extends RSAddon implements FarmingLimitIn
     }
     public ItemStack getItem() {
         if(is == null) {
-            is = api.d(yml, "item");
+            is = RandomSkyAPI.INSTANCE.d(yml, "item");
         }
         return getClone(is);
     }

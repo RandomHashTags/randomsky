@@ -4,6 +4,11 @@ import me.randomhashtags.randomsky.addon.ResourceNode;
 import me.randomhashtags.randomsky.addon.active.ActiveResourceNode;
 import me.randomhashtags.randomsky.addon.island.Island;
 import me.randomhashtags.randomsky.addon.island.skill.MiningSkill;
+import me.randomhashtags.randomsky.addon.ResourceType;
+import me.randomhashtags.randomsky.addon.obj.MiningSkillObj;
+import me.randomhashtags.randomsky.addon.obj.ResourceNodeObj;
+import me.randomhashtags.randomsky.addon.obj.ResourceObj;
+import me.randomhashtags.randomsky.addon.obj.ResourceNodeType;
 import me.randomhashtags.randomsky.api.IslandAddon;
 import me.randomhashtags.randomsky.api.Islands;
 import me.randomhashtags.randomsky.event.island.IslandPlaceBlockEvent;
@@ -16,7 +21,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -42,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public enum IslandMining implements IslandAddon, CommandExecutor {
+public enum IslandMining implements IslandAddon {
     INSTANCE;
 
     public YamlConfiguration config;
@@ -107,7 +111,7 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
         for(String s : getStringList(config, "resources.items")) {
             final UMaterial u = UMaterial.match(s.toUpperCase());
             this.resources.add(u);
-            new Resource(ResourceType.RESOURCE, s.toLowerCase(), u.getItemStack());
+            new ResourceObj(ResourceType.RESOURCE, s.toLowerCase(), u.getItemStack());
             resources++;
         }
 
@@ -124,13 +128,13 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
                 item.setItemMeta(itemMeta);
                 final UMaterial u = UMaterial.match(item);
                 this.resourceItems.add(u);
-                new Resource(ResourceType.RESOURCE_ITEM, s.toLowerCase(), item);
+                new ResourceObj(ResourceType.RESOURCE_ITEM, s.toLowerCase(), item);
                 resourceItems++;
             }
         }
 
         for(String s : config.getConfigurationSection("resource fragments").getKeys(false)) {
-            new Resource(ResourceType.FRAGMENT, s, d(config, "resource fragments." + s));
+            new ResourceObj(ResourceType.FRAGMENT, s, d(config, "resource fragments." + s));
             fragments++;
         }
         final List<String> prelore = getStringList(config, "scraps.pre lore");
@@ -149,7 +153,7 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
                 }
                 itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
-                new Resource(ResourceType.SCRAP, s, item);
+                new ResourceObj(ResourceType.SCRAP, s, item);
                 scraps++;
             }
         }
@@ -176,11 +180,11 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
                 }
                 itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
-                new ResourceNode(s, type, IslandLevel.levels.get(config.getInt("nodes." + s + ".required island level")), config.getLong(p + "respawn time"), config.getDouble(p + "value"), harvest, node, colorize(config.getString(p + "node name")), config.getString(p + "node {TYPE}"), config.getString(p + "required node"), config.getInt(p + "completion"), item, loot);
+                new ResourceNodeObj(s, type, IslandLevel.levels.get(config.getInt("nodes." + s + ".required island level")), config.getLong(p + "respawn time"), config.getDouble(p + "value"), harvest, node, colorize(config.getString(p + "node name")), config.getString(p + "node {TYPE}"), config.getString(p + "required node"), config.getInt(p + "completion"), item, loot);
                 nodes++;
             }
         }
-        ResourceNode.paths.put("default", ResourceNode.paths.get(config.getString("nodes.default")));
+        ResourceNodeObj.paths.put("default", ResourceNodeObj.paths.get(config.getString("nodes.default")));
 
         final int size = config.getInt("gui.size");
         final List<String> format = getStringList(config, "gui.settings.format");
@@ -189,7 +193,7 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
         gui = new UInventory(null, size, colorize(config.getString("gui.title")));
         final Inventory gi = gui.getInventory();
         background = d(config, "gui.background");
-        final HashMap<String, ResourceNode> paths = ResourceNode.paths;
+        final HashMap<String, ResourceNodeObj> paths = ResourceNodeObj.paths;
         for(String s : config.getConfigurationSection("gui").getKeys(false)) {
             if(!s.equals("title") && !s.equals("size") && !s.equals("background") && !s.equals("settings")) {
                 final String p = "gui." + s + ".";
@@ -205,7 +209,7 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
                 itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
                 gi.setItem(slot, item);
-                new MiningSkill(s, slot, paths.getOrDefault(config.getString(p + "tracks node"), null), display);
+                new MiningSkillObj(s, slot, paths.getOrDefault(config.getString(p + "tracks node"), null), display);
             }
         }
         for(int i = 0; i < size; i++) {
@@ -239,10 +243,10 @@ public enum IslandMining implements IslandAddon, CommandExecutor {
         respawnRate = null;
         lockedAddedLore = null;
         unlockedAddedLore = null;
-        Resource.deleteAll();
+        ResourceObj.deleteAll();
         ResourceNodeType.deleteAll();
         ResourceNode.deleteAll();
-        MiningSkill.deleteAll();
+        MiningSkillObj.deleteAll();
     }
 
 

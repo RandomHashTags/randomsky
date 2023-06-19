@@ -1,5 +1,7 @@
 package me.randomhashtags.randomsky.api;
 
+import me.randomhashtags.randomsky.addon.obj.CustomBow;
+import me.randomhashtags.randomsky.addon.obj.CustomShield;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSFeature;
 import me.randomhashtags.randomsky.universal.UInventory;

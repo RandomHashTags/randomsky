@@ -3,6 +3,7 @@ package me.randomhashtags.randomsky.supported.mechanics;
 import me.randomhashtags.randomsky.RandomSky;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public enum SpawnerAPI {
     INSTANCE;
@@ -18,19 +19,19 @@ public enum SpawnerAPI {
         }
     }
 
-    public ItemStack getItem(String entitytype) {
+    public ItemStack getItem(@NotNull String entitytype) {
         if(plugin != null) {
             switch (plugin) {
-                case "EpicSpawners5": return es5(entitytype);
-                case "EpicSpawners6": return es6(entitytype);
-                case "SilkSpawners":  return ss(entitytype);
+                case "EpicSpawners5": return get_item_epic_spawners_5(entitytype);
+                case "EpicSpawners6": return get_item_epic_spawners_6(entitytype);
+                case "SilkSpawners":  return get_item_silk_spawners(entitytype);
                 default: return null;
             }
         }
         return null;
     }
 
-    private ItemStack es5(String entitytype) {
+    private ItemStack get_item_epic_spawners_5(@NotNull String entitytype) {
         final String type = entitytype.toUpperCase().replace("_", "").replace(" ", "");
         com.songoda.epicspawners.api.spawner.SpawnerData data = null;
         for(com.songoda.epicspawners.api.spawner.SpawnerData spawnerData : com.songoda.epicspawners.EpicSpawnersPlugin.getInstance().getSpawnerManager().getAllSpawnerData()) {
@@ -39,7 +40,7 @@ public enum SpawnerAPI {
         }
         return data != null ? data.toItemStack() : null;
     }
-    private ItemStack es6(String entitytype) {
+    private ItemStack get_item_epic_spawners_6(@NotNull String entitytype) {
         final String type = entitytype.toUpperCase().replace("_", "").replace(" ", "");
         com.songoda.epicspawners.spawners.spawner.SpawnerData data = null;
         for(com.songoda.epicspawners.spawners.spawner.SpawnerData spawnerData : com.songoda.epicspawners.EpicSpawners.getInstance().getSpawnerManager().getAllSpawnerData()) {
@@ -48,7 +49,7 @@ public enum SpawnerAPI {
         }
         return data != null ? data.toItemStack() : null;
     }
-    private ItemStack ss(String entitytype) {
+    private ItemStack get_item_silk_spawners(@NotNull String entitytype) {
         final String input = entitytype.toUpperCase().replace("_", "").replace(" ", "");
         for(EntityType t : EntityType.values()) {
             if(input.equals(t.name().replace("_", "").replace(" ", ""))) {

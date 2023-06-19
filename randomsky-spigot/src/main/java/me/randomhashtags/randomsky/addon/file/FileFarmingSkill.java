@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.FarmingRecipe;
 import me.randomhashtags.randomsky.addon.island.skill.FarmingSkill;
 import me.randomhashtags.randomsky.addon.util.Identifiable;
@@ -56,7 +57,7 @@ public class FileFarmingSkill extends RSAddon implements FarmingSkill {
     }
     public ItemStack getItem() {
         if(is == null) {
-            is = api.d(yml, "item");
+            is = RandomSkyAPI.INSTANCE.d(yml, "item");
         }
         return getClone(is);
     }

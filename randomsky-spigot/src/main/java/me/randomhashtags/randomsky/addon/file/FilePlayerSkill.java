@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.PlayerSkill;
 import me.randomhashtags.randomsky.addon.PlayerSkillLevel;
 import me.randomhashtags.randomsky.util.Feature;
@@ -32,7 +33,7 @@ public class FilePlayerSkill extends RSAddon implements PlayerSkill {
     }
     public int getMaxLevel() { return yml.getInt("settings.max level"); }
     public ItemStack getItem() {
-        if(is == null) is = api.d(yml, "item");
+        if(is == null) is = RandomSkyAPI.INSTANCE.d(yml, "item");
         return getClone(is);
     }
     public HashMap<Integer, PlayerSkillLevel> getLevels() {

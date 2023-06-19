@@ -1,12 +1,13 @@
 package me.randomhashtags.randomsky.addon.file;
 
-import com.sun.istack.internal.Nullable;
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.RepairScroll;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
 import me.randomhashtags.randomsky.util.RSStorage;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class FileRepairScroll extends RSAddon implements RepairScroll {
     public int getPercent(ItemStack is) { return getRemainingInt(getItem().getItemMeta().getLore().get(getPercentSlot())); }
 
     public ItemStack getItem() {
-        if(item == null) item = api.d(yml, "item");
+        if(item == null) item = RandomSkyAPI.INSTANCE.d(yml, "item");
         return getClone(item);
     }
     public ItemStack getItem(int percent) {

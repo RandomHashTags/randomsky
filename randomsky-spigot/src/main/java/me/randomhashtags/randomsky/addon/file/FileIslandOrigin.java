@@ -1,5 +1,6 @@
 package me.randomhashtags.randomsky.addon.file;
 
+import me.randomhashtags.randomsky.RandomSkyAPI;
 import me.randomhashtags.randomsky.addon.island.IslandOrigin;
 import me.randomhashtags.randomsky.util.Feature;
 import me.randomhashtags.randomsky.util.RSAddon;
@@ -26,11 +27,11 @@ public class FileIslandOrigin extends RSAddon implements IslandOrigin {
     public String getIdentifier() { return getYamlName(); }
 
     public ItemStack getItem() {
-        if(is == null) is = api.d(yml, "item");
+        if(is == null) is = RandomSkyAPI.INSTANCE.d(yml, "item");
         return getClone(is);
     }
     public String getName() {
-        if(name == null) name = ChatColor.translateAlternateColorCodes('&', yml.getString("settings.name"));
+        if(name == null) name = colorize(yml.getString("settings.name"));
         return name;
     }
     public File getSchematic() {
