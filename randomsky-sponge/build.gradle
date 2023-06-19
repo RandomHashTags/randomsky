@@ -1,16 +1,9 @@
 plugins {
-    id 'org.spongepowered.plugin' version '0.8.1'
+    //id 'org.spongepowered.plugin' version '0.8.1'
 }
 
 dependencies {
-    compile project(':randomsky-common')
-    compile 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
+    //compile 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
 }
 
-sponge.plugin.id = pluginId
-
-shadowJar {
-    dependencies {
-        include(dependency(':randomsky-common'))
-    }
-}
+//sponge.plugin.id = pluginId

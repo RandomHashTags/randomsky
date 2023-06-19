@@ -5,13 +5,17 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     mavenLocal()
 
-    maven { url "http://nexus.hc.to/content/repositories/pub_releases" } // Vault
+    maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi" } // PlaceholderAPI
+    maven { url "https://nexus.hc.to/content/repositories/pub_releases" } // Vault
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
 
+    implementation 'me.clip:placeholderapi:2.10.3'
     implementation 'net.milkbowl.vault:VaultAPI:1.7'
+
+    implementation 'org.jetbrains:annotations:23.0.0'
 }
 
 configurations {
@@ -35,8 +39,3 @@ configurations {
     compile.exclude group: 'junit'
     compile.exclude group: 'commons-lang'
 }
-
-shadowJar {
-}
-
-build.dependsOn(shadowJar);
