@@ -168,23 +168,24 @@ public enum Jackpot implements RSFeature, CommandExecutor {
         final List<UUID> tic = getTickets();
         final int size = tic.size();
         if(size > 0) {
-            final UUID w = tic.get(RANDOM.nextInt(size));
-            final OfflinePlayer op = Bukkit.getOfflinePlayer(w);
+            final UUID winner_uuid = tic.get(RANDOM.nextInt(size));
+            final OfflinePlayer winner_offline_player = Bukkit.getOfflinePlayer(winner_uuid);
             final HashMap<String, String> replacements = new HashMap<>();
-            final BigDecimal t = ticketsSold.get(w);
+            final BigDecimal t = ticketsSold.get(winner_uuid);
             final BigDecimal taxed = value.multiply(tax), total = value.subtract(taxed);
-            ECONOMY.depositPlayer(op, total.doubleValue());
+            ECONOMY.depositPlayer(winner_offline_player, total.doubleValue());
 
-            final FileRSPlayer pdata = FileRSPlayer.get(w);
-            pdata.jackpotWins += 1;
-            pdata.jackpotWonCash = pdata.jackpotWonCash.add(total);
+            final FileRSPlayer pdata = FileRSPlayer.get(winner_uuid);
+            final JackpotStats jackpot_stats = pdata.getJackpotStats();
+            jackpot_stats.setTimesWon(jackpot_stats.getTimesWon().add(BigDecimal.ONE));
+            jackpot_stats.setWonCash(jackpot_stats.getWonCash().add(total));
             if(!pdata.isOnline()) {
                 pdata.unload();
             }
 
             final String percent = formatDouble(getPercent(t, size)), tt = formatInt(size);
 
-            replacements.put("{PLAYER}", op.getName());
+            replacements.put("{PLAYER}", winner_offline_player.getName());
             replacements.put("{TICKETS}", formatBigDecimal(t));
             replacements.put("{TICKETS%}", percent);
             replacements.put("{TOTAL_TICKETS}", tt);
@@ -280,8 +281,8 @@ public enum Jackpot implements RSFeature, CommandExecutor {
             PLUGIN_MANAGER.callEvent(e);
             if(!e.isCancelled()) {
                 final UUID u = player.getUniqueId();
-                final FileRSPlayer pdata = FileRSPlayer.get(u);
-                pdata.jackpotTickets = pdata.jackpotTickets.add(tickets);
+                final JackpotStats pdata = FileRSPlayer.get(u).getJackpotStats();
+                pdata.setTicketsPurchased(pdata.getTicketsPurchased().add(tickets));
                 ticketsSold.put(u, ticketsSold.getOrDefault(u, BigDecimal.ZERO).add(tickets));
                 value = value.add(cost);
                 sendStringListMessage(player, config.getStringList("messages.purchased"), replacements);
@@ -308,10 +309,10 @@ public enum Jackpot implements RSFeature, CommandExecutor {
     public void viewStats(@NotNull Player player) {
         if(hasPermission(player, "RandomSky.jackpot.stats", true)) {
             final HashMap<String, String> replacements = new HashMap<>();
-            final FileRSPlayer pdata = FileRSPlayer.get(player.getUniqueId());
-            replacements.put("{$}", formatBigDecimal(pdata.jackpotWonCash));
-            replacements.put("{TICKETS}", formatBigDecimal(pdata.jackpotTickets));
-            replacements.put("{WINS}", formatInt(pdata.jackpotWins));
+            final JackpotStats pdata = FileRSPlayer.get(player.getUniqueId()).getJackpotStats();
+            replacements.put("{$}", formatBigDecimal(pdata.getWonCash()));
+            replacements.put("{TICKETS}", formatBigDecimal(pdata.getTicketsPurchased()));
+            replacements.put("{WINS}", formatBigDecimal(pdata.getTimesWon()));
             sendStringListMessage(player, config.getStringList("messages.stats"), replacements);
         }
     }
@@ -339,7 +340,7 @@ public enum Jackpot implements RSFeature, CommandExecutor {
         if(hasPermission(player, "RandomSky.jackpot.toggle", true)) {
             final JackpotStats stats = FileRSPlayer.get(player.getUniqueId()).getJackpotStats();
             final boolean status = !stats.receivesNotifications();
-            stats.setReceivesNotifications(status)
+            stats.setReceivesNotifications(status);
             sendStringListMessage(player, config.getStringList("messages.toggle notifications." + (status ? "on" : "off")), null);
         }
     }

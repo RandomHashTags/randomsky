@@ -650,24 +650,24 @@ public interface UVersionable extends Versionable {
         String pi = input.toLowerCase(), type = null;
         if(pi.equals("mysterymobspawner")) {
             return givedpitem.valueOf("mysterymobspawner").clone();
-        } else {
-            if(RandomSky.spawnerPlugin != null) {
-                for(EntityType entitytype : EntityType.values()) {
-                    final String s = entitytype.name().toLowerCase().replace("_", "");
-                    if(pi.startsWith(s + "spawner")) {
-                        type = s;
-                    }
+        } else if(RandomSky.spawnerPlugin != null) {
+            for(EntityType entitytype : EntityType.values()) {
+                final String s = entitytype.name().toLowerCase().replace("_", "");
+                if(pi.startsWith(s + "spawner")) {
+                    type = s;
                 }
-                if(type == null) {
-                    if(pi.contains("pig") && pi.contains("zombie")) type = "pigzombie";
-                }
-                if(type == null) return null;
-                final ItemStack is = SpawnerAPI.getSpawnerAPI().getItem(type);
-                if(is != null) {
-                    return is;
-                } else {
-                    CONSOLE.sendMessage("[RandomPackage] SilkSpawners or EpicSpawners is required to use this feature!");
-                }
+            }
+            if(type == null) {
+                if(pi.contains("pig") && pi.contains("zombie")) type = "pigzombie";
+            }
+            if(type == null) {
+                return null;
+            }
+            final ItemStack is = SpawnerAPI.INSTANCE.getItem(type);
+            if(is != null) {
+                return is;
+            } else {
+                CONSOLE.sendMessage("[RandomPackage] SilkSpawners or EpicSpawners is required to use this feature!");
             }
         }
         return null;

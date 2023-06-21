@@ -36,7 +36,7 @@ public interface RSFeature extends UVersionable, Listener, Loadable, Mathable {
 
     TreeMap<Integer, String> ROMAN_NUMERALS = new TreeMap<>();
 
-    public static YamlConfiguration otherdata;
+    YamlConfiguration otherdata;
     File otherdataF;
     UInventory givedp = new UInventory(null, 27, "Givedp Categories");
     List<Inventory> givedpCategories = new ArrayList<>();
@@ -90,9 +90,7 @@ public interface RSFeature extends UVersionable, Listener, Loadable, Mathable {
         try {
             unload();
             HandlerList.unregisterAll(this);
-            final RandomSkyFeature feature = get_feature();
-            RSStorage.unregisterAll(feature);
-            ENABLED_FEATURES.remove(feature);
+            ENABLED_FEATURES.remove(get_feature());
         } catch(Exception e) {
             e.printStackTrace();
         }
